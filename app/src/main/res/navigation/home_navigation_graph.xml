@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation_graph"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.desynatuser.ui.home.fragment.HomeFragment"
+        android:label="Home Fragment"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/catalog"
+        android:name="com.desynatuser.ui.home.fragment.CatalogFragment"
+        android:label="Catalog Fragment"
+        tools:layout="@layout/fragment_catalog"/>
+
+    <fragment
+        android:id="@+id/myBag"
+        android:name="com.desynatuser.ui.home.fragment.MyBagFragment"
+        android:label="My Bag Fragment"
+        tools:layout="@layout/fragment_my_bag"/>
+
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.desynatuser.ui.home.fragment.ProfileFragment"
+        android:label="Profile Fragment"
+        tools:layout="@layout/fragment_profile"/>
+
+</navigation>
