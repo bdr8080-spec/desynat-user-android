@@ -45,13 +45,13 @@ class OtpVerificationFragment : BaseFragment() {
     override fun initView() {
         startTimer()
         mobileNumber = arguments?.getString("mobileNumber").toString()
-        countryCode = arguments?.getString("countyCode").toString()
+        countryCode = arguments?.getString("countryCode").toString()
         from = arguments?.getString("from").toString()
         email = arguments?.getString("email").toString()
 
         binding?.apply {
             toolbar.tvToolbar.text = "Otp Verification"
-            tvMobile.text =  if (email!=""){
+            tvMobile.text =  if (email!=""&&email!="null"){
                 email
             }
             else{
