@@ -16,6 +16,10 @@ import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentLoginBinding
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
+import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,18 +67,11 @@ class LoginFragment : BaseFragment() {
 
             btnLogin.setOnClickListener {
                 if(btnLoginViaOtp.text == "Login via Password"){
-                    val bundle = Bundle().apply {
-                        putString("mobileNumber", binding?.etEmailMobile?.text.toString().trim())
-                        putString("from", "login")
-                    }
-                    findNavController().navigate(R.id.action_loginFragment_to_OtpFragment,bundle)
+                    loginWithEMailOrMobile()
                 }
                 else{
-                    requireActivity().startActivity(
-                        Intent(requireActivity(),
-                            HomeActivity::class.java)
-                    )
-                    requireActivity().finish()
+                    loginWithPassword()
+
 
                 }
             }
@@ -97,7 +94,12 @@ class LoginFragment : BaseFragment() {
             }
 
             tvGuest.setOnClickListener {
-
+                Constants.isGuest = true
+                requireActivity().startActivity(
+                    Intent(requireActivity(),
+                        HomeActivity::class.java)
+                )
+                requireActivity().finish()
             }
 
             ivGoogle.setOnClickListener {
@@ -108,6 +110,63 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    override fun observe() {
+    private fun loginWithPassword(){
+        val map = HashMap<String,Any>()
+        map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
+        map["password"] = binding?.etPassword?.text?.trim().toString()
+        viewModel.login(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
+
+    private fun loginWithEMailOrMobile(){
+        val map = HashMap<String,Any>()
+        map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
+        viewModel.loginViaEmailOrMobile(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+
+        }
+
+        viewModel.loginResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    showToast(response.message)
+                    SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                    SharedPreference.get(requireActivity()).saveUser(response.data)
+                    requireActivity().startActivity(
+                        Intent(requireActivity(),
+                            HomeActivity::class.java)
+                    )
+                    requireActivity().finish()
+                }
+                isObserver = false
+            }
+        }
+        viewModel.loginEmailMobileResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    val bundle = Bundle().apply {
+                        putString("mobileNumber", binding?.etEmailMobile?.text.toString().trim())
+                        putString("from", "login")
+                        putString("userId", response.data.id)
+                    }
+                    findNavController().navigate(R.id.action_loginFragment_to_OtpFragment,bundle)
+                }
+                isObserver = false
+            }
+        }
+    }
+
 }

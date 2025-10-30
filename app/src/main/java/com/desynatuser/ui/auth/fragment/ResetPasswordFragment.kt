@@ -11,6 +11,7 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentResetPasswordBinding
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,8 @@ class ResetPasswordFragment : BaseFragment() {
     private var binding: FragmentResetPasswordBinding? = null
     private val viewModel: AuthViewModel by viewModels()
     var isObserver = false
+    var userId = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +50,8 @@ class ResetPasswordFragment : BaseFragment() {
     }
 
     override fun initControl() {
+        userId = arguments?.getString("userId").toString()
+
         binding?.apply {
 
             toolbar.tvToolbar.setOnClickListener{
@@ -55,15 +60,14 @@ class ResetPasswordFragment : BaseFragment() {
 
             btnDone.setOnClickListener {
                 if (validation()) {
-                    val map = HashMap<String,String>()
+                    val map = HashMap<String,Any>()
+                    map["id"] = userId
                     map["password"] = binding?.etPassword?.text.toString().trim()
-                    map["confirmPassword"] = binding?.etConfirmPassword?.text.toString().trim()
-                    CommonMethod.showSuccessDialog(
-                        requireActivity(),
-                        getString(R.string.password_reset_successfully), false
-                    ) {
-                        findNavController().popBackStack(R.id.login, false)
-                    }
+                    map["confirm_password"] = binding?.etConfirmPassword?.text.toString().trim()
+                    viewModel.createPassword(map)
+                    ProgressDialogUtils.getInstance().showProgress(requireActivity())
+                    isObserver = true
+
                 }
             }
         }
@@ -71,6 +75,30 @@ class ResetPasswordFragment : BaseFragment() {
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+
+        }
+
+        viewModel.createPasswordResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    CommonMethod.showSuccessDialog(
+                        requireActivity(),
+                        getString(R.string.password_reset_successfully), false
+                    ) {
+                        findNavController().popBackStack(R.id.login, false)
+                    }
+                }
+                isObserver = false
+            }
+        }
+
     }
 
     private fun validation():Boolean{

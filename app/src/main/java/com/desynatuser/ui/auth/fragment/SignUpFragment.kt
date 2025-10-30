@@ -1,6 +1,5 @@
 package com.desynatuser.ui.auth.fragment
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -22,9 +21,11 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentSignUpBinding
+import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.CustomTypefaceSpan
 import com.desynatuser.utils.ImagePicker
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,8 +36,10 @@ class SignUpFragment : BaseFragment() {
     private var binding: FragmentSignUpBinding? = null
     private val viewModel: AuthViewModel by viewModels()
     var isObserver = false
+    var isImageObserver = false
     private lateinit var imagePicker: ImagePicker
     private var profileImage: File? = null
+    private var profileImageUrl:String?=null
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             imagePicker.onCameraResult(success)
@@ -106,15 +109,13 @@ class SignUpFragment : BaseFragment() {
 
             btnContinue.setOnClickListener {
                 if (validation()) {
-                        val bundle = Bundle().apply {
-                            putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus)
-                            putString("mobileNumber", binding?.etMobile?.text.toString().trim())
-                            putString("from", "signUp")
-                        }
-                        findNavController().navigate(
-                            R.id.action_signUpFragment_to_OtpFragment,
-                            bundle
-                        )
+                    if (profileImage!=null){
+                        profileImage?.let { it1 -> uploadFile(it1) }
+                    }
+                    else{
+                        createAccount()
+                    }
+
                 }
 
             }
@@ -125,7 +126,67 @@ class SignUpFragment : BaseFragment() {
         }
     }
 
+    fun uploadFile(image:File){
+        viewModel.uploadImage(image)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
+        isImageObserver = true
+    }
+
+    fun createAccount(){
+        binding?.apply {
+            val request = RegisterRequest(
+                email = etEmail.text.toString().trim(),
+                mobile = etMobile.text.toString().trim(),
+                countryCode = ccp.selectedCountryCodeWithPlus,
+                fullName = etFullName.text.toString().trim(),
+                password = etPassword.text.toString().trim(),
+                confirmPassword = etConfirmPassword.text.toString().trim(),
+                image = profileImageUrl
+            )
+            viewModel.register(request)
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+            isObserver = true
+        }
+    }
+
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+
+        }
+
+        viewModel.uploadImageResult.observe(viewLifecycleOwner) { response ->
+            if (isImageObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    profileImageUrl = response.data.url
+                    createAccount()
+                }
+                isImageObserver = false
+            }
+        }
+        viewModel.registerResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    val bundle = Bundle().apply {
+                        putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus)
+                        putString("mobileNumber", binding?.etMobile?.text.toString().trim())
+                        putString("from", "signUp")
+                        putString("userId", response.data.id)
+                    }
+                    findNavController().navigate(
+                        R.id.action_signUpFragment_to_OtpFragment,
+                        bundle
+                    )
+                }
+                isObserver = false
+            }
+        }
     }
 
     private fun validation(): Boolean {

@@ -14,6 +14,8 @@ import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentOtpVerificationBinding
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +28,8 @@ class OtpVerificationFragment : BaseFragment() {
     var countryCode = ""
     var email = ""
     var from = ""
+    var userId = ""
+    var type = 0 //0-signup,1-login,2-forgot
     lateinit var timer: CountDownTimer
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +52,13 @@ class OtpVerificationFragment : BaseFragment() {
         countryCode = arguments?.getString("countryCode").toString()
         from = arguments?.getString("from").toString()
         email = arguments?.getString("email").toString()
+        userId = arguments?.getString("userId").toString()
 
+        when(from){
+            "signUp" -> type = 0
+            "login" -> type = 1
+            "forgot" -> type = 2
+        }
         binding?.apply {
             toolbar.tvToolbar.text = "Otp Verification"
             tvMobile.text =  if (email!=""&&email!="null"){
@@ -70,7 +80,7 @@ class OtpVerificationFragment : BaseFragment() {
             }
 
             tvResendOtp.setOnClickListener {
-                startTimer()
+                resendOtp()
             }
 
             btnVerify.setOnClickListener {
@@ -84,28 +94,7 @@ class OtpVerificationFragment : BaseFragment() {
                         showToast("Please enter a valid 6-digit OTP")
                     }
                     else -> {
-                        when(from){
-                            "login" -> {
-                                requireActivity().startActivity(
-                                    Intent(requireActivity(),
-                                        HomeActivity::class.java)
-                                )
-                                requireActivity().finish()
-                            }
-                            "signUp" -> {
-                                CommonMethod.showSuccessDialog(requireActivity(),"Thank you for sinning up with DESYNAT"){
-                                    requireActivity().startActivity(
-                                        Intent(requireActivity(),
-                                            HomeActivity::class.java)
-                                    )
-                                    requireActivity().finish()
-                                }
-                            }
-                            "forgot" -> {
-                                findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment)
-                            }
-                        }
-
+                        verifyOtp()
                     }
                 }
             }
@@ -113,7 +102,88 @@ class OtpVerificationFragment : BaseFragment() {
 
     }
 
+    private fun verifyOtp(){
+        val map = HashMap<String,Any>()
+        map["user_id"] = userId
+        map["otp"] = binding?.pinView?.text?.trim().toString()
+        map["type"] = type
+        viewModel.otpVerification(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun resendOtp(){
+        val map = HashMap<String,Any>()
+        map["email_mobile"] = if (email!=""&&email!="null"){
+            email
+        }
+        else{
+            "${countryCode} ${mobileNumber}"
+        }
+        viewModel.otpVerification(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+
+        }
+
+        viewModel.otpVerifyResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    showToast(response.message)
+                    when(from){
+                        "login" -> {
+                            SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                            SharedPreference.get(requireActivity()).saveUser(response.data)
+                            requireActivity().startActivity(
+                                Intent(requireActivity(),
+                                    HomeActivity::class.java)
+                            )
+                            requireActivity().finish()
+                        }
+                        "signUp" -> {
+                            SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                            SharedPreference.get(requireActivity()).saveUser(response.data)
+                            CommonMethod.showSuccessDialog(requireActivity(),"Thank you for sinning up with DESYNAT"){
+                                requireActivity().startActivity(
+                                    Intent(requireActivity(),
+                                        HomeActivity::class.java)
+                                )
+                                requireActivity().finish()
+                            }
+                        }
+                        "forgot" -> {
+                            val bundle = Bundle().apply {
+                                putString("userId", response.data.id)
+                            }
+                            findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment,bundle)
+                        }
+                    }
+
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.resendOtpResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    startTimer()
+
+                }
+                isObserver = false
+            }
+        }
     }
 
     private fun startTimer() {

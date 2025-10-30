@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.desynatuser.R
+import com.desynatuser.ui.auth.response.LoginResponse
+import com.google.gson.Gson
 
 class SharedPreference(context: Context) {
     val preference: SharedPreferences =
@@ -62,5 +64,24 @@ class SharedPreference(context: Context) {
     var deviceToken: String
         get() = preference["deviceToken", ""]!!
         set(value) = preference.set("deviceToken", value)
+
+
+    fun saveUser(user: LoginResponse.Data) {
+        val json = Gson().toJson(user)
+        preference.set("userData", json)
+    }
+
+    fun getUser(): LoginResponse.Data? {
+        val json = preference["userData", ""] ?: return null
+        return try {
+            Gson().fromJson(json, LoginResponse.Data::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun clearUser() {
+        preference.set("userData", "")
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.desynatuser.ui.auth.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -12,7 +13,9 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentForgotPasswordBinding
+import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -76,15 +79,41 @@ class ForgotPasswordFragment : BaseFragment() {
 
             btnContinue.setOnClickListener {
                 if (validation()) {
-                    val map = HashMap<String, String>()
+                    val map = HashMap<String, Any>()
                     if (binding?.cbMobile?.isChecked == true) {
-                        map["countryCode"] = binding?.ccp?.selectedCountryCodeWithPlus.toString()
-                        map["mobileNumber"] = binding?.etMobile?.text.toString().trim()
+                        map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus.toString()
+                        map["mobile"] = binding?.etMobile?.text.toString().trim()
+                        map["type"] = 0
                     }
                     else {
                         map["email"] = binding?.etEmail?.text.toString().trim()
+                        map["type"] = 1
                     }
 
+                    viewModel.forgotPassword(map)
+                    ProgressDialogUtils.getInstance().showProgress(requireActivity())
+                    isObserver = true
+
+                }
+            }
+        }
+    }
+
+
+    override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+
+        }
+
+        viewModel.forgotPasswordResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
                     val bundle = Bundle().apply {
                         if (binding?.cbMobile?.isChecked == true) {
                             putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus)
@@ -94,14 +123,14 @@ class ForgotPasswordFragment : BaseFragment() {
                             putString("email", binding?.etEmail?.text.toString().trim())
                         }
                         putString("from", "forgot")
+                        putString("userId", response.data.id)
                     }
                     findNavController().navigate(R.id.action_forgotFragment_to_otpFragment,bundle)
                 }
+                isObserver = false
             }
         }
-    }
 
-    override fun observe() {
     }
 
     private fun validation():Boolean{
