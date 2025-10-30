@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_15sdp"
+    android:layout_marginEnd="@dimen/_15sdp"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/categories"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Abaya"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="@dimen/_5sdp" />
+
+</LinearLayout>

@@ -119,6 +119,18 @@ class MainRepository @Inject constructor(
             responseLiveData = createPasswordLiveData
         )
     }
+
+
+    val dashBoardLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun getDashBoard(
+    ) {
+        handleApiCall(
+            api = {
+                api.getDashBoard()
+            },
+            responseLiveData = dashBoardLiveData
+        )
+    }
 }
 
 class SingleLiveEvent<T> : MutableLiveData<T>() {
