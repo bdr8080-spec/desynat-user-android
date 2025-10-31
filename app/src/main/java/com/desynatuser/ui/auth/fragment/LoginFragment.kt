@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,13 +71,12 @@ class LoginFragment : BaseFragment() {
             }
 
             btnLogin.setOnClickListener {
-                if(btnLoginViaOtp.text == "Login via Password"){
-                    loginWithEMailOrMobile()
-                }
-                else{
-                    loginWithPassword()
-
-
+                if (validation()) {
+                    if (btnLoginViaOtp.text == "Login via Password") {
+                        loginWithEMailOrMobile()
+                    } else {
+                        loginWithPassword()
+                    }
                 }
             }
 
@@ -216,6 +216,27 @@ class LoginFragment : BaseFragment() {
                 isObserver = false
             }
         }
+    }
+
+    private fun validation():Boolean{
+
+        if (binding?.etEmailMobile?.text?.isEmpty() == true&&type==0) {
+            showToast("Please enter mobile number")
+            return false
+        }
+        else if (binding?.etEmailMobile?.text?.length!! < 7&&type==0) {
+            showToast("Please enter valid mobile number between 7 to 15 digits")
+            return false
+        }
+        else if (binding?.etEmailMobile?.text?.toString()?.isBlank() == true &&type==1) {
+            showToast("Please enter email")
+            return false
+        }
+        else if (!Patterns.EMAIL_ADDRESS.matcher(binding?.etEmailMobile?.text.toString()).matches() && type==1) {
+            showToast("Please enter valid email")
+            return false
+        }
+        return true
     }
 
 }
