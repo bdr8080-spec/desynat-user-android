@@ -141,7 +141,7 @@ class SignUpFragment : BaseFragment() {
                 fullName = etFullName.text.toString().trim(),
                 password = etPassword.text.toString().trim(),
                 confirmPassword = etConfirmPassword.text.toString().trim(),
-                image = profileImageUrl
+                profileImage = profileImageUrl
             )
             viewModel.register(request)
             ProgressDialogUtils.getInstance().showProgress(requireActivity())

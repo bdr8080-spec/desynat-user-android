@@ -10,7 +10,7 @@
         android:layout_width="@dimen/_45sdp"
         android:layout_height="@dimen/_45sdp"
         android:layout_margin="@dimen/_1sdp"
-        android:src="@drawable/categories"
+        android:src="@drawable/suggested"
         android:scaleType="centerCrop"
         app:strokeColor="@color/brown"
         app:strokeWidth="@dimen/_1sdp"

@@ -6,8 +6,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivImage"
-        android:layout_width="@dimen/_18sdp"
-        android:layout_height="@dimen/_18sdp"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/tvName"
         app:layout_constraintStart_toStartOf="parent"

@@ -16,6 +16,6 @@ data class RegisterRequest(
     val mobile: String,
     @SerializedName("password")
     val password: String ,
-    @SerializedName("image")
-    val image: String?=null
+    @SerializedName("profile_image")
+    val profileImage: String?=null
 )

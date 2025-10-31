@@ -3,6 +3,9 @@ package com.desynatuser.ui.auth.fragment
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +31,7 @@ class LoginFragment : BaseFragment() {
     private var binding: FragmentLoginBinding? = null
     private val viewModel: AuthViewModel by viewModels()
     var isObserver = false
+    var type = 1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -107,12 +111,47 @@ class LoginFragment : BaseFragment() {
 
             ivFacebook.setOnClickListener {
             }
+
+                etEmailMobile.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        val input = s.toString().trim()
+                        if (input.isNotEmpty()) {
+                            if (input.matches(Regex("^[0-9]+$"))) {
+                                type = 0
+                                ccp.isVisible = true
+                                ivEmail.setImageResource(R.drawable.ic_mobile)
+                                etEmailMobile.inputType = InputType.TYPE_CLASS_NUMBER
+                            } else {
+                                type = 1
+                                ccp.isVisible = false
+                                ivEmail.setImageResource(R.drawable.ic_email)
+                                etEmailMobile.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                            }
+                        } else {
+                            type = 1
+                            ccp.isVisible = false
+                            ivEmail.setImageResource(R.drawable.ic_email)
+                            etEmailMobile.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                        }
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {}
+                })
+
+
         }
     }
 
     private fun loginWithPassword(){
         val map = HashMap<String,Any>()
+
         map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
+        if (type==0){
+            map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus?.trim().toString()
+        }
+        map["type"] = type
         map["password"] = binding?.etPassword?.text?.trim().toString()
         viewModel.login(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -121,7 +160,11 @@ class LoginFragment : BaseFragment() {
 
     private fun loginWithEMailOrMobile(){
         val map = HashMap<String,Any>()
+        if (type==0){
+            map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus?.trim().toString()
+        }
         map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
+
         viewModel.loginViaEmailOrMobile(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -158,7 +201,13 @@ class LoginFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     val bundle = Bundle().apply {
-                        putString("mobileNumber", binding?.etEmailMobile?.text.toString().trim())
+                        if (type==0){
+                            putString("mobileNumber", binding?.etEmailMobile?.text.toString().trim())
+                            putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus.toString().trim())
+                        }
+                        else{
+                            putString("email", binding?.etEmailMobile?.text.toString().trim())
+                        }
                         putString("from", "login")
                         putString("userId", response.data.id)
                     }

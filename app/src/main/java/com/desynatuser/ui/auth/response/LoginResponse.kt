@@ -28,6 +28,8 @@ data class LoginResponse(
         val emailVerifiedAt: Any,
         @SerializedName("full_name")
         val fullName: String,
+        @SerializedName("profile_image")
+        val profileImage: String?=null,
         @SerializedName("id")
         val id: String,
         @SerializedName("let")

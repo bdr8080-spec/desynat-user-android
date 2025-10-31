@@ -14,7 +14,7 @@
         android:layout_height="@dimen/_110sdp"
         android:scaleType="centerCrop"
         android:clipToOutline="true"
-        android:src="@drawable/categories"
+        android:src="@drawable/toprated"
         app:shapeAppearanceOverlay="@style/half_rounded_corner_10sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
