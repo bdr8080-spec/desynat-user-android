@@ -28,7 +28,9 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.desynatuser.R
+import com.desynatuser.databinding.AlertDialogLayoutBinding
 import com.desynatuser.databinding.SuccessDialogLayoutBinding
+import com.desynatuser.ui.auth.AuthActivity
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -112,6 +114,23 @@ object CommonMethod {
                 if (text != newText) {
                     editText.setText(newText)
                     editText.setSelection(newText.length)
+                }
+            }
+            override fun afterTextChanged(editable: Editable?) {
+
+            }
+        })
+    }
+
+    fun removeSpace(editText: EditText){
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+
+                if (start == 0 && count > 0 && charSequence?.startsWith(" ") == true) {
+                    editText.setText(charSequence.toString().trim())
+                    editText.setSelection(editText.text.length)
                 }
             }
             override fun afterTextChanged(editable: Editable?) {
@@ -310,6 +329,39 @@ object CommonMethod {
                 }
             }, 1000)
         }
+    }
+
+    fun showAlertDialog(context: Context,description:String,onDismiss: (() -> Unit)? = null) {
+        val dialog = Dialog(context, R.style.CustomDialog)
+        val dialogBinding = AlertDialogLayoutBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
+
+        val window: Window = dialog.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+
+        dialogBinding.tvDescription.text=description
+
+        dialogBinding.tvOkay.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            onDismiss?.invoke()
+        }
+
+        dialog.show()
+
+    }
+
+
+    fun clearData(context: Context){
+        SharedPreference.get(context).clearUser()
+        SharedPreference.get(context).accessToken = ""
     }
 
 

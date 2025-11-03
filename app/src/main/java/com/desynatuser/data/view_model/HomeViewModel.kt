@@ -8,6 +8,7 @@ import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.response.CommonResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -31,6 +32,14 @@ class HomeViewModel @Inject constructor(
     fun getDashBoard() {
         viewModelScope.launch {
             repository.getDashBoard()
+        }
+    }
+    val logoutResult: LiveData<CommonResponse>
+        get() = repository.logoutLiveData
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
         }
     }
 

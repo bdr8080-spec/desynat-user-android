@@ -29,7 +29,8 @@ class OtpVerificationFragment : BaseFragment() {
     var email = ""
     var from = ""
     var userId = ""
-    var type = 0 //0-signup,1-login,2-forgot
+    var screenType = 0 //0-signup,1-login,2-forgot
+    var type = 0 //0-mobile,1-email
     lateinit var timer: CountDownTimer
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,16 +56,18 @@ class OtpVerificationFragment : BaseFragment() {
         userId = arguments?.getString("userId").toString()
 
         when(from){
-            "signUp" -> type = 0
-            "login" -> type = 1
-            "forgot" -> type = 2
+            "signUp" -> screenType = 0
+            "login" -> screenType = 1
+            "forgot" -> screenType = 2
         }
         binding?.apply {
-            toolbar.tvToolbar.text = "Otp Verification"
+            toolbar.tvToolbar.text = "OTP Verification"
             tvMobile.text =  if (email!=""&&email!="null"){
+                type = 1
                 email
             }
             else{
+                type = 0
                 "${countryCode} ${mobileNumber}"
             }
 
@@ -106,7 +109,7 @@ class OtpVerificationFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["user_id"] = userId
         map["otp"] = binding?.pinView?.text?.trim().toString()
-        map["type"] = type
+        map["type"] = screenType
         viewModel.otpVerification(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -114,13 +117,15 @@ class OtpVerificationFragment : BaseFragment() {
 
     private fun resendOtp(){
         val map = HashMap<String,Any>()
-        map["email_mobile"] = if (email!=""&&email!="null"){
-            email
+        if (email!=""&&email!="null"){
+            map["email_mobile"] = email
         }
         else{
-            "${countryCode} ${mobileNumber}"
+            map["email_mobile"] = mobileNumber
+            map["country_code"] = countryCode
         }
-        viewModel.otpVerification(map)
+        map["type"] = type
+        viewModel.resendOtp(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -139,11 +144,11 @@ class OtpVerificationFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    showToast(response.message)
                     when(from){
                         "login" -> {
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
+                            showToast("OTP verified successfully")
                             requireActivity().startActivity(
                                 Intent(requireActivity(),
                                     HomeActivity::class.java)
@@ -162,6 +167,7 @@ class OtpVerificationFragment : BaseFragment() {
                             }
                         }
                         "forgot" -> {
+                            showToast("OTP verified successfully")
                             val bundle = Bundle().apply {
                                 putString("userId", response.data.id)
                             }
@@ -177,6 +183,12 @@ class OtpVerificationFragment : BaseFragment() {
         viewModel.resendOtpResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                if (type==0){
+                    showToast("OTP sent to mobile number successfully")
+                }
+                else{
+                    showToast("OTP sent to email address successfully")
+                }
                 response?.let {
                     startTimer()
 

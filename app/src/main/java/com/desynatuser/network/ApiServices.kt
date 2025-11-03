@@ -4,6 +4,7 @@ import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -59,6 +60,10 @@ interface ApiServices {
  @GET(Constants.DASHBOARD)
     suspend fun getDashBoard(
     ): Response<LoginResponse>
+
+ @GET(Constants.LOGOUT)
+    suspend fun logout(
+    ): Response<CommonResponse>
 
 
 }

@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:orientation="vertical">
 
@@ -42,7 +42,7 @@
             android:id="@+id/tvGuest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_bold"
             android:text="Continue As a Guest"
             android:textColor="@color/brown"
             android:paddingTop="@dimen/_10sdp"
@@ -54,7 +54,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvEmailMobile"
             style="@style/edit_text_title"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="Mobile or Email Address"
             app:layout_constraintTop_toBottomOf="@+id/tvWelcome"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +124,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPassword"
             style="@style/edit_text_title"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="Password"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clMobile"/>
@@ -187,7 +187,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnLoginViaOtp"
             style="@style/button"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="Login Via OTP"
             android:textColor="@color/brown"
             android:background="@drawable/brown_stroke"
@@ -195,18 +195,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin"/>
 
+        <View
+            android:id="@+id/view1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#1A000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvOtherOption"
+            app:layout_constraintTop_toTopOf="@+id/tvOtherOption"
+            app:layout_constraintBottom_toBottomOf="@+id/tvOtherOption"/>
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#1A000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvOtherOption"
+            app:layout_constraintTop_toTopOf="@+id/tvOtherOption"
+            app:layout_constraintBottom_toBottomOf="@+id/tvOtherOption"/>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvOtherOption"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:fontFamily="@font/poppins_regular"
             android:textAlignment="center"
             android:text="Or Sign in with"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@+id/view1"
+            app:layout_constraintEnd_toStartOf="@+id/view2"
             app:layout_constraintTop_toBottomOf="@+id/btnLoginViaOtp"/>
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -220,20 +220,20 @@ class LoginFragment : BaseFragment() {
 
     private fun validation():Boolean{
 
-        if (binding?.etEmailMobile?.text?.isEmpty() == true&&type==0) {
-            showToast("Please enter mobile number")
+        if (binding?.etEmailMobile?.text?.isEmpty() == true) {
+            showToast("Please enter mobile number or email address")
             return false
         }
         else if (binding?.etEmailMobile?.text?.length!! < 7&&type==0) {
-            showToast("Please enter valid mobile number between 7 to 15 digits")
-            return false
-        }
-        else if (binding?.etEmailMobile?.text?.toString()?.isBlank() == true &&type==1) {
-            showToast("Please enter email")
+            showToast("Number must be at least 7 digits long")
             return false
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(binding?.etEmailMobile?.text.toString()).matches() && type==1) {
             showToast("Please enter valid email")
+            return false
+        }
+        else if (binding?.etPassword?.text?.isEmpty() == true&&binding?.btnLoginViaOtp?.text == "Login via Password") {
+            showToast("Please enter password")
             return false
         }
         return true

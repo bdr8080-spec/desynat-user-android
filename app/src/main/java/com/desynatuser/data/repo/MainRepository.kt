@@ -10,6 +10,7 @@ import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -129,6 +130,17 @@ class MainRepository @Inject constructor(
                 api.getDashBoard()
             },
             responseLiveData = dashBoardLiveData
+        )
+    }
+
+    val logoutLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun logout(
+    ) {
+        handleApiCall(
+            api = {
+                api.logout()
+            },
+            responseLiveData = logoutLiveData
         )
     }
 }

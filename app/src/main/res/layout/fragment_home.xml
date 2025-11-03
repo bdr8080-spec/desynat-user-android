@@ -31,6 +31,8 @@
             android:text="Deliver to Reshab"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_toLeftOf="@+id/ivChat"
             android:layout_toRightOf="@+id/ivAdminStory"/>

@@ -71,6 +71,7 @@ class SignUpFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
+            CommonMethod.removeSpace(etFullName)
             CommonMethod.removeAllTextSpaces(etEmail)
             CommonMethod.removeAllTextSpaces(etConfirmPassword)
             CommonMethod.removeAllTextSpaces(etPassword)
@@ -173,6 +174,10 @@ class SignUpFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
+                    CommonMethod.showSuccessDialog(
+                        requireActivity(),
+                        "OTP sent successfully to your mobile number "
+                    ) {
                     val bundle = Bundle().apply {
                         putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus)
                         putString("mobileNumber", binding?.etMobile?.text.toString().trim())
@@ -183,6 +188,7 @@ class SignUpFragment : BaseFragment() {
                         R.id.action_signUpFragment_to_OtpFragment,
                         bundle
                     )
+                }
                 }
                 isObserver = false
             }
@@ -208,7 +214,7 @@ class SignUpFragment : BaseFragment() {
                     false
                 }
 
-                mobile.length < 10 -> {
+                mobile.length < 7 -> {
                     showToast("Please enter a valid mobile number")
                     false
                 }
@@ -229,12 +235,13 @@ class SignUpFragment : BaseFragment() {
                 }
 
                 !CommonMethod.isValidPassword(password) -> {
-                    showToast("Password must be at least 8 characters long and include one uppercase letter, one lowercase letter, one number, and one special character.")
+                    CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
+//                    showToast("Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
                     false
                 }
 
                 confirmPassword.isEmpty() -> {
-                    showToast("Please confirm your password")
+                    showToast("Please enter confirm password")
                     false
                 }
 

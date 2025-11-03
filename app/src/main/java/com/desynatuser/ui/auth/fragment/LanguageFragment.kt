@@ -35,6 +35,17 @@ class LanguageFragment : BaseFragment() {
 
     override fun initView() {
         requestPermissions()
+        binding?.apply {
+            Constants.language = SharedPreference.get(requireActivity()).language
+            if(Constants.language=="en"){
+                cbEnglish.isChecked = true
+                cbArabic.isChecked = false
+            }
+            else if(Constants.language=="ar"){
+                cbEnglish.isChecked = false
+                cbArabic.isChecked = true
+            }
+        }
     }
 
     override fun initControl() {
@@ -69,7 +80,12 @@ class LanguageFragment : BaseFragment() {
                 }
                 else{
                     SharedPreference.get(requireActivity()).language = Constants.language
-                    findNavController().navigate(R.id.action_languageFragment_to_onBoardingFragment)
+                    if (SharedPreference.get(requireActivity()).isTutorial){
+                        findNavController().navigate(R.id.action_languageFragment_to_loginFragment)
+                    }
+                    else{
+                        findNavController().navigate(R.id.action_languageFragment_to_onBoardingFragment)
+                    }
                 }
             }
         }

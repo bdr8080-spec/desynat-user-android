@@ -4,7 +4,7 @@ object Constants {
 
     const val BASE_URL = "http://157.241.119.72"
 
-    var language=""
+    var language="en"
     const val ENGLISH = "en"
     const val ARABIC = "ar"
     var isGuest = false
@@ -23,5 +23,6 @@ object Constants {
     const val CREATE_PASSWORD = "/api/create_password"
     const val LOGIN_VIA_EMAIL_OR_MOBILE = "/api/login_by_mobile_or_email"
     const val DASHBOARD = "/api/user/user-dashboard"
+    const val LOGOUT = "/api/user/logout"
 
 }

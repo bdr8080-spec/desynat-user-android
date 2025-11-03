@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.adapter.BannerViewPagerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.databinding.FragmentOnBoardingBinding
+import com.desynatuser.utils.SharedPreference
 
 class OnBoardingFragment : BaseFragment() {
     private var binding: FragmentOnBoardingBinding? = null
@@ -79,7 +81,14 @@ class OnBoardingFragment : BaseFragment() {
             if (current < bannerList.size - 1) {
                 binding?.viewPager?.currentItem = current + 1
             } else {
-                findNavController().navigate(R.id.action_onBoardingFragment_to_LoginFragment)
+                SharedPreference.get(requireActivity()).isTutorial = true
+                findNavController().navigate(
+                    R.id.action_onBoardingFragment_to_LoginFragment,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(findNavController().graph.startDestinationId, true)
+                        .build()
+                )
             }
         }
 
@@ -91,7 +100,14 @@ class OnBoardingFragment : BaseFragment() {
         }
 
         binding?.tvSkip?.setOnClickListener {
-             findNavController().navigate(R.id.action_onBoardingFragment_to_LoginFragment)
+            SharedPreference.get(requireActivity()).isTutorial = true
+            findNavController().navigate(
+                R.id.action_onBoardingFragment_to_LoginFragment,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(findNavController().graph.startDestinationId, true)
+                    .build()
+            )
         }
 
     }

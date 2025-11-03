@@ -10,12 +10,17 @@ import com.desynatuser.R
 import com.desynatuser.adapter.ViewPagerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.databinding.FragmentHomeBinding
+import com.desynatuser.ui.auth.response.LoginResponse
+import com.desynatuser.utils.Constants
+import com.desynatuser.utils.SharedPreference
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding?=null
     private var adapter: ViewPagerAdapter?=null
+    private var user: LoginResponse.Data?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +37,11 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initView() {
+        user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
+            if (!Constants.isGuest){
+                tvDeliverTo.text = "Deliver to ${user?.fullName}"
+            }
             adapter = ViewPagerAdapter(this@HomeFragment)
             viewPager.adapter = adapter
 
