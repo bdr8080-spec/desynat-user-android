@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.desynatuser.data.repo.MainRepository
 import com.desynatuser.ui.auth.response.FileUploadResponse
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
@@ -40,6 +41,15 @@ class HomeViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             repository.logout()
+        }
+    }
+
+   val countryResult: LiveData<GetCountryResponse>
+        get() = repository.countryLiveData
+
+    fun getCountry() {
+        viewModelScope.launch {
+            repository.getCountry()
         }
     }
 

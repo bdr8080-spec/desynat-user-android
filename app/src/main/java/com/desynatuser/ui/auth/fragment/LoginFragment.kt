@@ -18,6 +18,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentLoginBinding
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
@@ -49,6 +50,7 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initView() {
+        getCountry()
         binding?.apply {
             CommonMethod.removeAllTextSpaces(etEmailMobile)
             CommonMethod.removeAllTextSpaces(etPassword)
@@ -164,7 +166,7 @@ class LoginFragment : BaseFragment() {
             map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus?.trim().toString()
         }
         map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
-
+        map["type"] = type
         viewModel.loginViaEmailOrMobile(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -216,6 +218,17 @@ class LoginFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.countryResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveCountryList(response.data)
+                    setCountry(response.data)
+                }
+                isObserver = false
+            }
+        }
     }
 
     private fun validation():Boolean{
@@ -232,11 +245,25 @@ class LoginFragment : BaseFragment() {
             showToast("Please enter valid email")
             return false
         }
-        else if (binding?.etPassword?.text?.isEmpty() == true&&binding?.btnLoginViaOtp?.text == "Login via Password") {
+        else if (binding?.etPassword?.text?.isEmpty() == true&&binding?.btnLoginViaOtp?.text != "Login via Password") {
             showToast("Please enter password")
             return false
         }
         return true
+    }
+
+    private fun getCountry() {
+        viewModel.getCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun setCountry(data: List<GetCountryResponse.Data>?) {
+        if (!data.isNullOrEmpty()) {
+            val countryCodes = data.map { it.isoCode }
+            val countryCodeString = countryCodes.joinToString(",")
+            binding?.ccp?.setCustomMasterCountries(countryCodeString)
+        }
     }
 
 }

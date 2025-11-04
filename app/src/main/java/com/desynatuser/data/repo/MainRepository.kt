@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.desynatuser.network.ApiServices
 import com.desynatuser.ui.auth.response.FileUploadResponse
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
@@ -141,6 +142,17 @@ class MainRepository @Inject constructor(
                 api.logout()
             },
             responseLiveData = logoutLiveData
+        )
+    }
+
+    val countryLiveData = SingleLiveEvent<GetCountryResponse>()
+    suspend fun getCountry(
+    ) {
+        handleApiCall(
+            api = {
+                api.getCountry()
+            },
+            responseLiveData = countryLiveData
         )
     }
 }

@@ -26,6 +26,7 @@ import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.CustomTypefaceSpan
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,6 +71,7 @@ class SignUpFragment : BaseFragment() {
     }
 
     override fun initView() {
+        setCountry()
         binding?.apply {
             CommonMethod.removeSpace(etFullName)
             CommonMethod.removeAllTextSpaces(etEmail)
@@ -192,6 +194,15 @@ class SignUpFragment : BaseFragment() {
                 }
                 isObserver = false
             }
+        }
+    }
+
+    private fun setCountry() {
+        val data = SharedPreference.get(requireActivity()).getCountryList()
+        if (!data.isNullOrEmpty()) {
+            val countryCodes = data.map { it.isoCode }
+            val countryCodeString = countryCodes.joinToString(",")
+            binding?.ccp?.setCustomMasterCountries(countryCodeString)
         }
     }
 

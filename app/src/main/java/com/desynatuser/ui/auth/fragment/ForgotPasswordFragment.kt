@@ -14,6 +14,7 @@ import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentForgotPasswordBinding
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +41,7 @@ class ForgotPasswordFragment : BaseFragment() {
     }
 
     override fun initView() {
+        setCountry()
         binding?.apply {
             CommonMethod.removeAllTextSpaces(etEmail)
             toolbar.tvToolbar.text = "Forgot Password"
@@ -156,6 +158,15 @@ class ForgotPasswordFragment : BaseFragment() {
     private fun clearData() {
         binding?.etMobile?.setText("")
         binding?.etEmail?.setText("")
+    }
+
+    private fun setCountry() {
+        val data = SharedPreference.get(requireActivity()).getCountryList()
+        if (!data.isNullOrEmpty()) {
+            val countryCodes = data.map { it.isoCode }
+            val countryCodeString = countryCodes.joinToString(",")
+            binding?.ccp?.setCustomMasterCountries(countryCodeString)
+        }
     }
 
 }

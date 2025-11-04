@@ -9,6 +9,7 @@ object Constants {
     const val ARABIC = "ar"
     var isGuest = false
 
+    var isLogout=false
     var location=""
     var latitude=0.0
     var longitude=0.0
@@ -24,5 +25,6 @@ object Constants {
     const val LOGIN_VIA_EMAIL_OR_MOBILE = "/api/login_by_mobile_or_email"
     const val DASHBOARD = "/api/user/user-dashboard"
     const val LOGOUT = "/api/user/logout"
+    const val GET_COUNTRY = "/api/country"
 
 }

@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.desynatuser.R
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class SharedPreference(context: Context) {
     val preference: SharedPreferences =
@@ -86,6 +88,21 @@ class SharedPreference(context: Context) {
 
     fun clearUser() {
         preference.set("userData", "")
+    }
+
+    fun saveCountryList(countryList: List<GetCountryResponse.Data>) {
+        val json = Gson().toJson(countryList)
+        preference.set("countryList", json)
+    }
+
+    fun getCountryList(): List<GetCountryResponse.Data>? {
+        val json = preference["countryList", ""] ?: return null
+        return try {
+            val type = object : TypeToken<List<GetCountryResponse.Data>>() {}.type
+            Gson().fromJson(json, type)
+        } catch (e: Exception) {
+            null
+        }
     }
 
 }

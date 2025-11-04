@@ -1,6 +1,7 @@
 package com.desynatuser.network
 
 import com.desynatuser.ui.auth.response.FileUploadResponse
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
@@ -65,5 +66,7 @@ interface ApiServices {
     suspend fun logout(
     ): Response<CommonResponse>
 
+    @GET(Constants.GET_COUNTRY)
+    suspend fun getCountry(): Response<GetCountryResponse>
 
 }

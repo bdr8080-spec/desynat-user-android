@@ -62,13 +62,13 @@ class OtpVerificationFragment : BaseFragment() {
         }
         binding?.apply {
             toolbar.tvToolbar.text = "OTP Verification"
-            tvMobile.text =  if (email!=""&&email!="null"){
+              if (email!=""&&email!="null"){
                 type = 1
-                email
+                  tvMobile.text = email
             }
             else{
                 type = 0
-                "${countryCode} ${mobileNumber}"
+                  tvMobile.text = "${countryCode} ${mobileNumber}"
             }
 
 

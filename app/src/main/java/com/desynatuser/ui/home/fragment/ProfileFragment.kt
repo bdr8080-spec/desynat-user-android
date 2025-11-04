@@ -2,6 +2,8 @@ package com.desynatuser.ui.home.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +49,18 @@ class ProfileFragment : BaseFragment() {
                     requireActivity().finish()
                 }
                 else{
-                    logout()
+                   // logout()
+                    ProgressDialogUtils.getInstance().showProgress(requireActivity())
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        ProgressDialogUtils.getInstance().hideProgress()
+                        Constants.isLogout = true
+                        CommonMethod.clearData(requireActivity())
+                        requireActivity().startActivity(
+                            Intent(requireActivity(),
+                                AuthActivity::class.java)
+                        )
+                        requireActivity().finish()
+                    }, 500) // delay in milliseconds
                 }
             }
         }
@@ -71,6 +84,7 @@ class ProfileFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     showToast(response.message)
+                    Constants.isLogout = true
                     CommonMethod.clearData(requireActivity())
                     requireActivity().startActivity(
                         Intent(requireActivity(),
