@@ -173,6 +173,13 @@ class OtpVerificationFragment : BaseFragment() {
                             }
                             findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment,bundle)
                         }
+                        "edit" -> {
+                            showToast("OTP verified successfully")
+                            val bundle = Bundle().apply {
+                                putString("from", if (type==1)"email" else "mobile")
+                            }
+                            findNavController().navigate(R.id.action_otpFragment_to_changeMobileFragment,bundle)
+                        }
                     }
 
                 }

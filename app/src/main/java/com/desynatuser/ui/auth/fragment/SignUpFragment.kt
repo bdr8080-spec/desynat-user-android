@@ -71,7 +71,7 @@ class SignUpFragment : BaseFragment() {
     }
 
     override fun initView() {
-        setCountry()
+      //  setCountry()
         binding?.apply {
             CommonMethod.removeSpace(etFullName)
             CommonMethod.removeAllTextSpaces(etEmail)
@@ -172,6 +172,7 @@ class SignUpFragment : BaseFragment() {
                 isImageObserver = false
             }
         }
+
         viewModel.registerResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -245,11 +246,11 @@ class SignUpFragment : BaseFragment() {
                     false
                 }
 
-                !CommonMethod.isValidPassword(password) -> {
+               /* !CommonMethod.isValidPassword(password) -> {
                     CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
 //                    showToast("Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
                     false
-                }
+                }*/
 
                 confirmPassword.isEmpty() -> {
                     showToast("Please enter confirm password")

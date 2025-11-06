@@ -7,14 +7,20 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import coil.load
+import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProfileBinding
 import com.desynatuser.ui.auth.AuthActivity
+import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +29,7 @@ class ProfileFragment : BaseFragment() {
     private var binding: FragmentProfileBinding?=null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    private var user: LoginResponse.Data?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +47,32 @@ class ProfileFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            tvLogout.setOnClickListener {
+            if (Constants.isGuest) {
+                tvEmail.isVisible = false
+                ivEdit.isVisible = false
+            } else {
+                user = SharedPreference.get(requireActivity()).getUser()
+                tvEmail.text = user?.email
+                tvName.text = user?.fullName
+                ivProfileImage.load(user?.profileImage) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_user)
+                    error(R.drawable.ic_user)
+                }
+            }
+        }
+
+    }
+
+    override fun initControl() {
+
+        binding?.apply {
+
+            ivEdit.setOnClickListener{
+                findNavController().navigate(R.id.action_profileFragment_to_profileDetailsFragment)
+            }
+
+            relLogout.setOnClickListener {
                 if(Constants.isGuest){
                     requireActivity().startActivity(
                         Intent(requireActivity(),
@@ -49,7 +81,7 @@ class ProfileFragment : BaseFragment() {
                     requireActivity().finish()
                 }
                 else{
-                   // logout()
+                    // logout()
                     ProgressDialogUtils.getInstance().showProgress(requireActivity())
                     Handler(Looper.getMainLooper()).postDelayed({
                         ProgressDialogUtils.getInstance().hideProgress()
@@ -64,9 +96,6 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         }
-    }
-
-    override fun initControl() {
     }
 
     override fun observe() {

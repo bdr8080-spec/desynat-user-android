@@ -26,5 +26,12 @@ object Constants {
     const val DASHBOARD = "/api/user/user-dashboard"
     const val LOGOUT = "/api/user/logout"
     const val GET_COUNTRY = "/api/country"
+    const val CHANGE_PASSWORD = "/api/user/change-password"
+    const val GET_CATEGORY = "/api/user/category"
+    const val GET_SUB_CATEGORY = "/api/user/sub-category"
+    const val UPDATE_PROFILE = "/api/user/update-profile"
+    const val CHANGE_NUMBER = "/api/user/change-mobile-number"
+    const val USER_OTP = "/api/user/verify-otp"
+
 
 }

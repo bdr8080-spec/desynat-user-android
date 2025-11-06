@@ -3,24 +3,520 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.fragment.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tvLogout"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProfile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_gradient"
-        android:textSize="@dimen/_12sdp"
-        android:textColor="@color/white"
-        android:paddingHorizontal="@dimen/_30sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_medium"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Logout" />
+        android:background="@color/light_pink"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@drawable/ic_user"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            app:shapeAppearanceOverlay="@style/circle_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="Guest User"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintEnd_toStartOf="@+id/ivEdit"
+            app:layout_constraintStart_toEndOf="@id/ivProfileImage"
+            app:layout_constraintTop_toTopOf="@id/ivProfileImage"
+            app:layout_constraintBottom_toTopOf="@+id/tvEmail"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text=""
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/ivProfileImage"
+            app:layout_constraintEnd_toEndOf="@id/tvName"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            app:layout_constraintTop_toBottomOf="@id/tvName" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:padding="@dimen/_15sdp"
+            app:layout_constraintTop_toTopOf="@+id/ivProfileImage"
+            app:layout_constraintBottom_toBottomOf="@+id/ivProfileImage"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/clProfile"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_15sdp"
+                android:padding="@dimen/_10sdp"
+                android:background="@drawable/card_gradient_background">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvGiftCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Gift Cards"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:background="@drawable/stroke_cards"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvMyOrder"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMyOrder"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="My Orders"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:background="@drawable/stroke_cards"
+                    app:layout_constraintStart_toEndOf="@+id/tvGiftCard"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvGiftCard"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvGiftCard"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSavedCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="My Saved Cards"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:background="@drawable/stroke_cards"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvSaveAddress"
+                    app:layout_constraintTop_toBottomOf="@+id/tvGiftCard"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSaveAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="Saved Addresses"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:background="@drawable/stroke_cards"
+                    app:layout_constraintStart_toEndOf="@+id/tvSavedCard"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvSavedCard"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvSavedCard"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlWallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivWallet"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_wallet" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMyWallet"
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoWallet"
+                    android:layout_toEndOf="@id/ivWallet"
+                    android:text="My Wallet" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoWallet"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivTerms"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_terms" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoTerms"
+                    android:layout_toEndOf="@id/ivTerms"
+                    android:text="Terms &amp; Condition" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoTerms"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlReturnPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivReturnPolicy"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_return_policy" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvReturnPolicy"
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoReturnPolicy"
+                    android:layout_toEndOf="@id/ivReturnPolicy"
+                    android:text="Return Policy" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoReturnPolicy"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivAbout"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_about_us" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSubAdmin"
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoAbout"
+                    android:layout_toEndOf="@id/ivAbout"
+                    android:text="About Us" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoAbout"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlFaq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivFaq"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_faq" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoFaq"
+                    android:layout_toEndOf="@id/ivFaq"
+                    android:text="Faq" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoFaq"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivLanguage"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_language" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSeller"
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoLanguage"
+                    android:layout_toEndOf="@id/ivLanguage"
+                    android:text="Change Language" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoLanguage"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlGoCurrency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCurrency"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_change_currency" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoCurrency"
+                    android:layout_toEndOf="@id/ivCurrency"
+                    android:text="Change Currency" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoCurrency"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlChangeCountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivChangeCountry"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_country" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoChangeCountry"
+                    android:layout_toEndOf="@id/ivChangeCountry"
+                    android:text="Change Country" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoChangeCountry"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlCancellationPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCancellationPolicy"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_cancellation_policy" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toLeftOf="@+id/ivGoCancellationPolicy"
+                    android:layout_toEndOf="@id/ivCancellationPolicy"
+                    android:text="Cancellation Policy"
+                    tools:ignore="RtlHardcoded" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoCancellationPolicy"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlExchange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_10sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivExchange"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_exchange_policy" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoExchange"
+                    android:layout_toEndOf="@id/ivExchange"
+                    android:text="Exchange Policy" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoExchange"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlSupport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSupport"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_support_chat" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoSupport"
+                    android:layout_toEndOf="@id/ivSupport"
+                    android:text="Support" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoSupport"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlAffiliate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivAffiliate"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_became_affilate" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoAffiliate"
+                    android:layout_toEndOf="@id/ivAffiliate"
+                    android:text="Become An Affiliate" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoAffiliate"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSetting"
+                    style="@style/drawer_image"
+                    android:src="@drawable/ic_setting" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/drawer_text"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_toStartOf="@+id/ivGoSetting"
+                    android:layout_toEndOf="@id/ivSetting"
+                    android:text="Setting" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivGoSetting"
+                    style="@style/drawer_arrow" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:background="@drawable/button_stroke">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/brown"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:drawableStart="@drawable/ic_logout" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

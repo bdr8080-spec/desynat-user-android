@@ -1,17 +1,17 @@
 package com.desynatuser.ui.home.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2
-import com.desynatuser.R
+import androidx.fragment.app.viewModels
 import com.desynatuser.adapter.ViewPagerAdapter
 import com.desynatuser.base.BaseFragment
+import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentHomeBinding
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.Constants
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding?=null
+    private val viewModel: HomeViewModel by viewModels()
+    var isObserver = false
     private var adapter: ViewPagerAdapter?=null
     private var user: LoginResponse.Data?=null
     override fun onCreateView(
@@ -66,6 +68,7 @@ class HomeFragment : BaseFragment() {
 
     override fun observe() {
     }
+
 
 
 }

@@ -8,6 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivCategory"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp"
         android:src="@drawable/categories"
@@ -15,6 +16,7 @@
         app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Abaya"

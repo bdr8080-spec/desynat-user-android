@@ -11,6 +11,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -122,6 +124,18 @@ class MainRepository @Inject constructor(
         )
     }
 
+val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun changePassword(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.changePassword(map)
+            },
+            responseLiveData = changePasswordLiveData
+        )
+    }
+
 
     val dashBoardLiveData = SingleLiveEvent<LoginResponse>()
     suspend fun getDashBoard(
@@ -155,6 +169,68 @@ class MainRepository @Inject constructor(
             responseLiveData = countryLiveData
         )
     }
+
+    val categoryLiveData = SingleLiveEvent<GetCategoryResponse>()
+    suspend fun getCategory(
+    ) {
+        handleApiCall(
+            api = {
+                api.getCategory()
+            },
+            responseLiveData = categoryLiveData
+        )
+    }
+
+    val subCategoryLiveData = SingleLiveEvent<GetSubCategoryResponse>()
+    suspend fun getSubCategory(categoryId:String
+    ) {
+        handleApiCall(
+            api = {
+                api.getSubCategory(categoryId = categoryId)
+            },
+            responseLiveData = subCategoryLiveData
+        )
+    }
+
+
+    val updateProfileLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun updateProfile(
+        map: HashMap<String,String>
+    ) {
+        handleApiCall(
+            api = {
+                api.updateProfile(map)
+            },
+            responseLiveData = updateProfileLiveData
+        )
+    }
+
+
+    val changeNumberLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun changeNumber(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.changeNumber(map)
+            },
+            responseLiveData = changeNumberLiveData
+        )
+    }
+
+
+    val userOtpLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun userOtp(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.userOtp(map)
+            },
+            responseLiveData = userOtpLiveData
+        )
+    }
+
 }
 
 class SingleLiveEvent<T> : MutableLiveData<T>() {

@@ -50,7 +50,7 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initView() {
-        getCountry()
+      //  getCountry()
         binding?.apply {
             CommonMethod.removeAllTextSpaces(etEmailMobile)
             CommonMethod.removeAllTextSpaces(etPassword)

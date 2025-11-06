@@ -5,6 +5,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
@@ -14,6 +16,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiServices {
 
@@ -58,6 +61,11 @@ interface ApiServices {
         @Body body: HashMap<String, Any>
     ): Response<LoginResponse>
 
+    @POST(Constants.CHANGE_PASSWORD)
+    suspend fun changePassword(
+        @Body body: HashMap<String, Any>
+    ): Response<CommonResponse>
+
  @GET(Constants.DASHBOARD)
     suspend fun getDashBoard(
     ): Response<LoginResponse>
@@ -68,5 +76,29 @@ interface ApiServices {
 
     @GET(Constants.GET_COUNTRY)
     suspend fun getCountry(): Response<GetCountryResponse>
+
+    @GET(Constants.GET_CATEGORY)
+    suspend fun getCategory(): Response<GetCategoryResponse>
+
+    @GET(Constants.GET_SUB_CATEGORY)
+    suspend fun getSubCategory(
+        @Query ("category_id") categoryId: String
+    ): Response<GetSubCategoryResponse>
+
+    @POST(Constants.UPDATE_PROFILE)
+    suspend fun updateProfile(
+        @Body body: HashMap<String, String>
+    ): Response<LoginResponse>
+
+    @POST(Constants.CHANGE_NUMBER)
+    suspend fun changeNumber(
+        @Body body: HashMap<String, Any>
+    ): Response<LoginResponse>
+
+
+    @POST(Constants.USER_OTP)
+    suspend fun userOtp(
+        @Body body: HashMap<String, Any>
+    ): Response<LoginResponse>
 
 }

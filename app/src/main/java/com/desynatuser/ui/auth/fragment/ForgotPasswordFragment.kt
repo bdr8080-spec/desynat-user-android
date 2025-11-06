@@ -41,7 +41,7 @@ class ForgotPasswordFragment : BaseFragment() {
     }
 
     override fun initView() {
-        setCountry()
+     //   setCountry()
         binding?.apply {
             CommonMethod.removeAllTextSpaces(etEmail)
             toolbar.tvToolbar.text = "Forgot Password"
