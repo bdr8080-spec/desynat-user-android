@@ -1,4 +1,4 @@
-package com.desynatuser.ui.home.fragment
+package com.desynatuser.ui.home.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentChangePasswordBinding
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
-import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
 import dagger.hilt.android.AndroidEntryPoint

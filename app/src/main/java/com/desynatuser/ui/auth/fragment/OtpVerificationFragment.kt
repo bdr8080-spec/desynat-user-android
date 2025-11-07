@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
+import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentOtpVerificationBinding
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
@@ -23,13 +24,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class OtpVerificationFragment : BaseFragment() {
     private var binding: FragmentOtpVerificationBinding? = null
     private val viewModel: AuthViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
     var isObserver = false
     var mobileNumber = ""
     var countryCode = ""
     var email = ""
     var from = ""
     var userId = ""
-    var screenType = 0 //0-signup,1-login,2-forgot
+    var screenType = -1 //0-signup,1-login,2-forgot
     var type = 0 //0-mobile,1-email
     lateinit var timer: CountDownTimer
     override fun onCreateView(
@@ -80,6 +82,7 @@ class OtpVerificationFragment : BaseFragment() {
         binding?.apply {
             toolbar.tvToolbar.setOnClickListener {
                 findNavController().popBackStack()
+
             }
 
             tvResendOtp.setOnClickListener {
@@ -97,12 +100,27 @@ class OtpVerificationFragment : BaseFragment() {
                         showToast("Please enter a valid 6-digit OTP")
                     }
                     else -> {
-                        verifyOtp()
+                        if (screenType==-1){
+                            verifyUserOtp()
+                        }
+                        else{
+                            verifyOtp()
+                        }
                     }
                 }
             }
         }
 
+    }
+
+
+    private fun verifyUserOtp(){
+        val map = HashMap<String,Any>()
+        map["id"] = userId
+        map["otp"] = binding?.pinView?.text?.trim().toString()
+        homeViewModel.userOtp(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
     private fun verifyOtp(){
@@ -132,6 +150,15 @@ class OtpVerificationFragment : BaseFragment() {
 
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+
+        }
+
+        homeViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
@@ -172,6 +199,37 @@ class OtpVerificationFragment : BaseFragment() {
                                 putString("userId", response.data.id)
                             }
                             findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment,bundle)
+                        }
+                        "edit" -> {
+                            showToast("OTP verified successfully")
+                            val bundle = Bundle().apply {
+                                putString("from", if (type==1)"email" else "mobile")
+                            }
+                            findNavController().navigate(R.id.action_otpFragment_to_changeMobileFragment,bundle)
+                        }
+                    }
+
+                }
+                isObserver = false
+            }
+        }
+
+        homeViewModel.userOtpResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    when(from){
+                        "change" -> {
+                            val data = SharedPreference.get(requireActivity()).getUser()
+                            if (from=="email") data?.email = response.data.email
+                            else{ data?.mobile = response.data.mobile
+                                data?.countryCode = response.data.countryCode}
+                            if (data != null) {
+                                SharedPreference.get(requireActivity()).saveUser(data)
+                            }
+                            CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email")"Email Address Changed successfully !" else "Mobile Number Changed successfully !"){
+                                findNavController().popBackStack(R.id.profileDetails, false)
+                            }
                         }
                         "edit" -> {
                             showToast("OTP verified successfully")

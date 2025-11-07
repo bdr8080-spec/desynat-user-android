@@ -32,6 +32,10 @@
         android:theme="@style/Theme.DesynatUser"
         tools:targetApi="31">
         <activity
+            android:name=".ui.UpdateLocationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan"

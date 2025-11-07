@@ -5,6 +5,7 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.response.CommonResponse
@@ -93,7 +94,7 @@ interface ApiServices {
     @POST(Constants.CHANGE_NUMBER)
     suspend fun changeNumber(
         @Body body: HashMap<String, Any>
-    ): Response<LoginResponse>
+    ): Response<ChangeMobileNumbeResponse>
 
 
     @POST(Constants.USER_OTP)

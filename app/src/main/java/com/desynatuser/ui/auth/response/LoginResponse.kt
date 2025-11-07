@@ -15,7 +15,7 @@ data class LoginResponse(
         @SerializedName("accessToken")
         val accessToken: String,
         @SerializedName("country_code")
-        val countryCode: String,
+        var countryCode: String,
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("device_token")
@@ -23,7 +23,7 @@ data class LoginResponse(
         @SerializedName("device_type")
         val deviceType: String,
         @SerializedName("email")
-        val email: String,
+        var email: String,
         @SerializedName("email_verified_at")
         val emailVerifiedAt: Any,
         @SerializedName("full_name")
@@ -37,7 +37,7 @@ data class LoginResponse(
         @SerializedName("long")
         val long: Any,
         @SerializedName("mobile")
-        val mobile: String,
+        var mobile: String,
         @SerializedName("otp")
         val otp: String,
         @SerializedName("otp_verify")

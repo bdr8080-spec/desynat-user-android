@@ -9,6 +9,7 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.response.CommonResponse
@@ -102,7 +103,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val changeNumberResult: LiveData<LoginResponse>
+    val changeNumberResult: LiveData<ChangeMobileNumbeResponse>
         get() = repository.changeNumberLiveData
 
     fun changeNumber(map: HashMap<String,Any>) {

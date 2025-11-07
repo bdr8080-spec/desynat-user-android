@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/profile"
-        android:name="com.desynatuser.ui.home.fragment.ProfileFragment"
+        android:name="com.desynatuser.ui.home.profile.ProfileFragment"
         android:label="Profile Fragment"
         tools:layout="@layout/fragment_profile">
 
@@ -37,13 +37,13 @@
 
     <fragment
         android:id="@+id/profileDetails"
-        android:name="com.desynatuser.ui.home.fragment.ProfileDetailFragment"
+        android:name="com.desynatuser.ui.home.profile.ProfileDetailFragment"
         android:label="Profile Details Fragment"
         tools:layout="@layout/fragment_profile_detail">
 
         <action
             android:id="@+id/action_profileDetailsFragment_to_changePasswordFragment"
-            app:destination="@id/profileDetails"/>
+            app:destination="@id/changePassword"/>
 
         <action
             android:id="@+id/action_profileDetailsFragment_to_otpFragment"
@@ -65,14 +65,20 @@
 
     <fragment
         android:id="@+id/changePassword"
-        android:name="com.desynatuser.ui.home.fragment.ChangePasswordFragment"
+        android:name="com.desynatuser.ui.home.profile.ChangePasswordFragment"
         android:label="Change Password Fragment"
         tools:layout="@layout/fragment_change_password"/>
 
     <fragment
         android:id="@+id/changeMobileEmail"
-        android:name="com.desynatuser.ui.home.fragment.ChangeMobileFragment"
+        android:name="com.desynatuser.ui.home.profile.ChangeMobileFragment"
         android:label="Change Mobile Fragment"
-        tools:layout="@layout/fragment_change_mobile"/>
+        tools:layout="@layout/fragment_change_mobile">
+
+    <action
+        android:id="@+id/action_changeMobileEmailFragment_to_otpFragment"
+        app:destination="@id/otp"/>
+
+    </fragment>
 
 </navigation>

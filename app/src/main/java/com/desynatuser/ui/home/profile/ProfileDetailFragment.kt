@@ -1,4 +1,4 @@
-package com.desynatuser.ui.home.fragment
+package com.desynatuser.ui.home.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,9 +27,12 @@ class ProfileDetailFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
     private var user: LoginResponse.Data?=null
-
+    var clickType = -1
     var isImageObserver = false
     private lateinit var imagePicker: ImagePicker
+    var email = ""
+    var mobileNumber = ""
+    var countryCode = ""
     private var profileImage: File? = null
     private var profileImageUrl:String?=null
     private val cameraLauncher =
@@ -64,17 +67,11 @@ class ProfileDetailFragment : BaseFragment() {
 
     override fun initView() {
         user = SharedPreference.get(requireActivity()).getUser()
+        email = user?.email.toString()
+        mobileNumber = user?.mobile.toString()
+        countryCode = user?.countryCode.toString()
         binding?.apply {
-            toolbar.tvToolbar.text = "Profile Details"
-            etFullName.setText(user?.fullName)
-            etEmail.setText(user?.email)
-            etMobile.setText(user?.countryCode+" | "+user?.mobile)
-            profileImageUrl = user?.profileImage
-            ivProfileImage.load(user?.profileImage) {
-                crossfade(true)
-                placeholder(R.drawable.ic_user)
-                error(R.drawable.ic_user)
-            }
+
 
             imagePicker = ImagePicker(
                 requireActivity(),
@@ -97,6 +94,12 @@ class ProfileDetailFragment : BaseFragment() {
 
             toolbar.tvToolbar.setOnClickListener{
                 findNavController().popBackStack()
+               user?.email = email
+                user?.mobile = mobileNumber
+                user?.countryCode = countryCode
+
+                user?.let { it1 -> SharedPreference.get(requireActivity()).saveUser(it1) }
+
             }
 
             tvChangeImage.setOnClickListener {
@@ -104,22 +107,22 @@ class ProfileDetailFragment : BaseFragment() {
             }
 
             etMobile.setOnClickListener {
-                val bundle = Bundle().apply {
-                        putString("mobileNumber", user?.mobile)
-                        putString("countryCode", user?.countryCode)
-                    putString("from", "edit")
-                    putString("userId", user?.id)
-                }
-                findNavController().navigate(R.id.action_profileDetailsFragment_to_otpFragment,bundle)
+                val map = HashMap<String,Any>()
+                map["for"] = "mobile" //mobile,email
+                map["country_code"] = user?.countryCode.toString()
+                map["mobile"] = user?.mobile.toString()
+                map["type"] = 0 //0-old,1-new
+                clickType = 0
+                changeMobileOrEmail(map)
             }
 
             etEmail.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("email", user?.email)
-                    putString("from", "edit")
-                    putString("userId", user?.id)
-                }
-                findNavController().navigate(R.id.action_profileDetailsFragment_to_otpFragment,bundle)
+                val map = HashMap<String,Any>()
+                map["for"] = "email" //mobile,email
+                map["email"] = binding?.etEmail?.text?.trim().toString()
+                map["type"] = 1 //0-old,1-new
+                clickType = 1
+                changeMobileOrEmail(map)
             }
 
             tvChangePassword.setOnClickListener {
@@ -148,6 +151,13 @@ class ProfileDetailFragment : BaseFragment() {
         isImageObserver = true
     }
 
+    private fun changeMobileOrEmail(map:HashMap<String,Any>){
+        viewModel.changeNumber(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+
+    }
+
 
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
@@ -168,6 +178,33 @@ class ProfileDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.changeNumberResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    if (clickType==0){
+                        val bundle = Bundle().apply {
+                            putString("mobileNumber", user?.mobile)
+                            putString("countryCode", user?.countryCode)
+                            putString("from", "edit")
+                            putString("userId", response.data.id)
+                        }
+                        findNavController().navigate(R.id.action_profileDetailsFragment_to_otpFragment,bundle)
+
+                    }
+                    else if (clickType==1){
+                        val bundle = Bundle().apply {
+                            putString("email", user?.email)
+                            putString("from", "edit")
+                            putString("userId", user?.id)
+                        }
+                        findNavController().navigate(R.id.action_profileDetailsFragment_to_otpFragment,bundle)
+                    }
+                }
+                isObserver = false
+            }
+        }
+
         viewModel.updateProfiledResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -178,6 +215,23 @@ class ProfileDetailFragment : BaseFragment() {
                     }
                 }
                 isObserver = false
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        user = SharedPreference.get(requireActivity()).getUser()
+        binding?.apply {
+            toolbar.tvToolbar.text = "Profile Details"
+            etFullName.setText(user?.fullName)
+            etEmail.setText(user?.email)
+            etMobile.setText(user?.countryCode+" | "+user?.mobile)
+            profileImageUrl = user?.profileImage
+            ivProfileImage.load(user?.profileImage) {
+                crossfade(true)
+                placeholder(R.drawable.ic_user)
+                error(R.drawable.ic_user)
             }
         }
     }

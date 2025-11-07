@@ -1,16 +1,32 @@
 package com.desynatuser.ui.home
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.desynatuser.R
 import com.desynatuser.adapter.BottomNavAdapter
 import com.desynatuser.base.BaseActivity
+import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.ActivityHomeBinding
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.IOException
+import java.util.Locale
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity() {
@@ -18,6 +34,11 @@ class HomeActivity : BaseActivity() {
     private lateinit var controller: NavController
     var bottonNavItemList = ArrayList<BottomNavItem>()
     private var bottomAdapter : BottomNavAdapter? =null
+    private val locationViewModel: LocationViewModel by viewModels()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var longitude = 0.0
+    var latitude = 0.0
+    var locationGet: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,6 +53,12 @@ class HomeActivity : BaseActivity() {
     override fun initView() {
 
         CommonMethod.detectGestureMode(binding?.root!!,binding?.viewBottom!!)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        if (Constants.location==""){
+            getCurrentLocation()
+        }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         controller = navHostFragment.navController
@@ -106,6 +133,85 @@ class HomeActivity : BaseActivity() {
         })
         binding?.rvBottomNav?.adapter = bottomAdapter
 
+    }
+
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationViewModel.setLoading(true)
+
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY, CancellationTokenSource().token
+            ).addOnSuccessListener { location ->
+                if (location != null) {
+                    // Success
+                    // handleLocation(location)
+                    locationGet = true
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    updateLocationText(latitude,longitude)
+                } else {
+                    // Try last known location
+                    fusedLocationClient.lastLocation.addOnSuccessListener { lastLocation ->
+                        if (lastLocation != null) {
+                            //handleLocation(lastLocation)
+                            latitude = location?.latitude ?: 0.0
+                            longitude = location?.longitude ?: 0.0
+
+                            Log.e(
+                                "LocationSuccess",
+                                "Location is null from both current and last known.latitude:$latitude, longitude:$longitude"
+                            )
+                            updateLocationText(latitude,longitude)
+                        } else {
+                            locationViewModel.setLoading(false)
+                            Log.e(
+                                "LocationError",
+                                "Location is null from both current and last known."
+                            )
+                            Toast.makeText(
+                                this,
+                                "Unable to fetch location. Try moving outside or checking settings.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        } else {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100
+            )
+        }
+    }
+
+    fun updateLocationText(latitude: Double, longitude: Double) {
+        val geocoder = Geocoder(this, Locale.getDefault())
+        try {
+            val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1)!!
+            if (addresses.isNotEmpty()) {
+                val address = addresses[0]
+                val fullAddress = address.getAddressLine(0) ?: "Unknown Location"
+                val locality = address.locality ?: "Unknown Locality"   // City or Town
+                val subLocality = address.subLocality ?: "Unknown Sublocality" // Area inside city
+                val stateh = address.adminArea ?: "N/A"
+                val postalCode = address.postalCode ?: "Unknown Pincode" // Zip Code
+                val houseNumber = address.subThoroughfare ?: address.premises ?: address.featureName
+                locationViewModel.setLoading(false)
+                Constants.location = fullAddress
+                Constants.latitude = this.latitude
+                Constants.longitude = this.longitude
+                locationViewModel.setLocation(this.latitude, this.longitude)
+
+            } else {
+                Constants.location  = "No address found"
+            }
+        } catch (e: IOException) {
+            Log.e("MapsDebug", "Geocoder failed: ${e.message}")
+            Constants.location = "Error fetching address"
+        }
     }
 
 }

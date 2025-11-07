@@ -1,6 +1,5 @@
-package com.desynatuser.ui.home.fragment
+package com.desynatuser.ui.home.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,13 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentChangeMobileBinding
-import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
-import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ChangeMobileFragment : BaseFragment() {
     private var binding: FragmentChangeMobileBinding?=null
     private val viewModel: HomeViewModel by viewModels()
@@ -67,10 +66,9 @@ class ChangeMobileFragment : BaseFragment() {
             }
 
             btnContinue.setOnClickListener{
-                CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email")"Email Address Changed successfully !" else "Mobile Number Changed successfully !"){
-                    findNavController().popBackStack(R.id.profileDetails, false)
+                if (validation()) {
+                    changeMobileOrEmail()
                 }
-
             }
 
         }
@@ -85,26 +83,75 @@ class ChangeMobileFragment : BaseFragment() {
             }
         }
 
-        viewModel.logoutResult.observe(viewLifecycleOwner) { response ->
+        viewModel.changeNumberResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    showToast(response.message)
-                    Constants.isLogout = true
-                    CommonMethod.clearData(requireActivity())
-                    requireActivity().startActivity(
-                        Intent(requireActivity(),
-                            AuthActivity::class.java)
-                    )
-                    requireActivity().finish()
+                    val bundle = Bundle().apply {
+                        if (from=="email"){
+                            putString("email", binding?.etEmail?.text.toString())
+                        } else {
+                            putString("mobileNumber", binding?.etMobile?.text.toString())
+                            putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus.toString())
+                        }
+                        putString("from", "change")
+                        putString("userId", response.data.id)
+                    }
+                    findNavController().navigate(R.id.action_changeMobileEmailFragment_to_otpFragment,bundle)
+
+
                 }
                 isObserver = false
             }
         }
     }
 
-    private fun logout(){
-        viewModel.logout()
+    private fun validation(): Boolean {
+        binding?.apply {
+            val mobile = etMobile.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+
+            return when {
+                mobile.isEmpty()&&from=="mobile" -> {
+                    showToast("Please enter your mobile number")
+                    false
+                }
+
+                mobile.length < 7 &&from=="mobile"-> {
+                    showToast("Please enter a valid mobile number")
+                    false
+                }
+
+                email.isEmpty() &&from=="email"-> {
+                    showToast("Please enter your email address")
+                    false
+                }
+
+                !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&from=="email"-> {
+                    showToast("Please enter a valid email address")
+                    false
+                }
+
+                else -> true
+            }
+        }
+        return false
+    }
+
+
+    private fun changeMobileOrEmail(){
+        val map = HashMap<String,Any>()
+        map["for"] = from //mobile,email
+        if (from=="email"){
+            map["email"] = binding?.etEmail?.text?.trim().toString()
+        }
+        else{
+            map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus?.trim().toString()
+            map["mobile"] = binding?.etMobile?.text?.trim().toString()
+        }
+
+        map["type"] = 1 //0-old,1-new
+        viewModel.changeNumber(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
 

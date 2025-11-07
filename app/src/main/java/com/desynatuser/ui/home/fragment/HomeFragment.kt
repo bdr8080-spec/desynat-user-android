@@ -1,17 +1,22 @@
 package com.desynatuser.ui.home.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.desynatuser.adapter.ViewPagerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
+import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.FragmentHomeBinding
+import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.Constants
-import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding?=null
     private val viewModel: HomeViewModel by viewModels()
+    private val locationViewModel: LocationViewModel by activityViewModels()
     var isObserver = false
     private var adapter: ViewPagerAdapter?=null
     private var user: LoginResponse.Data?=null
@@ -46,7 +52,6 @@ class HomeFragment : BaseFragment() {
             }
             adapter = ViewPagerAdapter(this@HomeFragment)
             viewPager.adapter = adapter
-
             viewPager.isUserInputEnabled = false
 
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -64,9 +69,41 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initControl() {
+        binding?.apply {
+            tvLocation.setOnClickListener {
+                val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
+                locationResultLauncher.launch(intent)
+            }
+        }
     }
 
     override fun observe() {
+
+        locationViewModel.location.observe(viewLifecycleOwner) { (lat, lng) ->
+                binding?.tvLocation?.text = Constants.location
+
+        }
+    }
+
+    private val locationResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val city = data?.getStringExtra("city") ?: "N/A"
+            val street = data?.getStringExtra("street") ?: "N/A"
+            val state = data?.getStringExtra("state") ?: "N/A"
+            val pincode = data?.getStringExtra("pincode") ?: "N/A"
+            val houseno = data?.getStringExtra("houseno") ?: "N/A"
+            val address = data?.getStringExtra("addressH") ?: "N/A"
+            Constants.latitude = data?.getStringExtra("latitudeD")?.toDoubleOrNull() ?: 0.0
+            Constants.longitude = data?.getStringExtra("longitudeD")?.toDoubleOrNull() ?: 0.0
+            Constants.location = address
+            val addressH = data?.getStringExtra("addressH") ?: "N/A"
+            val lat = data?.getDoubleExtra("lat", 0.0)
+            val lng = data?.getDoubleExtra("lng", 0.0)
+            binding?.tvLocation?.text = address
+        }
     }
 
 

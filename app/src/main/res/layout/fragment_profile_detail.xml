@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.fragment.ProfileDetailFragment">
+    tools:context=".ui.home.profile.ProfileDetailFragment">
 
     <include
         android:id="@+id/toolbar"
@@ -50,6 +50,7 @@
                 android:src="@drawable/ic_user"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:clipToOutline="true"
                 app:shapeAppearanceOverlay="@style/circle_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvChangePassword"/>
@@ -109,6 +110,8 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="textEmailAddress"
                 android:editable="false"
+                android:focusable="false"
+                android:clickable="true"
                 android:background="@drawable/edit_color_back"
                 app:layout_constraintTop_toBottomOf="@+id/tvMobile"/>
 
@@ -129,6 +132,9 @@
                 android:drawableEnd="@drawable/ic_change"
                 android:drawablePadding="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:editable="false"
+                android:focusable="false"
+                android:clickable="true"
                 android:inputType="textEmailAddress"
                 android:background="@drawable/edit_color_back"
                 app:layout_constraintTop_toBottomOf="@+id/tvEmail"/>
