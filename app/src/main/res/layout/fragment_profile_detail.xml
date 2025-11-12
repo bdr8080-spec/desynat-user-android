@@ -43,15 +43,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <com.google.android.material.imageview.ShapeableImageView
+
+            <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/ivProfileImage"
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="@dimen/_60sdp"
                 android:src="@drawable/ic_user"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:clipToOutline="true"
-                app:shapeAppearanceOverlay="@style/circle_image"
+               app:civ_border="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvChangePassword"/>
 
@@ -95,7 +95,7 @@
                 android:id="@+id/tvMobile"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="Mobile or Email Address"
+                android:text="Mobile Number"
                 app:layout_constraintTop_toBottomOf="@+id/etFullName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

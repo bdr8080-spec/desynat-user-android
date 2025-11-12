@@ -1,5 +1,6 @@
 package com.desynatuser.ui.home.profile
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,7 @@ class ProfileDetailFragment : BaseFragment() {
     var email = ""
     var mobileNumber = ""
     var countryCode = ""
+    private var imageUri: Uri?=null
     private var profileImage: File? = null
     private var profileImageUrl:String?=null
     private val cameraLauncher =
@@ -81,6 +83,7 @@ class ProfileDetailFragment : BaseFragment() {
             ) { uri ->
                 uri?.let {
                     profileImage = CommonMethod.uriToFile(requireActivity(), it)
+                    imageUri = it
                     ivProfileImage.setImageURI(it)
                     uploadFile(profileImage!!)
                 }
@@ -120,7 +123,7 @@ class ProfileDetailFragment : BaseFragment() {
                 val map = HashMap<String,Any>()
                 map["for"] = "email" //mobile,email
                 map["email"] = binding?.etEmail?.text?.trim().toString()
-                map["type"] = 1 //0-old,1-new
+                map["type"] = 0 //0-old,1-new
                 clickType = 1
                 changeMobileOrEmail(map)
             }
@@ -173,6 +176,7 @@ class ProfileDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     profileImageUrl = response.data.url
+
                 }
                 isImageObserver = false
             }
@@ -182,6 +186,7 @@ class ProfileDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
+                    showToast(response.message)
                     if (clickType==0){
                         val bundle = Bundle().apply {
                             putString("mobileNumber", user?.mobile)
@@ -196,7 +201,7 @@ class ProfileDetailFragment : BaseFragment() {
                         val bundle = Bundle().apply {
                             putString("email", user?.email)
                             putString("from", "edit")
-                            putString("userId", user?.id)
+                            putString("userId",response.data.id)
                         }
                         findNavController().navigate(R.id.action_profileDetailsFragment_to_otpFragment,bundle)
                     }
@@ -227,11 +232,13 @@ class ProfileDetailFragment : BaseFragment() {
             etFullName.setText(user?.fullName)
             etEmail.setText(user?.email)
             etMobile.setText(user?.countryCode+" | "+user?.mobile)
-            profileImageUrl = user?.profileImage
-            ivProfileImage.load(user?.profileImage) {
-                crossfade(true)
-                placeholder(R.drawable.ic_user)
-                error(R.drawable.ic_user)
+            if (imageUri==null) {
+                profileImageUrl = user?.profileImage
+                ivProfileImage.load(user?.profileImage) {
+                    crossfade(false)
+                    placeholder(R.drawable.ic_user)
+                    error(R.drawable.ic_user)
+                }
             }
         }
     }

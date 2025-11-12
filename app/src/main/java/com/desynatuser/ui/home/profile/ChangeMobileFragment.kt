@@ -40,17 +40,18 @@ class ChangeMobileFragment : BaseFragment() {
     }
 
     override fun initView() {
+        from = arguments?.getString("from").toString()
             binding?.apply {
                 CommonMethod.removeAllTextSpaces(etEmail)
                 if (from=="email"){
                     toolbar.tvToolbar.text = "Change Email Address"
-                    tvInputTitle.text = "Enter Email Address"
+                    tvInputTitle.text = "Enter New Email Address"
                     clMobile.isVisible = false
                     etEmail.isVisible = true
                 }
                 else{
                     toolbar.tvToolbar.text = "Change Mobile Number"
-                    tvInputTitle.text = "Enter Mobile Number"
+                    tvInputTitle.text = "Enter New Mobile Number"
                     clMobile.isVisible = true
                     etEmail.isVisible = false
                 }
@@ -87,6 +88,12 @@ class ChangeMobileFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
+                    if (from=="email") {
+                        showToast("OTP sent successfully to new email address")
+                    }
+                    else{
+                        showToast("OTP sent successfully")
+                    }
                     val bundle = Bundle().apply {
                         if (from=="email"){
                             putString("email", binding?.etEmail?.text.toString())
@@ -113,22 +120,22 @@ class ChangeMobileFragment : BaseFragment() {
 
             return when {
                 mobile.isEmpty()&&from=="mobile" -> {
-                    showToast("Please enter your mobile number")
+                    showToast("Please enter new mobile number")
                     false
                 }
 
                 mobile.length < 7 &&from=="mobile"-> {
-                    showToast("Please enter a valid mobile number")
+                    showToast("Please enter a valid new mobile number")
                     false
                 }
 
                 email.isEmpty() &&from=="email"-> {
-                    showToast("Please enter your email address")
+                    showToast("Please enter new email address")
                     false
                 }
 
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&from=="email"-> {
-                    showToast("Please enter a valid email address")
+                    showToast("Please enter a valid new email address")
                     false
                 }
 

@@ -14,7 +14,7 @@
         android:background="@color/light_pink"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.imageview.ShapeableImageView
+   <!--     <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProfileImage"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
@@ -24,7 +24,22 @@
             android:layout_marginTop="@dimen/_35sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:clipToOutline="true"
+            android:background="@color/light_pink"
             app:shapeAppearanceOverlay="@style/circle_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@drawable/ic_user"
+            android:scaleType="centerCrop"
+            app:civ_border="false"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

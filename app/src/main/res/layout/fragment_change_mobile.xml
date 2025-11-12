@@ -38,7 +38,7 @@
                 android:id="@+id/tvInputTitle"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="Mobile Number"/>
+                android:text="Enter New Mobile Number"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clMobile"
@@ -55,7 +55,8 @@
                     app:ccp_showFlag="false"
                     app:ccp_showNameCode="false"
                     app:ccp_showArrow="false"
-                    app:ccp_autoDetectCountry="true"
+                    app:ccp_autoDetectCountry="false"
+                    app:ccp_defaultNameCode="KW"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/etMobile"
                     app:layout_constraintBottom_toBottomOf="@+id/etMobile"/>
@@ -64,7 +65,7 @@
                     android:id="@+id/etMobile"
                     android:layout_width="0dp"
                     style="@style/edit_text"
-                    android:hint="@string/enter_mobile_number"
+                    android:hint="Enter New Mobile Number"
                     android:inputType="number"
                     android:maxLength="15"
                     android:background="@null"
@@ -83,7 +84,7 @@
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="@string/enter_email_address"
+                android:hint="Enter New Email Address"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="textEmailAddress"
                 android:background="@drawable/edit_back" />

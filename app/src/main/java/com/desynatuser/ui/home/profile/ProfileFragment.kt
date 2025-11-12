@@ -53,7 +53,7 @@ class ProfileFragment : BaseFragment() {
                 tvEmail.text = user?.email
                 tvName.text = user?.fullName
                 ivProfileImage.load(user?.profileImage) {
-                    crossfade(true)
+                    crossfade(false)
                     placeholder(R.drawable.ic_user)
                     error(R.drawable.ic_user)
                 }
@@ -72,6 +72,9 @@ class ProfileFragment : BaseFragment() {
 
             relLogout.setOnClickListener {
                 if(Constants.isGuest){
+                    Constants.isGuest = false
+                    Constants.isLogout = true
+                    Constants.Category = "Women"
                     requireActivity().startActivity(
                         Intent(requireActivity(),
                             AuthActivity::class.java)

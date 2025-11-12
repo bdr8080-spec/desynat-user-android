@@ -52,6 +52,19 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
+            android:id="@+id/tvNoCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Category Found"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:paddingVertical="@dimen/_30sdp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Suggested Stores"

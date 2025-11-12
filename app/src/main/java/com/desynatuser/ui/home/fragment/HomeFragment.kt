@@ -7,8 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.desynatuser.R
+import com.desynatuser.adapter.BestSellingAdapter
+import com.desynatuser.adapter.CategoryAdapter
+import com.desynatuser.adapter.DiscountedDealBannerViewPagerAdapter
+import com.desynatuser.adapter.HomeWomenBannerViewPagerAdapter
+import com.desynatuser.adapter.NewestProductAdapter
+import com.desynatuser.adapter.PremiumStoreBannerViewPagerAdapter
+import com.desynatuser.adapter.SuggestedStoreAdapter
+import com.desynatuser.adapter.TopRatedAdapter
 import com.desynatuser.adapter.ViewPagerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
@@ -16,8 +27,12 @@ import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.FragmentHomeBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
+import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.utils.Constants
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
+import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,6 +44,21 @@ class HomeFragment : BaseFragment() {
     var isObserver = false
     private var adapter: ViewPagerAdapter?=null
     private var user: LoginResponse.Data?=null
+
+
+    var isCategoryObserver = false
+    private var bestSellingAdapter: BestSellingAdapter?=null
+
+    private var mainCategoryList = ArrayList<GetCategoryResponse.Data>()
+    private var categoryList = ArrayList<GetSubCategoryResponse.Data>()
+    private var categoryAdapter: CategoryAdapter?=null
+    private var newestProductAdapter: NewestProductAdapter?=null
+    private var suggestedStoreAdapter: SuggestedStoreAdapter?=null
+    private var topRatedAdapter: TopRatedAdapter?=null
+
+    private var homeWomenBannerViewPagerAdapter : HomeWomenBannerViewPagerAdapter? =null
+    private var discountedDealBannerViewPagerAdapter : DiscountedDealBannerViewPagerAdapter? =null
+    private var premiumStoreBannerViewPagerAdapter : PremiumStoreBannerViewPagerAdapter? =null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,22 +80,95 @@ class HomeFragment : BaseFragment() {
             if (!Constants.isGuest){
                 tvDeliverTo.text = "Deliver to ${user?.fullName}"
             }
-            adapter = ViewPagerAdapter(this@HomeFragment)
+            if (Constants.location!=""){
+                tvLocation.text = Constants.location
+            }
+          /*  adapter = ViewPagerAdapter(this@HomeFragment)
             viewPager.adapter = adapter
             viewPager.isUserInputEnabled = false
-
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
-                    0 -> tab.text = "Men"
-                    1 -> tab.text = "Women"
-                    2 -> tab.text = "Kids"
+                    0 -> {tab.text = "Men"
+                    Constants.Category = "Men"}
+                    1 -> {tab.text = "Women"
+                        Constants.Category = "Women"}
+                    2 ->{ tab.text = "Kids"
+                        Constants.Category = "Kids"}
                 }
             }.attach()
 
             viewPager.post {
                 viewPager.currentItem = 1
+            }*/
+
+            homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(listOf(
+                    R.drawable.banner,
+                    R.drawable.premium,
+                    R.drawable.deal,
+                    R.drawable.banner))
+                viewPager.adapter = homeWomenBannerViewPagerAdapter
+                dotsIndicator.attachTo(binding?.viewPager!!)
+
+                discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(listOf(
+                    R.drawable.deal,
+                    R.drawable.banner,
+                    R.drawable.premium,
+                    R.drawable.deal))
+                viewPagerDiscountedDeals.adapter = discountedDealBannerViewPagerAdapter
+                dotsIndicatorDiscountedDeals.attachTo(binding?.viewPagerDiscountedDeals!!)
+
+                premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(listOf(
+                    R.drawable.premium,
+                    R.drawable.deal,
+                    R.drawable.banner,
+                    R.drawable.premium))
+                viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
+                dotsIndicatorPremium.attachTo(binding?.viewPagerPremium!!)
+
+                bestSellingAdapter = BestSellingAdapter(listOf("","","","",""))
+                rvBestSelling.adapter = bestSellingAdapter
+
+                topRatedAdapter = TopRatedAdapter(listOf("","","","",""))
+                rvTopRated.adapter = topRatedAdapter
+
+                suggestedStoreAdapter = SuggestedStoreAdapter(listOf("","","","","","","","","",""))
+                rvSuggestedStore.adapter = suggestedStoreAdapter
+
+                newestProductAdapter = NewestProductAdapter(listOf("","","","","","","","","",""))
+                rvNewestProducts.adapter = newestProductAdapter
+
+                categoryList.clear()
+                categoryAdapter = CategoryAdapter(requireActivity(),categoryList,object :CategoryAdapter.CategoryClick{
+                    override fun onCategoryClick(position: Int) {
+
+                    }
+
+                })
+                rvCategory.adapter = categoryAdapter
+
+                //  getDashboardApi()
+                getCategoryApi()
+
+            when(Constants.Category){
+                "Men"-> {
+                    viewMen.isVisible = true
+                    viewWomen.isInvisible = true
+                    viewKids.isInvisible = true
+                }
+
+                "Women"-> {
+                viewWomen.isVisible = true
+                viewMen.isInvisible = true
+                viewKids.isInvisible = true
             }
-        }
+                    "Kids"-> {
+                        viewKids.isVisible = true
+                viewMen.isInvisible = true
+                        viewWomen.isInvisible = true
+            }
+            }
+            }
+
     }
 
     override fun initControl() {
@@ -74,16 +177,106 @@ class HomeFragment : BaseFragment() {
                 val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
                 locationResultLauncher.launch(intent)
             }
+
+            tvWomen.setOnClickListener {
+                Constants.Category = "Women"
+                viewWomen.isVisible = true
+                viewMen.isInvisible = true
+                viewKids.isInvisible = true
+                getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
+            }
+
+            tvMen.setOnClickListener {
+                Constants.Category = "Men"
+                viewMen.isVisible = true
+                viewWomen.isInvisible = true
+                viewKids.isInvisible = true
+                getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
+            }
+
+            tvKids.setOnClickListener {
+                Constants.Category = "Kids"
+                viewKids.isVisible = true
+                viewMen.isInvisible = true
+                viewWomen.isInvisible = true
+                getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
+            }
         }
     }
 
     override fun observe() {
-
-        locationViewModel.location.observe(viewLifecycleOwner) { (lat, lng) ->
-                binding?.tvLocation?.text = Constants.location
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
 
         }
+
+        locationViewModel.location.observe(viewLifecycleOwner) { (lat, lng) ->
+            binding?.tvLocation?.text = Constants.location
+
+        }
+
+        viewModel.dashBoardResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.categoryResult.observe(viewLifecycleOwner) { response ->
+            if (isCategoryObserver) {
+                response?.let {
+                    mainCategoryList.clear()
+                    mainCategoryList.addAll(response.data)
+                    getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
+                }
+                isCategoryObserver = false
+            }
+        }
+
+        viewModel.subCategoryResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    categoryList.clear()
+                    categoryList.addAll(response.data)
+                    categoryAdapter?.notifyDataSetChanged()
+                    if (categoryList.size==0){
+                        binding?.tvNoCategory?.isVisible = true
+                    }
+                    else{
+                        binding?.tvNoCategory?.isVisible = false
+                    }
+                }
+                isObserver = false
+            }
+        }
+
     }
+
+    private fun getDashboardApi(){
+        viewModel.getDashBoard()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun getCategoryApi(){
+        viewModel.getCategory()
+        isCategoryObserver = true
+    }
+
+    private fun getSubCategoryApi(id:String){
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        viewModel.getSubCategory(id)
+        isObserver = true
+    }
+
 
     private val locationResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

@@ -221,7 +221,7 @@ class OtpVerificationFragment : BaseFragment() {
                     when(from){
                         "change" -> {
                             val data = SharedPreference.get(requireActivity()).getUser()
-                            if (from=="email") data?.email = response.data.email
+                            if (type==1) data?.email = response.data.email
                             else{ data?.mobile = response.data.mobile
                                 data?.countryCode = response.data.countryCode}
                             if (data != null) {
@@ -301,4 +301,11 @@ class OtpVerificationFragment : BaseFragment() {
         return "${formattedMinutes}:${formattedSeconds}"
 
     }*/
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (::timer.isInitialized) {
+            timer.cancel()
+        }
+    }
 }

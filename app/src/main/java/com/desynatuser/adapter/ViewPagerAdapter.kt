@@ -9,9 +9,9 @@ import com.desynatuser.ui.home.fragment.WomenFragment
 class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     private val fragments = listOf(
-        MenFragment(),
         WomenFragment(),
-        KidsFragment()
+        WomenFragment(),
+        WomenFragment()
     )
 
     override fun getItemCount() = fragments.size

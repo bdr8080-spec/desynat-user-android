@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.desynatuser.R
 import com.desynatuser.adapter.BestSellingAdapter
@@ -19,6 +20,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentWomenBinding
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,8 +30,10 @@ class WomenFragment :  BaseFragment() {
     private var binding: FragmentWomenBinding?=null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    var isCategoryObserver = false
     private var bestSellingAdapter: BestSellingAdapter?=null
 
+    private var mainCategoryList = ArrayList<GetCategoryResponse.Data>()
     private var categoryList = ArrayList<GetSubCategoryResponse.Data>()
     private var categoryAdapter: CategoryAdapter?=null
     private var newestProductAdapter: NewestProductAdapter?=null
@@ -91,7 +95,7 @@ class WomenFragment :  BaseFragment() {
             rvCategory.adapter = categoryAdapter
 
           //  getDashboardApi()
-            getSubCategoryApi("1")
+            getCategoryApi()
         }
     }
 
@@ -120,12 +124,13 @@ class WomenFragment :  BaseFragment() {
         }
 
         viewModel.categoryResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
-                ProgressDialogUtils.getInstance().hideProgress()
+            if (isCategoryObserver) {
                 response?.let {
-
+                    mainCategoryList.clear()
+                    mainCategoryList.addAll(response.data)
+                    getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
                 }
-                isObserver = false
+                isCategoryObserver = false
             }
         }
 
@@ -136,6 +141,12 @@ class WomenFragment :  BaseFragment() {
                     categoryList.clear()
                     categoryList.addAll(response.data)
                     categoryAdapter?.notifyDataSetChanged()
+                    if (categoryList.size==0){
+                        binding?.tvNoCategory?.isVisible = true
+                    }
+                    else{
+                        binding?.tvNoCategory?.isVisible = false
+                    }
                 }
                 isObserver = false
             }
@@ -152,12 +163,11 @@ class WomenFragment :  BaseFragment() {
     private fun getCategoryApi(){
         viewModel.getCategory()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        isObserver = true
+        isCategoryObserver = true
     }
 
     private fun getSubCategoryApi(id:String){
         viewModel.getSubCategory(id)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
 

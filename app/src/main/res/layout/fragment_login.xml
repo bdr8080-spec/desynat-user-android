@@ -99,7 +99,8 @@
                 app:ccp_showFlag="false"
                 app:ccp_showNameCode="false"
                 app:ccp_showArrow="true"
-                app:ccp_autoDetectCountry="true"
+                app:ccp_autoDetectCountry="false"
+                app:ccp_defaultNameCode="KW"
                 app:layout_constraintStart_toEndOf="@+id/ivEmail"
                 app:layout_constraintTop_toTopOf="@+id/etEmailMobile"
                 app:layout_constraintBottom_toBottomOf="@+id/etEmailMobile"/>

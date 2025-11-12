@@ -8,6 +8,7 @@ object Constants {
     const val ENGLISH = "en"
     const val ARABIC = "ar"
     var isGuest = false
+    var Category = "Women"
 
     var isLogout=false
     var location=""
