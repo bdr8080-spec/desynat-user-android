@@ -82,6 +82,5 @@ dependencies {
     implementation ("com.intuit.sdp:sdp-android:1.1.0")
     implementation("com.tbuonomo:dotsindicator:5.1.0")
 
-    implementation ("com.mikhaellopez:circularimageview:4.3.1")
 
 }

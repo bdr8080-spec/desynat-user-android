@@ -21,7 +21,8 @@
     <application
         android:name=".CoreApplication"
         android:allowBackup="false"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
+        android:forceDarkAllowed="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:usesCleartextTraffic="true"

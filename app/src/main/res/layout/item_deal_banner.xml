@@ -11,6 +11,7 @@
         android:layout_height="0dp"
         android:src="@drawable/banner"
         android:scaleType="centerCrop"
+        android:clipToOutline="true"
         app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

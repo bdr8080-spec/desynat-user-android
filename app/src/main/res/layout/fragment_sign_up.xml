@@ -115,15 +115,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCountryPicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:ccp_showFlag="false"
-                app:ccp_showNameCode="false"
-                app:ccp_showArrow="false"
-                app:ccp_autoDetectCountry="false"
-                app:ccp_defaultNameCode="KW"
+                android:fontFamily="@font/poppins_medium"
+                android:text="+975"
+                android:paddingVertical="@dimen/_10sdp"
+                android:drawableEnd="@drawable/ic_drop_down"
+                android:drawablePadding="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/etMobile"
                 app:layout_constraintBottom_toBottomOf="@+id/etMobile"/>
@@ -137,12 +140,11 @@
                 android:maxLength="15"
                 android:background="@null"
                 android:paddingHorizontal="0dp"
-                android:drawablePadding="@dimen/_10sdp"
-                android:drawableStart="@drawable/ic_drop_down"
+               android:layout_marginStart="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ccp"/>
+                app:layout_constraintStart_toEndOf="@+id/tvCountryPicker"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

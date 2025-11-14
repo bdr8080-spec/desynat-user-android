@@ -4,16 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
+import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
+import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentChangeMobileBinding
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +30,8 @@ class ChangeMobileFragment : BaseFragment() {
     var isObserver = false
     private var user: LoginResponse.Data?=null
     var from = "mobile"
+    var countryList = ArrayList<GetCountryResponse.Data>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +48,7 @@ class ChangeMobileFragment : BaseFragment() {
     }
 
     override fun initView() {
+        setCountry()
         from = arguments?.getString("from").toString()
             binding?.apply {
                 CommonMethod.removeAllTextSpaces(etEmail)
@@ -72,6 +81,10 @@ class ChangeMobileFragment : BaseFragment() {
                 }
             }
 
+            tvCountryPicker.setOnClickListener {
+                showCustomDropdown(etMobile)
+            }
+
         }
     }
 
@@ -99,7 +112,7 @@ class ChangeMobileFragment : BaseFragment() {
                             putString("email", binding?.etEmail?.text.toString())
                         } else {
                             putString("mobileNumber", binding?.etMobile?.text.toString())
-                            putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus.toString())
+                            putString("countryCode", binding?.tvCountryPicker?.text.toString())
                         }
                         putString("from", "change")
                         putString("userId", response.data.id)
@@ -153,7 +166,7 @@ class ChangeMobileFragment : BaseFragment() {
             map["email"] = binding?.etEmail?.text?.trim().toString()
         }
         else{
-            map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus?.trim().toString()
+            map["country_code"] = binding?.tvCountryPicker?.text?.trim().toString()
             map["mobile"] = binding?.etMobile?.text?.trim().toString()
         }
 
@@ -162,6 +175,43 @@ class ChangeMobileFragment : BaseFragment() {
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
 
+    }
+
+    private fun setCountry() {
+        val data = SharedPreference.get(requireActivity()).getCountryList()
+        countryList.clear()
+        if (data != null) {
+            countryList.addAll(data)
+        }
+    }
+
+    private fun showCustomDropdown(anchor: View) {
+
+        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
+
+        val popupWindow = PopupWindow(
+            dropdownBinding.root,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.isOutsideTouchable = true
+        popupWindow.elevation = 20f
+
+        popupWindow.showAsDropDown(anchor)
+
+        dropdownBinding.apply {
+
+            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :
+                CountryPickerAdapter.ClickOnItem{
+                override fun onClickItem(position: Int) {
+                    binding?.tvCountryPicker?.text = countryList[position].dialCode
+                    popupWindow.dismiss()
+                }
+
+            })
+        }
     }
 
 

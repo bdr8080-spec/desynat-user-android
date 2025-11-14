@@ -11,12 +11,16 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
+import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
+import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentLoginBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.home.HomeActivity
@@ -34,6 +38,8 @@ class LoginFragment : BaseFragment() {
     private val viewModel: AuthViewModel by viewModels()
     var isObserver = false
     var type = 1
+    var countryList = ArrayList<GetCountryResponse.Data>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +56,7 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initView() {
-      //  getCountry()
+        getCountry()
         binding?.apply {
             CommonMethod.removeAllTextSpaces(etEmailMobile)
             CommonMethod.removeAllTextSpaces(etPassword)
@@ -71,6 +77,11 @@ class LoginFragment : BaseFragment() {
             tvForgotPassword.setOnClickListener {
                 findNavController().navigate(R.id.action_loginFragment_to_forgotFragment)
             }
+
+            tvCountryPicker.setOnClickListener {
+                showCustomDropdown(etEmailMobile)
+            }
+
 
             btnLogin.setOnClickListener {
                 if (validation()) {
@@ -123,18 +134,18 @@ class LoginFragment : BaseFragment() {
                         if (input.isNotEmpty()) {
                             if (input.matches(Regex("^[0-9]+$"))) {
                                 type = 0
-                                ccp.isVisible = true
+                                tvCountryPicker.isVisible = true
                                 ivEmail.setImageResource(R.drawable.ic_mobile)
                                 etEmailMobile.inputType = InputType.TYPE_CLASS_NUMBER
                             } else {
                                 type = 1
-                                ccp.isVisible = false
+                                tvCountryPicker.isVisible = false
                                 ivEmail.setImageResource(R.drawable.ic_email)
                                 etEmailMobile.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                             }
                         } else {
                             type = 1
-                            ccp.isVisible = false
+                            tvCountryPicker.isVisible = false
                             ivEmail.setImageResource(R.drawable.ic_email)
                             etEmailMobile.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                         }
@@ -152,7 +163,7 @@ class LoginFragment : BaseFragment() {
 
         map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
         if (type==0){
-            map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus?.trim().toString()
+            map["country_code"] = binding?.tvCountryPicker?.text?.trim().toString()
         }
         map["type"] = type
         map["password"] = binding?.etPassword?.text?.trim().toString()
@@ -164,7 +175,7 @@ class LoginFragment : BaseFragment() {
     private fun loginWithEMailOrMobile(){
         val map = HashMap<String,Any>()
         if (type==0){
-            map["country_code"] = binding?.ccp?.selectedCountryCodeWithPlus?.trim().toString()
+            map["country_code"] = binding?.tvCountryPicker?.text?.trim().toString()
         }
         map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
         map["type"] = type
@@ -206,7 +217,7 @@ class LoginFragment : BaseFragment() {
                     val bundle = Bundle().apply {
                         if (type==0){
                             putString("mobileNumber", binding?.etEmailMobile?.text.toString().trim())
-                            putString("countryCode", binding?.ccp?.selectedCountryCodeWithPlus.toString().trim())
+                            putString("countryCode", binding?.tvCountryPicker?.text.toString().trim())
                         }
                         else{
                             putString("email", binding?.etEmailMobile?.text.toString().trim())
@@ -261,10 +272,41 @@ class LoginFragment : BaseFragment() {
 
     private fun setCountry(data: List<GetCountryResponse.Data>?) {
         if (!data.isNullOrEmpty()) {
+            countryList.clear()
+            data?.let { countryList.addAll(it) }
             val countryCodes = data.map { it.isoCode }
             val countryCodeString = countryCodes.joinToString(",")
-            binding?.ccp?.setCustomMasterCountries(countryCodeString)
+           // binding?.ccp?.setCustomMasterCountries(countryCodeString)
         }
     }
+
+    private fun showCustomDropdown(anchor: View) {
+
+        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
+
+        val popupWindow = PopupWindow(
+            dropdownBinding.root,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.isOutsideTouchable = true
+        popupWindow.elevation = 20f
+
+        popupWindow.showAsDropDown(anchor)
+
+        dropdownBinding.apply {
+
+            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :CountryPickerAdapter.ClickOnItem{
+                override fun onClickItem(position: Int) {
+                    binding?.tvCountryPicker?.text = countryList[position].dialCode
+                    popupWindow.dismiss()
+                }
+
+            })
+        }
+    }
+
 
 }
