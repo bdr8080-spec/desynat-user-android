@@ -22,7 +22,6 @@
         android:textSize="@dimen/_13sdp"
         app:layout_constraintTop_toTopOf="parent"/>
 
-
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingBottom="@dimen/_15sdp"
-    android:background="@drawable/half_rounded_corner"
-    android:backgroundTint="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -13,136 +11,351 @@
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/_15sdp"
         android:paddingHorizontal="@dimen/_15sdp"
-        android:background="@drawable/half_rounded_corner"
-        android:backgroundTint="#FFF7EA"
         android:fontFamily="@font/poppins_medium"
         android:text="Filter"
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:drawableEnd="@drawable/close_icon"
+        android:drawableStart="@drawable/ic_back"
         android:textSize="@dimen/_13sdp"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_15sdp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/tvToolbar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="16sp"
+            android:text="Category"
+            android:textSize="@dimen/_13sdp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/etFrom">
+
+        <RadioButton
+            android:id="@+id/rbWomen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Women"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:paddingVertical="@dimen/_6sdp"
+            android:button="@drawable/selector_checkbox_icon"
+            android:paddingStart="@dimen/_8sdp"
+            android:checked="false"
+            app:buttonTint="@null"
+            android:drawableTint="@null"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_11sdp"/>
+
+        <RadioButton
+            android:id="@+id/rbMen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Men"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:paddingVertical="@dimen/_6sdp"
+            android:button="@drawable/selector_checkbox_icon"
+            android:paddingStart="@dimen/_8sdp"
+            android:checked="false"
+            app:buttonTint="@null"
+            android:drawableTint="@null"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_11sdp"/>
+
+        <RadioButton
+            android:id="@+id/rbKids"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Kids"
+            android:textColor="@color/black"
+            android:paddingVertical="@dimen/_6sdp"
+            android:button="@drawable/selector_checkbox_icon"
+            android:paddingStart="@dimen/_8sdp"
+            android:checked="false"
+            app:buttonTint="@null"
+            android:drawableTint="@null"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_11sdp"/>
+
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="16sp"
+            android:text="Brand"
+            android:textSize="@dimen/_13sdp" />
+
+        <RadioGroup
+            android:id="@+id/rgBrand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/etFrom">
+
+            <RadioButton
+                android:id="@+id/rbBrand1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brand"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rbBrand2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brand"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rbBrand3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Brand"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+        </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCountry"
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Choose Country"
-            android:textSize="@dimen/_13sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="Ratings"
+            android:textSize="@dimen/_13sdp" />
 
-        <TextView
-            android:id="@+id/etCountry"
-            style="@style/edit_text"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="5dp"
-            android:clickable="true"
-            android:drawableEnd="@drawable/ic_drop_down"
-            android:drawablePadding="@dimen/_5sdp"
-            android:editable="false"
-            android:focusable="false"
-            android:hint="Select Country"
-            android:paddingVertical="@dimen/_9sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCountry" />
-        <androidx.recyclerview.widget.RecyclerView
+        <RadioGroup
+            android:id="@+id/radioGroupRating"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/etFrom">
 
+            <RadioButton
+                android:id="@+id/rb1Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1 Star"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
 
-            app:layout_constraintTop_toBottomOf="@+id/etCountry"
-            android:elevation="3dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:id="@+id/rvCountry"
-            android:visibility="gone"/>
+            <RadioButton
+                android:id="@+id/rb2Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2 Star"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
 
+            <RadioButton
+                android:id="@+id/rb3Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3 Star"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rb4Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="4 Star"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rb5Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="5 Star"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+        </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvChooseDate"
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Choose date"
-            android:textSize="@dimen/_13sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etCountry" />
+            android:text="Delivery Time"
+            android:textSize="@dimen/_13sdp"/>
 
-        <TextView
-            android:id="@+id/etFrom"
-            style="@style/edit_text"
-            android:layout_width="0dp"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="5dp"
-            android:clickable="true"
-            android:drawablePadding="@dimen/_5sdp"
-            android:editable="false"
-            android:focusable="false"
-            android:hint="From   //  //"
-            android:paddingVertical="@dimen/_9sdp"
-            app:layout_constraintEnd_toStartOf="@+id/etTo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvChooseDate" />
-
-        <TextView
-            android:id="@+id/etTo"
-            style="@style/edit_text"
-            android:layout_width="0dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:clickable="true"
-            android:drawablePadding="@dimen/_5sdp"
-            android:editable="false"
-            android:focusable="false"
-            android:hint="To   //  //"
-            android:paddingVertical="@dimen/_9sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/etFrom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/etFrom"
-            app:layout_constraintTop_toTopOf="@+id/etFrom" />
-
-
-        <TextView
-            android:id="@+id/tvClear"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/rgDeliveryTime"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:background="@drawable/button_stroke"
-            android:text="Clear"
-            android:textColor="@color/brown"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:textSize="@dimen/_12sdp"
-            android:paddingVertical="@dimen/_8sdp"
-            android:gravity="center"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:fontFamily="@font/poppins_medium"
-            app:layout_constraintEnd_toStartOf="@+id/tvApply"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etTo" />
+            android:weightSum="4"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/etFrom">
 
-        <TextView
-            android:id="@+id/tvApply"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_background"
-            android:gravity="center"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:text="Apply"
-            android:fontFamily="@font/poppins_medium"
-            android:paddingVertical="@dimen/_8sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvClear"
-            app:layout_constraintTop_toTopOf="@+id/tvClear" />
+            <RadioButton
+                android:id="@+id/rb2Day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Today- 2 days"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <RadioButton
+                android:id="@+id/rb3day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3- 5 days"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rb6day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="6- 12 days"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvClear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/button_stroke"
+        android:text="Clear"
+        android:textColor="@color/brown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/poppins_medium"
+        app:layout_constraintEnd_toStartOf="@+id/tvApply"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvApply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_background"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:text="Apply"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvClear"
+        app:layout_constraintTop_toTopOf="@+id/tvClear" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

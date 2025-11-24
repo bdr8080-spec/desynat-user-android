@@ -38,6 +38,12 @@ class ProductSearchFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
+            toolbar.tvToolbar.text = "Search"
+        }
+    }
+
+    override fun initControl() {
+        binding?.apply {
 
             toolbar.tvToolbar.setOnClickListener {
                 findNavController().popBackStack()
@@ -47,9 +53,6 @@ class ProductSearchFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment)
             }
         }
-    }
-
-    override fun initControl() {
     }
 
     override fun observe() {

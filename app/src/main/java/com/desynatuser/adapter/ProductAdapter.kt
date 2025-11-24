@@ -16,7 +16,7 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
         RecyclerView.ViewHolder(binding.root)
 
     interface ProductClick{
-        fun onProductClick(position: Int)
+        fun onProductClick(position: Int,type:Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,10 +57,14 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
                 ivLike.setImageResource(R.drawable.ic_like)
             }
 
+            ivLike.setOnClickListener {
+                productClick.onProductClick(position,2)
+            }
+
         }
 
         holder.itemView.setOnClickListener {
-            productClick.onProductClick(position)
+            productClick.onProductClick(position,1)
 
         }
     }

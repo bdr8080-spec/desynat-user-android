@@ -401,5 +401,22 @@ object CommonMethod {
         Constants.Category = "Women"
     }
 
+    fun shareProduct(context:Context,name: String, desc: String, imageUrl: String) {
+
+        val shareText = """
+        Title: $name
+        Description: $desc
+        Image:
+        $imageUrl
+    """.trimIndent()
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareText)
+        }
+
+        context.startActivity(Intent.createChooser(intent, "Share via"))
+    }
+
 
 }

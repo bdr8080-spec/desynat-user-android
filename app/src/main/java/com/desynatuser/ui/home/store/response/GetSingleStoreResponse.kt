@@ -111,7 +111,7 @@ data class GetSingleStoreResponse(
                 @SerializedName("upload_size_chart")
                 val uploadSizeChart: String,
                 @SerializedName("wishlist")
-                val wishlist: Int
+                var wishlist: Int
             ) {
                 data class Brand(
                     @SerializedName("created_at")

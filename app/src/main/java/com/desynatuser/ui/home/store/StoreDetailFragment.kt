@@ -1,25 +1,36 @@
 package com.desynatuser.ui.home.store
 
+import android.app.Dialog
 import android.os.Bundle
+import android.text.Highlights
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.RadioButton
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.desynatuser.R
+import com.desynatuser.adapter.HighlightAdapter
 import com.desynatuser.adapter.ProductAdapter
+import com.desynatuser.adapter.ReelAdapter
 import com.desynatuser.adapter.StoreAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.FragmentStoreBinding
 import com.desynatuser.databinding.FragmentStoreDetailBinding
+import com.desynatuser.databinding.SizeGuideChartDialogBinding
+import com.desynatuser.databinding.SortProductBinding
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
@@ -31,10 +42,14 @@ class StoreDetailFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
 
+    private var reelAdapter: ReelAdapter? = null
+    private var highlightAdapter: HighlightAdapter? = null
     private var productAdapter: ProductAdapter? = null
     private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
     private var storeData: GetStoreResponse.Data?=null
     private var storeDetailData: GetSingleStoreResponse.Data?=null
+    var selectedPos = -1
+    private var sortFilter: String?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,19 +74,36 @@ class StoreDetailFragment : BaseFragment() {
             storeData = Gson().fromJson(itemJson, GetStoreResponse.Data::class.java)
             setData()
         }
+
         binding?.apply {
 
             productAdapter = ProductAdapter(requireActivity(),productList,storeData?.storeName.toString(),object: ProductAdapter.ProductClick{
-                override fun onProductClick(position: Int) {
-                    val bundle = Bundle().apply {
-                        putString("productData", Gson().toJson(productList[position]))
-                        putString("storeData", Gson().toJson(storeData))
+                override fun onProductClick(position: Int,type:Int) {
+                    when(type){
+                        1->{
+                            val bundle = Bundle().apply {
+                                putString("productData", Gson().toJson(productList[position]))
+                                putString("storeData", Gson().toJson(storeData))
+                            }
+                            findNavController().navigate(R.id.action_storeDetailFragment_to_productDetailFragment,bundle)
+                        }
+
+                        2->{
+                            selectedPos = position
+                           addToWishList()
+                        }
                     }
-                    findNavController().navigate(R.id.action_storeDetailFragment_to_productDetailFragment,bundle)
+
                 }
 
             })
             rvProduct.adapter = productAdapter
+
+            highlightAdapter = HighlightAdapter(requireActivity(), arrayListOf("","","","","","","",""))
+            rvHighlights.adapter = highlightAdapter
+
+            reelAdapter = ReelAdapter(requireActivity(), arrayListOf("","","","","","","",""))
+            rvReel.adapter = reelAdapter
 
         }
 
@@ -113,7 +145,11 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             ivShare.setOnClickListener {
-
+                CommonMethod.shareProduct(requireActivity(),
+                    storeData?.storeName ?: "",
+                    storeData?.bio ?: "",
+                    storeData?.storeImage ?: ""
+                )
             }
 
             tvFilter.setOnClickListener {
@@ -121,7 +157,7 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             tvSort.setOnClickListener {
-
+                sortProductDialog()
             }
 
             tvProduct.setOnClickListener {
@@ -148,10 +184,23 @@ class StoreDetailFragment : BaseFragment() {
         }
     }
 
+
+
     private fun getStoreDetail(){
         val map = HashMap<String,Any>()
         map["store_id"] = storeData?.id.toString()
+        if (sortFilter!=null) {
+            map["sort_filter"] = sortFilter.toString()
+        }
         viewModel.getSingleStoreInfo(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun addToWishList(){
+        val map = HashMap<String,Any>()
+        map["product_id"] = productList[selectedPos].id
+        viewModel.addToWishlist(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -174,6 +223,23 @@ class StoreDetailFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.addToWishlistResult.observe(viewLifecycleOwner) { response ->
+        if (isObserver) {
+            ProgressDialogUtils.getInstance().hideProgress()
+            showToast(response.message)
+            if (productList[selectedPos].wishlist==1){
+                productList[selectedPos].wishlist = 0
+            }
+            else{
+                productList[selectedPos].wishlist = 1
+            }
+
+            productAdapter?.notifyItemChanged(selectedPos)
+            selectedPos = -1
+            isObserver = false
+        }
+    }
     }
 
     private fun setProductData() {
@@ -183,4 +249,57 @@ class StoreDetailFragment : BaseFragment() {
             productAdapter?.notifyDataSetChanged()
         }
     }
+
+    private fun sortProductDialog() {
+        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        val dialogBinding = SortProductBinding.inflate(LayoutInflater.from(context))
+        dialogBinding.root.let { dialog.setContentView(it) }
+
+        val window: Window = dialog.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+
+        val params: WindowManager.LayoutParams = window.attributes
+        params.gravity = Gravity.BOTTOM
+        window.attributes = params
+
+        dialogBinding.apply {
+
+            tvToolbar.setOnClickListener {
+                dialog.dismiss()
+            }
+
+           radioGroup.setOnCheckedChangeListener { group, checkedId ->
+
+                val selectedRB = group.findViewById<RadioButton>(checkedId)
+                val selectedText = selectedRB.text.toString()
+                sortFilter = group.indexOfChild(selectedRB).toString()
+            }
+
+
+            tvClear.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            tvApply.setOnClickListener {
+                if (sortFilter!=null){
+                    getStoreDetail()
+                    dialog.dismiss()
+                }
+                else{
+                    showToast("Please select")
+                }
+
+
+            }
+
+        }
+
+        dialog.show()
+    }
+
 }

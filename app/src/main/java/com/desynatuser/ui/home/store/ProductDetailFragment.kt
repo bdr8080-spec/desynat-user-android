@@ -190,7 +190,11 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             ivShare.setOnClickListener {
-
+                CommonMethod.shareProduct(requireActivity(),
+                    productData?.productNameEn ?: "",
+                    productData?.descriptionEn ?: "",
+                    productData?.productVariants?.get(selectedPos)?.variantImage?.get(0) ?: ""
+                )
             }
 
             tvSizeGuide.setOnClickListener {

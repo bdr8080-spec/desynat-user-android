@@ -2,6 +2,8 @@ package com.desynatuser.ui.home.fragment
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.adapter.PremiumStoreViewPagerAdapter
@@ -27,6 +30,9 @@ import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StoreFragment : BaseFragment() {
@@ -39,6 +45,9 @@ class StoreFragment : BaseFragment() {
     private var storeList = ArrayList<GetStoreResponse.Data>()
     var premiumStoreViewPagerAdapter : PremiumStoreViewPagerAdapter?=null
     var premiumStoreList = ArrayList<Int>()
+    private var search: Job? = null
+    private var lastQuery: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -84,6 +93,25 @@ class StoreFragment : BaseFragment() {
 
             TabLayoutMediator(binding!!.dotsIndicatorStore, binding!!.viewPager) { _, _ -> }.attach()
 
+
+            etSearch.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    val query = s.toString().trim()
+                    if (query == lastQuery) return
+                    lastQuery = query
+                    search?.cancel()
+                    search = lifecycleScope.launch {
+                        delay(600)
+                        if (!isObserver)
+                            getStoreList(search =  query.ifEmpty { null })
+                    }
+
+                }
+            })
         }
 
         getStoreList()
@@ -106,9 +134,12 @@ class StoreFragment : BaseFragment() {
         }
     }
 
-    private fun getStoreList(){
+    private fun getStoreList(search:String?=null){
         val map = HashMap<String,Any>()
         map["category_id"] = subCategoryData?.categoryId.toString()
+        if (search!=null){
+            map["search"] = search
+        }
         viewModel.getStoreList(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true

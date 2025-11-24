@@ -333,6 +333,11 @@
                 app:spanCount="2"
                 app:layout_constraintTop_toBottomOf="@+id/llProduct"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                app:layout_constraintTop_toBottomOf="@+id/rvReel"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
@@ -341,6 +346,7 @@
         android:id="@+id/ivChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:src="@drawable/ic_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
