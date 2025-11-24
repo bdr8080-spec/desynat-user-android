@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/_15sdp"
+    android:layout_marginBottom="@dimen/_15sdp"
+    android:paddingBottom="@dimen/_6sdp"
+    android:background="@drawable/card_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivStore"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_110sdp"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
+        android:src="@drawable/toprated"
+        app:shapeAppearanceOverlay="@style/half_rounded_corner_10sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
+        android:src="@drawable/toprated"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:shapeAppearanceOverlay="@style/circle_image"
+        app:layout_constraintTop_toTopOf="@+id/tvName"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:singleLine="true"
+        android:text="Atif Aslam"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/ivProfile"
+        app:layout_constraintEnd_toStartOf="@+id/tvStatus"
+        app:layout_constraintTop_toBottomOf="@+id/ivStore" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Busy"
+        android:textSize="@dimen/_9sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:background="@drawable/btn_gradient"
+        android:backgroundTint="#1FD53B36"
+        android:textColor="#D53B36"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvName" />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/rating"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:layout_constraintStart_toStartOf="@+id/ivProfile"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfile"/>
+
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="(123K)"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toEndOf="@+id/rating"
+        app:layout_constraintTop_toTopOf="@+id/rating"
+        app:layout_constraintBottom_toBottomOf="@+id/rating"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

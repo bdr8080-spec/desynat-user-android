@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/_10sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivSelected"
+        android:layout_width="@dimen/_33sdp"
+        android:layout_height="@dimen/_33sdp"
+        android:src="@color/white"
+        app:strokeColor="@color/brown"
+        app:strokeWidth="1dp"
+        android:clipToOutline="true"
+        android:layout_centerInParent="true"
+        app:shapeAppearanceOverlay="@style/rounded_corner4sdp"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivRectangleColor"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
+        android:src="@color/light_brown"
+        android:clipToOutline="true"
+        android:layout_centerInParent="true"
+        app:shapeAppearanceOverlay="@style/rounded_corner4sdp"/>
+
+</RelativeLayout>

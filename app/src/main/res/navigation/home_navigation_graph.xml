@@ -9,19 +9,54 @@
         android:id="@+id/home"
         android:name="com.desynatuser.ui.home.fragment.HomeFragment"
         android:label="Home Fragment"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_storeFragment"
+            app:destination="@id/store"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/catalog"
-        android:name="com.desynatuser.ui.home.fragment.CatalogFragment"
+        android:name="com.desynatuser.ui.home.catalog.CatalogFragment"
         android:label="Catalog Fragment"
-        tools:layout="@layout/fragment_catalog"/>
+        tools:layout="@layout/fragment_catalog">
+
+        <action
+            android:id="@+id/action_catalogFragment_to_subCategoryFragment"
+            app:destination="@id/subCategory"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/subCategory"
+        android:name="com.desynatuser.ui.home.catalog.SubCategoryFragment"
+        android:label="SubCategory Fragment"
+        tools:layout="@layout/fragment_sub_category">
+
+        <action
+            android:id="@+id/action_subCategoryFragment_to_storeFragment"
+            app:destination="@id/store"/>
+
+        <action
+            android:id="@+id/action_subCategoryFragment_to_searchProductFragment"
+            app:destination="@id/searchProduct"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/myBag"
         android:name="com.desynatuser.ui.home.fragment.MyBagFragment"
         android:label="My Bag Fragment"
-        tools:layout="@layout/fragment_my_bag"/>
+        tools:layout="@layout/fragment_my_bag">
+
+        <action
+            android:id="@+id/action_myBagFragment_to_savedAddressFragment"
+            app:destination="@id/savedAddress"/>
+
+
+    </fragment>
 
     <fragment
         android:id="@+id/profile"
@@ -32,6 +67,10 @@
         <action
             android:id="@+id/action_profileFragment_to_profileDetailsFragment"
             app:destination="@id/profileDetails"/>
+
+        <action
+            android:id="@+id/action_profileFragment_to_savedAddressFragment"
+            app:destination="@id/savedAddress"/>
 
     </fragment>
 
@@ -78,6 +117,78 @@
     <action
         android:id="@+id/action_changeMobileEmailFragment_to_otpFragment"
         app:destination="@id/otp"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchProduct"
+        android:name="com.desynatuser.ui.home.store.ProductSearchFragment"
+        android:label="Search Product Fragment"
+        tools:layout="@layout/fragment_product_search">
+
+        <action
+            android:id="@+id/action_searchProductFragment_to_searchProductListFragment"
+            app:destination="@id/searchProductList"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchProductList"
+        android:name="com.desynatuser.ui.home.store.SearchProductListFragment"
+        android:label="Search Product List Fragment"
+        tools:layout="@layout/fragment_search_product_list">
+
+        <action
+            android:id="@+id/action_storeFragment_to_productDetailFragment"
+            app:destination="@id/productDetail"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/store"
+        android:name="com.desynatuser.ui.home.fragment.StoreFragment"
+        android:label="Store Fragment"
+        tools:layout="@layout/fragment_store">
+
+        <action
+            android:id="@+id/action_storeFragment_to_storeDetailFragment"
+            app:destination="@id/storeDetail"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/storeDetail"
+        android:name="com.desynatuser.ui.home.store.StoreDetailFragment"
+        android:label="Store Detail Fragment"
+        tools:layout="@layout/fragment_store_detail">
+
+        <action
+            android:id="@+id/action_storeDetailFragment_to_productDetailFragment"
+            app:destination="@id/productDetail"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/productDetail"
+        android:name="com.desynatuser.ui.home.store.ProductDetailFragment"
+        android:label="Product Detail Fragment"
+        tools:layout="@layout/fragment_product_detail"/>
+
+    <fragment
+        android:id="@+id/addAddress"
+        android:name="com.desynatuser.ui.home.profile.AddAddressFragment"
+        android:label="Add Address Fragment"
+        tools:layout="@layout/fragment_add_address"/>
+
+    <fragment
+        android:id="@+id/savedAddress"
+        android:name="com.desynatuser.ui.home.profile.SavedAddressFragment"
+        android:label="Saved Address Fragment"
+        tools:layout="@layout/fragment_saved_address">
+
+        <action
+            android:id="@+id/action_savedAddressFragment_to_addAddressFragment"
+            app:destination="@id/addAddress"/>
 
     </fragment>
 

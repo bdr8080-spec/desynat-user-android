@@ -29,6 +29,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.desynatuser.R
 import com.desynatuser.databinding.AlertDialogLayoutBinding
+import com.desynatuser.databinding.DeleteDialogLayoutBinding
 import com.desynatuser.databinding.SuccessDialogLayoutBinding
 import com.desynatuser.ui.auth.AuthActivity
 import java.io.File
@@ -329,6 +330,41 @@ object CommonMethod {
                 }
             }, 1000)
         }
+    }
+
+    fun deleteAlertDialog(
+        context: Context,
+        description: String,
+        onResult: (action: DialogAction) -> Unit
+    ) {
+        val dialog = Dialog(context, R.style.CustomDialog)
+        val dialogBinding = DeleteDialogLayoutBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
+
+        val window: Window = dialog.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+
+        dialogBinding.tvDescription.text = description
+
+        dialogBinding.btnDelete.setOnClickListener {
+            onResult(DialogAction.DELETE)
+            dialog.dismiss()
+        }
+        dialogBinding.btnDiscard.setOnClickListener {
+            onResult(DialogAction.DISCARD)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    enum class DialogAction {
+        DELETE, DISCARD
     }
 
     fun showAlertDialog(context: Context,description:String,onDismiss: (() -> Unit)? = null) {

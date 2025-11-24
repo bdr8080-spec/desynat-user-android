@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivStore"
+        android:layout_width="@dimen/_55sdp"
+        android:layout_height="@dimen/_55sdp"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
+        android:src="@drawable/newest"
+        app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="Mooei 3 Pcs set"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:textSize="@dimen/_11sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:layout_constraintStart_toEndOf="@+id/ivStore"
+        app:layout_constraintEnd_toStartOf="@+id/clCartQuantity"
+        app:layout_constraintTop_toTopOf="@+id/ivStore" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCartQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_stroke"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTitle">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_minus"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:singleLine="true"
+            android:text="01"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp"
+            android:paddingHorizontal="@dimen/_3sdp"
+            app:layout_constraintStart_toEndOf="@+id/ivMinus"
+            app:layout_constraintEnd_toStartOf="@+id/ivPlus"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlus"
+            app:layout_constraintTop_toTopOf="@+id/ivPlus" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_plus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Size: "
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+    <TextView
+        android:id="@+id/tvSizeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="M"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvSize"
+        app:layout_constraintTop_toTopOf="@+id/tvSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSize"/>
+
+    <TextView
+        android:id="@+id/tvColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Color"
+        android:drawableStart="@drawable/ic_cart_dot"
+        android:drawablePadding="@dimen/_3sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvSizeValue"
+        app:layout_constraintTop_toTopOf="@+id/tvSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSize"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivColor"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
+        android:src="@color/light_brown"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:shapeAppearanceOverlay="@style/rounded_corner2sdp"
+        app:layout_constraintTop_toTopOf="@+id/tvSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSize"
+        app:layout_constraintStart_toEndOf="@+id/tvColor"/>
+
+    <TextView
+        android:id="@+id/tvQnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Qnt: "
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:drawableStart="@drawable/ic_cart_dot"
+        android:drawablePadding="@dimen/_3sdp"
+        app:layout_constraintStart_toEndOf="@+id/ivColor"
+        app:layout_constraintTop_toTopOf="@+id/tvSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSize"/>
+
+    <TextView
+        android:id="@+id/tvQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvQnt"
+        app:layout_constraintTop_toTopOf="@+id/tvSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSize"/>
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="KD 239"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvSize" />
+
+    <TextView
+        android:id="@+id/tvDiscountPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:text="KD 239"
+        android:textColor="#99000000"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="#99000000"
+        app:layout_constraintStart_toStartOf="@+id/tvDiscountPrice"
+        app:layout_constraintEnd_toEndOf="@+id/tvDiscountPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDiscountPrice"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvReturnPolicy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="14 days return available"
+        android:textColor="#17854C"
+        android:textSize="@dimen/_9sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivStore" />
+
+    <TextView
+        android:id="@+id/tvDeliver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:text="Delivery by "
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvReturnPolicy" />
+
+    <TextView
+        android:id="@+id/tvDeliverBy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="30/11/2025"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvDeliver"
+        app:layout_constraintTop_toTopOf="@+id/tvDeliver"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDeliver"/>
+
+    <TextView
+        android:id="@+id/tvSeller"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:text="Seller"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvDeliver"
+        app:layout_constraintTop_toBottomOf="@+id/tvDeliver" />
+
+    <TextView
+        android:id="@+id/tvSellerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Sharukh khan"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvDeliverBy"
+        app:layout_constraintTop_toTopOf="@+id/tvSeller"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSeller"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1A000000"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tvSeller"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

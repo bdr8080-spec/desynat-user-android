@@ -1,19 +1,44 @@
 package com.desynatuser.ui.home.fragment
 
+import android.app.Dialog
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
+import com.desynatuser.adapter.PremiumStoreViewPagerAdapter
+import com.desynatuser.adapter.ProductImageAdapter
+import com.desynatuser.adapter.StoreAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentStoreBinding
+import com.desynatuser.databinding.StoreFilterBinding
+import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.showToast
+import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StoreFragment : BaseFragment() {
     private var binding: FragmentStoreBinding?=null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    private var subCategoryData: GetSubCategoryResponse.Data?=null
+
+    private var storeAdapter: StoreAdapter? = null
+    private var storeList = ArrayList<GetStoreResponse.Data>()
+    var premiumStoreViewPagerAdapter : PremiumStoreViewPagerAdapter?=null
+    var premiumStoreList = ArrayList<Int>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,9 +55,38 @@ class StoreFragment : BaseFragment() {
     }
 
     override fun initView() {
+        ProgressDialogUtils.getInstance().hideProgress()
+        val itemJson = arguments?.getString("subCategoryData")
+        if (!itemJson.isNullOrEmpty()) {
+            subCategoryData = Gson().fromJson(itemJson, GetSubCategoryResponse.Data::class.java)
+        }
         binding?.apply {
             toolbar.tvToolbar.text = "Stores"
+
+            storeAdapter = StoreAdapter(requireActivity(),storeList,object: StoreAdapter.StoreClick{
+                override fun onStoreClick(position: Int) {
+                    val bundle = Bundle().apply {
+                        putString("storeData", Gson().toJson(storeList[position]))
+                    }
+                    findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
+                }
+
+            })
+            rvStore.adapter = storeAdapter
+
+
+            premiumStoreList.clear()
+            premiumStoreList.add(R.drawable.premium)
+            premiumStoreList.add(R.drawable.newest)
+            premiumStoreList.add(R.drawable.banner)
+            premiumStoreViewPagerAdapter = PremiumStoreViewPagerAdapter(requireActivity(),premiumStoreList)
+            binding?.viewPager?.adapter = premiumStoreViewPagerAdapter
+
+            TabLayoutMediator(binding!!.dotsIndicatorStore, binding!!.viewPager) { _, _ -> }.attach()
+
         }
+
+        getStoreList()
     }
 
     override fun initControl() {
@@ -41,12 +95,82 @@ class StoreFragment : BaseFragment() {
             toolbar.tvToolbar.setOnClickListener {
                 findNavController().popBackStack()
             }
+
+            ivMic.setOnClickListener {
+
+            }
+
+            ivFilter.setOnClickListener {
+                storeFilterDialog()
+            }
         }
     }
 
-    override fun observe() {
-
+    private fun getStoreList(){
+        val map = HashMap<String,Any>()
+        map["category_id"] = subCategoryData?.categoryId.toString()
+        viewModel.getStoreList(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
+    override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+
+        viewModel.storeListResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                storeList.clear()
+                storeList.addAll(response.data)
+                checkData()
+                storeAdapter?.notifyDataSetChanged()
+                isObserver = false
+            }
+        }
+    }
+
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = storeList.isEmpty()
+    }
+
+    private fun storeFilterDialog() {
+        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        val dialogBinding = StoreFilterBinding.inflate(LayoutInflater.from(context))
+        dialogBinding.root.let { dialog.setContentView(it) }
+
+        val window: Window = dialog.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.white)
+        dialog.setCancelable(false)
+
+        dialogBinding.apply {
+
+            tvToolbar.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            tvClear.setOnClickListener {
+
+                dialog.dismiss()
+            }
+
+            tvApply.setOnClickListener{
+                dialog.dismiss()
+            }
+
+        }
+
+        dialog.show()
+    }
 
 }

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/_15sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Filter"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:drawableStart="@drawable/ic_back"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tvToolbar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCountry"
+            style="@style/edit_text_title"
+            android:layout_marginTop="16sp"
+            android:text="Ratings"
+            android:textSize="@dimen/_13sdp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/etFrom">
+
+            <RadioButton
+                android:id="@+id/rb2Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upto 2 Star"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rb3Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upto 3 Star"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rb4Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Upto 4 Star"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rb5Star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Upto 5 Star"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChooseDate"
+            style="@style/edit_text_title"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Availability"
+            android:textSize="@dimen/_13sdp"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/etFrom">
+
+            <RadioButton
+                android:id="@+id/rbOpen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Open"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/ebBusy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Busy"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rbShortestDeliveryTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Shortest Delivery time"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+            <RadioButton
+                android:id="@+id/rbHighestSale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Highest Sale"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_6sdp"
+                android:button="@drawable/selector_checkbox_icon"
+                android:paddingStart="@dimen/_8sdp"
+                android:checked="false"
+                app:buttonTint="@null"
+                android:drawableTint="@null"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_11sdp"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvClear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/button_stroke"
+        android:text="Clear"
+        android:textColor="@color/brown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/poppins_medium"
+        app:layout_constraintEnd_toStartOf="@+id/tvApply"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvApply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_background"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:text="Apply"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvClear"
+        app:layout_constraintTop_toTopOf="@+id/tvClear" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

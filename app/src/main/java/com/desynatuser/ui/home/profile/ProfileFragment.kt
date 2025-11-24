@@ -70,6 +70,10 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_profileDetailsFragment)
             }
 
+            tvSaveAddress.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_savedAddressFragment)
+            }
+
             relLogout.setOnClickListener {
                 if(Constants.isGuest){
                     Constants.isGuest = false

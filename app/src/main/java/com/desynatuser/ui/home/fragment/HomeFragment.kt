@@ -11,6 +11,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.adapter.BestSellingAdapter
 import com.desynatuser.adapter.CategoryAdapter
@@ -34,6 +35,7 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +46,6 @@ class HomeFragment : BaseFragment() {
     var isObserver = false
     private var adapter: ViewPagerAdapter?=null
     private var user: LoginResponse.Data?=null
-
 
     var isCategoryObserver = false
     private var bestSellingAdapter: BestSellingAdapter?=null
@@ -140,7 +141,10 @@ class HomeFragment : BaseFragment() {
                 categoryList.clear()
                 categoryAdapter = CategoryAdapter(requireActivity(),categoryList,object :CategoryAdapter.CategoryClick{
                     override fun onCategoryClick(position: Int) {
-
+                        val bundle = Bundle().apply {
+                            putString("subCategoryData", Gson().toJson(categoryList[position]))
+                        }
+                        findNavController().navigate(R.id.action_homeFragment_to_storeFragment,bundle)
                     }
 
                 })
@@ -298,7 +302,5 @@ class HomeFragment : BaseFragment() {
             binding?.tvLocation?.text = address
         }
     }
-
-
 
 }

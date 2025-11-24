@@ -5,18 +5,28 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.response.AddAddressRequest
 import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
+import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.store.response.AddToCartResponse
+import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
+import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiServices {
@@ -83,7 +93,8 @@ interface ApiServices {
 
     @GET(Constants.GET_SUB_CATEGORY)
     suspend fun getSubCategory(
-        @Query ("category_id") categoryId: String
+        @Query ("category_id") categoryId: String,
+        @Query ("search") search: String?=null
     ): Response<GetSubCategoryResponse>
 
     @POST(Constants.UPDATE_PROFILE)
@@ -101,5 +112,53 @@ interface ApiServices {
     suspend fun userOtp(
         @Body body: HashMap<String, Any>
     ): Response<LoginResponse>
+
+    @POST(Constants.STORE_LIST)
+    suspend fun getStoreList(
+        @Body body: HashMap<String, Any>
+    ): Response<GetStoreResponse>
+
+    @POST(Constants.SINGLE_STORE)
+    suspend fun getSingleStoreInfo(
+        @Body map:HashMap<String,Any>,
+    ): Response<GetSingleStoreResponse>
+
+    @POST(Constants.ADD_TO_CART)
+    suspend fun addToCart(
+        @Body map:HashMap<String,Any>,
+    ): Response<AddToCartResponse>
+
+    @POST(Constants.ADD_TO_CART_QUANTITY)
+    suspend fun addCartQuantity(
+        @Body map:HashMap<String,Any>,
+    ): Response<CartQunatityIncrementDecrementResponse>
+
+    @GET(Constants.VIEW_CART_DETAIL)
+    suspend fun viewCartDetail(): Response<GetCartResponse>
+
+    @POST(Constants.ADD_TO_WISHLIST)
+    suspend fun addToWishlist(
+        @Body map:HashMap<String,Any>,
+    ): Response<CommonResponse>
+
+
+    @GET(Constants.GET_ADDRESS)
+    suspend fun getAddress(): Response<GetAddressResponse>
+
+    @POST(Constants.SAVE_ADDRESS)
+    suspend fun addAddress(
+        @Body request: AddAddressRequest
+    ): Response<CommonResponse>
+
+    @PUT(Constants.EDIT_ADDRESS)
+    suspend fun editAddress(
+        @Body request: AddAddressRequest
+    ): Response<CommonResponse>
+
+    @DELETE("${Constants.DELETE_ADDRESS}/{id}")
+    suspend fun deleteAddress(
+        @Path ("id") id: String
+    ): Response<CommonResponse>
+
 
 }

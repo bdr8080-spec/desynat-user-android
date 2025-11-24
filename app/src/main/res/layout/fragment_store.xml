@@ -50,9 +50,11 @@
                     android:layout_height="wrap_content"
                     style="@style/edit_text"
                     android:paddingVertical="@dimen/_10sdp"
-                    android:background="@null"
+                    android:background="@drawable/edit_search"
+                    android:layout_margin="1dp"
                     android:drawablePadding="@dimen/_5sdp"
                     android:hint="Search"
+                    android:textSize="@dimen/_11sdp"
                     android:layout_centerVertical="true"
                     android:drawableStart="@drawable/ic_search"
                     android:layout_toLeftOf="@+id/ivMic"/>
@@ -82,15 +84,40 @@
                 app:layout_constraintBottom_toBottomOf="@+id/ivAdminStory"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPremium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Browse some Premium stores"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivAdminStory" />
+
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                app:layout_constraintTop_toBottomOf="@+id/ivAdminStory"/>
+                app:layout_constraintTop_toBottomOf="@+id/tvPremium"/>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/dotsIndicatorStore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingEnd="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+<!--
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                 android:id="@+id/dotsIndicatorStore"
                 android:layout_width="wrap_content"
@@ -103,9 +130,10 @@
                 app:selectedDotColor="@color/black"
                 app:progressMode="true"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintTop_toBottomOf="@+id/viewPager"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"/>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -114,11 +142,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/dotsIndicatorStore">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvTopRated"
+                android:id="@+id/rvStore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_newest_product"
+                tools:listitem="@layout/item_store"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 tools:itemCount="10"
@@ -126,6 +154,22 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvNoDataFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_60sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_13sdp"
+                android:text="No store found"
+                app:layout_constraintTop_toBottomOf="@+id/dotsIndicatorStore"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

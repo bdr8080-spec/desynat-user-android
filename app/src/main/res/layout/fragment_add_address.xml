@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.profile.AddAddressFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/common_toolbar"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp">
+
+        <LinearLayout
+            android:id="@+id/llAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/card_background"
+            android:padding="@dimen/_10sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/edit_text_title"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="Name"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                style="@style/edit_text"
+                android:hint="Name"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:inputType="textCapSentences"
+                android:maxLength="30"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:background="@drawable/edit_back"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/edit_text_title"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="Mobile No."
+                app:layout_constraintTop_toBottomOf="@+id/etFullName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:background="@drawable/edit_back"
+                app:layout_constraintTop_toBottomOf="@+id/tvMobile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCountryPicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="+965"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:drawableEnd="@drawable/ic_drop_down"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etMobile"
+                    app:layout_constraintBottom_toBottomOf="@+id/etMobile"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etMobile"
+                    android:layout_width="0dp"
+                    style="@style/edit_text"
+                    android:hint="Mobile No."
+                    android:inputType="number"
+                    android:maxLength="15"
+                    android:background="@null"
+                    android:paddingHorizontal="0dp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvCountryPicker"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/edit_text_title"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="Address"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                style="@style/edit_text"
+                android:hint="Address"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:drawableEnd="@drawable/ic_current"
+                android:inputType="text"
+                android:editable="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:background="@drawable/edit_back"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/edit_text_title"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="House no./Building no/Area"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etHouseNo"
+                android:layout_width="match_parent"
+                style="@style/edit_text"
+                android:hint="House no./Building no/Area"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:inputType="text"
+                android:background="@drawable/edit_back"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/edit_text_title"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="Block/Street"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etBlock"
+                android:layout_width="match_parent"
+                style="@style/edit_text"
+                android:hint="Block/Street"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:inputType="text"
+                android:background="@drawable/edit_back"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Postal Code (optional)"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etPostalCode"
+                android:layout_width="match_parent"
+                style="@style/edit_text"
+                android:hint="Postal Code"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:inputType="text"
+                android:maxLength="10"
+                android:background="@drawable/edit_back"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCity"
+                    android:layout_width="0dp"
+                    style="@style/edit_text_title"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="City/District"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvState"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etCity"
+                    android:layout_width="0dp"
+                    style="@style/edit_text"
+                    android:hint="City/District"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:inputType="text"
+                    android:background="@drawable/edit_back"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCity"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvCity"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvState"
+                    android:layout_width="0dp"
+                    style="@style/edit_text_title"
+                    android:text="State"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    app:layout_constraintTop_toTopOf="@+id/tvCity"
+                    app:layout_constraintStart_toEndOf="@+id/tvCity"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etState"
+                    android:layout_width="0dp"
+                    style="@style/edit_text"
+                    android:hint="State"
+                    android:inputType="text"
+                    android:background="@drawable/edit_back"
+                    app:layout_constraintTop_toTopOf="@+id/etCity"
+                    app:layout_constraintStart_toStartOf="@+id/tvState"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+           <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Landmark"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etLandmark"
+                android:layout_width="match_parent"
+                style="@style/edit_text"
+                android:hint="Landmark"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:inputType="text"
+                android:background="@drawable/edit_back"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSavedType"
+            style="@style/edit_text_title"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Saved Address As"
+            android:textSize="@dimen/_13sdp"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintTop_toBottomOf="@+id/llAddress"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHome"
+            android:layout_width="0dp"
+            style="@style/edit_text_title"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Home"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:background="@drawable/edit_back"
+            android:fontFamily="@font/poppins_medium"
+            android:drawablePadding="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:drawableStart="@drawable/ic_home"
+            android:paddingHorizontal="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/tvSavedType"
+            app:layout_constraintEnd_toStartOf="@+id/tvOffice"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvOffice"
+            android:layout_width="0dp"
+            style="@style/edit_text_title"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Office"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:background="@drawable/edit_back"
+            android:fontFamily="@font/poppins_medium"
+            android:drawablePadding="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:drawableStart="@drawable/ic_office"
+            android:paddingHorizontal="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/tvSavedType"
+            app:layout_constraintStart_toEndOf="@+id/tvHome"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnAdd"
+            style="@style/button"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="Add Address"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHome"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdd"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

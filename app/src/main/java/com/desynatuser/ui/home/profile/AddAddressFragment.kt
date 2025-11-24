@@ -1,0 +1,392 @@
+package com.desynatuser.ui.home.profile
+
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
+import com.desynatuser.adapter.CountryPickerAdapter
+import com.desynatuser.base.BaseFragment
+import com.desynatuser.data.view_model.HomeViewModel
+import com.desynatuser.databinding.CustomCountryPickerBinding
+import com.desynatuser.databinding.FragmentAddAddressBinding
+import com.desynatuser.ui.UpdateLocationActivity
+import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.desynatuser.ui.home.response.AddAddressRequest
+import com.desynatuser.ui.home.response.GetAddressResponse
+import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
+import com.desynatuser.utils.showToast
+import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class AddAddressFragment : BaseFragment() {
+    private var binding: FragmentAddAddressBinding?=null
+    private val viewModel: HomeViewModel by viewModels()
+    var isObserver = false
+    var type = -1
+    var countryList = ArrayList<GetCountryResponse.Data>()
+    private var lat: Double?=0.0
+    private var lng: Double?=0.0
+    private var addressData: GetAddressResponse.Data?=null
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentAddAddressBinding.inflate(layoutInflater,container,false)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        initControl()
+        observe()
+    }
+
+    override fun initView() {
+        ProgressDialogUtils.getInstance().hideProgress()
+        val itemJson = arguments?.getString("addressData")
+        if (!itemJson.isNullOrEmpty()) {
+            addressData = Gson().fromJson(itemJson, GetAddressResponse.Data::class.java)
+            setData()
+        }
+        else{
+            binding?.apply {
+                toolbar.tvToolbar.text = "ADD NEW ADDRESS"
+            }
+        }
+        setCountry()
+
+
+    }
+
+    private fun setData() {
+        binding?.apply {
+            toolbar.tvToolbar.text = "Edit Address"
+            btnAdd.text = "Update Address"
+
+            etName.setText(addressData?.name)
+            etAddress.setText(addressData?.address)
+            etMobile.setText(addressData?.mobile)
+            tvCountryPicker.text = addressData?.countryCode
+            etHouseNo.setText(addressData?.houseNo)
+            etBlock.setText(addressData?.streetNo)
+            etPostalCode.setText(addressData?.postalCode)
+            etCity.setText(addressData?.city)
+            etState.setText(addressData?.state)
+            etLandmark.setText(addressData?.landmark)
+            lat = addressData?.latitude?:0.0
+            lng = addressData?.longitude?:0.0
+            type = addressData?.saveAddressAs?:0
+
+            if (type==0){
+                tvOffice.setTextColor(Color.parseColor("#6E4527"))
+                tvHome.setTextColor(Color.parseColor("#000000"))
+                tvOffice.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.selected_edit_back))
+                tvHome.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.edit_back))
+                setDrawableTint(tvOffice, "#6E4527")
+                setDrawableTint(tvHome, "#000000")
+            }
+            else{
+                tvHome.setTextColor(Color.parseColor("#6E4527"))
+                tvOffice.setTextColor(Color.parseColor("#000000"))
+                tvHome.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.selected_edit_back))
+                tvOffice.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.edit_back))
+                setDrawableTint(tvHome, "#6E4527")
+                setDrawableTint(tvOffice, "#000000")
+
+            }
+
+        }
+    }
+
+    private fun setDrawableTint(textView: AppCompatTextView, color: String) {
+        val drawable = textView.compoundDrawables[0]
+        drawable?.let {
+            val wrapped = DrawableCompat.wrap(it.mutate())
+            DrawableCompat.setTint(wrapped, Color.parseColor(color))
+            textView.setCompoundDrawablesWithIntrinsicBounds(wrapped, null, null, null)
+        }
+    }
+
+    override fun initControl() {
+        binding?.apply {
+            toolbar.tvToolbar.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
+            tvCountryPicker.setOnClickListener {
+                showCustomDropdown(etMobile)
+            }
+
+            etAddress.setOnClickListener {
+                val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
+                locationResultLauncher.launch(intent)
+            }
+
+            tvOffice.setOnClickListener {
+                type = 0
+                tvOffice.setTextColor(Color.parseColor("#6E4527"))
+                tvHome.setTextColor(Color.parseColor("#000000"))
+                tvOffice.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.selected_edit_back))
+                tvHome.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.edit_back))
+                setDrawableTint(tvOffice, "#6E4527")
+                setDrawableTint(tvHome, "#000000")
+            }
+
+            tvHome.setOnClickListener {
+                type = 1
+                tvHome.setTextColor(Color.parseColor("#6E4527"))
+                tvOffice.setTextColor(Color.parseColor("#000000"))
+                tvHome.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.selected_edit_back))
+                tvOffice.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.edit_back))
+                setDrawableTint(tvHome, "#6E4527")
+                setDrawableTint(tvOffice, "#000000")
+            }
+
+            btnAdd.setOnClickListener {
+                if(validation()){
+                   if (addressData!=null){
+                       editAddress()
+                   }
+                    else{
+                        addAddress()
+                   }
+                }
+            }
+        }
+    }
+
+    private fun addAddress(){
+        binding?.apply {
+            val request = AddAddressRequest(
+                address = etAddress.text?.trim().toString(),
+                city = etCity.text?.trim().toString(),
+                countryCode = tvCountryPicker.text?.trim().toString(),
+                houseNo = etHouseNo.text?.trim().toString(),
+                landmark = etLandmark.text?.trim().toString(),
+                latitude = lat.toString(),
+                longitude = lng.toString(),
+                mobile = etMobile.text?.trim().toString(),
+                name = etName.text?.trim().toString(),
+                postalCode = etPostalCode.text?.trim().toString(),
+                saveAddressAs = type,
+                state = etState.text?.trim().toString(),
+                streetNo = etBlock.text?.trim().toString()
+            )
+            viewModel.addAddress(request)
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+            isObserver = true
+        }
+    }
+
+    private fun editAddress(){
+        binding?.apply {
+            val request = AddAddressRequest(
+                address = etAddress.text?.trim().toString(),
+                city = etCity.text?.trim().toString(),
+                countryCode = tvCountryPicker.text?.trim().toString(),
+                houseNo = etHouseNo.text?.trim().toString(),
+                landmark = etLandmark.text?.trim().toString(),
+                latitude = lat.toString(),
+                longitude = lng.toString(),
+                mobile = etMobile.text?.trim().toString(),
+                name = etName.text?.trim().toString(),
+                postalCode = etPostalCode.text?.trim().toString(),
+                saveAddressAs = type,
+                state = etState.text?.trim().toString(),
+                streetNo = etBlock.text?.trim().toString(),
+                id = addressData?.id.toString()
+            )
+            viewModel.editAddress(request)
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+            isObserver = true
+        }
+    }
+
+    override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.addAddressResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                CommonMethod.showSuccessDialog(requireActivity(),response.message){
+                    findNavController().popBackStack()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.editAddressResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                CommonMethod.showSuccessDialog(requireActivity(),response.message){
+                    findNavController().popBackStack()
+                }
+
+                isObserver = false
+            }
+        }
+    }
+
+    private val locationResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val city = data?.getStringExtra("city") ?: "N/A"
+            val street = data?.getStringExtra("street") ?: "N/A"
+            val state = data?.getStringExtra("state") ?: "N/A"
+            val pincode = data?.getStringExtra("pincode") ?: "N/A"
+            val houseno = data?.getStringExtra("houseno") ?: "N/A"
+            val address = data?.getStringExtra("addressH") ?: "N/A"
+            val addressH = data?.getStringExtra("addressH") ?: "N/A"
+            lat = data?.getDoubleExtra("lat", 0.0)
+            lng = data?.getDoubleExtra("lng", 0.0)
+            binding?.etAddress?.setText(address)
+
+            binding?.etHouseNo?.setText(houseno)
+            binding?.etCity?.setText(city)
+            binding?.etState?.setText(state)
+            binding?.etPostalCode?.setText(pincode)
+            binding?.etBlock?.setText(street)
+        }
+    }
+
+    private fun setCountry() {
+        val data = SharedPreference.get(requireActivity()).getCountryList()
+        countryList.clear()
+        if (data != null) {
+            countryList.addAll(data)
+        }
+    }
+
+    private fun showCustomDropdown(anchor: View) {
+
+        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
+
+        val popupWindow = PopupWindow(
+            dropdownBinding.root,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.isOutsideTouchable = true
+        popupWindow.elevation = 20f
+
+        popupWindow.showAsDropDown(anchor)
+
+        dropdownBinding.apply {
+
+            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :
+                CountryPickerAdapter.ClickOnItem{
+                override fun onClickItem(position: Int) {
+                    binding?.tvCountryPicker?.text = countryList[position].dialCode
+                    popupWindow.dismiss()
+                }
+
+            })
+        }
+    }
+
+    private fun validation(): Boolean {
+        binding?.apply {
+
+            val name = etName.text.toString().trim()
+            val mobile = etMobile.text.toString().trim()
+            val address = etAddress.text.toString().trim()
+            val houseNo = etHouseNo.text.toString().trim()
+            val block = etBlock.text.toString().trim()
+            val city = etCity.text.toString().trim()
+            val state = etState.text.toString().trim()
+            val postal = etPostalCode.text.toString().trim()
+            val landmark = etLandmark.text.toString().trim()
+
+            if (name.isEmpty()) {
+                showToast("Please enter name")
+                return false
+            }
+
+            if (mobile.isEmpty()) {
+                showToast("Please enter mobile number")
+                return false
+            }
+
+            if (mobile.length < 7) {
+                showToast("Please enter a valid mobile number")
+                return false
+            }
+
+            if (address.isEmpty()) {
+                showToast("Please select address")
+                return false
+            }
+
+            if (houseNo.isEmpty()) {
+                showToast("Please enter house/building/area")
+                return false
+            }
+
+            if (block.isEmpty()) {
+                showToast("Please enter block/street")
+                return false
+            }
+
+            if (city.isEmpty()) {
+                showToast("Please enter city")
+                return false
+            }
+
+            if (state.isEmpty()) {
+                showToast("Please enter state")
+                return false
+            }
+
+            if (postal.isNotEmpty()) {
+
+                val postalRegex = "^[A-Za-z0-9\\-\\s]{3,10}$".toRegex()
+
+                if (postal.length < 3 || postal.length > 10) {
+                    showToast("Postal code must be between 3 to 10 characters")
+                    return false
+                }
+
+                if (!postalRegex.matches(postal)) {
+                    showToast("Please enter a valid postal code")
+                    return false
+                }
+            }
+
+            if (type==-1) {
+                showToast("Please select address type (Home or Office)")
+                return false
+            }
+
+            return true
+        }
+        return false
+    }
+
+}

@@ -11,9 +11,16 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.response.AddAddressRequest
 import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
+import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.store.response.AddToCartResponse
+import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
+import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -183,11 +190,11 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
     }
 
     val subCategoryLiveData = SingleLiveEvent<GetSubCategoryResponse>()
-    suspend fun getSubCategory(categoryId:String
+    suspend fun getSubCategory(categoryId:String,search:String?=null
     ) {
         handleApiCall(
             api = {
-                api.getSubCategory(categoryId = categoryId)
+                api.getSubCategory(categoryId = categoryId,search)
             },
             responseLiveData = subCategoryLiveData
         )
@@ -231,6 +238,124 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
             responseLiveData = userOtpLiveData
         )
     }
+
+    val addAddressLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun addAddress(
+        request:AddAddressRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.addAddress(request)
+            },
+            responseLiveData = addAddressLiveData
+        )
+    }
+
+
+    val editAddressLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun editAddress(
+        request:AddAddressRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.editAddress(request)
+            },
+            responseLiveData = editAddressLiveData
+        )
+    }
+
+
+    val deleteAddressLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun deleteAddress(
+        id:String
+    ) {
+        handleApiCall(
+            api = {
+                api.deleteAddress(id)
+            },
+            responseLiveData = deleteAddressLiveData
+        )
+    }
+
+
+    val addressLiveData = SingleLiveEvent<GetAddressResponse>()
+    suspend fun getAddress()
+    {
+        handleApiCall(
+            api = {
+                api.getAddress()
+            },
+            responseLiveData = addressLiveData
+        )
+    }
+
+    val storeListLiveData = SingleLiveEvent<GetStoreResponse>()
+    suspend fun getStoreList(map:HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getStoreList(map)
+            },
+            responseLiveData = storeListLiveData
+        )
+    }
+
+    val storeDetailLiveData = SingleLiveEvent<GetSingleStoreResponse>()
+    suspend fun getSingleStoreInfo(map:HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getSingleStoreInfo(map)
+            },
+            responseLiveData = storeDetailLiveData
+        )
+    }
+
+
+    val addToCartLiveData = SingleLiveEvent<AddToCartResponse>()
+    suspend fun addToCart(map:HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.addToCart(map)
+            },
+            responseLiveData = addToCartLiveData
+        )
+    }
+
+    val cartQunatityLiveData = SingleLiveEvent<CartQunatityIncrementDecrementResponse>()
+    suspend fun addCartQuantity(map:HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.addCartQuantity(map)
+            },
+            responseLiveData = cartQunatityLiveData
+        )
+    }
+
+    val cartDetailLiveData = SingleLiveEvent<GetCartResponse>()
+    suspend fun viewCartDetail()
+    {
+        handleApiCall(
+            api = {
+                api.viewCartDetail()
+            },
+            responseLiveData = cartDetailLiveData
+        )
+    }
+
+    val addToWishlistLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun addToWishlist(map:HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.addToWishlist(map)
+            },
+            responseLiveData = addToWishlistLiveData
+        )
+    }
+
 
 }
 
