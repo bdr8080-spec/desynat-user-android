@@ -14,6 +14,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSavedAddressBinding
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
@@ -27,6 +28,7 @@ class SavedAddressFragment : BaseFragment() {
     private var savedAddressAdapter: SavedAddressAdapter?=null
     private var savedAddressList = ArrayList<GetAddressResponse.Data>()
     var selectedPos = -1
+    var from = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +47,8 @@ class SavedAddressFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Saved Address"
+
+            from = arguments?.getString("from").toString()
 
             savedAddressList.clear()
             savedAddressAdapter = SavedAddressAdapter(requireActivity(),savedAddressList,object :SavedAddressAdapter.AddressClick{
@@ -74,6 +78,20 @@ class SavedAddressFragment : BaseFragment() {
                                 }
                             }
 
+                        }
+                        3->{
+                            if (from=="foodBag"){
+                                val bundle = Bundle().apply {
+                                    putString("address", savedAddressList[position].address)
+                                }
+                                parentFragmentManager.setFragmentResult("address_request", bundle)
+
+                                findNavController().navigateUp()
+                            }
+                            else{
+                                savedAddressList[position].isSelected = !savedAddressList[position].isSelected
+                                savedAddressAdapter?.notifyDataSetChanged()
+                            }
                         }
                     }
                 }
@@ -140,6 +158,7 @@ class SavedAddressFragment : BaseFragment() {
                 savedAddressList.removeAt(selectedPos)
                 savedAddressAdapter?.notifyItemRemoved(selectedPos)
                 savedAddressAdapter?.notifyItemRangeChanged(selectedPos, savedAddressList.size - selectedPos)
+                checkData()
                 selectedPos = -1
                 isObserver = false
             }

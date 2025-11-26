@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/_8sdp"
+    android:background="@drawable/edit_back"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Puma"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="#1C1C1C"
+        android:textSize="@dimen/_11sdp"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

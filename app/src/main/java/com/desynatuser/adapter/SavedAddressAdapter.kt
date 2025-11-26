@@ -56,6 +56,17 @@ class SavedAddressAdapter(var context:Context, private var addressList: ArrayLis
             ivEdit.setOnClickListener {
                 addressClick.onAddressClick(position,1)
             }
+
+            llAddressType.setOnClickListener {
+                addressClick.onAddressClick(position,3)
+            }
+
+            if (addressData.isSelected){
+                ivRadio.setImageResource(R.drawable.ic_radio_selected)
+            }
+            else{
+                ivRadio.setImageResource(R.drawable.ic_radio_unselected)
+            }
         }
 
     }

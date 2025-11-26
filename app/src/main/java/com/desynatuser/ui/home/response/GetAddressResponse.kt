@@ -47,6 +47,8 @@ data class GetAddressResponse(
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("user_id")
-        val userId: Int
+        val userId: Int,
+        @SerializedName("isSelected")
+        var isSelected: Boolean = false
     )
 }

@@ -15,6 +15,7 @@ import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResp
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
@@ -141,7 +142,6 @@ interface ApiServices {
         @Body map:HashMap<String,Any>,
     ): Response<CommonResponse>
 
-
     @GET(Constants.GET_ADDRESS)
     suspend fun getAddress(): Response<GetAddressResponse>
 
@@ -160,5 +160,16 @@ interface ApiServices {
         @Path ("id") id: String
     ): Response<CommonResponse>
 
+
+    @GET(Constants.GET_STORE_SORT_LIST)
+    suspend fun getStoreSorList(): Response<GetStoreSortListResponse>
+
+
+    @GET(Constants.GET_WISHLIST)
+    suspend fun getWishList(): Response<CommonResponse>
+
+
+    @GET(Constants.GET_SEARCH)
+    suspend fun getSearch(): Response<CommonResponse>
 
 }

@@ -80,25 +80,27 @@ class SubCategoryFragment : BaseFragment() {
             })
             rvSubcategory.adapter = subCategoryAdapter
 
-      /*      etSearch.addTextChangedListener(object : TextWatcher {
+            etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(s: Editable?) {
                     val query = s.toString().trim()
-                    if (query == lastQuery) return
-                    lastQuery = query
-                    searchSubCategory?.cancel()
-                    searchSubCategory = lifecycleScope.launch {
-                        delay(600)
-                        isFromSwipe = false
-                        if (!isObserver)
-                            getAllSubCategory(search =  query.ifEmpty { null })
-                    }
+                    subCategoryAdapter?.filter(query)
+
+                    /* if (query == lastQuery) return
+                     lastQuery = query
+                     searchSubCategory?.cancel()
+                     searchSubCategory = lifecycleScope.launch {
+                         delay(600)
+                         isFromSwipe = false
+                         if (!isObserver)
+                             getAllSubCategory(search =  query.ifEmpty { null })
+                     }*/
 
                 }
-            })*/
+            })
 
             swipeRefreshLayout.setOnRefreshListener {
                 isFromSwipe = true
@@ -146,9 +148,9 @@ class SubCategoryFragment : BaseFragment() {
 
             }
 
-            etSearch.setOnClickListener {
+           /* etSearch.setOnClickListener {
                 findNavController().navigate(R.id.action_subCategoryFragment_to_searchProductFragment)
-            }
+            }*/
 
             ivMic.setOnClickListener {
 
@@ -179,6 +181,7 @@ class SubCategoryFragment : BaseFragment() {
                 }
                 subCategoryList.clear()
                 subCategoryList.addAll(response.data)
+                subCategoryAdapter?.setData(subCategoryList)
                 checkData()
                 subCategoryAdapter?.notifyDataSetChanged()
                 isFromSwipe = false

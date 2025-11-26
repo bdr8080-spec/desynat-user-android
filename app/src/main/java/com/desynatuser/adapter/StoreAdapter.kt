@@ -2,6 +2,7 @@ package com.desynatuser.adapter
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
@@ -44,6 +45,15 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
                 crossfade(true)
                 placeholder(R.color.black)
                 error(R.color.black)
+            }
+
+            if (storeData.storeAvailability==1){
+                tvStatus.text = "Busy"
+                tvStatus.isVisible = true
+            }
+            else{
+                tvStatus.isVisible = false
+                tvStatus.text = "Available"
             }
 
         }

@@ -16,6 +16,7 @@ import com.desynatuser.databinding.FragmentMyBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +45,14 @@ class MyBagFragment : BaseFragment() {
     }
 
     override fun initView() {
+
         binding?.apply {
+
+            parentFragmentManager.setFragmentResultListener("address_request", viewLifecycleOwner) { _, bundle ->
+
+                val address = bundle.getString("address", "")
+                tvAddress.text = address
+            }
 
             foodBagAdapter = FoodBagAdapter(requireActivity(), foodBagList,object :
                 FoodBagAdapter.FoodBagClick{
@@ -69,7 +77,10 @@ class MyBagFragment : BaseFragment() {
             }
 
             relDeliveryAddress.setOnClickListener {
-                findNavController().navigate(R.id.action_myBagFragment_to_savedAddressFragment)
+                val bundle = Bundle().apply {
+                    putString("from", "foodBag")
+                }
+                findNavController().navigate(R.id.action_myBagFragment_to_savedAddressFragment,bundle)
             }
 
         }
@@ -105,7 +116,7 @@ class MyBagFragment : BaseFragment() {
                 cartData = response.data
                 setData()
                 foodBagList.clear()
-                foodBagList.addAll(response.data.cartData)
+                response?.data?.cartData?.let { foodBagList.addAll(it) }
                 foodBagAdapter?.notifyDataSetChanged()
                 checkData()
                 isObserver = false

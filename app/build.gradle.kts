@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.desynatuser"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -83,5 +83,5 @@ dependencies {
     implementation("com.tbuonomo:dotsindicator:5.1.0")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-
+    implementation("com.yazantarifi:slider:1.0.0")
 }

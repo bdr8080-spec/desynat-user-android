@@ -17,4 +17,9 @@
     <string name="i_accept_the_terms_conditions_and_policies"><![CDATA[I accept the Terms & Conditions and Policies]]></string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="policies">Policies</string>
+
+    <array name="initial_price_values">
+        <item>99</item>
+        <item>249</item>
+    </array>
 </resources>

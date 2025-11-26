@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
@@ -30,9 +31,25 @@ class CatalogAdapter(var context:Context, private var catalogList: ArrayList<Get
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+
         var catalogData = catalogList[position]
 
         holder.binding.apply {
+
+            val params = holder.itemView.layoutParams
+            params.height = itemHeight
+            holder.itemView.layoutParams = params
+
+
+            if (position % 2 == 0) {
+                clRight.isVisible = true
+                clLeft.isVisible = false
+            } else {
+                clRight.isVisible = false
+                clLeft.isVisible = true
+            }
+
             tvCategoryName.text = catalogData.name
             tvDescription.text = catalogData.description
             ivCategory.load(catalogData.image) {
@@ -43,12 +60,27 @@ class CatalogAdapter(var context:Context, private var catalogList: ArrayList<Get
 
             relCategory.backgroundTintList = ColorStateList.valueOf(Color.parseColor(catalogData.colorCode))
 
+            tvCategoryName1.text = catalogData.name
+            tvDescription1.text = catalogData.description
+            ivCategory1.load(catalogData.image) {
+                crossfade(true)
+                placeholder(R.drawable.ic_placeholder)
+                error(R.drawable.ic_placeholder)
+            }
+
+            relCategory1.backgroundTintList = ColorStateList.valueOf(Color.parseColor(catalogData.colorCode))
+
         }
 
         holder.itemView.setOnClickListener {
             catalogClick.onCatalogClick(position)
 
         }
+    }
+
+    private val itemHeight: Int by lazy {
+        val displayMetrics = context.resources.displayMetrics
+        displayMetrics.heightPixels / 4
     }
 
 }

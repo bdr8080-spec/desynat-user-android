@@ -7,11 +7,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/card_background">
 
+    <LinearLayout
+        android:id="@+id/llAddressType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivEdit"
+        app:layout_constraintTop_toTopOf="@+id/ivDelete"
+        app:layout_constraintBottom_toBottomOf="@+id/ivDelete">
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivRadio"
         android:layout_width="@dimen/_18sdp"
         android:layout_height="@dimen/_18sdp"
-        android:layout_marginStart="@dimen/_8sdp"
         android:src="@drawable/ic_radio_unselected"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ivDelete"
@@ -19,7 +30,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvAddressType"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home"
         android:drawablePadding="@dimen/_8sdp"
@@ -28,10 +39,9 @@
         android:fontFamily="@font/poppins_regular"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
-        app:layout_constraintStart_toEndOf="@+id/ivRadio"
-        app:layout_constraintEnd_toStartOf="@+id/ivEdit"
-        app:layout_constraintTop_toTopOf="@+id/ivDelete"
-        app:layout_constraintBottom_toBottomOf="@+id/ivDelete"/>
+        app:layout_constraintStart_toEndOf="@+id/ivRadio" />
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivEdit"
@@ -56,12 +66,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Alex"
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddressType"
+        app:layout_constraintTop_toBottomOf="@+id/llAddressType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

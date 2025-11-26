@@ -71,7 +71,10 @@ class ProfileFragment : BaseFragment() {
             }
 
             tvSaveAddress.setOnClickListener {
-                findNavController().navigate(R.id.action_profileFragment_to_savedAddressFragment)
+                val bundle = Bundle().apply {
+                    putString("from", "profile")
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_savedAddressFragment,bundle)
             }
 
             relLogout.setOnClickListener {

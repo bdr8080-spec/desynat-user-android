@@ -15,6 +15,10 @@
             android:id="@+id/action_homeFragment_to_storeFragment"
             app:destination="@id/store"/>
 
+        <action
+            android:id="@+id/action_homeFragment_to_wishlistFragment"
+            app:destination="@id/wishlist"/>
+
     </fragment>
 
     <fragment
@@ -191,5 +195,11 @@
             app:destination="@id/addAddress"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/wishlist"
+        android:name="com.desynatuser.ui.home.store.WishListFragment"
+        android:label="Wishlist Fragment"
+        tools:layout="@layout/fragment_wish_list"/>
 
 </navigation>

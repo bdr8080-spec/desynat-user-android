@@ -67,9 +67,6 @@
                         android:hint="Search"
                         android:textColorHint="@color/black"
                         android:layout_centerVertical="true"
-                        android:clickable="true"
-                        android:editable="false"
-                        android:focusable="false"
                         android:drawableStart="@drawable/ic_search"
                         android:layout_toLeftOf="@+id/ivMic"/>
 

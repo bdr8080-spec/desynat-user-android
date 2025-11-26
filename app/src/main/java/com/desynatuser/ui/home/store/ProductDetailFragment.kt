@@ -1,7 +1,6 @@
 package com.desynatuser.ui.home.store
 
 import android.app.Dialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -24,7 +23,6 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
-import com.desynatuser.databinding.StoreFilterBinding
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.utils.CommonMethod
@@ -53,6 +51,8 @@ class ProductDetailFragment : BaseFragment() {
 
     private var reviewAdapter: ReviewAdapter?=null
     private var selectedPos = 0
+    var cartId = 0
+    var cartQuantity = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -205,6 +205,14 @@ class ProductDetailFragment : BaseFragment() {
                 addToBag()
             }
 
+            ivMinus.setOnClickListener {
+                addCartQuantity("decrement")
+            }
+
+            ivPlus.setOnClickListener {
+                addCartQuantity("increment")
+            }
+
             ivLike.setOnClickListener {
                 addToWishList()
             }
@@ -233,6 +241,8 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.addToCartResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                cartId = response.data.id
+                checkCartData(response.data.quantity)
                 showToast(response.message)
                 isObserver = false
             }
@@ -242,6 +252,16 @@ class ProductDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 showToast(response.message)
+                if (cartQuantity==1&&response.data.quantity==1){
+                    cartQuantity = 0
+                    cartId = 0
+                    checkCartData(cartQuantity)
+                }
+                else{
+                    cartQuantity = response.data.quantity
+                    checkCartData(response.data.quantity)
+                }
+
                 isObserver = false
             }
         }
@@ -251,10 +271,12 @@ class ProductDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 showToast(response.message)
                 if (productData?.wishlist==1) {
+                    showToast("Product removed from your wishlist successfully")
                     productData?.wishlist==0
                     binding?.ivLike?.setImageResource(R.drawable.ic_like)
                 }
                 else{
+                    showToast("Product added to your wishlist successfully")
                     productData?.wishlist==1
                     binding?.ivLike?.setImageResource(R.drawable.ic_like_filled)
                 }
@@ -262,6 +284,20 @@ class ProductDetailFragment : BaseFragment() {
             }
         }
 
+    }
+
+    private fun checkCartData(quantity: Int) {
+        binding?.apply {
+            if (quantity > 0) {
+                tvCount.text = quantity.toString()
+                btnAddToBag.isVisible = false
+                clCartQuantity.isVisible = true
+            }
+            else{
+                btnAddToBag.isVisible = true
+                clCartQuantity.isVisible = false
+            }
+        }
     }
 
     private fun addToBag(){
@@ -282,10 +318,10 @@ class ProductDetailFragment : BaseFragment() {
         isObserver = true
     }
 
-    private fun addCartQuantity(){
+    private fun addCartQuantity(type:String){
         val map = HashMap<String,Any>()
-        map["cart_id"] = productData?.id.toString()
-        map["type"] = productData?.id.toString()//// increment,decrement
+        map["cart_id"] = cartId
+        map["type"] = type//// increment,decrement
         viewModel.addCartQuantity(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true

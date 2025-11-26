@@ -209,9 +209,25 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
            <androidx.appcompat.widget.AppCompatTextView
+               android:visibility="gone"
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Landmark"/>
+            android:text="Country"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:visibility="gone"
+                android:id="@+id/etCountry"
+                android:layout_width="match_parent"
+                style="@style/edit_text"
+                android:hint="Country"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:inputType="text"
+                android:background="@drawable/edit_back"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/edit_text_title"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="Landmark"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etLandmark"

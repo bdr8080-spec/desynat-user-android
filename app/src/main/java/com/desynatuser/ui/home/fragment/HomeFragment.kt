@@ -182,6 +182,10 @@ class HomeFragment : BaseFragment() {
                 locationResultLauncher.launch(intent)
             }
 
+            ivWishlist.setOnClickListener{
+            //    findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
+            }
+
             tvWomen.setOnClickListener {
                 Constants.Category = "Women"
                 viewWomen.isVisible = true

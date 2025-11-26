@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/_8sdp"
+    android:paddingHorizontal="@dimen/_10sdp"
+    android:background="@drawable/edit_back"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:src="@drawable/ic_gallery"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Puma"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="#1C1C1C"
+        android:textSize="@dimen/_11sdp"
+        android:layout_toRightOf="@+id/ivImage"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>

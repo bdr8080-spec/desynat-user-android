@@ -24,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.core.widget.NestedScrollView
+        android:visibility="gone"
         android:id="@+id/nsBag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -112,6 +113,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvDeliveryAdd">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/edit_text"
@@ -121,7 +123,7 @@
                     android:hint="Select Address"
                     android:textSize="@dimen/_11sdp"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/tvChange"/>
+                    android:layout_toLeftOf="@+id/tvChange" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvChange"

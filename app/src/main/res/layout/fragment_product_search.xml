@@ -100,6 +100,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/relSearch" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLatestSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                tools:listitem="@layout/item_latest_search"
+                app:layout_constraintTop_toBottomOf="@+id/tvLatestSearchResult"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:itemCount="6"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvRecommended"
                 android:layout_width="wrap_content"
@@ -111,7 +124,20 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvLatestSearchResult" />
+                app:layout_constraintTop_toBottomOf="@+id/rvLatestSearch" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecommended"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                tools:listitem="@layout/item_recommended"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecommended"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:itemCount="3"/>
 
  <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvRecentSearches"
@@ -124,8 +150,19 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvRecommended" />
+                app:layout_constraintTop_toBottomOf="@+id/rvRecommended" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                tools:listitem="@layout/item_recent_search"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecentSearches"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

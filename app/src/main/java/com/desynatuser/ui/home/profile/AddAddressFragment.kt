@@ -60,6 +60,19 @@ class AddAddressFragment : BaseFragment() {
 
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
+
+        binding?.apply {
+            CommonMethod.removeSpace(etName)
+            CommonMethod.removeSpace(etAddress)
+            CommonMethod.removeSpace(etCity)
+            CommonMethod.removeSpace(etBlock)
+            CommonMethod.removeSpace(etState)
+            CommonMethod.removeSpace(etPostalCode)
+            CommonMethod.removeSpace(etHouseNo)
+            CommonMethod.removeSpace(etLandmark)
+            CommonMethod.removeSpace(etCountry)
+        }
+
         val itemJson = arguments?.getString("addressData")
         if (!itemJson.isNullOrEmpty()) {
             addressData = Gson().fromJson(itemJson, GetAddressResponse.Data::class.java)
@@ -231,7 +244,7 @@ class AddAddressFragment : BaseFragment() {
         viewModel.addAddressResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(requireActivity(),response.message){
+                CommonMethod.showSuccessDialog(requireActivity(),"Address saved successfully"){
                     findNavController().popBackStack()
                 }
                 isObserver = false
@@ -241,7 +254,7 @@ class AddAddressFragment : BaseFragment() {
         viewModel.editAddressResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(requireActivity(),response.message){
+                CommonMethod.showSuccessDialog(requireActivity(),"Address updated successfully"){
                     findNavController().popBackStack()
                 }
 
@@ -264,13 +277,29 @@ class AddAddressFragment : BaseFragment() {
             val addressH = data?.getStringExtra("addressH") ?: "N/A"
             lat = data?.getDoubleExtra("lat", 0.0)
             lng = data?.getDoubleExtra("lng", 0.0)
+         /*
             binding?.etAddress?.setText(address)
-
             binding?.etHouseNo?.setText(houseno)
             binding?.etCity?.setText(city)
             binding?.etState?.setText(state)
             binding?.etPostalCode?.setText(pincode)
             binding?.etBlock?.setText(street)
+*/
+
+            val parsed = parseAddress(addressH)
+
+            val finalHouse = if (houseno.isEmpty()) parsed["house"] else houseno
+            val finalStreet = if (street.isEmpty()) parsed["street"] else street
+            val finalCity = if (city.isEmpty()) parsed["city"] else city
+            val finalState = if (state.isEmpty()) parsed["state"] else state
+            val finalPostal = if (pincode.isEmpty()) parsed["postal"] else pincode
+
+            binding?.etAddress?.setText(addressH)
+            binding?.etHouseNo?.setText(finalHouse)
+            binding?.etBlock?.setText(finalStreet)
+            binding?.etCity?.setText(finalCity)
+            binding?.etState?.setText(finalState)
+            binding?.etPostalCode?.setText(finalPostal)
         }
     }
 
@@ -388,5 +417,38 @@ class AddAddressFragment : BaseFragment() {
         }
         return false
     }
+
+    private fun parseAddress(full: String): Map<String, String> {
+        val parts = full.split(",", "-", "،")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        var house = ""
+        var street = ""
+        var city = ""
+        var state = ""
+        var postal = ""
+
+        parts.forEach { part ->
+            when {
+                Regex("\\d{5,6}").containsMatchIn(part) -> postal = part
+                part.contains("Street", true) || part.contains("Road", true) || part.contains("St", true) ->
+                    street = part
+                part.contains("Block", true) -> street = part
+                city.isEmpty() -> city = part
+                state.isEmpty() -> state = part
+                house.isEmpty() -> house = part
+            }
+        }
+
+        return mapOf(
+            "house" to house,
+            "street" to street,
+            "city" to city,
+            "state" to state,
+            "postal" to postal
+        )
+    }
+
 
 }

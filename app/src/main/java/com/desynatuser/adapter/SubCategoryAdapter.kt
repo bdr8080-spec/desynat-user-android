@@ -9,6 +9,9 @@ import com.desynatuser.databinding.ItemSubCategoryBinding
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 
 class SubCategoryAdapter(var context:Context, private var subCategoryList: ArrayList<GetSubCategoryResponse.Data>, var subCategoryClick:SubCategoryClick) : RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>() {
+
+    private var filteredList: ArrayList<GetSubCategoryResponse.Data> = ArrayList(subCategoryList)
+
     inner class ViewHolder(val binding: ItemSubCategoryBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -24,11 +27,11 @@ class SubCategoryAdapter(var context:Context, private var subCategoryList: Array
     }
 
     override fun getItemCount(): Int {
-        return subCategoryList.size
+        return filteredList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var subCategoryData = subCategoryList[position]
+        var subCategoryData = filteredList[position]
 
         holder.binding.apply {
             tvBrandName.text = subCategoryData.nameEnglish
@@ -47,6 +50,19 @@ class SubCategoryAdapter(var context:Context, private var subCategoryList: Array
 
     fun setData(newList: ArrayList<GetSubCategoryResponse.Data>) {
         subCategoryList = newList
+        filteredList = ArrayList(subCategoryList)
+        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        filteredList = if (query.isEmpty()) {
+            ArrayList(subCategoryList)
+        } else {
+            val result = subCategoryList.filter {
+                it.nameEnglish?.contains(query, ignoreCase = true) == true
+            }
+            ArrayList(result)
+        }
         notifyDataSetChanged()
     }
 

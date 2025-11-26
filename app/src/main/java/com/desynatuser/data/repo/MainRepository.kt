@@ -21,6 +21,7 @@ import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResp
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -251,7 +252,6 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-
     val editAddressLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun editAddress(
         request:AddAddressRequest
@@ -264,7 +264,6 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-
     val deleteAddressLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun deleteAddress(
         id:String
@@ -276,7 +275,6 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
             responseLiveData = deleteAddressLiveData
         )
     }
-
 
     val addressLiveData = SingleLiveEvent<GetAddressResponse>()
     suspend fun getAddress()
@@ -310,7 +308,6 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
             responseLiveData = storeDetailLiveData
         )
     }
-
 
     val addToCartLiveData = SingleLiveEvent<AddToCartResponse>()
     suspend fun addToCart(map:HashMap<String,Any>)
@@ -353,6 +350,39 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.addToWishlist(map)
             },
             responseLiveData = addToWishlistLiveData
+        )
+    }
+
+    val storeSortListLiveData = SingleLiveEvent<GetStoreSortListResponse>()
+    suspend fun getStoreSorList()
+    {
+        handleApiCall(
+            api = {
+                api.getStoreSorList()
+            },
+            responseLiveData = storeSortListLiveData
+        )
+    }
+
+    val wishListLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun getWishList()
+    {
+        handleApiCall(
+            api = {
+                api.getWishList()
+            },
+            responseLiveData = wishListLiveData
+        )
+    }
+
+    val searchLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun getSearch()
+    {
+        handleApiCall(
+            api = {
+                api.getSearch()
+            },
+            responseLiveData = searchLiveData
         )
     }
 

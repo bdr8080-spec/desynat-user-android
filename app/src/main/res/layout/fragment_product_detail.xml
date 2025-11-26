@@ -558,19 +558,71 @@
                 app:spanCount="2"
                 app:layout_constraintTop_toBottomOf="@+id/tvSimilarProduct"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btnAddToBag"
-                style="@style/button"
+            <RelativeLayout
+                android:id="@+id/relAddToBag"
                 android:layout_width="0dp"
-                android:background="@drawable/button_stroke"
-                android:textColor="@color/brown"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:text="Add to Bag"
-                app:layout_constraintTop_toBottomOf="@+id/rvSimilarProduct"
+                app:layout_constraintTop_toTopOf="@+id/btnBuyNow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnBuyNow"/>
+                app:layout_constraintBottom_toBottomOf="@+id/btnBuyNow"
+                app:layout_constraintEnd_toStartOf="@+id/btnBuyNow">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btnAddToBag"
+                    style="@style/button"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/button_stroke"
+                    android:textColor="@color/brown"
+                    android:text="Add to Bag"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="gone"
+                    android:id="@+id/clCartQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/button_stroke"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivMinus"
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:src="@drawable/ic_minus"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tvCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:singleLine="true"
+                        android:text="01"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        android:paddingHorizontal="@dimen/_3sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivMinus"
+                        app:layout_constraintEnd_toStartOf="@+id/ivPlus"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivPlus"
+                        app:layout_constraintTop_toTopOf="@+id/ivPlus" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivPlus"
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:src="@drawable/ic_plus"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btnBuyNow"
@@ -579,16 +631,16 @@
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:text="Buy Now"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/btn_gradient"
-                app:layout_constraintTop_toTopOf="@+id/btnAddToBag"
-                app:layout_constraintBottom_toBottomOf="@+id/btnAddToBag"
-                app:layout_constraintStart_toEndOf="@+id/btnAddToBag"
+                app:layout_constraintTop_toBottomOf="@+id/rvSimilarProduct"
+                app:layout_constraintStart_toEndOf="@+id/relAddToBag"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
-                app:layout_constraintTop_toBottomOf="@+id/btnAddToBag"/>
+                app:layout_constraintTop_toBottomOf="@+id/relAddToBag"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
