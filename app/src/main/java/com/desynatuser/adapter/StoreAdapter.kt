@@ -33,7 +33,8 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
         var storeData = storeList[position]
 
         holder.binding.apply {
-            tvName.text =  storeData.sellerInformation.firstName+" "+storeData.sellerInformation.lastName
+         //   tvName.text =  storeData.sellerInformation.firstName+" "+storeData.sellerInformation.lastName
+            tvName.text =  storeData.storeName
            // tvRating.text = storeData
             ivProfile.load(storeData.sellerInformation.profilePic) {
                 crossfade(true)

@@ -18,7 +18,12 @@
 
 </style>
 
-<style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="WD_Slider" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        ...
+    </style>
+
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:fitsSystemWindows">true</item>
     <item name="android:statusBarColor">@android:color/transparent</item>

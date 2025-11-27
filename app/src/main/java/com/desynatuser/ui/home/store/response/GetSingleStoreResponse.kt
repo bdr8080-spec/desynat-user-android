@@ -170,7 +170,7 @@ data class GetSingleStoreResponse(
 
                 data class ProductVariant(
                     @SerializedName("actual_price")
-                    val actualPrice: String,
+                    val actualPrice: Double?=0.0,
                     @SerializedName("bust")
                     val bust: Any,
                     @SerializedName("color_id")
@@ -182,7 +182,7 @@ data class GetSingleStoreResponse(
                     @SerializedName("discount_value")
                     val discountValue: String,
                     @SerializedName("final_price")
-                    val finalPrice: String,
+                    val finalPrice: Double?=0.0,
                     @SerializedName("hip")
                     val hip: Any,
                     @SerializedName("id")

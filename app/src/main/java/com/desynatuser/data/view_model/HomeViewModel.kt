@@ -20,6 +20,7 @@ import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.response.CommonResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -232,7 +233,7 @@ val storeDetailResult: LiveData<GetSingleStoreResponse>
         }
     }
 
-    val wishlistResult: LiveData<CommonResponse>
+    val wishlistResult: LiveData<GetWishlistResponse>
         get() = repository.wishListLiveData
 
     fun getWishList() {
@@ -248,6 +249,24 @@ val storeDetailResult: LiveData<GetSingleStoreResponse>
     fun getSearch() {
         viewModelScope.launch {
             repository.getSearch()
+        }
+    }
+
+    val colorListResult: LiveData<CommonResponse>
+        get() = repository.colorListLiveData
+
+    fun getColorList() {
+        viewModelScope.launch {
+            repository.getColorList()
+        }
+    }
+
+    val brandListResult: LiveData<CommonResponse>
+        get() = repository.brandLiveData
+
+    fun getBrandList() {
+        viewModelScope.launch {
+            repository.getBrandList()
         }
     }
 

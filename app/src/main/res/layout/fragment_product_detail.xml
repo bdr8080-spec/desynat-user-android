@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_1sdp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="(123)"
+                android:text="(123K)"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
@@ -399,6 +399,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvCheckDelivery">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvSearchAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/edit_text"
@@ -559,6 +560,49 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvSimilarProduct"/>
 
             <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/relCartItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:background="@drawable/card_background"
+                android:backgroundTint="@color/light_pink"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/rvSimilarProduct">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvItemCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="(2 Items)"
+                    android:textColor="@color/brown"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_centerVertical="true" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvViewBag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/brown"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:text="View My Bag"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/tvItemCount" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_forward"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/relAddToBag"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -633,7 +677,7 @@
                 android:text="Buy Now"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/btn_gradient"
-                app:layout_constraintTop_toBottomOf="@+id/rvSimilarProduct"
+                app:layout_constraintTop_toBottomOf="@+id/relCartItem"
                 app:layout_constraintStart_toEndOf="@+id/relAddToBag"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

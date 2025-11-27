@@ -22,6 +22,7 @@ import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -364,7 +365,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val wishListLiveData = SingleLiveEvent<CommonResponse>()
+    val wishListLiveData = SingleLiveEvent<GetWishlistResponse>()
     suspend fun getWishList()
     {
         handleApiCall(
@@ -383,6 +384,28 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.getSearch()
             },
             responseLiveData = searchLiveData
+        )
+    }
+
+    val colorListLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun getColorList()
+    {
+        handleApiCall(
+            api = {
+                api.getColorList()
+            },
+            responseLiveData = colorListLiveData
+        )
+    }
+
+    val brandLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun getBrandList()
+    {
+        handleApiCall(
+            api = {
+                api.getBrandList()
+            },
+            responseLiveData = brandLiveData
         )
     }
 

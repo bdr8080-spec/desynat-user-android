@@ -59,7 +59,7 @@ class WishListFragment : BaseFragment() {
                 override fun onProductClick(position: Int,type:Int) {
                     when(type){
                         1->{
-                         /*   val bundle = Bundle().apply {
+                          /*  val bundle = Bundle().apply {
                                 putString("productData", Gson().toJson(productList[position]))
                                 putString("storeData", Gson().toJson(storeData))
                             }
@@ -82,12 +82,20 @@ class WishListFragment : BaseFragment() {
             rvReel.adapter = reelAdapter
         }
 
+        getWishList()
+
         }
 
     private fun addToWishList(){
         val map = HashMap<String,Any>()
         map["product_id"] = productList[selectedPos].id
         viewModel.addToWishlist(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun getWishList(){
+        viewModel.getWishList()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -105,6 +113,7 @@ class WishListFragment : BaseFragment() {
                 tvReel.background = null
                 rvProduct.isVisible = true
                 rvReel.isVisible = false
+                checkData()
             }
 
             tvReel.setOnClickListener {
@@ -114,6 +123,7 @@ class WishListFragment : BaseFragment() {
                 tvReel.setBackgroundResource(R.drawable.selected_right_tab)
                 rvReel.isVisible = false
                 rvReel.isVisible = true
+                tvNoDataFound.isVisible = false
             }
 
 
@@ -133,20 +143,36 @@ class WishListFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
 
-                if (productList[selectedPos].wishlist==1){
                     showToast("Product removed from your wishlist successfully")
-                    productList[selectedPos].wishlist = 0
-                }
-                else{
-                    showToast("Product added to your wishlist successfully")
-                    productList[selectedPos].wishlist = 1
-                }
+                    productList.removeAt(selectedPos)
 
-                productAdapter?.notifyItemChanged(selectedPos)
+
+                productAdapter?.notifyItemRemoved(selectedPos)
+                productAdapter?.notifyItemRangeChanged(
+                    selectedPos,
+                    productList.size - selectedPos
+                )
+                checkData()
                 selectedPos = -1
                 isObserver = false
             }
         }
+
+        viewModel.wishlistResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                productList.clear()
+                productList.addAll(response.data)
+                productAdapter?.notifyDataSetChanged()
+                checkData()
+                selectedPos = -1
+                isObserver = false
+            }
+        }
+    }
+
+    fun checkData(){
+        binding?.tvNoDataFound?.isVisible = productList.isEmpty()
     }
 
 

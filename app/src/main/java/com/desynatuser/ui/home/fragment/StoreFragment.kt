@@ -1,7 +1,9 @@
 package com.desynatuser.ui.home.fragment
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -10,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -125,7 +129,7 @@ class StoreFragment : BaseFragment() {
             }
 
             ivMic.setOnClickListener {
-
+                openSpeechDialog()
             }
 
             ivFilter.setOnClickListener {
@@ -203,5 +207,36 @@ class StoreFragment : BaseFragment() {
 
         dialog.show()
     }
+
+    private fun openSpeechDialog() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        }
+
+        try {
+            speechLauncher.launch(intent)
+        } catch (e: Exception) {
+            showToast("Speech recognition not supported")
+        }
+    }
+
+    private val speechLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                val data = result.data
+                val list = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                val text = list?.firstOrNull()
+
+                if (!text.isNullOrEmpty()) {
+                    binding?.etSearch?.setText(text)
+                    binding?.etSearch?.setSelection(text.length)
+                }
+            }
+        }
 
 }

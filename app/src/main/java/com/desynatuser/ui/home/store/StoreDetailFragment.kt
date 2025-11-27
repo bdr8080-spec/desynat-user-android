@@ -1,7 +1,9 @@
 package com.desynatuser.ui.home.store
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.Highlights
 import android.text.TextWatcher
@@ -13,12 +15,16 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.RadioButton
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.desynatuser.R
+import com.desynatuser.adapter.FilterBrandAdapter
 import com.desynatuser.adapter.FilterColorAdapter
 import com.desynatuser.adapter.HighlightAdapter
 import com.desynatuser.adapter.ProductAdapter
@@ -41,6 +47,7 @@ import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.android.material.slider.RangeSlider
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -55,6 +62,7 @@ class StoreDetailFragment : BaseFragment() {
     var isSortObserver = false
 
     private var reelAdapter: ReelAdapter? = null
+
     private var highlightAdapter: HighlightAdapter? = null
     private var productAdapter: ProductAdapter? = null
     private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
@@ -198,6 +206,10 @@ class StoreDetailFragment : BaseFragment() {
                 sortProductDialog()
             }
 
+            ivMic.setOnClickListener {
+                openSpeechDialog()
+            }
+
             tvProduct.setOnClickListener {
                 tvProduct.setBackgroundResource(R.drawable.selected_left_tab)
                 tvProduct.setTextColor(requireActivity().getColor(R.color.white))
@@ -205,6 +217,7 @@ class StoreDetailFragment : BaseFragment() {
                 tvReel.background = null
                 clProduct.isVisible = true
                 rvReel.isVisible = false
+                checkData()
             }
 
             tvReel.setOnClickListener {
@@ -301,8 +314,13 @@ class StoreDetailFragment : BaseFragment() {
         binding?.apply {
             productList.clear()
             storeDetailData?.allProduct?.data?.let { productList.addAll(it) }
+            checkData()
             productAdapter?.notifyDataSetChanged()
         }
+    }
+
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = productList.isEmpty()
     }
 
     private fun sortProductDialog() {
@@ -391,6 +409,31 @@ class StoreDetailFragment : BaseFragment() {
             })
             rvColor.adapter = colorAdapter
 
+            val brandAdapter = FilterBrandAdapter(requireActivity(), arrayListOf("",""),object :FilterBrandAdapter.OnClick{
+                override fun onClickItem(position: Int) {
+
+                }
+
+            })
+
+            priceSlider.addOnChangeListener { slider, _, _ ->
+                val values = slider.values
+
+                val min = values[0].toInt()
+                val max = values[1].toInt()
+
+                tvMinPrice.text = "$min KD"
+                tvMaxPrice.text = "$max KD"
+
+                slider.post {
+                    moveLabel(tvMinPrice, slider, 0)
+                    moveLabel(tvMaxPrice, slider, 1)
+                }
+            }
+
+
+            rvBrand.adapter = brandAdapter
+
             tvToolbar.setOnClickListener {
                 dialog.dismiss()
             }
@@ -408,5 +451,44 @@ class StoreDetailFragment : BaseFragment() {
 
         dialog.show()
     }
+
+    private fun moveLabel(label: TextView, slider: RangeSlider, index: Int) {
+        val thumbX = slider.thumbRadius * 2 +
+                (slider.width - slider.thumbRadius * 4) * slider.values[index] /
+                (slider.valueTo - slider.valueFrom)
+
+        label.x = thumbX - label.width / 2f
+    }
+
+    private fun openSpeechDialog() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        }
+
+        try {
+            speechLauncher.launch(intent)
+        } catch (e: Exception) {
+            showToast("Speech recognition not supported")
+        }
+    }
+
+    private val speechLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                val data = result.data
+                val list = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                val text = list?.firstOrNull()
+
+                if (!text.isNullOrEmpty()) {
+                    binding?.etSearch?.setText(text)
+                    binding?.etSearch?.setSelection(text.length)
+                }
+            }
+        }
 
 }

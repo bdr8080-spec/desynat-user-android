@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_1sdp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="(123)"
+                    android:text="(123K)"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
@@ -313,10 +313,25 @@
                 app:spanCount="2"
                 app:layout_constraintTop_toBottomOf="@+id/tvFilter"/>
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
+                    android:id="@+id/tvNoDataFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="@dimen/_13sdp"
+                    android:text="No product found"
+                    android:paddingVertical="@dimen/_30sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/rvProduct"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/rvProduct"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tvNoDataFound"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

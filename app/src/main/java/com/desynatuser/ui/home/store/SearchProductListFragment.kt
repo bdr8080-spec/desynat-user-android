@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
+import com.desynatuser.adapter.FilterBrandAdapter
 import com.desynatuser.adapter.FilterColorAdapter
 import com.desynatuser.adapter.ProductAdapter
 import com.desynatuser.adapter.SortListAdapter
@@ -288,6 +289,16 @@ class SearchProductListFragment : BaseFragment() {
 
             })
             rvColor.adapter = colorAdapter
+
+
+            val brandAdapter = FilterBrandAdapter(requireActivity(), arrayListOf("",""),object :
+                FilterBrandAdapter.OnClick{
+                override fun onClickItem(position: Int) {
+
+                }
+
+            })
+            rvBrand.adapter = brandAdapter
 
             tvToolbar.setOnClickListener {
                 dialog.dismiss()

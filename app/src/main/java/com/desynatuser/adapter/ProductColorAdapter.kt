@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -41,7 +42,7 @@ class ProductColorAdapter(var context:Context, var productColorList: ArrayList<G
                 ivSelected.isVisible = true
             }
             else{
-                ivSelected.isVisible = false
+                ivSelected.isInvisible = true
             }
         }
 

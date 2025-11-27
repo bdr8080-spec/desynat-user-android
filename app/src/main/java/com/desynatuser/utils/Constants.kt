@@ -41,8 +41,10 @@ object Constants {
     const val VIEW_CART_DETAIL = "/api/user/view_cart_details"
     const val ADD_TO_WISHLIST = "/api/user/product-add-to-wishlist"
     const val GET_STORE_SORT_LIST = "/api/store_filter"
-    const val GET_WISHLIST = "/api/store_filter"
+    const val GET_WISHLIST = "/api/user/get_wishlist_products"
     const val GET_SEARCH = "/api/store_filter"
+    const val GET_COLOR_LIST = "/api/store_filter"
+    const val GET_BRAND_LIST = "/api/store_filter"
 
     const val SAVE_ADDRESS = "/api/user/save-address"
     const val GET_ADDRESS = "/api/user/view-address"

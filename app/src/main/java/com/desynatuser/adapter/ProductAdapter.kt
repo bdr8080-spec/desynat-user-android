@@ -1,6 +1,7 @@
 package com.desynatuser.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +11,7 @@ import com.desynatuser.databinding.ItemProductBinding
 import com.desynatuser.databinding.ItemStoreBinding
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.utils.CommonMethod
 
 class ProductAdapter(var context:Context, private var productList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>,var storeName:String, var productClick:ProductClick) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemProductBinding) :
@@ -31,13 +33,18 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var productData = productList[position]
+        val productData = productList[position]
 
         holder.binding.apply {
-            tvTitle.text = productData.productNameEn+" (By ${storeName})"
+            if (storeName!=""){
+                tvTitle.text = productData.productNameEn+" (By ${storeName})"
+            }
+            else{
+                tvTitle.text = productData.productNameEn
+            }
 
-            tvPrice.text = "${productData?.productVariants?.get(0)?.actualPrice} KD"
-            tvDiscountPrice.text = "${productData?.productVariants?.get(0)?.finalPrice} KD"
+            tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?:0.0)} KD"
+            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?:0.0)} KD"
 
             val variant = productData?.productVariants?.getOrNull(0)
             val discountValue = variant?.discountValue ?: 0
@@ -50,11 +57,15 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
                 error(R.drawable.ic_placeholder)
             }
 
-            if (productData.wishlist==1) {
-                ivLike.setImageResource(R.drawable.ic_like_filled)
+            if (storeName!="") {
+                if (productData.wishlist == 1) {
+                    ivLike.setImageResource(R.drawable.ic_like_filled)
+                } else {
+                    ivLike.setImageResource(R.drawable.ic_like)
+                }
             }
             else{
-                ivLike.setImageResource(R.drawable.ic_like)
+                ivLike.setImageResource(R.drawable.ic_like_filled)
             }
 
             ivLike.setOnClickListener {

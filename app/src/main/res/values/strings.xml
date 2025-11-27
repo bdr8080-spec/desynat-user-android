@@ -19,7 +19,7 @@
     <string name="policies">Policies</string>
 
     <array name="initial_price_values">
-        <item>99</item>
-        <item>249</item>
+        <item>0</item>
+        <item>1000</item>
     </array>
 </resources>

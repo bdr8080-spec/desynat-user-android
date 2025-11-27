@@ -104,64 +104,17 @@
             android:text="Brand"
             android:textSize="@dimen/_13sdp" />
 
-        <RadioGroup
-            android:id="@+id/rgBrand"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/etFrom">
 
-            <RadioButton
-                android:id="@+id/rbBrand1"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBrand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Brand"
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:paddingVertical="@dimen/_6sdp"
-                android:button="@drawable/selector_checkbox_icon"
-                android:paddingStart="@dimen/_8sdp"
-                android:checked="false"
-                app:buttonTint="@null"
-                android:drawableTint="@null"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
-
-            <RadioButton
-                android:id="@+id/rbBrand2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Brand"
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:paddingVertical="@dimen/_6sdp"
-                android:button="@drawable/selector_checkbox_icon"
-                android:paddingStart="@dimen/_8sdp"
-                android:checked="false"
-                app:buttonTint="@null"
-                android:drawableTint="@null"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
-
-            <RadioButton
-                android:id="@+id/rbBrand3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Brand"
-                android:textColor="@color/black"
-                android:paddingVertical="@dimen/_6sdp"
-                android:button="@drawable/selector_checkbox_icon"
-                android:paddingStart="@dimen/_8sdp"
-                android:checked="false"
-                app:buttonTint="@null"
-                android:drawableTint="@null"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
-
-        </RadioGroup>
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="@dimen/_5sdp"
+                tools:listitem="@layout/item_brand"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecentSearches"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
@@ -170,6 +123,7 @@
             android:textSize="@dimen/_13sdp" />
 
         <com.yazantarifi.slider.RangeSliderView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:id="@+id/slider"
@@ -187,6 +141,49 @@
             app:slider_max_value="1000"
             app:slider_active_color="#6E4527"
             app:slider_background="#DFBF8F" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/priceSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stepSize="1"
+            app:haloRadius="0dp"
+            app:thumbColor="@color/brown"
+            app:thumbRadius="@dimen/_10sdp"
+            app:tickVisible="false"
+            app:trackColorActive="@color/brown"
+            app:trackColorInactive="@color/light_brown"
+            app:trackHeight="@dimen/_4sdp"
+            android:valueFrom="0"
+            android:valueTo="1000"
+            app:labelBehavior="gone"
+            app:values="@array/initial_price_values"
+            android:theme="@style/WD_Slider"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvMinPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 KD"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvMaxPrice"
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="1000 KD"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"

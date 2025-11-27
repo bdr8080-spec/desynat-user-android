@@ -176,7 +176,13 @@
         android:id="@+id/productDetail"
         android:name="com.desynatuser.ui.home.store.ProductDetailFragment"
         android:label="Product Detail Fragment"
-        tools:layout="@layout/fragment_product_detail"/>
+        tools:layout="@layout/fragment_product_detail">
+
+        <action
+            android:id="@+id/action_productDetailFragment_to_myBagFragment"
+            app:destination="@id/myBag"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/addAddress"

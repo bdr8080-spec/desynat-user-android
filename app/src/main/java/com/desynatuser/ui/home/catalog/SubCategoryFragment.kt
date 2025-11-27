@@ -1,21 +1,35 @@
 package com.desynatuser.ui.home.catalog
 
+import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.desynatuser.R
 import com.desynatuser.adapter.SubCategoryAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSubCategoryBinding
+import com.desynatuser.databinding.MicDialogBinding
+import com.desynatuser.databinding.SizeGuideChartDialogBinding
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.utils.CommonMethod
@@ -38,6 +52,10 @@ class SubCategoryFragment : BaseFragment() {
     private var searchSubCategory: Job? = null
     private var lastQuery: String? = null
     private var categoryData: GetCategoryResponse.Data?=null
+
+    private var isMicDialogOpen = false
+    private var speechRecognizer: SpeechRecognizer? = null
+    private var speechIntent: Intent? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,11 +88,25 @@ class SubCategoryFragment : BaseFragment() {
 
             subCategoryList.clear()
             subCategoryAdapter = SubCategoryAdapter(requireActivity(),subCategoryList,object :SubCategoryAdapter.SubCategoryClick{
-                override fun onSubCategoryClick(position: Int) {
-                    val bundle = Bundle().apply {
-                        putString("subCategoryData", Gson().toJson(subCategoryList[position]))
+                override fun onSubCategoryClick(position: Int,type:Int) {
+                    when(type){
+                        1->{
+                            val bundle = Bundle().apply {
+                                putString("subCategoryData", Gson().toJson(subCategoryList[position]))
+                            }
+                            findNavController().navigate(R.id.action_subCategoryFragment_to_storeFragment,bundle)
+                        }
+                        2->{
+                            if(position==-1) {
+                                binding?.tvNoDataFound?.isVisible = true
+                            }
+                            else{
+                                binding?.tvNoDataFound?.isVisible = false
+                            }
+                        }
+
                     }
-                    findNavController().navigate(R.id.action_subCategoryFragment_to_storeFragment,bundle)
+
                 }
 
             })
@@ -126,6 +158,7 @@ class SubCategoryFragment : BaseFragment() {
                 }
             }*/
 
+
         }
         getAllSubCategory()
     }
@@ -153,7 +186,7 @@ class SubCategoryFragment : BaseFragment() {
             }*/
 
             ivMic.setOnClickListener {
-
+                openSpeechDialog()
             }
         }
     }
@@ -194,5 +227,140 @@ class SubCategoryFragment : BaseFragment() {
     private fun checkData(){
         binding?.tvNoDataFound?.isVisible = subCategoryList.isEmpty()
     }
+
+    private fun micDialog() {
+        isMicDialogOpen = true
+        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        val dialogBinding = MicDialogBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
+
+        dialogBinding.apply {
+            initSpeechRecognizer(dialog, dialogBinding)
+        }
+
+        dialog.show()
+
+        dialog.setOnDismissListener {
+            isMicDialogOpen = false
+
+            try { speechRecognizer?.stopListening() } catch (_: Exception) {}
+
+            try { speechRecognizer?.destroy() } catch (_: Exception) {}
+
+            speechRecognizer = null
+        }
+    }
+
+
+
+    private fun initSpeechRecognizer(dialog: Dialog, dialogBinding: MicDialogBinding) {
+
+        val anim = AnimationUtils.loadAnimation(requireContext(), R.anim.mic_ripple)
+        dialogBinding.ivMic.startAnimation(anim)
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
+        speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
+            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, false)
+            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+        }
+
+        speechRecognizer!!.setRecognitionListener(object : RecognitionListener {
+            override fun onError(error: Int) {
+
+                if (!isMicDialogOpen) return
+
+                dialogBinding.ivMic.clearAnimation()
+
+                if (error == SpeechRecognizer.ERROR_NO_MATCH ||
+                    error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
+
+                    dialog.dismiss()
+                    return
+                }
+
+                showToast("Speak clearly or try again")
+                dialog.dismiss()
+            }
+
+            override fun onEvent(p0: Int, p1: Bundle?) {
+            }
+
+            override fun onPartialResults(p0: Bundle?) {
+            }
+
+            override fun onReadyForSpeech(p0: Bundle?) {
+            }
+
+            override fun onResults(results: Bundle?) {
+                if (!isMicDialogOpen) return
+
+                dialogBinding.ivMic.clearAnimation()
+
+                val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                if (!text.isNullOrEmpty()) {
+                    binding?.etSearch?.setText(text)
+                    binding?.etSearch?.setSelection(text.length)
+                }
+
+                dialog.dismiss()
+            }
+
+            override fun onRmsChanged(p0: Float) {
+            }
+
+            override fun onBeginningOfSpeech() {
+
+            }
+
+            override fun onBufferReceived(p0: ByteArray?) {
+            }
+
+            override fun onEndOfSpeech() {
+                if (!isMicDialogOpen) return
+                dialogBinding.ivMic.clearAnimation()
+            }
+        })
+
+        lifecycleScope.launch {
+            delay(400)
+
+            if (isMicDialogOpen) {
+                speechRecognizer?.startListening(speechIntent)
+            }
+        }
+    }
+
+    private fun openSpeechDialog() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        }
+
+        try {
+            speechLauncher.launch(intent)
+        } catch (e: Exception) {
+            showToast("Speech recognition not supported")
+        }
+    }
+
+    private val speechLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                val data = result.data
+                val list = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                val text = list?.firstOrNull()
+
+                if (!text.isNullOrEmpty()) {
+                    binding?.etSearch?.setText(text)
+                    binding?.etSearch?.setSelection(text.length)
+                }
+            }
+        }
 
 }

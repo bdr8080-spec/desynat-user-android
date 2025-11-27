@@ -16,7 +16,7 @@ class SubCategoryAdapter(var context:Context, private var subCategoryList: Array
         RecyclerView.ViewHolder(binding.root)
 
     interface SubCategoryClick{
-        fun onSubCategoryClick(position: Int)
+        fun onSubCategoryClick(position: Int,type:Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,7 +43,7 @@ class SubCategoryAdapter(var context:Context, private var subCategoryList: Array
         }
 
         holder.itemView.setOnClickListener {
-            subCategoryClick.onSubCategoryClick(position)
+            subCategoryClick.onSubCategoryClick(position,1)
 
         }
     }
@@ -62,6 +62,12 @@ class SubCategoryAdapter(var context:Context, private var subCategoryList: Array
                 it.nameEnglish?.contains(query, ignoreCase = true) == true
             }
             ArrayList(result)
+        }
+        if(filteredList.isEmpty()) {
+            subCategoryClick.onSubCategoryClick(-1,2)
+        }
+        else{
+            subCategoryClick.onSubCategoryClick(0,2)
         }
         notifyDataSetChanged()
     }

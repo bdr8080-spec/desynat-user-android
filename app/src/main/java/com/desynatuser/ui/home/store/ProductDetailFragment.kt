@@ -1,6 +1,8 @@
 package com.desynatuser.ui.home.store
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -23,6 +26,7 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
+import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.utils.CommonMethod
@@ -51,6 +55,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private var reviewAdapter: ReviewAdapter?=null
     private var selectedPos = 0
+    private var selectedSizePos = -1
     var cartId = 0
     var cartQuantity = 0
 
@@ -105,7 +110,7 @@ class ProductDetailFragment : BaseFragment() {
         sizeAdapter =   SizeAdapter(requireActivity(),
               sizeList,object :SizeAdapter.OnClick{
                     override fun onClickItem(position: Int) {
-
+                        selectedSizePos = position
                     }
 
                 })
@@ -132,11 +137,19 @@ class ProductDetailFragment : BaseFragment() {
     private fun setData() {
         binding?.apply {
 
-            if (productData?.wishlist==1) {
-                ivLike.setImageResource(R.drawable.ic_like_filled)
+            if (productData?.customizedProduct=="1") {
+               btnCustomOrder.isVisible = true
             }
             else{
-                ivLike.setImageResource(R.drawable.ic_like)
+                btnCustomOrder.isVisible = false
+            }
+
+
+            if (productData?.wishlist==1) {
+                ivLike.setImageResource(R.drawable.ic_heart_filled)
+            }
+            else{
+                ivLike.setImageResource(R.drawable.ic_heart)
             }
 
             val variant = productData?.productVariants?.getOrNull(selectedPos)
@@ -144,6 +157,7 @@ class ProductDetailFragment : BaseFragment() {
             imageList.clear()
             variant?.variantImage?.let { imageList.addAll(it) }
             productImageAdapter?.notifyDataSetChanged()
+            viewPager.setCurrentItem(0, false)
 
             sizeList.clear()
             variant?.size?.let { sizeList.add(it) }
@@ -153,8 +167,8 @@ class ProductDetailFragment : BaseFragment() {
             tvProductName.text =  productData?.productNameEn+" (by ${storeData?.storeName})"
             tvName.text = productData?.brand?.nameEnglish
 
-            tvPrice.text = "${variant?.actualPrice} KD"
-            tvDiscountedPrice.text = "${variant?.finalPrice} KD"
+            tvPrice.text = "${CommonMethod.formatPrice(variant?.actualPrice?:0.0)} KD"
+            tvDiscountedPrice.text = "${CommonMethod.formatPrice(variant?.finalPrice?:0.0)} KD"
 
             val discountValue = variant?.discountValue ?: 0
             val discountType = if (variant?.discountType == "1") "% off" else "KD off"
@@ -177,13 +191,34 @@ class ProductDetailFragment : BaseFragment() {
                     "Cash on Delivery not Available"
                 }
 
-            tvExchange.text = "${productData?.returnDays} Days Return & ${productData?.exchangableDays} days Exchange"
+
+            val returnDays = productData?.returnDays
+            val exchangeDays = productData?.exchangableDays
+
+            val returnText = returnDays?.let { "$it Days Return" }
+            val exchangeText = exchangeDays?.let { "$it Days Exchange" }
+
+            val finalText = listOfNotNull(returnText, exchangeText).joinToString(" & ")
+
+            if (finalText.isEmpty()) {
+                tvExchange.visibility = View.GONE
+            } else {
+                tvExchange.visibility = View.VISIBLE
+                tvExchange.text = finalText
+            }
+
+         //   tvExchange.text = "${productData?.returnDays} Days Return & ${productData?.exchangableDays} days Exchange"
 
         }
     }
 
     override fun initControl() {
         binding?.apply {
+
+            relSearch.setOnClickListener{
+                val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
+                locationResultLauncher.launch(intent)
+            }
 
             ivBack.setOnClickListener {
                 findNavController().popBackStack()
@@ -202,7 +237,12 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnAddToBag.setOnClickListener {
-                addToBag()
+                if (selectedSizePos==-1){
+                    showToast("Please select size")
+                }
+                else {
+                    addToBag()
+                }
             }
 
             ivMinus.setOnClickListener {
@@ -223,6 +263,10 @@ class ProductDetailFragment : BaseFragment() {
 
             btnCustomOrder.setOnClickListener {
 
+            }
+
+            relCartItem.setOnClickListener {
+                findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
             }
         }
     }
@@ -251,7 +295,6 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.cartQuantityResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                showToast(response.message)
                 if (cartQuantity==1&&response.data.quantity==1){
                     cartQuantity = 0
                     cartId = 0
@@ -269,16 +312,16 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.addToWishlistResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                showToast(response.message)
+
                 if (productData?.wishlist==1) {
                     showToast("Product removed from your wishlist successfully")
                     productData?.wishlist==0
-                    binding?.ivLike?.setImageResource(R.drawable.ic_like)
+                    binding?.ivLike?.setImageResource(R.drawable.ic_heart)
                 }
                 else{
                     showToast("Product added to your wishlist successfully")
                     productData?.wishlist==1
-                    binding?.ivLike?.setImageResource(R.drawable.ic_like_filled)
+                    binding?.ivLike?.setImageResource(R.drawable.ic_heart_filled)
                 }
                 isObserver = false
             }
@@ -290,12 +333,15 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
             if (quantity > 0) {
                 tvCount.text = quantity.toString()
+                tvItemCount.text = "(${quantity}Item)"
                 btnAddToBag.isVisible = false
                 clCartQuantity.isVisible = true
+                relCartItem.isVisible = true
             }
             else{
                 btnAddToBag.isVisible = true
                 clCartQuantity.isVisible = false
+                relCartItem.isVisible = false
             }
         }
     }
@@ -360,5 +406,24 @@ class ProductDetailFragment : BaseFragment() {
 
         dialog.show()
     }
+
+    private val locationResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val city = data?.getStringExtra("city") ?: "N/A"
+            val street = data?.getStringExtra("street") ?: "N/A"
+            val state = data?.getStringExtra("state") ?: "N/A"
+            val pincode = data?.getStringExtra("pincode") ?: "N/A"
+            val houseno = data?.getStringExtra("houseno") ?: "N/A"
+            val address = data?.getStringExtra("addressH") ?: "N/A"
+            val addressH = data?.getStringExtra("addressH") ?: "N/A"
+
+            binding?.tvSearchAddress?.text = addressH
+
+        }
+    }
+
 
 }

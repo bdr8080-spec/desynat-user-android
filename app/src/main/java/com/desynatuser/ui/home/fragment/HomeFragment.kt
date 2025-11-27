@@ -183,7 +183,7 @@ class HomeFragment : BaseFragment() {
             }
 
             ivWishlist.setOnClickListener{
-            //    findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
+                findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
             }
 
             tvWomen.setOnClickListener {

@@ -15,7 +15,7 @@ import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 
 class FilterColorAdapter(var context:Context, var colorList: ArrayList<String>, var onClick: OnClick) : RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
-    var selectedPos = 0
+    var selectedPos = -1
     interface OnClick{
         fun onClickItem(position: Int)
     }

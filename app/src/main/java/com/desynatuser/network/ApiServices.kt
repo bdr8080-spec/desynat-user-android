@@ -16,6 +16,7 @@ import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
@@ -160,16 +161,19 @@ interface ApiServices {
         @Path ("id") id: String
     ): Response<CommonResponse>
 
-
     @GET(Constants.GET_STORE_SORT_LIST)
     suspend fun getStoreSorList(): Response<GetStoreSortListResponse>
 
-
     @GET(Constants.GET_WISHLIST)
-    suspend fun getWishList(): Response<CommonResponse>
-
+    suspend fun getWishList(): Response<GetWishlistResponse>
 
     @GET(Constants.GET_SEARCH)
     suspend fun getSearch(): Response<CommonResponse>
+
+    @GET(Constants.GET_COLOR_LIST)
+    suspend fun getColorList(): Response<CommonResponse>
+
+    @GET(Constants.GET_BRAND_LIST)
+    suspend fun getBrandList(): Response<CommonResponse>
 
 }

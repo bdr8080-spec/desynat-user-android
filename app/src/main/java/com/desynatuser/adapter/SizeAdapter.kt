@@ -12,7 +12,7 @@ import com.desynatuser.databinding.ItemSizeBinding
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 
 class SizeAdapter(var context:Context, var productSizeList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant.Size>, var onClick:OnClick) : RecyclerView.Adapter<SizeAdapter.ViewHolder>() {
-    var selectedPos = 0
+    var selectedPos = -1
     interface OnClick{
         fun onClickItem(position: Int)
     }
@@ -36,10 +36,14 @@ class SizeAdapter(var context:Context, var productSizeList: ArrayList<GetSingleS
             tvSize.text = productSizeList[position].name
 
             if (selectedPos==position){
-                tvSize.setTextColor(Color.parseColor("#000000"))
+                ivColorSelected.isVisible = true
+                ivColor.isVisible = false
+               // tvSize.setTextColor(Color.parseColor("#000000"))
             }
             else{
-                tvSize.setTextColor(Color.parseColor("#E6E6E6"))
+                ivColorSelected.isVisible = false
+                ivColor.isVisible = true
+                //tvSize.setTextColor(Color.parseColor("#E6E6E6"))
             }
         }
 

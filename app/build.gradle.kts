@@ -84,4 +84,6 @@ dependencies {
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     implementation("com.yazantarifi:slider:1.0.0")
+
+    implementation ("com.google.android.material:material:1.4.0")
 }
