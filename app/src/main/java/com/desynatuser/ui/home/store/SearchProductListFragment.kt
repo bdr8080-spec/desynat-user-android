@@ -281,7 +281,7 @@ class SearchProductListFragment : BaseFragment() {
 
         dialogBinding.apply {
 
-            val colorAdapter = FilterColorAdapter(requireActivity(), arrayListOf("",""),object :
+         /*   val colorAdapter = FilterColorAdapter(requireActivity(), arrayListOf("",""),object :
                 FilterColorAdapter.OnClick{
                 override fun onClickItem(position: Int) {
 
@@ -299,7 +299,7 @@ class SearchProductListFragment : BaseFragment() {
 
             })
             rvBrand.adapter = brandAdapter
-
+*/
             tvToolbar.setOnClickListener {
                 dialog.dismiss()
             }

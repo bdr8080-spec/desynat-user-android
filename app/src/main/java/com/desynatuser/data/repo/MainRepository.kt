@@ -16,10 +16,14 @@ import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
+import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
+import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
@@ -265,6 +269,18 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
+  val defaultAddressLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun setDefaultAddress(
+       map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.setDefaultAddress(map)
+            },
+            responseLiveData = defaultAddressLiveData
+        )
+    }
+
     val deleteAddressLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun deleteAddress(
         id:String
@@ -387,7 +403,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val colorListLiveData = SingleLiveEvent<CommonResponse>()
+    val colorListLiveData = SingleLiveEvent<GetAllColorListResponse>()
     suspend fun getColorList()
     {
         handleApiCall(
@@ -398,7 +414,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val brandLiveData = SingleLiveEvent<CommonResponse>()
+    val brandLiveData = SingleLiveEvent<GetAllBrandListResponse>()
     suspend fun getBrandList()
     {
         handleApiCall(
@@ -406,6 +422,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.getBrandList()
             },
             responseLiveData = brandLiveData
+        )
+    }
+
+  val sizeLiveData = SingleLiveEvent<GetSizeListResponse>()
+    suspend fun getSizeList()
+    {
+        handleApiCall(
+            api = {
+                api.getSizeList()
+            },
+            responseLiveData = sizeLiveData
         )
     }
 

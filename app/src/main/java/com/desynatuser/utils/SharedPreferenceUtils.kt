@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.desynatuser.R
+import com.desynatuser.adapter.SavedAddressAdapter
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
+import com.desynatuser.ui.home.response.GetAddressResponse
+import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -103,6 +106,39 @@ class SharedPreference(context: Context) {
         } catch (e: Exception) {
             null
         }
+    }
+
+    fun saveCategoryLIst(countryList: List<GetCategoryResponse.Data>) {
+        val json = Gson().toJson(countryList)
+        preference.set("categoryList", json)
+    }
+
+    fun getCategoryList(): List<GetCategoryResponse.Data>? {
+        val json = preference["categoryList", ""] ?: return null
+        return try {
+            val type = object : TypeToken<List<GetCategoryResponse.Data>>() {}.type
+            Gson().fromJson(json, type)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun saveDefaultAddress(address: GetAddressResponse.Data) {
+        val json = Gson().toJson(address)
+        preference.set("defaultAddress", json)
+    }
+
+    fun getDefaultAddress(): GetAddressResponse.Data? {
+        val json = preference["defaultAddress", ""] ?: return null
+        return try {
+            Gson().fromJson(json, GetAddressResponse.Data::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun clearAddress() {
+        preference.set("defaultAddress", "")
     }
 
 }

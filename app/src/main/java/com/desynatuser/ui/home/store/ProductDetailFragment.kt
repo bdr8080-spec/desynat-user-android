@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -27,10 +28,12 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
 import com.desynatuser.ui.UpdateLocationActivity
+import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
@@ -56,6 +59,8 @@ class ProductDetailFragment : BaseFragment() {
     private var reviewAdapter: ReviewAdapter?=null
     private var selectedPos = 0
     private var selectedSizePos = -1
+    private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
+
     var cartId = 0
     var cartQuantity = 0
 
@@ -132,6 +137,9 @@ class ProductDetailFragment : BaseFragment() {
 
         setData()
 
+        binding?.tvSearchAddress?.text = SharedPreference.get(requireActivity()).getDefaultAddress()?.address
+
+        viewCartDetail()
     }
 
     private fun setData() {
@@ -171,8 +179,8 @@ class ProductDetailFragment : BaseFragment() {
             tvDiscountedPrice.text = "${CommonMethod.formatPrice(variant?.finalPrice?:0.0)} KD"
 
             val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1") "% off" else "KD off"
-            tvOffer.text = "$discountValue $discountType"
+            val discountType = if (variant?.discountType == "1")"% off" else " KD off"
+            tvOffer.text = "$discountValue$discountType"
 
 
             tvDescription.text = productData?.descriptionEn
@@ -201,7 +209,7 @@ class ProductDetailFragment : BaseFragment() {
             val finalText = listOfNotNull(returnText, exchangeText).joinToString(" & ")
 
             if (finalText.isEmpty()) {
-                tvExchange.visibility = View.GONE
+                tvExchange.text = "This product is sold under a No Return Policy"
             } else {
                 tvExchange.visibility = View.VISIBLE
                 tvExchange.text = finalText
@@ -216,8 +224,12 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
 
             relSearch.setOnClickListener{
-                val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
-                locationResultLauncher.launch(intent)
+                val bundle = Bundle().apply {
+                    putString("from", "productDetail")
+                }
+                findNavController().navigate(R.id.action_productDetailFragment_to_savedAddressFragment,bundle)
+           /*     val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
+                locationResultLauncher.launch(intent)*/
             }
 
             ivBack.setOnClickListener {
@@ -315,17 +327,50 @@ class ProductDetailFragment : BaseFragment() {
 
                 if (productData?.wishlist==1) {
                     showToast("Product removed from your wishlist successfully")
-                    productData?.wishlist==0
+                    productData?.wishlist=0
                     binding?.ivLike?.setImageResource(R.drawable.ic_heart)
                 }
                 else{
                     showToast("Product added to your wishlist successfully")
-                    productData?.wishlist==1
+                    productData?.wishlist=1
                     binding?.ivLike?.setImageResource(R.drawable.ic_heart_filled)
                 }
                 isObserver = false
             }
         }
+
+        viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                setData()
+                myBagList.clear()
+                response?.data?.cartData?.let { myBagList.addAll(it) }
+                checkCartItem()
+                isObserver = false
+            }
+        }
+
+    }
+
+    private fun checkCartItem() {
+        Log.e("cart", "checkCartItem: ${productData?.id}" )
+       binding?.apply {
+           if (myBagList.isNotEmpty()) {
+               for(i in 0 until myBagList.size){
+                   if(myBagList[i].productId.toString()==productData?.id.toString()){
+                       Log.e("cart", "quantity: ${myBagList[i].quantity}" )
+                       cartQuantity = myBagList[i].quantity
+                       cartId = myBagList[i].id
+                   }
+               }
+
+               Log.e("cart", "cartQuantity: ${cartQuantity}" )
+               if(cartQuantity!=0){
+                   checkCartData(cartQuantity)
+               }
+           }
+
+       }
 
     }
 
@@ -333,7 +378,7 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
             if (quantity > 0) {
                 tvCount.text = quantity.toString()
-                tvItemCount.text = "(${quantity}Item)"
+                tvItemCount.text = "(${quantity} Item)"
                 btnAddToBag.isVisible = false
                 clCartQuantity.isVisible = true
                 relCartItem.isVisible = true
@@ -423,6 +468,12 @@ class ProductDetailFragment : BaseFragment() {
             binding?.tvSearchAddress?.text = addressH
 
         }
+    }
+
+    private fun viewCartDetail(){
+        viewModel.viewCartDetail()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 

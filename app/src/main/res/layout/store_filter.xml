@@ -141,7 +141,7 @@
                 android:textSize="@dimen/_11sdp"/>
 
             <RadioButton
-                android:id="@+id/ebBusy"
+                android:id="@+id/rbBusy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Busy"

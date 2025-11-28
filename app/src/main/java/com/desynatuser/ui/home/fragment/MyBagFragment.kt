@@ -8,15 +8,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
-import com.desynatuser.adapter.FoodBagAdapter
-import com.desynatuser.adapter.ProductColorAdapter
+import com.desynatuser.adapter.MyBagAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentMyBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,8 +23,8 @@ class MyBagFragment : BaseFragment() {
     private var binding: FragmentMyBagBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
-    private var foodBagAdapter: FoodBagAdapter?=null
-    private var foodBagList = ArrayList<GetCartResponse.Data.CartData>()
+    private var myBagAdapter: MyBagAdapter?=null
+    private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
     private var cartData : GetCartResponse.Data?=null
     var selectedPos = -1
 
@@ -54,8 +53,8 @@ class MyBagFragment : BaseFragment() {
                 tvAddress.text = address
             }
 
-            foodBagAdapter = FoodBagAdapter(requireActivity(), foodBagList,object :
-                FoodBagAdapter.FoodBagClick{
+            myBagAdapter = MyBagAdapter(requireActivity(), myBagList,object :
+                MyBagAdapter.FoodBagClick{
                 override fun onFoodBagClick(position: Int,type:String) {
                     selectedPos = position
                     addCartQuantity(type)
@@ -63,7 +62,7 @@ class MyBagFragment : BaseFragment() {
 
             })
 
-            rvFoodBag.adapter = foodBagAdapter
+            rvFoodBag.adapter = myBagAdapter
         }
 
         viewCartDetail()
@@ -88,7 +87,7 @@ class MyBagFragment : BaseFragment() {
 
     private fun addCartQuantity(type:String){
         val map = HashMap<String,Any>()
-        map["cart_id"] = cartData?.cartData?.get(selectedPos)?.id.toString()
+        map["cart_id"] = myBagList[selectedPos].id.toString()
         map["type"] = type//// increment,decrement
         viewModel.addCartQuantity(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -115,9 +114,9 @@ class MyBagFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 cartData = response.data
                 setData()
-                foodBagList.clear()
-                response?.data?.cartData?.let { foodBagList.addAll(it) }
-                foodBagAdapter?.notifyDataSetChanged()
+                myBagList.clear()
+                response?.data?.cartData?.let { myBagList.addAll(it) }
+                myBagAdapter?.notifyDataSetChanged()
                 checkData()
                 isObserver = false
             }
@@ -126,26 +125,26 @@ class MyBagFragment : BaseFragment() {
         viewModel.cartQuantityResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                if (foodBagList[selectedPos].quantity==1){
-                    foodBagList.removeAt(selectedPos)
-                    foodBagAdapter?.notifyItemRemoved(selectedPos)
-                    if (foodBagList.size!=0){
-                        foodBagAdapter?.notifyItemRangeChanged(selectedPos, foodBagList.size - selectedPos)
+                if (myBagList[selectedPos].quantity==1){
+                    myBagList.removeAt(selectedPos)
+                    myBagAdapter?.notifyItemRemoved(selectedPos)
+                    if (myBagList.size!=0){
+                        myBagAdapter?.notifyItemRangeChanged(selectedPos, myBagList.size - selectedPos)
                     }
                 }
                 else{
                     if (response.data.quantity!=0){
-                        foodBagList[selectedPos].quantity = response.data.quantity
-                        foodBagAdapter?.notifyItemChanged(selectedPos)
+                        myBagList[selectedPos].quantity = response.data.quantity
+                        myBagAdapter?.notifyItemChanged(selectedPos)
                     }
                     else{
-                            foodBagList.removeAt(selectedPos)
-                        foodBagAdapter?.notifyItemRemoved(selectedPos)
+                        myBagList.removeAt(selectedPos)
+                        myBagAdapter?.notifyItemRemoved(selectedPos)
 
-                        if (foodBagList.size!=0) {
-                            foodBagAdapter?.notifyItemRangeChanged(
+                        if (myBagList.size!=0) {
+                            myBagAdapter?.notifyItemRangeChanged(
                                 selectedPos,
-                                foodBagList.size - selectedPos
+                                myBagList.size - selectedPos
                             )
                         }
                     }
@@ -173,13 +172,17 @@ class MyBagFragment : BaseFragment() {
     }
 
     private fun checkData() {
-        if (foodBagList.isEmpty()){
+        if (myBagList.isEmpty()){
             binding?.tvNoDataFound?.isVisible = true
             binding?.nsBag?.isVisible = false
         }
         else{
             binding?.tvNoDataFound?.isVisible = false
             binding?.nsBag?.isVisible = true
+            if(binding?.tvAddress?.text?.isEmpty() == true) {
+                binding?.tvAddress?.text =
+                    SharedPreference.get(requireActivity()).getDefaultAddress()?.address
+            }
         }
 
     }

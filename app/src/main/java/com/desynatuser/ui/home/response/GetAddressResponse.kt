@@ -16,6 +16,8 @@ data class GetAddressResponse(
         val address: String,
         @SerializedName("city")
         val city: String,
+        @SerializedName("Country_name")
+        val country: String?=null,
         @SerializedName("country_code")
         val countryCode: String,
         @SerializedName("created_at")
@@ -48,7 +50,7 @@ data class GetAddressResponse(
         val updatedAt: String,
         @SerializedName("user_id")
         val userId: Int,
-        @SerializedName("isSelected")
-        var isSelected: Boolean = false
+        @SerializedName("set_as_default")
+        var setAsDefault: String
     )
 }

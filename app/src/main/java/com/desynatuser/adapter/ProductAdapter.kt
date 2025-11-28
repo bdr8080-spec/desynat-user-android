@@ -48,8 +48,8 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
 
             val variant = productData?.productVariants?.getOrNull(0)
             val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1") "% off" else "KD off"
-            tvDiscount.text = "$discountValue $discountType"
+            val discountType = if (variant?.discountType == "1")"% off" else " KD off"
+            tvDiscount.text = "$discountValue$discountType"
 
             ivStore.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
                 crossfade(true)

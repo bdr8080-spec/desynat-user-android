@@ -9,7 +9,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemFoodBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
 
-class FoodBagAdapter(var context:Context, private var cartList: ArrayList<GetCartResponse.Data.CartData>,var foodBagClick:FoodBagClick) : RecyclerView.Adapter<FoodBagAdapter.ViewHolder>() {
+class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartResponse.Data.CartData>, var foodBagClick:FoodBagClick) : RecyclerView.Adapter<MyBagAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemFoodBagBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -58,6 +58,7 @@ class FoodBagAdapter(var context:Context, private var cartList: ArrayList<GetCar
             ivPlus.setOnClickListener {
                 foodBagClick.onFoodBagClick(position,"increment")
             }
+
         }
 
     }

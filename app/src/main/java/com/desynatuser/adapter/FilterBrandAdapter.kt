@@ -12,11 +12,11 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemBrandBinding
 import com.desynatuser.databinding.ItemColorBinding
 import com.desynatuser.databinding.ItemColorFilterBinding
+import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 
-class FilterBrandAdapter(var context:Context, var brandList: ArrayList<String>, var onClick: OnClick) : RecyclerView.Adapter<FilterBrandAdapter.ViewHolder>() {
+class FilterBrandAdapter(var context:Context, var brandList: ArrayList<GetAllBrandListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<FilterBrandAdapter.ViewHolder>() {
 
-    var selectedPos = -1
     interface OnClick{
         fun onClickItem(position: Int)
     }
@@ -37,10 +37,9 @@ class FilterBrandAdapter(var context:Context, var brandList: ArrayList<String>, 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-           /* tvColorName.text = colorList[position].name
-            ivRectangleColor.setColorFilter(Color.parseColor(colorList[position].hex_code))*/
+            tvBrand.text = brandList[position].nameEnglish
 
-            if (selectedPos==position){
+            if (brandList[position].isSelected){
                 ivImage.setImageResource(R.drawable.ic_checkbox)
             }
             else{
@@ -51,9 +50,8 @@ class FilterBrandAdapter(var context:Context, var brandList: ArrayList<String>, 
 
 
         holder.itemView.setOnClickListener {
-            selectedPos = position
-            onClick.onClickItem(position)
-            notifyDataSetChanged()
+            brandList[position].isSelected = !brandList[position].isSelected
+                        notifyDataSetChanged()
         }
 
     }

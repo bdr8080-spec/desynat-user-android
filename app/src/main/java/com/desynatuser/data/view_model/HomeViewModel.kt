@@ -14,10 +14,14 @@ import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
+import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
+import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
@@ -148,6 +152,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    val defaultAddressResult: LiveData<CommonResponse>
+        get() = repository.defaultAddressLiveData
+
+    fun setDefaultAddress(map:HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.setDefaultAddress(map)
+        }
+    }
+
     val deleteAddressResult: LiveData<CommonResponse>
         get() = repository.deleteAddressLiveData
 
@@ -252,7 +265,7 @@ val storeDetailResult: LiveData<GetSingleStoreResponse>
         }
     }
 
-    val colorListResult: LiveData<CommonResponse>
+    val colorListResult: LiveData<GetAllColorListResponse>
         get() = repository.colorListLiveData
 
     fun getColorList() {
@@ -261,12 +274,21 @@ val storeDetailResult: LiveData<GetSingleStoreResponse>
         }
     }
 
-    val brandListResult: LiveData<CommonResponse>
+    val brandListResult: LiveData<GetAllBrandListResponse>
         get() = repository.brandLiveData
 
     fun getBrandList() {
         viewModelScope.launch {
             repository.getBrandList()
+        }
+    }
+
+val sizeListResult: LiveData<GetSizeListResponse>
+        get() = repository.sizeLiveData
+
+    fun getSizeList() {
+        viewModelScope.launch {
+            repository.getSizeList()
         }
     }
 

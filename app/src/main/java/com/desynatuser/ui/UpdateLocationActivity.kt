@@ -55,6 +55,7 @@ class UpdateLocationActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
     private var state: String = ""
     private var pincode: String = ""
     private var addressH: String = ""
+    private var country: String = ""
     private var houseno: String = ""
     private var mLat: String = ""
     private var mLong: String = ""
@@ -253,7 +254,9 @@ class UpdateLocationActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
             val addresses: List<Address> = geocoder.getFromLocation(lat, lng, 1)!!
             if (addresses.isNotEmpty()) {
                 val address = addresses[0]
+                address.countryName
                 val fullAddress = address.getAddressLine(0) ?: "Unknown Location"
+                val countryField = address.countryName ?: "Kuwait"   // Country
                 val locality = address.locality ?: "Unknown Locality"   // City or Town
                 val subLocality = address.subLocality ?: "Unknown Sublocality" // Area inside city
                 val stateh = address.adminArea ?: "N/A"
@@ -267,6 +270,7 @@ class UpdateLocationActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                 pincode = postalCode
                 houseno = houseNumber
                 addressH = fullAddress
+                country = countryField
                 latitudeDisplay = address.latitude.toString()
                 longitudeDisplay = address.longitude.toString()
             } else {
@@ -311,6 +315,7 @@ class UpdateLocationActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                     resultIntent.putExtra("addressH", addressH)
                     resultIntent.putExtra("latitudeD", latitudeDisplay)
                     resultIntent.putExtra("longitudeD", longitudeDisplay)
+                    resultIntent.putExtra("country", country)
                     city.lowercase()
                     setResult(RESULT_OK, resultIntent)
                 }

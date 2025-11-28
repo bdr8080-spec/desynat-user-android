@@ -58,7 +58,7 @@ class OtpVerificationFragment : BaseFragment() {
         userId = arguments?.getString("userId").toString()
 
         when(from){
-            "signUp" -> screenType = 0
+            "signUp" -> screenType = 1
             "login" -> screenType = 1
             "forgot" -> screenType = 2
         }

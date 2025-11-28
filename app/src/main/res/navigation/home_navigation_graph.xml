@@ -182,6 +182,11 @@
             android:id="@+id/action_productDetailFragment_to_myBagFragment"
             app:destination="@id/myBag"/>
 
+        <action
+            android:id="@+id/action_productDetailFragment_to_savedAddressFragment"
+            app:destination="@id/savedAddress"/>
+
+
     </fragment>
 
     <fragment

@@ -16,6 +16,7 @@ import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,7 +81,7 @@ class SavedAddressFragment : BaseFragment() {
 
                         }
                         3->{
-                            if (from=="foodBag"){
+                          /*  if (from=="foodBag"){
                                 val bundle = Bundle().apply {
                                     putString("address", savedAddressList[position].address)
                                 }
@@ -88,10 +89,12 @@ class SavedAddressFragment : BaseFragment() {
 
                                 findNavController().navigateUp()
                             }
-                            else{
-                                savedAddressList[position].isSelected = !savedAddressList[position].isSelected
-                                savedAddressAdapter?.notifyDataSetChanged()
-                            }
+                            else{*/
+                                selectedPos = position
+                                setDefaultAddress()
+//                                savedAddressList[position].isSelected = !savedAddressList[position].isSelected
+//                                savedAddressAdapter?.notifyDataSetChanged()
+                         //   }
                         }
                     }
                 }
@@ -124,6 +127,14 @@ class SavedAddressFragment : BaseFragment() {
         isObserver = true
     }
 
+    private fun setDefaultAddress(){
+        val map = HashMap<String,Any>()
+        map["address_id"]= savedAddressList[selectedPos].id
+        viewModel.setDefaultAddress(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
     private fun deleteAddress(){
         viewModel.deleteAddress(savedAddressList[selectedPos].id.toString())
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -142,11 +153,46 @@ class SavedAddressFragment : BaseFragment() {
 
         viewModel.addressResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
-                ProgressDialogUtils.getInstance().hideProgress()
                 savedAddressList.clear()
                 savedAddressList.addAll(response.data)
                 checkData()
                 savedAddressAdapter?.notifyDataSetChanged()
+                if (savedAddressList.isNotEmpty()){
+                    val defaultIndex = savedAddressList.indexOfFirst { it.setAsDefault == "1" }
+
+                    if (defaultIndex == -1) {
+                        selectedPos = 0
+                        setDefaultAddress()
+                    }
+                    else{
+                        SharedPreference.get(requireActivity()).saveDefaultAddress(savedAddressList[defaultIndex])
+                        ProgressDialogUtils.getInstance().hideProgress()
+                    }
+                }
+                else{
+                    ProgressDialogUtils.getInstance().hideProgress()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.defaultAddressResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                for (i in 0 until savedAddressList.size){
+                  savedAddressList[i].setAsDefault = "0"
+                }
+                savedAddressList[selectedPos].setAsDefault = "1"
+                savedAddressAdapter?.notifyDataSetChanged()
+                SharedPreference.get(requireActivity()).saveDefaultAddress(savedAddressList[selectedPos])
+                if (from=="foodBag"||from=="productDetail"){
+                    val bundle = Bundle().apply {
+                        putString("address", savedAddressList[selectedPos].address)
+                    }
+                    parentFragmentManager.setFragmentResult("address_request", bundle)
+
+                    findNavController().navigateUp()
+                }
                 isObserver = false
             }
         }

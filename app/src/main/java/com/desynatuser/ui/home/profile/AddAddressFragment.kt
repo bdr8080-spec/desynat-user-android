@@ -95,10 +95,11 @@ class AddAddressFragment : BaseFragment() {
 
             etName.setText(addressData?.name)
             etAddress.setText(addressData?.address)
+            etCountry.setText(addressData?.country)
             etMobile.setText(addressData?.mobile)
             tvCountryPicker.text = addressData?.countryCode
             etHouseNo.setText(addressData?.houseNo)
-            etBlock.setText(addressData?.streetNo)
+           // etBlock.setText(addressData?.streetNo)
             etPostalCode.setText(addressData?.postalCode)
             etCity.setText(addressData?.city)
             etState.setText(addressData?.state)
@@ -200,7 +201,8 @@ class AddAddressFragment : BaseFragment() {
                 postalCode = etPostalCode.text?.trim().toString(),
                 saveAddressAs = type,
                 state = etState.text?.trim().toString(),
-                streetNo = etBlock.text?.trim().toString()
+           //     streetNo = etBlock.text?.trim().toString(),
+                country = etCountry.text?.trim().toString()
             )
             viewModel.addAddress(request)
             ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -223,7 +225,8 @@ class AddAddressFragment : BaseFragment() {
                 postalCode = etPostalCode.text?.trim().toString(),
                 saveAddressAs = type,
                 state = etState.text?.trim().toString(),
-                streetNo = etBlock.text?.trim().toString(),
+              //  streetNo = etBlock.text?.trim().toString(),
+                country = etCountry.text?.trim().toString(),
                 id = addressData?.id.toString()
             )
             viewModel.editAddress(request)
@@ -274,17 +277,10 @@ class AddAddressFragment : BaseFragment() {
             val pincode = data?.getStringExtra("pincode") ?: "N/A"
             val houseno = data?.getStringExtra("houseno") ?: "N/A"
             val address = data?.getStringExtra("addressH") ?: "N/A"
+            val countryField = data?.getStringExtra("country") ?: "N/A"
             val addressH = data?.getStringExtra("addressH") ?: "N/A"
             lat = data?.getDoubleExtra("lat", 0.0)
             lng = data?.getDoubleExtra("lng", 0.0)
-         /*
-            binding?.etAddress?.setText(address)
-            binding?.etHouseNo?.setText(houseno)
-            binding?.etCity?.setText(city)
-            binding?.etState?.setText(state)
-            binding?.etPostalCode?.setText(pincode)
-            binding?.etBlock?.setText(street)
-*/
 
             val parsed = parseAddress(addressH)
 
@@ -294,9 +290,10 @@ class AddAddressFragment : BaseFragment() {
             val finalState = if (state.isEmpty()) parsed["state"] else state
             val finalPostal = if (pincode.isEmpty()) parsed["postal"] else pincode
 
+            binding?.etCountry?.setText(countryField)
             binding?.etAddress?.setText(addressH)
-            binding?.etHouseNo?.setText(finalHouse)
-            binding?.etBlock?.setText(finalStreet)
+            binding?.etHouseNo?.setText(finalHouse + " "+finalStreet)
+          //  binding?.etBlock?.setText(finalStreet)
             binding?.etCity?.setText(finalCity)
             binding?.etState?.setText(finalState)
             binding?.etPostalCode?.setText(finalPostal)
@@ -378,10 +375,10 @@ class AddAddressFragment : BaseFragment() {
                 return false
             }
 
-            if (block.isEmpty()) {
-                showToast("Please enter block/street")
-                return false
-            }
+//            if (block.isEmpty()) {
+//                showToast("Please enter block/street")
+//                return false
+//            }
 
             if (city.isEmpty()) {
                 showToast("Please enter city")
@@ -393,7 +390,7 @@ class AddAddressFragment : BaseFragment() {
                 return false
             }
 
-            if (postal.isNotEmpty()) {
+          /*  if (postal.isNotEmpty()) {
 
                 val postalRegex = "^[A-Za-z0-9\\-\\s]{3,10}$".toRegex()
 
@@ -406,7 +403,7 @@ class AddAddressFragment : BaseFragment() {
                     showToast("Please enter a valid postal code")
                     return false
                 }
-            }
+            }*/
 
             if (type==-1) {
                 showToast("Please select address type (Home or Office)")

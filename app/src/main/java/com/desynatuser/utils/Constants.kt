@@ -36,6 +36,7 @@ object Constants {
 
     const val STORE_LIST = "/api/user/category-Wise-Store-List"
     const val SINGLE_STORE = "/api/user/single-store-details"
+    const val GET_PRODUCT_DETAIL = "api/user/single-product-details"
     const val ADD_TO_CART = "/api/user/product-add-to-cart"
     const val ADD_TO_CART_QUANTITY = "/api/user/addtocart-increment-decrement"
     const val VIEW_CART_DETAIL = "/api/user/view_cart_details"
@@ -43,13 +44,15 @@ object Constants {
     const val GET_STORE_SORT_LIST = "/api/store_filter"
     const val GET_WISHLIST = "/api/user/get_wishlist_products"
     const val GET_SEARCH = "/api/store_filter"
-    const val GET_COLOR_LIST = "/api/store_filter"
-    const val GET_BRAND_LIST = "/api/store_filter"
+    const val GET_COLOR_LIST = "/api/all-color"
+    const val GET_BRAND_LIST = "/api/all-brand"
+    const val GET_SIZE_LIST = "/api/all-size"
 
     const val SAVE_ADDRESS = "/api/user/save-address"
     const val GET_ADDRESS = "/api/user/view-address"
     const val EDIT_ADDRESS = "/api/user/update-address"
     const val DELETE_ADDRESS = "/api/user/delete-address"
+    const val DEFAULt_ADDRESS = "/api/user/set_default_address"
 
 
 }

@@ -242,6 +242,7 @@ class HomeFragment : BaseFragment() {
                 response?.let {
                     mainCategoryList.clear()
                     mainCategoryList.addAll(response.data)
+                    SharedPreference.get(requireActivity()).saveCategoryLIst(response.data)
                     getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
                 }
                 isCategoryObserver = false

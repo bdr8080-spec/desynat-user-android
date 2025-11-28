@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.store.response
 
 
+import com.desynatuser.ui.home.store.response.fe.Data.CartData
 import com.google.gson.annotations.SerializedName
 
 data class GetSingleStoreResponse(
@@ -208,7 +209,7 @@ data class GetSingleStoreResponse(
                     @SerializedName("status")
                     val status: String,
                     @SerializedName("total_stock")
-                    val totalStock: String,
+                    val totalStock: String?=null,
                     @SerializedName("updated_at")
                     val updatedAt: String,
                     @SerializedName("variant_image")

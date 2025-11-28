@@ -28,8 +28,10 @@ data class AddAddressRequest(
     val saveAddressAs: Int,// 0 for office 1 for home
     @SerializedName("state")
     val state: String,
-    @SerializedName("street_no")
-    val streetNo: String,
+   /* @SerializedName("street_no")
+    val streetNo: String,*/
+    @SerializedName("Country_name")
+    val country: String,
     @SerializedName("id")
     val id: String?=null
 )

@@ -11,11 +11,11 @@ import com.des.adapter.SizeAdapter.OnClick
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemColorBinding
 import com.desynatuser.databinding.ItemColorFilterBinding
+import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 
-class FilterColorAdapter(var context:Context, var colorList: ArrayList<String>, var onClick: OnClick) : RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
+class FilterColorAdapter(var context:Context, var colorList: ArrayList<GetAllColorListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
-    var selectedPos = -1
     interface OnClick{
         fun onClickItem(position: Int)
     }
@@ -36,10 +36,10 @@ class FilterColorAdapter(var context:Context, var colorList: ArrayList<String>, 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-           /* tvColorName.text = colorList[position].name
-            ivRectangleColor.setColorFilter(Color.parseColor(colorList[position].hex_code))*/
+            tvColorName.text = colorList[position].name
+            ivRectangleColor.setColorFilter(Color.parseColor(colorList[position].hexCode))
 
-            if (selectedPos==position){
+            if (colorList[position].isSelected){
                 ivImage.setImageResource(R.drawable.ic_checkbox)
             }
             else{
@@ -50,12 +50,11 @@ class FilterColorAdapter(var context:Context, var colorList: ArrayList<String>, 
 
 
         holder.itemView.setOnClickListener {
-            selectedPos = position
-            onClick.onClickItem(position)
+            colorList[position].isSelected = !colorList[position].isSelected
             notifyDataSetChanged()
+            onClick.onClickItem(position)
         }
 
     }
-
 
 }

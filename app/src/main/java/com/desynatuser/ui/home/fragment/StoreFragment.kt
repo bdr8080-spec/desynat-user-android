@@ -51,6 +51,7 @@ class StoreFragment : BaseFragment() {
     var premiumStoreList = ArrayList<Int>()
     private var search: Job? = null
     private var lastQuery: String? = null
+    var filter:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -144,6 +145,9 @@ class StoreFragment : BaseFragment() {
         if (search!=null){
             map["search"] = search
         }
+        if (filter!=null){
+            map["availbility"] = filter.toString()
+        }
         viewModel.getStoreList(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -190,16 +194,37 @@ class StoreFragment : BaseFragment() {
 
         dialogBinding.apply {
 
+            when (filter) {
+                "0" -> radioGroup.check(R.id.rbOpen)
+                "1" -> radioGroup.check(R.id.rbBusy)
+                "2" -> radioGroup.check(R.id.rbShortestDeliveryTime)
+                "3" -> radioGroup.check(R.id.rbHighestSale)
+
+            }
+
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                filter = when (checkedId) {
+                    R.id.rbOpen -> "0"
+                    R.id.rbBusy -> "1"
+                    R.id.rbShortestDeliveryTime -> "2"
+                    R.id.rbHighestSale -> "3"
+                    else -> null
+                }
+            }
+
+
             tvToolbar.setOnClickListener {
                 dialog.dismiss()
             }
 
             tvClear.setOnClickListener {
-
+                filter = null
+                getStoreList()
                 dialog.dismiss()
             }
 
             tvApply.setOnClickListener{
+                getStoreList()
                 dialog.dismiss()
             }
 

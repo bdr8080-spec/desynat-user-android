@@ -10,10 +10,14 @@ import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
+import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
+import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
@@ -156,6 +160,11 @@ interface ApiServices {
         @Body request: AddAddressRequest
     ): Response<CommonResponse>
 
+    @POST(Constants.DEFAULt_ADDRESS)
+    suspend fun setDefaultAddress(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
     @DELETE("${Constants.DELETE_ADDRESS}/{id}")
     suspend fun deleteAddress(
         @Path ("id") id: String
@@ -171,9 +180,12 @@ interface ApiServices {
     suspend fun getSearch(): Response<CommonResponse>
 
     @GET(Constants.GET_COLOR_LIST)
-    suspend fun getColorList(): Response<CommonResponse>
+    suspend fun getColorList(): Response<GetAllColorListResponse>
 
     @GET(Constants.GET_BRAND_LIST)
-    suspend fun getBrandList(): Response<CommonResponse>
+    suspend fun getBrandList(): Response<GetAllBrandListResponse>
+
+    @GET(Constants.GET_SIZE_LIST)
+    suspend fun getSizeList(): Response<GetSizeListResponse>
 
 }

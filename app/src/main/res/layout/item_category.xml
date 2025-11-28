@@ -18,25 +18,11 @@
     android:orientation="vertical"
    >
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivCategory"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_placeholder"
-        android:background="#F5F5F5"
-        android:elevation="@dimen/_2sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/relDetail"/>
-
     <RelativeLayout
         android:id="@+id/relDetail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_15sdp"
-        android:elevation="@dimen/_1sdp"
         android:background="@drawable/card_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +69,16 @@
 
     </RelativeLayout>
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivCategory"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_placeholder"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/relDetail"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,25 +90,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivCategory1"
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_placeholder"
-            android:background="#F5F5F5"
-            android:elevation="@dimen/_2sdp"
-            android:layout_marginStart="@dimen/_15sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/relDetail1"/>
-
         <RelativeLayout
             android:id="@+id/relDetail1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:elevation="@dimen/_1sdp"
             android:background="@drawable/card_gradient_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +141,16 @@
 
         </RelativeLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivCategory1"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_placeholder"
+            android:layout_marginStart="@dimen/_15sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/relDetail1"/>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

@@ -79,7 +79,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/rating"/>
 
     <TextView
-        android:id="@+id/tvPrice"
+        android:id="@+id/tvDiscountPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -93,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rating" />
 
     <TextView
-        android:id="@+id/tvDiscountPrice"
+        android:id="@+id/tvPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -104,16 +104,16 @@
         android:textColor="#99000000"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:background="#99000000"
-        app:layout_constraintStart_toStartOf="@+id/tvDiscountPrice"
-        app:layout_constraintEnd_toEndOf="@+id/tvDiscountPrice"
-        app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDiscountPrice"/>
+        app:layout_constraintStart_toStartOf="@+id/tvPrice"
+        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
 
     <TextView
         android:id="@+id/tvDiscount"
@@ -127,8 +127,8 @@
         android:text="20% off"
         android:textColor="#E70000"
         android:textSize="@dimen/_10sdp"
-        app:layout_constraintStart_toEndOf="@+id/tvDiscountPrice"
-        app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDiscountPrice"/>
+        app:layout_constraintStart_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

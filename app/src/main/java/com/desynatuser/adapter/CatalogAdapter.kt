@@ -52,21 +52,13 @@ class CatalogAdapter(var context:Context, private var catalogList: ArrayList<Get
 
             tvCategoryName.text = catalogData.name
             tvDescription.text = catalogData.description
-            ivCategory.load(catalogData.image) {
-                crossfade(true)
-                placeholder(R.drawable.ic_placeholder)
-                error(R.drawable.ic_placeholder)
-            }
+            ivCategory.load(catalogData.image)
 
             relCategory.backgroundTintList = ColorStateList.valueOf(Color.parseColor(catalogData.colorCode))
 
             tvCategoryName1.text = catalogData.name
             tvDescription1.text = catalogData.description
-            ivCategory1.load(catalogData.image) {
-                crossfade(true)
-                placeholder(R.drawable.ic_placeholder)
-                error(R.drawable.ic_placeholder)
-            }
+            ivCategory1.load(catalogData.image)
 
             relCategory1.backgroundTintList = ColorStateList.valueOf(Color.parseColor(catalogData.colorCode))
 
