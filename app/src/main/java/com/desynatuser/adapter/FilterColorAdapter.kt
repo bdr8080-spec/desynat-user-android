@@ -4,15 +4,10 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.des.adapter.SizeAdapter.OnClick
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemColorBinding
 import com.desynatuser.databinding.ItemColorFilterBinding
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 
 class FilterColorAdapter(var context:Context, var colorList: ArrayList<GetAllColorListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 

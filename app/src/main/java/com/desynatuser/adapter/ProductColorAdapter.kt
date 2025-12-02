@@ -7,13 +7,10 @@ import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.des.adapter.SizeAdapter.OnClick
-import com.desynatuser.R
 import com.desynatuser.databinding.ItemColorBinding
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.home.store.response.Product
 
-class ProductColorAdapter(var context:Context, var productColorList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant.Color>, var onClick: OnClick) : RecyclerView.Adapter<ProductColorAdapter.ViewHolder>() {
+class ProductColorAdapter(var context:Context, var productColorList: ArrayList<Product>, var onClick: OnClick) : RecyclerView.Adapter<ProductColorAdapter.ViewHolder>() {
 
     var selectedPos = 0
     interface OnClick{
@@ -36,7 +33,7 @@ class ProductColorAdapter(var context:Context, var productColorList: ArrayList<G
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-            ivRectangleColor.setColorFilter(Color.parseColor(productColorList[position].hex_code))
+            ivRectangleColor.setColorFilter(Color.parseColor(productColorList[position].color.hex_code))
 
             if (selectedPos==position){
                 ivSelected.isVisible = true

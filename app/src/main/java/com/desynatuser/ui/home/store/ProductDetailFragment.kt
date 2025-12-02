@@ -2,7 +2,6 @@ package com.desynatuser.ui.home.store
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -16,7 +15,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.des.adapter.SizeAdapter
+import com.desynatuser.adapter.SizeAdapter
 import com.desynatuser.R
 import com.desynatuser.adapter.ProductColorAdapter
 import com.desynatuser.adapter.ProductImageAdapter
@@ -27,10 +26,10 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
-import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.ui.home.store.response.Product
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -47,8 +46,8 @@ class ProductDetailFragment : BaseFragment() {
     private var storeData :GetStoreResponse.Data?=null
     private var productData :GetSingleStoreResponse.Data.AllProduct.Data?=null
     private var imageList = ArrayList<String>()
-    private var colorList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant.Color>()
-    private var sizeList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant.Size>()
+    private var colorList = ArrayList<Product>()
+    private var sizeList = ArrayList<Product.ProductVariation>()
     private var productImageAdapter: ProductImageAdapter?=null
     private var colorAdapter: ProductColorAdapter?=null
     private var sizeAdapter: SizeAdapter?=null
@@ -58,8 +57,9 @@ class ProductDetailFragment : BaseFragment() {
 
     private var reviewAdapter: ReviewAdapter?=null
     private var selectedPos = 0
-    private var selectedSizePos = -1
+    private var selectedSizePos = 0
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
+    var productInfo = ArrayList<Product>()
 
     var cartId = 0
     var cartQuantity = 0
@@ -87,6 +87,7 @@ class ProductDetailFragment : BaseFragment() {
         if (!itemJson.isNullOrEmpty()) {
             storeData = Gson().fromJson(itemJsonStore, GetStoreResponse.Data::class.java)
             productData = Gson().fromJson(itemJson, GetSingleStoreResponse.Data.AllProduct.Data::class.java)
+            productInfo = productData?.productVariants?.let { mapVariantsToProducts(it) }!!
         }
 
         similarProductAdapter = SimilarProductAdapter(requireActivity(), arrayListOf("",""),storeData?.storeName.toString(),object:SimilarProductAdapter.ProductClick{
@@ -98,13 +99,16 @@ class ProductDetailFragment : BaseFragment() {
         binding?.rvSimilarProduct?.adapter = similarProductAdapter
 
         colorList.clear()
-        for(i in 0 until (productData?.productVariants?.size ?: 0)){
+        colorList.addAll(productInfo)
+        /*for(i in 0 until (productData?.productVariants?.size ?: 0)){
             productData?.productVariants?.get(i)?.color?.let { colorList.add(it) }
-        }
+        }*/
 
         colorAdapter = ProductColorAdapter(requireActivity(), colorList,object :ProductColorAdapter.OnClick{
             override fun onClickItem(position: Int) {
                 selectedPos = position
+                selectedSizePos = 0
+                sizeAdapter?.updateData(selectedSizePos)
                 setData()
             }
 
@@ -112,10 +116,11 @@ class ProductDetailFragment : BaseFragment() {
 
             binding?.rvColor?.adapter = colorAdapter
 
-        sizeAdapter =   SizeAdapter(requireActivity(),
-              sizeList,object :SizeAdapter.OnClick{
+        sizeAdapter = SizeAdapter(requireActivity(),
+              sizeList,object : SizeAdapter.OnClick{
                     override fun onClickItem(position: Int) {
                         selectedSizePos = position
+                        setData()
                     }
 
                 })
@@ -160,7 +165,7 @@ class ProductDetailFragment : BaseFragment() {
                 ivLike.setImageResource(R.drawable.ic_heart)
             }
 
-            val variant = productData?.productVariants?.getOrNull(selectedPos)
+            val variant = productInfo?.getOrNull(selectedPos)
 
             imageList.clear()
             variant?.variantImage?.let { imageList.addAll(it) }
@@ -168,18 +173,18 @@ class ProductDetailFragment : BaseFragment() {
             viewPager.setCurrentItem(0, false)
 
             sizeList.clear()
-            variant?.size?.let { sizeList.add(it) }
+            variant?.productVariation?.let { sizeList.addAll(it) }
             sizeAdapter?.notifyDataSetChanged()
 
             tvTitle.text = storeData?.storeName
             tvProductName.text =  productData?.productNameEn+" (by ${storeData?.storeName})"
             tvName.text = productData?.brand?.nameEnglish
 
-            tvPrice.text = "${CommonMethod.formatPrice(variant?.actualPrice?:0.0)} KD"
-            tvDiscountedPrice.text = "${CommonMethod.formatPrice(variant?.finalPrice?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatPrice(variant?.productVariation?.get(selectedSizePos)?.actualPrice?:0.0)} KD"
+            tvDiscountedPrice.text = "${CommonMethod.formatPrice(variant?.productVariation?.get(selectedSizePos)?.finalPrice?:0.0)} KD"
 
-            val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1")"% off" else " KD off"
+            val discountValue =variant?.productVariation?.get(selectedSizePos)?.discountValue ?: 0
+            val discountType = if (variant?.productVariation?.get(selectedSizePos)?.discountType == "1")"% off" else " KD off"
             tvOffer.text = "$discountValue$discountType"
 
 
@@ -474,6 +479,55 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.viewCartDetail()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
+    }
+
+    fun mapVariantsToProducts(
+        variants: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant>
+    ): ArrayList<Product> {
+
+        return ArrayList(
+            variants
+                .groupBy { it.colorId }   // group by color_id
+                .map { (colorId, listByColor) ->
+
+                    val images = ArrayList(listByColor.first().variantImage)
+
+                    val variationList = ArrayList(
+                        listByColor.map { variant ->
+                            Product.ProductVariation(
+                                id = variant.id.toString(),
+                                productId = variant.productId.toString(),
+                                sizeId = variant.sizeId.toString(),
+                                size = variant.size,
+                                actualPrice = variant.actualPrice,
+                                discountType = variant.discountType,
+                                discountValue = variant.discountValue,
+                                finalPrice = variant.finalPrice,
+                                totalStock = variant.totalStock.toString(),
+                                sku = variant.sku,
+                                skuThresholdValue = variant.skuThresholdValue ?: "0",
+                                bust = variant.bust,
+                                waist = variant.waist,
+                                hip = variant.hip,
+                                shoulder = variant.shoulder,
+                                sleeveLength = variant.sleeveLength,
+                                length = variant.length,
+                                status = variant.status,
+                                createdAt = variant.createdAt,
+                                updatedAt = variant.updatedAt
+                            )
+                        }
+                    )
+
+                    Product(
+                        colorId = colorId,
+                        color = listByColor.first().color,
+                        variantImage = images,
+                        productVariation = variationList,
+                        productId = listByColor.first().productId.toString()
+                    )
+                }
+        )
     }
 
 

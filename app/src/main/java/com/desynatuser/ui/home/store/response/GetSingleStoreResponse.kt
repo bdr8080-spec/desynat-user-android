@@ -173,7 +173,7 @@ data class GetSingleStoreResponse(
                     @SerializedName("actual_price")
                     val actualPrice: Double?=0.0,
                     @SerializedName("bust")
-                    val bust: Any,
+                    val bust: String?=null,
                     @SerializedName("color_id")
                     val colorId: String,
                     @SerializedName("created_at")
@@ -185,15 +185,15 @@ data class GetSingleStoreResponse(
                     @SerializedName("final_price")
                     val finalPrice: Double?=0.0,
                     @SerializedName("hip")
-                    val hip: Any,
+                    val hip: String?=null,
                     @SerializedName("id")
                     val id: Int,
                     @SerializedName("length")
-                    val length: Any,
+                    val length: String?=null,
                     @SerializedName("product_id")
                     val productId: Int,
                     @SerializedName("shoulder")
-                    val shoulder: Any,
+                    val shoulder: String?=null,
                     @SerializedName("size_id")
                     val sizeId: String,
                     @SerializedName("size")
@@ -205,7 +205,7 @@ data class GetSingleStoreResponse(
                     @SerializedName("sku_threshold_value")
                     val skuThresholdValue: String,
                     @SerializedName("sleeve_length")
-                    val sleeveLength: Any,
+                    val sleeveLength: String?=null,
                     @SerializedName("status")
                     val status: String,
                     @SerializedName("total_stock")
@@ -215,7 +215,7 @@ data class GetSingleStoreResponse(
                     @SerializedName("variant_image")
                     val variantImage: ArrayList<String>,
                     @SerializedName("waist")
-                    val waist: Any
+                    val waist: String?=null
                 ){
                     data class Size(
                         @SerializedName("id")
