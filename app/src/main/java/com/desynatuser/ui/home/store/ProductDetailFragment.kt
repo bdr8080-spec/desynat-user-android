@@ -144,7 +144,7 @@ class ProductDetailFragment : BaseFragment() {
 
         binding?.tvSearchAddress?.text = SharedPreference.get(requireActivity()).getDefaultAddress()?.address
 
-        viewCartDetail()
+        getProductDetail()
     }
 
     private fun setData() {
@@ -344,13 +344,18 @@ class ProductDetailFragment : BaseFragment() {
             }
         }
 
-        viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
+        viewModel.productDetailResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                setData()
-                myBagList.clear()
-                response?.data?.cartData?.let { myBagList.addAll(it) }
-                checkCartItem()
+                val quantity = response?.data?.addtocart?.quantity
+
+                if (quantity != null && quantity > 0) {
+                    cartQuantity = quantity?:0
+                    cartId = response?.data?.addtocart?.id?:0
+                    checkCartData(cartQuantity)
+                } else {
+                    cartQuantity = 0
+                }
                 isObserver = false
             }
         }
@@ -475,8 +480,10 @@ class ProductDetailFragment : BaseFragment() {
         }
     }
 
-    private fun viewCartDetail(){
-        viewModel.viewCartDetail()
+    private fun getProductDetail(){
+        val map = HashMap<String,Any>()
+        map["product_id"] = productData?.id.toString()
+        viewModel.getProductDetailInfo(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }

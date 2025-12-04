@@ -22,6 +22,7 @@ import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResp
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.store.response.GetProductDetailResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
@@ -323,6 +324,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.getSingleStoreInfo(map)
             },
             responseLiveData = storeDetailLiveData
+        )
+    }
+
+    val productDetailLiveData = SingleLiveEvent<GetProductDetailResponse>()
+    suspend fun getProductDetailInfo(map:HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getProductDetailInfo(map)
+            },
+            responseLiveData = productDetailLiveData
         )
     }
 

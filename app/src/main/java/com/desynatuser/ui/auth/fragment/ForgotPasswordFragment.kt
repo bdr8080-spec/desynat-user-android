@@ -61,9 +61,8 @@ class ForgotPasswordFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(etMobile)
+                showCustomDropdown(clMobile)
             }
-
 
             cbEmail.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
@@ -84,7 +83,6 @@ class ForgotPasswordFragment : BaseFragment() {
                     clMobile.isVisible = true
                     etEmail.isVisible = false
                     tvInputTitle.text = "Mobile Number"
-
                 }
             }
 
@@ -118,7 +116,6 @@ class ForgotPasswordFragment : BaseFragment() {
                 errorMessage?.let { showToast(it) }
                 isObserver = false
             }
-
         }
 
         viewModel.forgotPasswordResult.observe(viewLifecycleOwner) { response ->

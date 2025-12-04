@@ -20,6 +20,7 @@ import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResp
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.store.response.GetProductDetailResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
@@ -195,6 +196,15 @@ val storeDetailResult: LiveData<GetSingleStoreResponse>
     fun getSingleStoreInfo(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.getSingleStoreInfo(map)
+        }
+    }
+
+val productDetailResult: LiveData<GetProductDetailResponse>
+        get() = repository.productDetailLiveData
+
+    fun getProductDetailInfo(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getProductDetailInfo(map)
         }
     }
 

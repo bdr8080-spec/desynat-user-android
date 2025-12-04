@@ -1,7 +1,6 @@
 package com.desynatuser.ui.home.store.response
 
 
-import com.desynatuser.ui.home.store.response.fe.Data.CartData
 import com.google.gson.annotations.SerializedName
 
 data class GetSingleStoreResponse(

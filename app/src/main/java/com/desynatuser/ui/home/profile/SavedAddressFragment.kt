@@ -150,7 +150,6 @@ class SavedAddressFragment : BaseFragment() {
             }
         }
 
-
         viewModel.addressResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 savedAddressList.clear()

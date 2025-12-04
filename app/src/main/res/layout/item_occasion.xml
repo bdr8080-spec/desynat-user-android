@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_15sdp"
+    android:padding="@dimen/_8sdp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/button_stroke">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvOccasion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Birthday"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/brown"/>
+
+</LinearLayout>

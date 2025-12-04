@@ -82,7 +82,7 @@ class ChangeMobileFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(etMobile)
+                showCustomDropdown(clMobile)
             }
 
         }

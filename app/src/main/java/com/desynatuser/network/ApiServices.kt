@@ -16,6 +16,7 @@ import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResp
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.store.response.GetProductDetailResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
@@ -128,6 +129,11 @@ interface ApiServices {
     suspend fun getSingleStoreInfo(
         @Body map:HashMap<String,Any>,
     ): Response<GetSingleStoreResponse>
+
+    @POST(Constants.GET_PRODUCT_DETAIL)
+    suspend fun getProductDetailInfo(
+        @Body map:HashMap<String,Any>,
+    ): Response<GetProductDetailResponse>
 
     @POST(Constants.ADD_TO_CART)
     suspend fun addToCart(

@@ -79,7 +79,7 @@ class LoginFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(etEmailMobile)
+                showCustomDropdown(clMobile)
             }
 
 
