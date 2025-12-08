@@ -86,4 +86,6 @@ dependencies {
     implementation("com.yazantarifi:slider:1.0.0")
 
     implementation ("com.google.android.material:material:1.4.0")
+    implementation ("com.myfatoorah:myfatoorah:3.0.4")
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
 }

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemGiftCardBinding
-import com.desynatuser.ui.home.response.GetAllGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 
 class GiftCardAdapter(var context:Context, var giftCardList: ArrayList<GetAllGiftCardResponse.Data>, var giftCardClick:GiftCardClick) : RecyclerView.Adapter<GiftCardAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemGiftCardBinding) :

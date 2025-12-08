@@ -6,12 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import coil.load
+import com.desynatuser.R
 import com.desynatuser.adapter.OccasionTypeAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSelectOccasionTypeBinding
+import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
+import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +30,8 @@ class SelectOccasionTypeFragment : BaseFragment() {
     var isObserver = false
 
     private var occasionTypeAdapter: OccasionTypeAdapter?=null
-    private var occasionList = ArrayList<String>()
+    private var occasionList = ArrayList<GetGiftCardOccasionTypeResponse.Data>()
+    var selectedPos = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,16 +53,29 @@ class SelectOccasionTypeFragment : BaseFragment() {
             toolbar.tvToolbar.text = "Select Occasion Type"
 
             occasionList.clear()
-            occasionList.addAll(listOf("Birthday","Anniversary","Diwali","EID","Ramadan","Ceremony","Christmas","New Year","Wedding"))
+            val layoutManager = FlexboxLayoutManager(requireContext()).apply {
+                flexDirection = FlexDirection.ROW
+                flexWrap = FlexWrap.WRAP
+                justifyContent = JustifyContent.FLEX_START
+            }
 
+            rvOccasion.layoutManager = layoutManager
             occasionTypeAdapter = OccasionTypeAdapter(requireActivity(),occasionList,object :OccasionTypeAdapter.OnClick{
                 override fun clickOnItem(position: Int) {
-
+                    selectedPos = position
+                    ivGift.load(occasionList[position].image){
+                        crossfade(true)
+                        placeholder(R.drawable.ic_placeholder)
+                        error(R.drawable.ic_placeholder)
+                    }
                 }
 
             })
+
             rvOccasion.adapter = occasionTypeAdapter
         }
+
+        getGiftCardOccasion()
 
     }
 
@@ -64,7 +87,15 @@ class SelectOccasionTypeFragment : BaseFragment() {
             }
 
             btnContinue.setOnClickListener {
-
+                if (selectedPos!=-1) {
+                    val bundle = Bundle().apply {
+                        putString("occasionData", Gson().toJson(occasionList[selectedPos]))
+                    }
+                    findNavController().navigate(R.id.action_occasionTypeFragment_to_enterGiftCardDetailFragment,bundle)
+                }
+                else{
+                    showToast("Please select occasion type")
+                }
             }
 
         }
@@ -78,6 +109,22 @@ class SelectOccasionTypeFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.giftCardOccasionResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                occasionList.clear()
+                occasionList.addAll(response.data)
+                occasionTypeAdapter?.notifyDataSetChanged()
+                ProgressDialogUtils.getInstance().hideProgress()
+                isObserver = false
+            }
+        }
+    }
+
+    private fun getGiftCardOccasion(){
+        viewModel.getGiftCardOccasion()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }

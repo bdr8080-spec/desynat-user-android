@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.base.BaseFragment
@@ -19,7 +20,7 @@ class PaymentMethodFragment : BaseFragment() {
     private var binding: FragmentPaymentMethodBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
-
+    private var from = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +39,15 @@ class PaymentMethodFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Payment Method"
+
+            if(from=="gift"){
+                relGiftCard.isVisible = false
+                tvGiftCard.isVisible = false
+            }
+            else{
+                relGiftCard.isVisible = true
+                tvGiftCard.isVisible = true
+            }
         }
 
     }
@@ -66,6 +76,13 @@ class PaymentMethodFragment : BaseFragment() {
                 isObserver = false
             }
         }
+    }
+
+    fun orderPayment(){
+        val map = HashMap<String,Any>()
+        map["order_id"] = ""
+        map["Payment_method"] = ""//1 myfatoorah 2 wallet 3 Cod
+        map["payment_status"] = "" // 0 pending 1 paid 2 cancel or reject 3 refund
     }
 
 }

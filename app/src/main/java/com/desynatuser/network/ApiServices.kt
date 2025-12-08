@@ -5,10 +5,18 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
+import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
+import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
@@ -22,6 +30,8 @@ import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
+import com.desynatuser.ui.home.store.response.PlaceOrderRequest
+import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
@@ -193,5 +203,39 @@ interface ApiServices {
 
     @GET(Constants.GET_SIZE_LIST)
     suspend fun getSizeList(): Response<GetSizeListResponse>
+
+
+    @POST(Constants.GIFT_CARD_LIST)
+    suspend fun getGiftCardList(): Response<GetAllGiftCardResponse>
+
+    @GET(Constants.GIFT_CARD_OCCASION)
+    suspend fun getGiftCardOccasion(): Response<GetGiftCardOccasionTypeResponse>
+
+    @POST(Constants.BUY_GIFT_CARD)
+    suspend fun buyGiftCard(
+        @Body request: AddGiftCardRequest
+    ): Response<CommonResponse>
+
+    @POST(Constants.APPLY_GIFT_CARD)
+    suspend fun applyGiftCard(@Body map: HashMap<String,Any>): Response<ApplyGiftCardResponse>
+
+    @POST(Constants.PROMO_CODE_LIST)
+    suspend fun getPromoCode(@Body map: HashMap<String,Any>): Response<GetPromoCodeResponse>
+
+    @POST(Constants.APPLY_PROMO_CODE)
+    suspend fun applyPromoCode(@Body map: HashMap<String,Any>): Response<ApplyPromoCodeResponse>
+
+    @POST(Constants.PLACE_ORDER)
+    suspend fun placeOrder(@Body request: PlaceOrderRequest): Response<PlaceOrderResponse>
+
+    @POST(Constants.COMPLETE_ORDER_PAYMENT)
+    suspend fun orderPayment(@Body map: HashMap<String,Any>): Response<CommonResponse>
+
+    @POST(Constants.GET_ALL_ORDER)
+    suspend fun getAllOrder(@Body map: HashMap<String,Any>): Response<GetAllOrderResponse>
+
+    @POST(Constants.GET_ORDER_SUMMARY)
+    suspend fun getSingleOrder(@Body map: HashMap<String,Any>): Response<GetSingleOrderSummaryResponse>
+
 
 }

@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/nsBag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -49,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_food_bag"
+                    tools:listitem="@layout/item_bag"
                     tools:itemCount="2"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 

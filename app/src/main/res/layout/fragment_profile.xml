@@ -21,7 +21,7 @@
             android:src="@drawable/ic_user"
             android:scaleType="centerCrop"
             android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_40sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:clipToOutline="true"
             android:background="@color/light_pink"
@@ -50,8 +50,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:text=""
-            android:textSize="@dimen/_11sdp"
+            android:textSize="@dimen/_10sdp"
             android:textColor="@color/black"
+            android:alpha="0.67"
             app:layout_constraintBottom_toBottomOf="@id/ivProfileImage"
             app:layout_constraintEnd_toEndOf="@id/tvName"
             app:layout_constraintStart_toStartOf="@id/tvName"
@@ -397,7 +398,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:paddingVertical="@dimen/_10sdp">
+                android:paddingVertical="@dimen/_6sdp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivExchange"
@@ -422,7 +423,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_5sdp">
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_6sdp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivSupport"

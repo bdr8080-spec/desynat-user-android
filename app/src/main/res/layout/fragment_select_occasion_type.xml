@@ -41,7 +41,6 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
-            android:src="@drawable/ic_placeholder"
             app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"/>
 
     </LinearLayout>
@@ -53,7 +52,7 @@
         style="@style/button"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:text="Continue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

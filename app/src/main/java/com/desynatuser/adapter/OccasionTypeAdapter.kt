@@ -4,13 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemGiftCardBinding
 import com.desynatuser.databinding.ItemOccasionBinding
-import com.desynatuser.ui.home.response.GetAllGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 
-class OccasionTypeAdapter(var context:Context, var occasionList: ArrayList<String>, var click:OnClick) : RecyclerView.Adapter<OccasionTypeAdapter.ViewHolder>() {
+class OccasionTypeAdapter(var context:Context, var occasionList: ArrayList<GetGiftCardOccasionTypeResponse.Data>, var click:OnClick) : RecyclerView.Adapter<OccasionTypeAdapter.ViewHolder>() {
 
     var selected = -1
 
@@ -34,15 +32,15 @@ class OccasionTypeAdapter(var context:Context, var occasionList: ArrayList<Strin
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.apply {
-            tvOccasion.text = occasionList[position]
+            tvOccasion.text = occasionList[position].nameEnglish
 
             if (selected==position){
                 tvOccasion.setTextColor(context.getColor(R.color.white))
-                tvOccasion.setBackgroundColor(context.getColor(R.color.brown))
+                llOccasion.setBackgroundResource(R.drawable.btn_gradient)
             }
             else{
                 tvOccasion.setTextColor(context.getColor(R.color.brown))
-                tvOccasion.setBackgroundColor(context.getColor(R.color.white))
+                llOccasion.setBackgroundResource(R.drawable.button_stroke)
             }
         }
 

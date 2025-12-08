@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemFoodBagBinding
+import com.desynatuser.databinding.ItemBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
 
 class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartResponse.Data.CartData>, var foodBagClick:FoodBagClick) : RecyclerView.Adapter<MyBagAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: ItemFoodBagBinding) :
+    inner class ViewHolder(val binding: ItemBagBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     interface FoodBagClick{
@@ -19,7 +19,7 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemFoodBagBinding.inflate(
+            ItemBagBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false)
         )
     }

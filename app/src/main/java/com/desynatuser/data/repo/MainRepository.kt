@@ -11,10 +11,15 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
+import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
+import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
@@ -445,6 +450,62 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.getSizeList()
             },
             responseLiveData = sizeLiveData
+        )
+    }
+
+  val giftCardLiveData = SingleLiveEvent<GetAllGiftCardResponse>()
+    suspend fun getGiftCardList()
+    {
+        handleApiCall(
+            api = {
+                api.getGiftCardList()
+            },
+            responseLiveData = giftCardLiveData
+        )
+    }
+
+  val giftCardOccasionLiveData = SingleLiveEvent<GetGiftCardOccasionTypeResponse>()
+    suspend fun getGiftCardOccasion()
+    {
+        handleApiCall(
+            api = {
+                api.getGiftCardOccasion()
+            },
+            responseLiveData = giftCardOccasionLiveData
+        )
+    }
+
+ val buyGiftCardLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun buyGiftCard(request:AddGiftCardRequest)
+    {
+        handleApiCall(
+            api = {
+                api.buyGiftCard(request)
+            },
+            responseLiveData = buyGiftCardLiveData
+        )
+    }
+
+  val promoCodeLiveData = SingleLiveEvent<GetPromoCodeResponse>()
+    suspend fun getPromoCode(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getPromoCode(map)
+            },
+            responseLiveData = promoCodeLiveData
+        )
+    }
+
+
+  val applyPromoCodeLiveData = SingleLiveEvent<ApplyPromoCodeResponse>()
+    suspend fun applyPromoCode(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.applyPromoCode(map)
+            },
+            responseLiveData = applyPromoCodeLiveData
         )
     }
 

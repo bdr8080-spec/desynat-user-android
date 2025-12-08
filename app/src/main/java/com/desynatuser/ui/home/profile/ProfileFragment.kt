@@ -77,6 +77,13 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_savedAddressFragment,bundle)
             }
 
+            tvGiftCard.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("from", "profile")
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_giftCardFragment,bundle)
+            }
+
             relLogout.setOnClickListener {
                 if(Constants.isGuest){
                     Constants.isGuest = false

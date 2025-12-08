@@ -31,7 +31,8 @@
         android:roundIcon="@mipmap/ic_launcher_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DesynatUser"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:replace="android:theme">
         <activity
             android:name=".ui.UpdateLocationActivity"
             android:exported="false"

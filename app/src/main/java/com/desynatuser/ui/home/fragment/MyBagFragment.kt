@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,15 @@ import com.desynatuser.adapter.MyBagAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentMyBagBinding
+import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
+import com.desynatuser.ui.home.response.GetAddressResponse
+import com.desynatuser.ui.home.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +32,8 @@ class MyBagFragment : BaseFragment() {
     private var myBagAdapter: MyBagAdapter?=null
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
     private var cartData : GetCartResponse.Data?=null
+    private var selectedAddress : GetAddressResponse.Data?=null
+    private var promoCode : ApplyPromoCodeResponse.Data?=null
     var selectedPos = -1
 
     override fun onCreateView(
@@ -49,8 +57,21 @@ class MyBagFragment : BaseFragment() {
 
             parentFragmentManager.setFragmentResultListener("address_request", viewLifecycleOwner) { _, bundle ->
 
-                val address = bundle.getString("address", "")
-                tvAddress.text = address
+                val addressJson = bundle.getString("address")
+                selectedAddress = Gson().fromJson(addressJson, GetAddressResponse.Data::class.java)
+                tvAddress.text = selectedAddress?.address
+            }
+
+            parentFragmentManager.setFragmentResultListener(
+                "promocode_request",
+                viewLifecycleOwner
+            ) { _, bundle ->
+                val promoCodeJson = bundle.getString("promoCode")
+                promoCode = Gson().fromJson(promoCodeJson, ApplyPromoCodeResponse.Data::class.java)
+                tvApplyPromoCode.text = promoCode?.discountCode
+                tvTotalAmount.text = CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)
+                tvCouponDiscountValue.text = CommonMethod.formatPrice(promoCode?.originalDiscount?:0.0)
+                Log.d("PromoCode", "Received: $promoCode")
             }
 
             myBagAdapter = MyBagAdapter(requireActivity(), myBagList,object :
@@ -80,6 +101,20 @@ class MyBagFragment : BaseFragment() {
                     putString("from", "foodBag")
                 }
                 findNavController().navigate(R.id.action_myBagFragment_to_savedAddressFragment,bundle)
+            }
+
+            relPromoCode.setOnClickListener {
+                if (selectedAddress==null){
+                    showToast("Please select delivery address first")
+                }
+                else{
+                    val bundle = Bundle().apply {
+                        putString("deliveryid", selectedAddress?.id.toString())
+                        putString("amount", cartData?.totalAmount.toString())
+                    }
+                    findNavController().navigate(R.id.action_myBagFragment_to_promoCodeFragment,bundle)
+                }
+
             }
 
         }
@@ -180,8 +215,9 @@ class MyBagFragment : BaseFragment() {
             binding?.tvNoDataFound?.isVisible = false
             binding?.nsBag?.isVisible = true
             if(binding?.tvAddress?.text?.isEmpty() == true) {
-                binding?.tvAddress?.text =
-                    SharedPreference.get(requireActivity()).getDefaultAddress()?.address
+                selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
+                binding?.tvAddress?.text = selectedAddress?.address
+
             }
         }
 

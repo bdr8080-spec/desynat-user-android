@@ -54,5 +54,16 @@ object Constants {
     const val DELETE_ADDRESS = "/api/user/delete-address"
     const val DEFAULt_ADDRESS = "/api/user/set_default_address"
 
+    const val GIFT_CARD_LIST = "/api/user/view-gift-cards"
+    const val GIFT_CARD_OCCASION = "/api/user/gift-card-occasion-list"
+    const val BUY_GIFT_CARD = "/api/user/add-gift-card"
+    const val APPLY_GIFT_CARD = "/api/user/apply-gift-card"
+    const val PROMO_CODE_LIST = "/api/user/view-promocode-list"
+    const val APPLY_PROMO_CODE = "/api/user/Apply-promocode"
+    const val PLACE_ORDER = "/api/user/create-order"
+    const val COMPLETE_ORDER_PAYMENT = "/api/user/product-order-complete-payment"
+    const val GET_ALL_ORDER = "/api/user/All-order"
+    const val GET_ORDER_SUMMARY = "/api/user/single-order-summary"
+
 
 }

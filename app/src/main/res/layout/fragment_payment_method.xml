@@ -55,7 +55,18 @@
                     android:checked="true"
                     android:drawableStart="@drawable/ic_wallet"/>
 
+                <com.myfatoorah.sdk.views.embeddedpayment.MFPaymentCardView
+                    android:id="@+id/mfPaymentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/llPaymentMethod"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="+ Add new card"
@@ -135,6 +146,77 @@
             </RadioGroup>
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/relGiftCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/grey_stroke_cards">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivGift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_gift_img"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123456789"
+                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/black"
+                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_toRightOf="@+id/ivGift"
+                android:drawableEnd="@drawable/ic_green_tick"
+                android:layout_centerVertical="true"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Have a gift card"
+                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_toRightOf="@+id/ivGift"
+                android:layout_centerVertical="true"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apply Gift Card"
+                android:textSize="@dimen/_9sdp"
+                android:textColor="@color/brown"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_alignParentEnd="true"
+                android:drawablePadding="@dimen/_5sdp"
+                android:drawableEnd="@drawable/ic_go_arrow"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvGiftCard"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="$ 100 Gift Card Amount Redeemed"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="#17854C"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:fontFamily="@font/poppins_regular"/>
 
     </LinearLayout>
 

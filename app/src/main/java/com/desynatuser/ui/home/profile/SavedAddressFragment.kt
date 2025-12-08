@@ -46,6 +46,7 @@ class SavedAddressFragment : BaseFragment() {
     }
 
     override fun initView() {
+        ProgressDialogUtils.getInstance().hideProgress()
         binding?.apply {
             toolbar.tvToolbar.text = "Saved Address"
 
@@ -186,7 +187,7 @@ class SavedAddressFragment : BaseFragment() {
                 SharedPreference.get(requireActivity()).saveDefaultAddress(savedAddressList[selectedPos])
                 if (from=="foodBag"||from=="productDetail"){
                     val bundle = Bundle().apply {
-                        putString("address", savedAddressList[selectedPos].address)
+                        putString("address", Gson().toJson(savedAddressList[selectedPos]))
                     }
                     parentFragmentManager.setFragmentResult("address_request", bundle)
 

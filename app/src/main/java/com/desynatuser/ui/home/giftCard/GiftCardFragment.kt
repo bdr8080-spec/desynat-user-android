@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
 import com.desynatuser.adapter.GiftCardAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentGiftCardBinding
-import com.desynatuser.ui.home.response.GetAllGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +25,7 @@ class GiftCardFragment : BaseFragment() {
     var isObserver = false
     private var giftCardAdapter: GiftCardAdapter?=null
     private var giftCardList = ArrayList<GetAllGiftCardResponse.Data>()
+    var from = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +45,25 @@ class GiftCardFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Gift Cards"
+
+            from = arguments?.getString("from").toString()
+
+            giftCardList.clear()
+            giftCardAdapter = GiftCardAdapter(requireActivity(),giftCardList,object :
+                GiftCardAdapter.GiftCardClick{
+                override fun onGiftCardClick(position: Int) {
+
+                    val bundle = Bundle().apply {
+                        putString("giftData", Gson().toJson(giftCardList[position]))
+                    }
+                    findNavController().navigate(R.id.action_giftCardFragment_to_giftCardDetailFragment,bundle)
+                }
+
+            })
+
+            rvGiftCard.adapter = giftCardAdapter
+
+            getGiftCard()
         }
 
     }
@@ -53,7 +76,7 @@ class GiftCardFragment : BaseFragment() {
             }
 
             ivAdd.setOnClickListener {
-
+                findNavController().navigate(R.id.action_giftCardFragment_to_occasionTypeFragment)
             }
         }
     }
@@ -66,6 +89,27 @@ class GiftCardFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.giftCardListResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                giftCardList.clear()
+                giftCardList.addAll(response.data)
+                checkData()
+                giftCardAdapter?.notifyDataSetChanged()
+                    ProgressDialogUtils.getInstance().hideProgress()
+                isObserver = false
+            }
+        }
+    }
+
+    private fun getGiftCard(){
+        viewModel.getGiftCardList()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = giftCardList.isEmpty()
     }
 
 }

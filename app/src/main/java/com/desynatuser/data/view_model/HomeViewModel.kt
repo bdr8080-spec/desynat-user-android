@@ -9,10 +9,15 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
+import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
+import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
@@ -299,6 +304,51 @@ val sizeListResult: LiveData<GetSizeListResponse>
     fun getSizeList() {
         viewModelScope.launch {
             repository.getSizeList()
+        }
+    }
+
+val giftCardListResult: LiveData<GetAllGiftCardResponse>
+        get() = repository.giftCardLiveData
+
+    fun getGiftCardList() {
+        viewModelScope.launch {
+            repository.getGiftCardList()
+        }
+    }
+
+val giftCardOccasionResult: LiveData<GetGiftCardOccasionTypeResponse>
+        get() = repository.giftCardOccasionLiveData
+
+    fun getGiftCardOccasion() {
+        viewModelScope.launch {
+            repository.getGiftCardOccasion()
+        }
+    }
+
+val buyGiftCardResult: LiveData<CommonResponse>
+        get() = repository.buyGiftCardLiveData
+
+    fun buyGiftCard(request:AddGiftCardRequest) {
+        viewModelScope.launch {
+            repository.buyGiftCard(request)
+        }
+    }
+
+val promoCodeListResult: LiveData<GetPromoCodeResponse>
+        get() = repository.promoCodeLiveData
+
+    fun getPromoCode(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getPromoCode(map)
+        }
+    }
+
+val applyPromoCodeResult: LiveData<ApplyPromoCodeResponse>
+        get() = repository.applyPromoCodeLiveData
+
+    fun applyPromoCode(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.applyPromoCode(map)
         }
     }
 

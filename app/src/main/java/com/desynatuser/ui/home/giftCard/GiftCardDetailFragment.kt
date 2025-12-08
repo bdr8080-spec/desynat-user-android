@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentGiftCardDetailBinding
+import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +22,7 @@ class GiftCardDetailFragment : BaseFragment() {
     private var binding: FragmentGiftCardDetailBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var giftData : GetAllGiftCardResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +41,11 @@ class GiftCardDetailFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-
+            val itemJson = arguments?.getString("giftData")
+            if (!itemJson.isNullOrEmpty()) {
+                giftData = Gson().fromJson(itemJson, GetAllGiftCardResponse.Data::class.java)
+                setData()
+            }
         }
 
     }
@@ -58,6 +67,15 @@ class GiftCardDetailFragment : BaseFragment() {
                 errorMessage?.let { showToast(it) }
                 isObserver = false
             }
+        }
+    }
+
+    private fun setData(){
+        binding?.apply {
+            tvDate.text = CommonMethod.customizeChangeDateFormat(giftData?.createdAt.toString(), outputFormat = "dd MMM yy hh:mm a")
+            ivGift.load(giftData?.image)
+            tvGiftName.text = giftData?.nameEnglish
+
         }
     }
 

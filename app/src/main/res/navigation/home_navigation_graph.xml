@@ -59,6 +59,10 @@
             android:id="@+id/action_myBagFragment_to_savedAddressFragment"
             app:destination="@id/savedAddress"/>
 
+        <action
+            android:id="@+id/action_myBagFragment_to_promoCodeFragment"
+            app:destination="@id/promoCode"/>
+
 
     </fragment>
 
@@ -75,6 +79,10 @@
         <action
             android:id="@+id/action_profileFragment_to_savedAddressFragment"
             app:destination="@id/savedAddress"/>
+
+        <action
+            android:id="@+id/action_profileFragment_to_giftCardFragment"
+            app:destination="@id/giftCard"/>
 
     </fragment>
 
@@ -212,5 +220,63 @@
         android:name="com.desynatuser.ui.home.store.WishListFragment"
         android:label="Wishlist Fragment"
         tools:layout="@layout/fragment_wish_list"/>
+
+    <fragment
+        android:id="@+id/promoCode"
+        android:name="com.desynatuser.ui.home.profile.PromoCodeFragment"
+        android:label="Promo Code Fragment"
+        tools:layout="@layout/fragment_promo_code"/>
+
+    <fragment
+        android:id="@+id/payment"
+        android:name="com.desynatuser.ui.home.giftCard.PaymentMethodFragment"
+        android:label="Payment Fragment"
+        tools:layout="@layout/fragment_payment_method"/>
+
+    <fragment
+        android:id="@+id/giftCard"
+        android:name="com.desynatuser.ui.home.giftCard.GiftCardFragment"
+        android:label="Gift Card Fragment"
+        tools:layout="@layout/fragment_gift_card">
+
+        <action
+            android:id="@+id/action_giftCardFragment_to_occasionTypeFragment"
+            app:destination="@id/occasionType"/>
+
+        <action
+            android:id="@+id/action_giftCardFragment_to_giftCardDetailFragment"
+            app:destination="@id/giftCardDetail"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/enterGiftCardDetail"
+        android:name="com.desynatuser.ui.home.giftCard.EnterGiftCardDetailFragment"
+        android:label="Enter Gift Card Detail Fragment"
+        tools:layout="@layout/fragment_enter_gift_card_detail">
+
+        <action
+            android:id="@+id/action_enterGiftCardDetailFragment_to_paymentFragment"
+            app:destination="@id/payment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/giftCardDetail"
+        android:name="com.desynatuser.ui.home.giftCard.GiftCardDetailFragment"
+        android:label="Gift Card Detail Fragment"
+        tools:layout="@layout/fragment_gift_card_detail"/>
+
+    <fragment
+        android:id="@+id/occasionType"
+        android:name="com.desynatuser.ui.home.giftCard.SelectOccasionTypeFragment"
+        android:label="Occasion Type Fragment"
+        tools:layout="@layout/fragment_select_occasion_type">
+
+        <action
+            android:id="@+id/action_occasionTypeFragment_to_enterGiftCardDetailFragment"
+            app:destination="@id/enterGiftCardDetail"/>
+
+    </fragment>
 
 </navigation>
