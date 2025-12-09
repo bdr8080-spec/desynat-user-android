@@ -63,6 +63,9 @@
             android:id="@+id/action_myBagFragment_to_promoCodeFragment"
             app:destination="@id/promoCode"/>
 
+        <action
+            android:id="@+id/action_myBagFragment_to_paymentFragment"
+            app:destination="@id/payment"/>
 
     </fragment>
 
@@ -231,7 +234,17 @@
         android:id="@+id/payment"
         android:name="com.desynatuser.ui.home.giftCard.PaymentMethodFragment"
         android:label="Payment Fragment"
-        tools:layout="@layout/fragment_payment_method"/>
+        tools:layout="@layout/fragment_payment_method">
+
+        <action
+            android:id="@+id/action_paymentFragment_to_orderPlacedFragment"
+            app:destination="@id/orderPlaced"/>
+
+        <action
+            android:id="@+id/action_paymentFragment_to_applyGiftFragment"
+            app:destination="@id/giftCardApply"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/giftCard"
@@ -275,6 +288,38 @@
 
         <action
             android:id="@+id/action_occasionTypeFragment_to_enterGiftCardDetailFragment"
+            app:destination="@id/enterGiftCardDetail"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/giftCardApply"
+        android:name="com.desynatuser.ui.home.giftCard.ApplyGiftCardFragment"
+        android:label="Apply Gift Card Fragment"
+        tools:layout="@layout/fragment_apply_gift_card">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderPlaced"
+        android:name="com.desynatuser.ui.home.myOrder.OrderPlacedFragment"
+        android:label="Order Placed Fragment"
+        tools:layout="@layout/fragment_order_placed">
+
+        <action
+            android:id="@+id/action_orderPlacedFragment_to_myOrderFragment"
+            app:destination="@id/myOrder"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/myOrder"
+        android:name="com.desynatuser.ui.home.myOrder.MyOrderFragment"
+        android:label="My Order Fragment"
+        tools:layout="@layout/fragment_my_order">
+
+        <action
+            android:id="@+id/action_myOrderFragment_to_myOrderFragment"
             app:destination="@id/enterGiftCardDetail"/>
 
     </fragment>

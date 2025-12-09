@@ -13,7 +13,7 @@ data class BuyGiftCardResponse(
 ) {
     data class Data(
         @SerializedName("amount")
-        val amount: Int,
+        val amount: String,
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("gift_card_id")

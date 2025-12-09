@@ -9,15 +9,15 @@ data class PlaceOrderRequest(
     @SerializedName("discount_mrp")
     val discountMrp: String,
     @SerializedName("giftcard_amount")
-    val giftcardAmount: String,
+    val giftcardAmount: String?=null,
     @SerializedName("Payment_method")
     val paymentMethod: String,// 1 myfatoorah 2 wallet 3 Cod
     @SerializedName("promocode_id")
-    val promocodeId: String,
+    val promocodeId: String?=null,
     @SerializedName("promocode_status")// yes no
     val promocodeStatus: String,
     @SerializedName("promocode_value")
-    val promocodeValue: String,
+    val promocodeValue: String?=null,
     @SerializedName("shipping_fees")
     val shippingFees: String,
     @SerializedName("tax")

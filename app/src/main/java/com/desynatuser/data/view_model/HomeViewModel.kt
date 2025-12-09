@@ -10,8 +10,11 @@ import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
+import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
 import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
@@ -31,6 +34,8 @@ import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
+import com.desynatuser.ui.home.store.response.PlaceOrderRequest
+import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -325,7 +330,7 @@ val giftCardOccasionResult: LiveData<GetGiftCardOccasionTypeResponse>
         }
     }
 
-val buyGiftCardResult: LiveData<CommonResponse>
+val buyGiftCardResult: LiveData<BuyGiftCardResponse>
         get() = repository.buyGiftCardLiveData
 
     fun buyGiftCard(request:AddGiftCardRequest) {
@@ -334,7 +339,28 @@ val buyGiftCardResult: LiveData<CommonResponse>
         }
     }
 
-val promoCodeListResult: LiveData<GetPromoCodeResponse>
+    val buyGiftCardPaymentResult: LiveData<CommonResponse>
+        get() = repository.buyGiftCardPaymentLiveData
+
+    fun buyGiftCardPayment(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.buyGiftCardPayment(map)
+        }
+    }
+
+
+    val applyGiftCardResult: LiveData<ApplyGiftCardResponse>
+        get() = repository.applyGiftCardLiveData
+
+    fun applyGiftCard(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.applyGiftCard(map)
+        }
+    }
+
+
+
+    val promoCodeListResult: LiveData<GetPromoCodeResponse>
         get() = repository.promoCodeLiveData
 
     fun getPromoCode(map: HashMap<String,Any>) {
@@ -349,6 +375,37 @@ val applyPromoCodeResult: LiveData<ApplyPromoCodeResponse>
     fun applyPromoCode(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.applyPromoCode(map)
+        }
+    }
+
+
+val orderPaymentResult: LiveData<CommonResponse>
+        get() = repository.orderPaymentLiveData
+
+    fun orderPayment(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.orderPayment(map)
+        }
+    }
+
+
+val placeOrderResult: LiveData<PlaceOrderResponse>
+        get() = repository.placeOrderLiveData
+
+    fun placeOrder(request: PlaceOrderRequest) {
+        viewModelScope.launch {
+            repository.placeOrder(request)
+        }
+    }
+
+
+
+    val orderDetailResult: LiveData<GetSingleOrderSummaryResponse>
+        get() = repository.orderDetailLiveData
+
+    fun getOrderDetailInfo(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getOrderDetailInfo(map)
         }
     }
 

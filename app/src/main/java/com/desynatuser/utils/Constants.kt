@@ -57,6 +57,7 @@ object Constants {
     const val GIFT_CARD_LIST = "/api/user/view-gift-cards"
     const val GIFT_CARD_OCCASION = "/api/user/gift-card-occasion-list"
     const val BUY_GIFT_CARD = "/api/user/add-gift-card"
+    const val BUY_GIFT_CARD_PAYMENT = "/api/user/giftcard-complete-Payment"
     const val APPLY_GIFT_CARD = "/api/user/apply-gift-card"
     const val PROMO_CODE_LIST = "/api/user/view-promocode-list"
     const val APPLY_PROMO_CODE = "/api/user/Apply-promocode"

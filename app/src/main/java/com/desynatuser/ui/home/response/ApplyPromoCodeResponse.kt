@@ -12,6 +12,8 @@ data class ApplyPromoCodeResponse(
     val status: String
 ) {
     data class Data(
+        @SerializedName("id")
+        var id: String?=null,
         @SerializedName("amount")
         val amount: String,
         @SerializedName("Apply_discount_value")

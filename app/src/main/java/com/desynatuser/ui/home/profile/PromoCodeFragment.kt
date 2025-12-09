@@ -132,9 +132,11 @@ class PromoCodeFragment : BaseFragment() {
         viewModel.applyPromoCodeResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                var data = response.data
+                data.id = promoCodeList[selectedPos].id.toString()
                 showToast(response.message)
                 val bundle = Bundle().apply {
-                    putString("promoCode", Gson().toJson(response.data))
+                    putString("promoCode", Gson().toJson(data))
                 }
                 parentFragmentManager.setFragmentResult("promocode_request", bundle)
 

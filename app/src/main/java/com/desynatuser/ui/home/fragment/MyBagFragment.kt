@@ -93,12 +93,23 @@ class MyBagFragment : BaseFragment() {
         binding?.apply {
 
             btnPlaceOrder.setOnClickListener {
-
+                if(selectedAddress==null){
+                    showToast("Please select address")
+                }
+                else{
+                    val bundle = Bundle().apply {
+                        putString("from", "myBag")
+                        putString("cart", Gson().toJson(cartData))
+                        putString("address", Gson().toJson(selectedAddress))
+                        putString("promo", Gson().toJson(promoCode))
+                    }
+                    findNavController().navigate(R.id.action_myBagFragment_to_paymentFragment,bundle)
+                }
             }
 
             relDeliveryAddress.setOnClickListener {
                 val bundle = Bundle().apply {
-                    putString("from", "foodBag")
+                    putString("from", "myBag")
                 }
                 findNavController().navigate(R.id.action_myBagFragment_to_savedAddressFragment,bundle)
             }

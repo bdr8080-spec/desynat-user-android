@@ -39,10 +39,12 @@
             android:background="@drawable/grey_stroke_cards">
 
             <RadioGroup
+                android:id="@+id/rgPaymentMethods"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <RadioButton
+                    android:id="@+id/rbDebitCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Credit/ Debit Card"
@@ -52,10 +54,10 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
                     android:buttonTint="@color/brown"
-                    android:checked="true"
                     android:drawableStart="@drawable/ic_wallet"/>
 
                 <com.myfatoorah.sdk.views.embeddedpayment.MFPaymentCardView
+                    android:visibility="gone"
                     android:id="@+id/mfPaymentView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,6 +76,7 @@
                     android:fontFamily="@font/poppins_medium"/>
 
                 <RadioButton
+                    android:id="@+id/rbKnet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pay by KNET"
@@ -88,6 +91,7 @@
                     android:drawableStart="@drawable/ic_apple"/>
 
                 <RadioButton
+                    android:id="@+id/rbApplePay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Apple Pay"
@@ -102,6 +106,7 @@
                     android:drawableStart="@drawable/ic_apple"/>
 
                 <RadioButton
+                    android:id="@+id/rbVisaPay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Visapay"
@@ -116,6 +121,7 @@
                     android:drawableStart="@drawable/ic_visa"/>
 
                 <RadioButton
+                    android:id="@+id/rbSamsungPay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Samsung Pay"
@@ -130,6 +136,7 @@
                     android:drawableStart="@drawable/ic_apple"/>
 
                 <RadioButton
+                    android:id="@+id/rbWallet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="In -App Wallet"
@@ -165,6 +172,7 @@
                 android:layout_marginEnd="@dimen/_10sdp"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvGiftCardNumber"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,6 +188,7 @@
                 android:layout_centerVertical="true"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHaveGiftCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Have a gift card"

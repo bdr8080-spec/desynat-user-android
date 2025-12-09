@@ -100,8 +100,9 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             }
 
             btnPay.setOnClickListener {
-                buyGiftCard()
-                findNavController().navigate(R.id.action_enterGiftCardDetailFragment_to_paymentFragment)
+                if (validation()) {
+                    buyGiftCard()
+                }
             }
 
         }
@@ -119,7 +120,11 @@ class EnterGiftCardDetailFragment : BaseFragment() {
         viewModel.buyGiftCardResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                findNavController().navigate(R.id.action_occasionTypeFragment_to_enterGiftCardDetailFragment)
+                val bundle = Bundle().apply {
+                    putString("from", "gift")
+                    putString("giftCardData", Gson().toJson(response.data))
+                }
+                findNavController().navigate(R.id.action_enterGiftCardDetailFragment_to_paymentFragment,bundle)
                 isObserver = false
             }
         }
@@ -144,10 +149,57 @@ class EnterGiftCardDetailFragment : BaseFragment() {
         isObserver = true
     }
 
-    fun applyGiftCard(){
-        val map = HashMap<String,Any>()
-        map["giftCardNo"] = ""
-        map["giftCardPin"] = ""
+    private fun validation(): Boolean {
+        binding?.apply {
+           if (amount==""){
+               if (etAmount.isVisible){
+                   if (etAmount.text?.trim()?.isEmpty() == true) {
+                       showToast("Please enter amount")
+                       return false
+                   }
+
+               }
+               else {
+                   showToast("Please enter amount")
+                   return false
+               }
+           }
+
+            val name = etName.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+
+            if (name.isEmpty()) {
+                showToast("Please enter recipient name")
+                return false
+            }
+
+            if (email.isEmpty()) {
+                showToast("Please enter email")
+                return false
+            }
+
+            val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+            if (!emailRegex.matches(email)) {
+                showToast("Please enter a valid email")
+                return false
+            }
+            val fromName = etFromName.text.toString().trim()
+            if (fromName.isEmpty()) {
+                showToast("Please enter your name")
+                return false
+            }
+
+            val wishMsg = etWishMsg.text.toString().trim()
+            if (wishMsg.isEmpty()) {
+                showToast("Please enter wish message")
+                return false
+            }
+            return true
+        }
+
+        return false
     }
+
+
 
 }

@@ -7,6 +7,7 @@ import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
@@ -214,6 +215,11 @@ interface ApiServices {
     @POST(Constants.BUY_GIFT_CARD)
     suspend fun buyGiftCard(
         @Body request: AddGiftCardRequest
+    ): Response<BuyGiftCardResponse>
+
+    @POST(Constants.BUY_GIFT_CARD_PAYMENT)
+    suspend fun buyGiftCardPayment(
+        @Body map: HashMap<String,Any>
     ): Response<CommonResponse>
 
     @POST(Constants.APPLY_GIFT_CARD)

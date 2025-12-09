@@ -12,8 +12,11 @@ import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
+import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
+import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
 import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
@@ -33,6 +36,8 @@ import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
+import com.desynatuser.ui.home.store.response.PlaceOrderRequest
+import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -475,7 +480,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
- val buyGiftCardLiveData = SingleLiveEvent<CommonResponse>()
+ val buyGiftCardLiveData = SingleLiveEvent<BuyGiftCardResponse>()
     suspend fun buyGiftCard(request:AddGiftCardRequest)
     {
         handleApiCall(
@@ -483,6 +488,28 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.buyGiftCard(request)
             },
             responseLiveData = buyGiftCardLiveData
+        )
+    }
+
+ val buyGiftCardPaymentLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun buyGiftCardPayment(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.buyGiftCardPayment(map)
+            },
+            responseLiveData = buyGiftCardPaymentLiveData
+        )
+    }
+
+ val applyGiftCardLiveData = SingleLiveEvent<ApplyGiftCardResponse>()
+    suspend fun applyGiftCard(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.applyGiftCard(map)
+            },
+            responseLiveData = applyGiftCardLiveData
         )
     }
 
@@ -506,6 +533,39 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.applyPromoCode(map)
             },
             responseLiveData = applyPromoCodeLiveData
+        )
+    }
+
+  val placeOrderLiveData = SingleLiveEvent<PlaceOrderResponse>()
+    suspend fun placeOrder(request: PlaceOrderRequest)
+    {
+        handleApiCall(
+            api = {
+                api.placeOrder(request)
+            },
+            responseLiveData = placeOrderLiveData
+        )
+    }
+
+  val orderPaymentLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun orderPayment(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.orderPayment(map)
+            },
+            responseLiveData = orderPaymentLiveData
+        )
+    }
+
+  val orderDetailLiveData = SingleLiveEvent<GetSingleOrderSummaryResponse>()
+    suspend fun getOrderDetailInfo(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getSingleOrder(map)
+            },
+            responseLiveData = orderDetailLiveData
         )
     }
 

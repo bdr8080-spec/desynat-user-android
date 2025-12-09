@@ -82,7 +82,7 @@ class SavedAddressFragment : BaseFragment() {
 
                         }
                         3->{
-                          /*  if (from=="foodBag"){
+                          /*  if (from=="myBag"){
                                 val bundle = Bundle().apply {
                                     putString("address", savedAddressList[position].address)
                                 }
@@ -185,7 +185,7 @@ class SavedAddressFragment : BaseFragment() {
                 savedAddressList[selectedPos].setAsDefault = "1"
                 savedAddressAdapter?.notifyDataSetChanged()
                 SharedPreference.get(requireActivity()).saveDefaultAddress(savedAddressList[selectedPos])
-                if (from=="foodBag"||from=="productDetail"){
+                if (from=="myBag"||from=="productDetail"){
                     val bundle = Bundle().apply {
                         putString("address", Gson().toJson(savedAddressList[selectedPos]))
                     }
