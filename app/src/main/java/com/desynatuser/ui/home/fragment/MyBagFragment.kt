@@ -68,7 +68,10 @@ class MyBagFragment : BaseFragment() {
             ) { _, bundle ->
                 val promoCodeJson = bundle.getString("promoCode")
                 promoCode = Gson().fromJson(promoCodeJson, ApplyPromoCodeResponse.Data::class.java)
-                tvApplyPromoCode.text = promoCode?.discountCode
+                tvApplyPromoCode.isVisible = false
+                tvPromoCode.isVisible = true
+                tvRemove.isVisible = true
+                tvPromoCode.text = promoCode?.discountCode
                 tvTotalAmount.text = CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)
                 tvCouponDiscountValue.text = CommonMethod.formatPrice(promoCode?.originalDiscount?:0.0)
                 Log.d("PromoCode", "Received: $promoCode")
@@ -103,7 +106,7 @@ class MyBagFragment : BaseFragment() {
                         putString("address", Gson().toJson(selectedAddress))
                         putString("promo", Gson().toJson(promoCode))
                     }
-                    findNavController().navigate(R.id.action_myBagFragment_to_paymentFragment,bundle)
+                    findNavController().navigate(R.id.action_myBagFragment_to_orderPaymentFragment,bundle)
                 }
             }
 
@@ -115,17 +118,30 @@ class MyBagFragment : BaseFragment() {
             }
 
             relPromoCode.setOnClickListener {
-                if (selectedAddress==null){
-                    showToast("Please select delivery address first")
-                }
-                else{
-                    val bundle = Bundle().apply {
-                        putString("deliveryid", selectedAddress?.id.toString())
-                        putString("amount", cartData?.totalAmount.toString())
+                if(promoCode==null) {
+                    if (selectedAddress == null) {
+                        showToast("Please select delivery address first")
+                    } else {
+                        val bundle = Bundle().apply {
+                            putString("deliveryid", selectedAddress?.id.toString())
+                            putString("amount", cartData?.totalAmount.toString())
+                        }
+                        findNavController().navigate(
+                            R.id.action_myBagFragment_to_promoCodeFragment,
+                            bundle
+                        )
                     }
-                    findNavController().navigate(R.id.action_myBagFragment_to_promoCodeFragment,bundle)
                 }
+            }
 
+            tvRemove.setOnClickListener {
+                tvApplyPromoCode.isVisible = true
+                tvPromoCode.isVisible = false
+                tvRemove.isVisible = false
+                promoCode = null
+                tvPromoCode.text = ""
+                tvTotalAmount.text = "${cartData?.totalAmount} KD"
+                tvCouponDiscountValue.text = "0 KD"
             }
 
         }

@@ -207,7 +207,7 @@ interface ApiServices {
 
 
     @POST(Constants.GIFT_CARD_LIST)
-    suspend fun getGiftCardList(): Response<GetAllGiftCardResponse>
+    suspend fun getGiftCardList(@Body map: HashMap<String,Any>): Response<GetAllGiftCardResponse>
 
     @GET(Constants.GIFT_CARD_OCCASION)
     suspend fun getGiftCardOccasion(): Response<GetGiftCardOccasionTypeResponse>

@@ -60,7 +60,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:padding="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:background="@drawable/card_background"
                 app:layout_constraintTop_toBottomOf="@+id/relCart">
@@ -72,6 +71,7 @@
                     app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
                     android:src="@drawable/toprated"
                     android:scaleType="centerCrop"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_centerVertical="true" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -80,13 +80,41 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="Apply PromoCode"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:drawablePadding="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
                 android:drawableEnd="@drawable/ic_arrow_forward"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                android:layout_toRightOf="@+id/ivPromo"
                 android:layout_centerVertical="true"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
+                    android:id="@+id/tvPromoCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text=""
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_toRightOf="@+id/ivPromo"
+                    android:layout_toLeftOf="@+id/tvRemove"
+                    android:layout_centerVertical="true"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
+                    android:id="@+id/tvRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Remove"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_12sdp"
+                   android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
 
             </RelativeLayout>
 

@@ -41,6 +41,7 @@ import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
+import retrofit2.http.Body
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -459,11 +460,11 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
     }
 
   val giftCardLiveData = SingleLiveEvent<GetAllGiftCardResponse>()
-    suspend fun getGiftCardList()
+    suspend fun getGiftCardList(map: HashMap<String,Any>)
     {
         handleApiCall(
             api = {
-                api.getGiftCardList()
+                api.getGiftCardList(map)
             },
             responseLiveData = giftCardLiveData
         )

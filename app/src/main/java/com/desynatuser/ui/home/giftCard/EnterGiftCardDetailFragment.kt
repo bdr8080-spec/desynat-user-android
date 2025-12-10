@@ -12,7 +12,6 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentEnterGiftCardDetailBinding
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
-import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -45,7 +44,6 @@ class EnterGiftCardDetailFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Enter Details"
-
 
             val itemJson = arguments?.getString("occasionData")
             if (!itemJson.isNullOrEmpty()) {
@@ -160,7 +158,7 @@ class EnterGiftCardDetailFragment : BaseFragment() {
 
                }
                else {
-                   showToast("Please enter amount")
+                   showToast("Please choose amount")
                    return false
                }
            }
@@ -174,13 +172,13 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             }
 
             if (email.isEmpty()) {
-                showToast("Please enter email")
+                showToast("Please enter email id")
                 return false
             }
 
             val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
             if (!emailRegex.matches(email)) {
-                showToast("Please enter a valid email")
+                showToast("Please enter a valid email id")
                 return false
             }
             val fromName = etFromName.text.toString().trim()

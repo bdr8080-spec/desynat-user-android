@@ -59,7 +59,7 @@ class OrderPlacedFragment : BaseFragment() {
         binding?.apply {
 
             tvTrackOrder.setOnClickListener {
-                val navOptions = NavOptions.Builder()
+               /* val navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.home, false)
                     .build()
 
@@ -67,6 +67,14 @@ class OrderPlacedFragment : BaseFragment() {
                     R.id.action_orderPlacedFragment_to_myOrderFragment,
                     null,
                     navOptions
+                )*/
+
+                findNavController().navigate(
+                    R.id.home,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(R.id.home_navigation_graph, true)
+                        .build()
                 )
            }
 

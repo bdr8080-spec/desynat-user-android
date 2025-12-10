@@ -31,8 +31,8 @@ class GiftCardAdapter(var context:Context, var giftCardList: ArrayList<GetAllGif
         var giftData = giftCardList[position]
 
         holder.binding.apply {
-            tvGiftName.text = giftData.nameEnglish
-            ivGift.load(giftData.image) {
+            tvGiftName.text = giftData.giftDetails.nameEnglish
+            ivGift.load(giftData.giftDetails.image) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)

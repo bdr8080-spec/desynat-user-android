@@ -315,9 +315,9 @@ val sizeListResult: LiveData<GetSizeListResponse>
 val giftCardListResult: LiveData<GetAllGiftCardResponse>
         get() = repository.giftCardLiveData
 
-    fun getGiftCardList() {
+    fun getGiftCardList(map: HashMap<String,Any>) {
         viewModelScope.launch {
-            repository.getGiftCardList()
+            repository.getGiftCardList(map)
         }
     }
 

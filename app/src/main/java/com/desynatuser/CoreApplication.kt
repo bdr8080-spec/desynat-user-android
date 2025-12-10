@@ -17,9 +17,9 @@ override fun onCreate() {
     }
 
     MFSDK.init(
-        getString(R.string.my_fatoorah_new_token_test),
-        MFCountry.KUWAIT,
-        MFEnvironment.TEST
+        getString(R.string.my_fatoorah_token),
+        MFCountry.UNITED_ARAB_EMIRATES_UAE,
+        MFEnvironment.LIVE
     )
 
 }

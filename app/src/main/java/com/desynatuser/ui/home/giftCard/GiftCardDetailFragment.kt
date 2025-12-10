@@ -73,9 +73,17 @@ class GiftCardDetailFragment : BaseFragment() {
     private fun setData(){
         binding?.apply {
             tvDate.text = CommonMethod.customizeChangeDateFormat(giftData?.createdAt.toString(), outputFormat = "dd MMM yy hh:mm a")
-            ivGift.load(giftData?.image)
-            tvGiftName.text = giftData?.nameEnglish
-
+            ivGift.load(giftData?.giftDetails?.image)
+            tvGiftName.text = giftData?.giftDetails?.nameEnglish
+            tvFromName.text = giftData?.senderName
+            tvWishMessage.text = giftData?.wishMessage
+            tvNoteMsg.text = giftData?.notes
+            tvEmail.text = giftData?.receiverEmail
+            tvName.text = giftData?.receiverName
+            tvQuantity.text = "Total Quantity- 1"
+            tvPrice.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
+            tvAmount.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
+            tvTransaction.text = "Transaction Id: ${giftData?.transactionId}"
         }
     }
 

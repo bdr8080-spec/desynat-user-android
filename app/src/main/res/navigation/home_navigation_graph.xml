@@ -64,8 +64,8 @@
             app:destination="@id/promoCode"/>
 
         <action
-            android:id="@+id/action_myBagFragment_to_paymentFragment"
-            app:destination="@id/payment"/>
+            android:id="@+id/action_myBagFragment_to_orderPaymentFragment"
+            app:destination="@id/orderPayment"/>
 
     </fragment>
 
@@ -236,12 +236,21 @@
         android:label="Payment Fragment"
         tools:layout="@layout/fragment_payment_method">
 
-        <action
-            android:id="@+id/action_paymentFragment_to_orderPlacedFragment"
-            app:destination="@id/orderPlaced"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderPayment"
+        android:name="com.desynatuser.ui.home.myOrder.OrderPaymentFragment"
+        android:label="Order Payment Fragment"
+        tools:layout="@layout/fragment_order_payment">
 
         <action
-            android:id="@+id/action_paymentFragment_to_applyGiftFragment"
+            android:id="@+id/action_orderPaymentFragment_to_orderPlacedFragment"
+            app:destination="@id/orderPlaced"/>
+
+
+        <action
+            android:id="@+id/action_orderPaymentFragment_to_applyGiftFragment"
             app:destination="@id/giftCardApply"/>
 
     </fragment>

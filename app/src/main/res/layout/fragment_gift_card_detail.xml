@@ -105,7 +105,7 @@
             android:text="Atif Aslam"
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             app:layout_constraintTop_toBottomOf="@+id/tvRecepientDetail"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -117,7 +117,7 @@
             android:text="Atif23@gmail.com"
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             app:layout_constraintTop_toBottomOf="@+id/tvName"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -129,7 +129,7 @@
             android:text="Total Quantity- 2"
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             app:layout_constraintTop_toBottomOf="@+id/tvEmail"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -153,7 +153,7 @@
             android:text="Hasan Ali"
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             app:layout_constraintTop_toBottomOf="@+id/tvFrom"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -176,8 +176,7 @@
             android:text="lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."
             android:layout_marginTop="@dimen/_5sdp"
             android:gravity="start"
-            android:maxLines="4"
-            android:lines="4"
+            android:textSize="@dimen/_10sdp"
             android:background="@drawable/edit_back"
             app:layout_constraintTop_toBottomOf="@+id/tvWish"/>
 
@@ -194,15 +193,12 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/etWishMsg"
+            android:id="@+id/tvNoteMsg"
             android:layout_width="match_parent"
             style="@style/edit_text"
+            android:textSize="@dimen/_10sdp"
             android:text="lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."
             android:layout_marginTop="@dimen/_5sdp"
-            android:inputType="textMultiLine"
-            android:gravity="start"
-            android:maxLines="4"
-            android:lines="4"
             android:background="@drawable/edit_back"
             app:layout_constraintTop_toBottomOf="@+id/tvNote"/>
 
@@ -215,7 +211,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="#80000000"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/etWishMsg"
+            app:layout_constraintTop_toBottomOf="@+id/tvNoteMsg"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -257,7 +253,7 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_18sdp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_placeholder"
+                android:src="@drawable/ic_visa"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
