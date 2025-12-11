@@ -87,13 +87,13 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="34dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_apple"
+                        android:src="@drawable/gpay"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_gravity="center_vertical"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/edit_text_title"
-                        android:text="Apple Pay"
+                        android:text="Google Pay"
                         android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_medium"/>
@@ -338,19 +338,14 @@
                     android:layout_toRightOf="@+id/ivGift"
                     android:layout_centerVertical="true"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tvApply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Apply Gift Card"
-                    android:textSize="@dimen/_9sdp"
-                    android:textColor="@color/brown"
-                    android:padding="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:src="@drawable/ic_apply_gift_card"
                     android:layout_alignParentEnd="true"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:drawableEnd="@drawable/ic_go_arrow"
+                    android:padding="@dimen/_10sdp"
                     android:layout_centerVertical="true"/>
 
             </RelativeLayout>
@@ -378,6 +373,18 @@
         android:layout_marginBottom="@dimen/_20sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:text="Place Order"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.myfatoorah.sdk.views.embeddedpayment.googlepay.MFGooglePayButton
+        android:id="@+id/mfGooglePayButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

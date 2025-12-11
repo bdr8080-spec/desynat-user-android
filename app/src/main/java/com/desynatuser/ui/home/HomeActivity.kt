@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -24,7 +25,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.myfatoorah.sdk.views.MFSDK
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
 import java.io.IOException
 import java.util.Locale
 
@@ -44,7 +47,7 @@ class HomeActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        MFSDK.setUpActionBar(isShowToolBar = false)
         initView()
         initControl()
         observer()
@@ -214,7 +217,25 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (Constants.currentScreen=="payment"||Constants.currentScreen=="orderPayment") {
+            if (requestCode == 991) {
+                EventBus.getDefault().post(PaymentResultEvent(requestCode, resultCode, data))
+            }
+
+        }
+        Log.d("test",requestCode.toString())
+    }
+
 }
+
+data class PaymentResultEvent(
+    val requestCode: Int,
+    val resultCode: Int,
+    val data: Intent?
+)
 
 data class BottomNavItem(
     var name : String,

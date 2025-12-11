@@ -1,5 +1,6 @@
 package com.desynatuser.ui.home.giftCard
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentPaymentMethodBinding
+import com.desynatuser.ui.home.PaymentResultEvent
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
@@ -22,6 +24,7 @@ import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
@@ -33,13 +36,23 @@ import com.myfatoorah.sdk.entity.MFCardViewPlaceHolder
 import com.myfatoorah.sdk.entity.MFCardViewStyle
 import com.myfatoorah.sdk.entity.MFCardViewText
 import com.myfatoorah.sdk.entity.executepayment.MFExecutePaymentRequest
+import com.myfatoorah.sdk.entity.googlepay.GooglePayRequest
+import com.myfatoorah.sdk.entity.initiatepayment.MFInitiatePaymentRequest
+import com.myfatoorah.sdk.entity.initiatepayment.MFInitiatePaymentResponse
+import com.myfatoorah.sdk.entity.initiatesession.MFInitiateSessionRequest
 import com.myfatoorah.sdk.entity.paymentstatus.MFGetPaymentStatusResponse
 import com.myfatoorah.sdk.enums.MFAPILanguage
+import com.myfatoorah.sdk.enums.MFCountry
+import com.myfatoorah.sdk.enums.MFCurrencyISO
 import com.myfatoorah.sdk.enums.MFFontFamily
 import com.myfatoorah.sdk.enums.MFFontWeight
 import com.myfatoorah.sdk.views.MFResult
 import com.myfatoorah.sdk.views.MFSDK
+import com.myfatoorah.sdk.views.embeddedpayment.googlepay.MFGooglePayHelper
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @AndroidEntryPoint
 class PaymentMethodFragment : BaseFragment() {
@@ -52,6 +65,9 @@ class PaymentMethodFragment : BaseFragment() {
 
     private lateinit var selectedRadio: AppCompatImageView
     private var selectedMethod: String = ""
+
+    private var mfGooglePayHelper: MFGooglePayHelper? = null
+    private val googlePayRequestCODE: Int = 991
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +85,7 @@ class PaymentMethodFragment : BaseFragment() {
     }
 
     override fun initView() {
+        onPaymentResultEvent(null)
         initiateSession()
         cardStyling()
         binding?.apply {
@@ -96,23 +113,23 @@ class PaymentMethodFragment : BaseFragment() {
             btnProceed.setOnClickListener {
                 when (selectedMethod) {
                     "KNET" -> {
-                        startPayment(2)   // PaymentMethodId = 2 (KNET)
+                        executeRedirectPayment(1)
                     }
 
-                    "APPLE_PAY" -> {
-                        startPayment(11)  // Apple Pay ,16-google pay
+                    "GOOGLE_PAY" -> {
+                        executeRedirectPayment(32)
                     }
 
                     "VISA" -> {
-                        startPayment(1)  // Visa/MasterCard
+                        executeRedirectPayment(2)
                     }
 
                     "SAMSUNG_PAY" -> {
-                        startPayment(23) // Samsung Pay
+                        executeRedirectPayment(23)
                     }
                     "CREDIT_DEBIT" -> {
-//                        buyGiftCardPayment("124621783")
-                        executeEmbeddedPayment()
+                     //   executeEmbeddedPayment()
+                        executeRedirectPayment(8)
                     }
                     "WALLET" -> {
                         buyGiftCardPayment(null)
@@ -307,7 +324,14 @@ class PaymentMethodFragment : BaseFragment() {
 
                     when (index) {
                         0 -> { selectedMethod =  "KNET"}
-                        1 -> { selectedMethod =  "APPLE_PAY"}
+                        1 -> { selectedMethod =  "GOOGLE_PAY"
+/*
+                            if (mfGooglePayHelper == null) {
+                                initiateGooglePaySession()
+                                btnProceed.isVisible = false
+
+                            }*/
+                        }
                         2 -> { selectedMethod =  "VISA"}
                         3 -> { selectedMethod =  "SAMSUNG_PAY"}
                         4 -> { selectedMethod =  "CREDIT_DEBIT"
@@ -318,8 +342,18 @@ class PaymentMethodFragment : BaseFragment() {
                     }
 
                     if (selectedMethod == "CREDIT_DEBIT") {
-                        mfPaymentView.visibility = View.VISIBLE
-                    } else {
+                        mfPaymentView.visibility = View.GONE
+                        btnProceed.isVisible = true
+                        mfGooglePayButton.isVisible = false
+                    }
+                    else if (selectedMethod == "GOOGLE_PAY") {
+                        btnProceed.isVisible = true
+                        mfGooglePayButton.isVisible = false
+                        mfPaymentView.visibility = View.GONE
+                    }
+                    else {
+                        btnProceed.isVisible = true
+                        mfGooglePayButton.isVisible = false
                         mfPaymentView.visibility = View.GONE
                     }
                 }
@@ -327,32 +361,148 @@ class PaymentMethodFragment : BaseFragment() {
         }
     }
 
-    private fun startPayment(paymentMethodId: Int) {
-
-        val amount = giftCardData?.amount?.toDouble() ?: 0.0
+    private fun executeRedirectPayment(paymentMethodId:Int) {
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        val requestInitiate = MFInitiatePaymentRequest(0.100, MFCurrencyISO.KUWAIT_KWD)
+        MFSDK.initiatePayment(
+            requestInitiate,
+            MFAPILanguage.EN
+        ) { result: MFResult<MFInitiatePaymentResponse> ->
+            when (result) {
+                is MFResult.Success ->
+                    Log.d("executeRedirectPayment", "Response: " + Gson().toJson(result.response))
+                is MFResult.Fail ->
+                    Log.d("executeRedirectPayment", "Fail: " + Gson().toJson(result.error))
 
-        val request = MFExecutePaymentRequest(paymentMethodId, amount)
+                else -> {}
+            }
+        }
 
-        MFSDK.executePayment(requireActivity(), request, MFAPILanguage.EN) { invoiceId, result ->
+        val request = MFExecutePaymentRequest(paymentMethodId, giftCardData?.amount?.toDouble()?:0.0).apply {
+            /* customerReference = subscriptionData?.id.toString()
+             customerName = "${profileData?.firstName} ${profileData?.lastName}"
+             mobileCountryCode = profileData?.countryCode
+             customerMobile = profileData?.mobile
+             customerEmail = profileData?.email*/
+        }
 
+        MFSDK.executePayment(
+            requireActivity(),
+            request,
+            MFAPILanguage.EN
+        ) { invoiceId: String, result: MFResult<MFGetPaymentStatusResponse> ->
             ProgressDialogUtils.getInstance().hideProgress()
 
             when (result) {
                 is MFResult.Success -> {
-                    val status = result.response
-
-                    status.invoiceTransactions?.getOrNull(0)?.let {
-                        buyGiftCardPayment(it.transactionId)
-                    }
+                    Log.d("executeRedirectPayment", "Success: ${Gson().toJson(result.response)}")
+                    val paymentData = result.response
+                    buyGiftCardPayment(paymentData.invoiceTransactions?.get(0)?.transactionId)
                 }
                 is MFResult.Fail -> {
+                    Log.d("executeRedirectPayment", "Fail: ${Gson().toJson(result.error)}")
                     result.error.message?.let { showToast(it) }
-                    Log.e("HostedPayment", "Error: ${Gson().toJson(result.error)}")
+                    showToast("Payment failed")
+
                 }
-                MFResult.Loading -> {}
+                MFResult.Loading -> {
+                }
             }
         }
     }
+
+
+    private fun initiateGooglePaySession() {
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        MFSDK.initiateSession(MFInitiateSessionRequest(customerIdentifier = "user_${giftCardData?.orderId}")) {
+            when (it) {
+                is MFResult.Success -> {
+                    ProgressDialogUtils.getInstance().hideProgress()
+                    setupGooglePayHelper(it.response.sessionId)
+                }
+                is MFResult.Fail -> {
+                    ProgressDialogUtils.getInstance().hideProgress()
+                    it.error.message?.let { msg -> showToast(msg) }
+                    Log.d("GooglePay", "Session initiation failed: ${Gson().toJson(it.error)}")
+                }
+                MFResult.Loading -> { }
+            }
+        }
+    }
+
+    private fun setupGooglePayHelper(sessionId: String) {
+        val googlePayRequest = GooglePayRequest(
+            totalPrice = giftCardData?.amount.toString(),
+            merchantId = Constants.MERCHANT_ID,
+            merchantName = Constants.MERCHANT_NAME,
+            countryCode = MFCountry.UNITED_ARAB_EMIRATES_UAE.code,
+            currencyIso = MFCurrencyISO.UAE_AED
+        )
+
+        mfGooglePayHelper = MFGooglePayHelper(
+            activity = requireActivity(),
+            googlePayRequestCODE = googlePayRequestCODE,
+            sessionId = sessionId,
+            googlePayRequest = googlePayRequest,
+            onInvoiceCreated = { invoiceId ->
+                Log.d("GooglePay", "Invoice created: $invoiceId")
+            },
+            callback = { invoiceId, result ->
+                when (result) {
+                    is MFResult.Success -> {
+                        Log.d("GooglePay", "Payment success: " + Gson().toJson(result.response))
+                        val paymentData = result.response
+
+                        paymentData.invoiceTransactions?.get(0)?.let {
+                            buyGiftCardPayment(it.transactionId)
+                        }
+                    }
+
+                    is MFResult.Fail -> {
+                        Log.d("GooglePay", "Payment failed: " + Gson().toJson(result.error))
+                        showToast("Google Pay failed: ${result.error.message}")
+                    }
+
+                    else -> {}
+                }
+            }
+        )
+        binding?.mfGooglePayButton?.let { mfGooglePayHelper?.setGooglePayButton(it) }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPaymentResultEvent(event: PaymentResultEvent?=null) {
+        if (event?.requestCode == 991) {
+            when (event.resultCode) {
+                Activity.RESULT_OK -> {
+                    mfGooglePayHelper?.onActivityResult(event.requestCode, event.resultCode, event.data)
+                    Log.d("PaymentFlow", "Payment Success!")
+                }
+                Activity.RESULT_CANCELED -> {
+                    showToast("Payment Cancelled")
+                    Log.d("PaymentFlow", "Payment Cancelled")
+                }
+                else -> {
+                    showToast("Payment Failed or Unknown")
+                    Log.d("PaymentFlow", "Payment Failed or Unknown")
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Constants.currentScreen = "payment"
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Constants.currentScreen = ""
+        EventBus.getDefault().unregister(this)
+
+    }
+
 
 }

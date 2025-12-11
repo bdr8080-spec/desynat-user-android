@@ -71,9 +71,25 @@ class MyBagFragment : BaseFragment() {
                 tvApplyPromoCode.isVisible = false
                 tvPromoCode.isVisible = true
                 tvRemove.isVisible = true
+                tvCouponDiscount.isVisible = true
+                tvCouponDiscountValue.isVisible = true
                 tvPromoCode.text = promoCode?.discountCode
-                tvTotalAmount.text = CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)
-                tvCouponDiscountValue.text = CommonMethod.formatPrice(promoCode?.originalDiscount?:0.0)
+//                tvDiscountedPrice.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
+//                tvTotalAmountValue.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
+//                tvCouponDiscountValue.text = "${CommonMethod.formatPrice(promoCode?.applyDiscountValue?:0.0)} KD"
+                tvCouponDiscount.text = "Coupon Discount (${promoCode?.discountCode})"
+
+                promoCode?.let { promo ->
+                    updateBillingDetails(
+                        totalMrp = cartData?.totalMrp ?: 0.0,
+                        discountOnMrp = cartData?.discountOnMrp ?: 0.0,
+                        shippingFees = cartData?.shippingFees ?: 0.0,
+                        tax = cartData?.tax ?: 0.0,
+                        couponDiscount = promo.applyDiscountValue ?: 0.0,
+                        finalAmount = promo.finalAmount ?: 0.0
+                    )
+                }
+
                 Log.d("PromoCode", "Received: $promoCode")
             }
 
@@ -88,8 +104,12 @@ class MyBagFragment : BaseFragment() {
 
             rvFoodBag.adapter = myBagAdapter
         }
-
-        viewCartDetail()
+        if (cartData==null) {
+            viewCartDetail()
+        }
+        else{
+            checkData()
+        }
     }
 
     override fun initControl() {
@@ -138,10 +158,12 @@ class MyBagFragment : BaseFragment() {
                 tvApplyPromoCode.isVisible = true
                 tvPromoCode.isVisible = false
                 tvRemove.isVisible = false
+                tvCouponDiscount.isVisible = false
+                tvCouponDiscountValue.isVisible = false
                 promoCode = null
                 tvPromoCode.text = ""
-                tvTotalAmount.text = "${cartData?.totalAmount} KD"
                 tvCouponDiscountValue.text = "0 KD"
+                setData()
             }
 
         }
@@ -221,15 +243,28 @@ class MyBagFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
-            tvTotalMRP.text = "${cartData?.totalMrp} KD"
-            tvDiscountOnMRP.text = "${cartData?.discountOnMrp} KD"
-            tvCouponDiscountValue.text = "${cartData?.discountCoupon} KD"
-            tvTotalAmountValue.text = "${cartData?.totalAmount} KD"
-            tvShippingFee.text = "${cartData?.shippingFees} KD"
-            tvTaxValue.text = "${cartData?.tax} KD"
+//            tvTotalMRP.text = "${CommonMethod.formatPrice(cartData?.totalMrp?:0.0)} KD"
+//            tvDiscountOnMRP.text = "${CommonMethod.formatPrice(cartData?.discountOnMrp?:0.0)} KD"
+//            tvCouponDiscountValue.text = "${CommonMethod.formatPrice(cartData?.discountCoupon?:0.0)} KD"
+//            tvTotalAmountValue.text = "${CommonMethod.formatPrice(cartData?.totalAmount?:0.0)} KD"
+//            tvShippingFee.text = "${CommonMethod.formatPrice(cartData?.shippingFees?:0.0)} KD"
+//            tvTaxValue.text = "${CommonMethod.formatPrice(cartData?.tax?:0.0)} KD"
+//
+//            tvDiscountedPrice.text = "${CommonMethod.formatPrice(cartData?.totalAmount?:0.0)} KD"
+//            tvPrice.text = "${CommonMethod.formatPrice(cartData?.totalMrp?:0.0)} KD"
+//            tvSavePrice.text = "You will save ${CommonMethod.formatPrice(cartData?.totalMrp?:0.0)} KD on this"
+//
 
-            tvDiscountedPrice.text = "${cartData?.totalAmount} KD"
-            tvPrice.text = "${cartData?.totalMrp} KD"
+            cartData?.let {
+                updateBillingDetails(
+                    totalMrp = it.totalMrp,
+                    discountOnMrp = it.discountOnMrp,
+                    shippingFees = it.shippingFees,
+                    tax = it.tax,
+                    couponDiscount = it.discountCoupon,
+                    finalAmount = it.totalAmount
+                )
+            }
         }
     }
 
@@ -237,10 +272,12 @@ class MyBagFragment : BaseFragment() {
         if (myBagList.isEmpty()){
             binding?.tvNoDataFound?.isVisible = true
             binding?.nsBag?.isVisible = false
+            binding?.clPlaceOrder?.isVisible = false
         }
         else{
             binding?.tvNoDataFound?.isVisible = false
             binding?.nsBag?.isVisible = true
+            binding?.clPlaceOrder?.isVisible = true
             if(binding?.tvAddress?.text?.isEmpty() == true) {
                 selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
                 binding?.tvAddress?.text = selectedAddress?.address
@@ -249,5 +286,37 @@ class MyBagFragment : BaseFragment() {
         }
 
     }
+
+    private fun updateBillingDetails(
+        totalMrp: Double,
+        discountOnMrp: Double,
+        shippingFees: Double,
+        tax: Double,
+        couponDiscount: Double = 0.0,
+        finalAmount: Double
+    ) {
+        binding?.apply {
+
+            // Main values
+            tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
+            tvDiscountOnMRP.text = "${CommonMethod.formatPrice(discountOnMrp)} KD"
+            tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
+            tvTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
+
+            // Coupon discount (if any)
+            tvCouponDiscountValue.text = "${CommonMethod.formatPrice(couponDiscount)} KD"
+
+            // Final payable amount
+            tvTotalAmountValue.text = "${CommonMethod.formatPrice(finalAmount)} KD"
+            tvDiscountedPrice.text = "${CommonMethod.formatPrice(finalAmount)} KD"
+
+            // Show summary text
+            tvPrice.text = "${CommonMethod.formatPrice(totalMrp)} KD"
+            tvSavePrice.text = "You will save ${
+                CommonMethod.formatPrice(discountOnMrp + couponDiscount)
+            } KD on this"
+        }
+    }
+
 
 }

@@ -118,7 +118,6 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"/>
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -139,17 +138,16 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="34dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_apple"
+                    android:src="@drawable/gpay"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_gravity="center_vertical"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
-                    android:text="Apple Pay"
+                    android:text="Google Pay"
                     android:textSize="@dimen/_12sdp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"/>
-
 
             </LinearLayout>
 
@@ -181,7 +179,6 @@
                     android:textSize="@dimen/_12sdp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"/>
-
 
             </LinearLayout>
 
@@ -280,5 +277,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <com.myfatoorah.sdk.views.embeddedpayment.googlepay.MFGooglePayButton
+        android:id="@+id/mfGooglePayButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

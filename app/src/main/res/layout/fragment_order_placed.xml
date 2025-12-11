@@ -85,6 +85,7 @@
             </androidx.cardview.widget.CardView>
 
             <RelativeLayout
+                android:id="@+id/relAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_15sdp"
@@ -96,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="300.00 KD"
+                    android:text="300 KD"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp"
                     android:layout_centerVertical="true"/>
@@ -170,6 +171,7 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
                 android:id="@+id/tvTrackOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

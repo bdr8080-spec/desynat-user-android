@@ -1,9 +1,12 @@
 package com.desynatuser.ui.home.giftCard
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +16,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentEnterGiftCardDetailBinding
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
@@ -44,11 +48,36 @@ class EnterGiftCardDetailFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Enter Details"
-
+            CommonMethod.removeSpace(etName)
+            CommonMethod.removeSpace(etNote)
+            CommonMethod.removeSpace(etWishMsg)
+            CommonMethod.removeSpace(etFromName)
+            CommonMethod.removeAllTextSpaces(etEmail)
             val itemJson = arguments?.getString("occasionData")
             if (!itemJson.isNullOrEmpty()) {
                 occasionData = Gson().fromJson(itemJson, GetGiftCardOccasionTypeResponse.Data::class.java)
             }
+
+            etAmount.addTextChangedListener(object : TextWatcher {
+                private var isEditing = false
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    if (isEditing) return
+                    isEditing = true
+
+                    s?.let {
+                        if (it.startsWith("0")) {
+                            it.replace(0, 1, "")
+                        }
+                    }
+
+                    isEditing = false
+                }
+            })
         }
 
     }
@@ -66,9 +95,9 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                 tv200.setTextColor(requireActivity().getColor(R.color.brown))
                 tvEnterAmount.setTextColor(requireActivity().getColor(R.color.brown))
 
-                tv100.backgroundTintList = requireActivity().getColorStateList(R.color.brown)
-                tv200.backgroundTintList = null
-                tvEnterAmount.backgroundTintList = null
+                tv100.background = requireActivity().getDrawable(R.drawable.button_stroke_gradient)
+                tv200.background = requireActivity().getDrawable(R.drawable.button_stroke)
+                tvEnterAmount.background = requireActivity().getDrawable(R.drawable.button_stroke)
                 etAmount.isVisible = false
             }
 
@@ -78,9 +107,10 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                 tv200.setTextColor(requireActivity().getColor(R.color.white))
                 tvEnterAmount.setTextColor(requireActivity().getColor(R.color.brown))
 
-                tv100.backgroundTintList = null
-                tv200.backgroundTintList = requireActivity().getColorStateList(R.color.brown)
-                tvEnterAmount.backgroundTintList = null
+
+                tv100.background = requireActivity().getDrawable(R.drawable.button_stroke)
+                tv200.background = requireActivity().getDrawable(R.drawable.button_stroke_gradient)
+                tvEnterAmount.background = requireActivity().getDrawable(R.drawable.button_stroke)
 
                 etAmount.isVisible = false
             }
@@ -91,9 +121,10 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                 tv200.setTextColor(requireActivity().getColor(R.color.brown))
                 tvEnterAmount.setTextColor(requireActivity().getColor(R.color.white))
 
-                tv100.backgroundTintList = null
-                tv200.backgroundTintList = null
-                tvEnterAmount.backgroundTintList = requireActivity().getColorStateList(R.color.brown)
+
+                tv100.background = requireActivity().getDrawable(R.drawable.button_stroke)
+                tv200.background = requireActivity().getDrawable(R.drawable.button_stroke)
+                tvEnterAmount.background = requireActivity().getDrawable(R.drawable.button_stroke_gradient)
                 etAmount.isVisible = true
             }
 
@@ -155,7 +186,6 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                        showToast("Please enter amount")
                        return false
                    }
-
                }
                else {
                    showToast("Please choose amount")
@@ -190,6 +220,12 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             val wishMsg = etWishMsg.text.toString().trim()
             if (wishMsg.isEmpty()) {
                 showToast("Please enter wish message")
+                return false
+            }
+
+            val note = etNote.text.toString().trim()
+            if (note.isEmpty()) {
+                showToast("Please enter note")
                 return false
             }
             return true

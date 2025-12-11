@@ -4,7 +4,11 @@ object Constants {
 
     const val BASE_URL = "http://157.241.119.72"
 
+    var MERCHANT_ID = "BCR2DN5TRCW73QI6"
+    var MERCHANT_NAME = "Desynat"
+
     var language="en"
+    var currentScreen = ""
     const val ENGLISH = "en"
     const val ARABIC = "ar"
     var isGuest = false

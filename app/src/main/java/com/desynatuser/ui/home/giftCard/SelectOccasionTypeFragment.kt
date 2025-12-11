@@ -50,7 +50,7 @@ class SelectOccasionTypeFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Select Occasion Type"
+            toolbar.tvToolbar.text = "Select Gift Card Category"
 
             occasionList.clear()
             val layoutManager = FlexboxLayoutManager(requireContext()).apply {
@@ -94,7 +94,7 @@ class SelectOccasionTypeFragment : BaseFragment() {
                     findNavController().navigate(R.id.action_occasionTypeFragment_to_enterGiftCardDetailFragment,bundle)
                 }
                 else{
-                    showToast("Please select occasion type")
+                    showToast("Please select gift card category")
                 }
             }
 

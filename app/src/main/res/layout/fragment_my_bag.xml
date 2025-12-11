@@ -28,7 +28,7 @@
         android:id="@+id/nsBag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/clPlaceOrder"
         app:layout_constraintTop_toBottomOf="@+id/tvToolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,7 +85,7 @@
                 android:paddingVertical="@dimen/_10sdp"
                 android:drawableEnd="@drawable/ic_arrow_forward"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_11sdp"
                android:layout_toRightOf="@+id/ivPromo"
                 android:layout_centerVertical="true"/>
 
@@ -153,16 +153,13 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/tvChange" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tvChange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Change"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/brown"
-                    android:textSize="@dimen/_10sdp"
-                    android:layout_marginEnd="1dp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:src="@drawable/ic_change_address"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"/>
 
@@ -245,6 +242,7 @@
                     app:layout_constraintEnd_toEndOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvCouponDiscount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -258,6 +256,7 @@
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvCouponDiscountValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -314,7 +313,7 @@
                     android:id="@+id/tvTaxValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="00.00 KD"
+                    android:text="0 KD"
                     android:gravity="end"
                     android:fontFamily="@font/poppins_medium"
                     android:textSize="@dimen/_11sdp"
@@ -375,84 +374,87 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/clBillingData" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFF7EA"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:paddingTop="@dimen/_30sdp"
-                android:paddingBottom="@dimen/_40sdp"
-                app:layout_constraintTop_toBottomOf="@+id/tvSavePrice">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clPrice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btnPlaceOrder">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDiscountedPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="239 KD"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tvPrice"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="250 KD"
-                    android:textColor="#99000000"
-                    android:textSize="@dimen/_11sdp"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvDiscountedPrice"
-                    app:layout_constraintStart_toEndOf="@+id/tvDiscountedPrice"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvDiscountedPrice" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="#99000000"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
-                    app:layout_constraintEnd_toEndOf="@+id/tvPrice"
-                    app:layout_constraintStart_toStartOf="@+id/tvPrice"
-                    app:layout_constraintTop_toTopOf="@+id/tvPrice" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/btnPlaceOrder"
-                    style="@style/button"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:text="Place Order"
-                    android:background="@drawable/btn_gradient"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/clPrice"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPlaceOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF7EA"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:paddingTop="@dimen/_25sdp"
+        android:paddingBottom="@dimen/_30sdp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnPlaceOrder">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDiscountedPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="239 KD"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvPrice"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_light"
+                android:text="250 KD"
+                android:textColor="#99000000"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintBottom_toBottomOf="@+id/tvDiscountedPrice"
+                app:layout_constraintStart_toEndOf="@+id/tvDiscountedPrice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvDiscountedPrice" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#99000000"
+                app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
+                app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+                app:layout_constraintStart_toStartOf="@+id/tvPrice"
+                app:layout_constraintTop_toTopOf="@+id/tvPrice" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnPlaceOrder"
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:text="Place Order"
+            android:padding="@dimen/_8sdp"
+            android:background="@drawable/btn_gradient"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clPrice"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:visibility="gone"

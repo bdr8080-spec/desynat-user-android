@@ -69,7 +69,7 @@ class ApplyGiftCardFragment : BaseFragment() {
         viewModel.applyGiftCardResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                showToast(response.message)
+                showToast("Gift card apply successfully")
                 val bundle = Bundle().apply {
                     putString("giftCard", Gson().toJson(response.data))
                     putString("giftCardNumber", binding?.etGiftCardNumber?.text?.trim().toString())

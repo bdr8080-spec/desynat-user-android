@@ -12,7 +12,7 @@
         android:scaleType="centerCrop"
         android:clipToOutline="true"
         android:src="@drawable/newest"
-        app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"
+        app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -160,7 +160,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvSize"/>
 
     <TextView
-        android:id="@+id/tvPrice"
+        android:id="@+id/tvDiscountPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -174,7 +174,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvSize" />
 
     <TextView
-        android:id="@+id/tvDiscountPrice"
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -184,23 +184,39 @@
         android:textColor="#99000000"
         android:textSize="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_5sdp"
-        app:layout_constraintStart_toEndOf="@+id/tvPrice"
-        app:layout_constraintTop_toTopOf="@+id/tvPrice" />
+        app:layout_constraintStart_toEndOf="@+id/tvDiscountPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:background="#99000000"
-        app:layout_constraintStart_toStartOf="@+id/tvDiscountPrice"
-        app:layout_constraintEnd_toEndOf="@+id/tvDiscountPrice"
-        app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDiscountPrice"/>
+        app:layout_constraintStart_toStartOf="@+id/tvPrice"
+        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
+
+    <TextView
+        android:id="@+id/tvDiscount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="20% off"
+        android:textColor="#E70000"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvReturnPolicy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_light"
         android:text="14 days return available"
         android:textColor="#17854C"
         android:textSize="@dimen/_9sdp"

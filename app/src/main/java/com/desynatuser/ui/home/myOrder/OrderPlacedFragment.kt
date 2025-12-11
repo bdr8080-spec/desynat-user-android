@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -44,11 +46,18 @@ class OrderPlacedFragment : BaseFragment() {
         binding?.apply {
             val amount = arguments?.getString("amount")
             val addressJson = arguments?.getString("address")
+            val payment = arguments?.getString("payment")
             if (!addressJson.isNullOrEmpty()) {
                 selectedAddress = Gson().fromJson(addressJson, GetAddressResponse.Data::class.java)
             }
              tvDeliveryDate.text = "Expected Delivery Date : 12 SEP 25"
             tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} AED"
+            if (payment=="COD") {
+                relAmount.isInvisible = true
+            }
+            else{
+                relAmount.isVisible = true
+            }
                   tvAddress.text = selectedAddress?.name
                   tvAddress1.text = selectedAddress?.address
 

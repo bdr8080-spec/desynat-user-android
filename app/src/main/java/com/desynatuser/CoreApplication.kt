@@ -15,11 +15,17 @@ override fun onCreate() {
     if (!Places.isInitialized()) {
         Places.initialize(applicationContext, getString(R.string.map_key))
     }
-
+/*
     MFSDK.init(
         getString(R.string.my_fatoorah_token),
         MFCountry.UNITED_ARAB_EMIRATES_UAE,
         MFEnvironment.LIVE
+    )*/
+
+    MFSDK.init(
+        getString(R.string.fatoorah),
+        MFCountry.KUWAIT,
+        MFEnvironment.TEST
     )
 
 }

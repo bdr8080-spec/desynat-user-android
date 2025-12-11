@@ -3,6 +3,7 @@ package com.desynatuser.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
@@ -36,7 +37,13 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
 
             tvPrice.text = "${cartData?.productVariants?.actualPrice} KD"
             tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
-            tvReturnPolicy.text = "${cartData?.product?.returnDays} days return available"
+            if (cartData?.product?.returnDays!=null) {
+                tvReturnPolicy.text = "${cartData?.product?.returnDays} days return available"
+                tvReturnPolicy.isVisible = true
+            }
+            else{
+                tvReturnPolicy.isVisible = false
+            }
 
             ivStore.load(cartData?.productVariants?.variantImage?.get(0)) {
                 crossfade(true)
@@ -50,6 +57,10 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             ivColor.setColorFilter(android.graphics.Color.parseColor(cartData?.productVariants?.color?.hexCode))
             tvQuantity.text = cartData?.quantity.toString()
             tvCount.text = cartData?.quantity.toString()
+
+            val discountValue = cartData?.productVariants?.discountValue ?: 0
+            val discountType = if (cartData?.productVariants?.discountType == "1")"% off" else " KD off"
+            tvDiscount.text = "$discountValue$discountType"
 
             ivMinus.setOnClickListener {
                 foodBagClick.onFoodBagClick(position,"decrement")

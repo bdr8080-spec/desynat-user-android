@@ -15,17 +15,17 @@ data class GetCartResponse(
         @SerializedName("cart_data")
         val cartData: List<CartData>,
         @SerializedName("discount_coupon")
-        val discountCoupon: Int,
+        val discountCoupon: Double,
         @SerializedName("discount_on_mrp")
-        val discountOnMrp: Int,
+        val discountOnMrp: Double,
         @SerializedName("shipping_fees")
-        val shippingFees: Int,
+        val shippingFees: Double,
         @SerializedName("tax")
-        val tax: Int,
+        val tax: Double,
         @SerializedName("total_amount")
-        val totalAmount: Int,
+        val totalAmount: Double,
         @SerializedName("total_mrp")
-        val totalMrp: Int
+        val totalMrp: Double
     ) {
         data class CartData(
             @SerializedName("amount")
