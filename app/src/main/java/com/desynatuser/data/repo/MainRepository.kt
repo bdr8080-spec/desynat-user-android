@@ -16,6 +16,7 @@ import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
 import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
@@ -567,6 +568,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.getSingleOrder(map)
             },
             responseLiveData = orderDetailLiveData
+        )
+    }
+
+  val walletBalanceLiveData = SingleLiveEvent<WalletBalanceResponse>()
+    suspend fun getWalletBalance()
+    {
+        handleApiCall(
+            api = {
+                api.getWalletBalance()
+            },
+            responseLiveData = walletBalanceLiveData
         )
     }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
@@ -50,6 +51,8 @@ import com.myfatoorah.sdk.views.MFResult
 import com.myfatoorah.sdk.views.MFSDK
 import com.myfatoorah.sdk.views.embeddedpayment.googlepay.MFGooglePayHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -61,6 +64,7 @@ class PaymentMethodFragment : BaseFragment() {
     var isObserver = false
     private var from = ""
     private var paymetMehod = ""
+    private var walletBalance =0.0
     private var giftCardData : BuyGiftCardResponse.Data?=null
 
     private lateinit var selectedRadio: AppCompatImageView
@@ -98,7 +102,7 @@ class PaymentMethodFragment : BaseFragment() {
                 }
 
         }
-
+        getWalletBalance()
         setupPaymentSelection()
 
     }
@@ -113,6 +117,7 @@ class PaymentMethodFragment : BaseFragment() {
             btnProceed.setOnClickListener {
                 when (selectedMethod) {
                     "KNET" -> {
+                        paymetMehod = "1"
                         executeRedirectPayment(1)
                     }
 
@@ -121,6 +126,7 @@ class PaymentMethodFragment : BaseFragment() {
                     }
 
                     "VISA" -> {
+                        paymetMehod = "1"
                         executeRedirectPayment(2)
                     }
 
@@ -129,10 +135,18 @@ class PaymentMethodFragment : BaseFragment() {
                     }
                     "CREDIT_DEBIT" -> {
                      //   executeEmbeddedPayment()
-                        executeRedirectPayment(8)
+                        paymetMehod = "1"
+                        executeRedirectPayment(2)
                     }
                     "WALLET" -> {
-                        buyGiftCardPayment(null)
+                        paymetMehod = "2"
+                        if (walletBalance >= giftCardData?.amount?:0.0) {
+                            buyGiftCardPayment("wallet")
+                        }
+                        else{
+                            showToast("Wallet balance is low")
+                        }
+
                     }
                 }
 
@@ -150,15 +164,25 @@ class PaymentMethodFragment : BaseFragment() {
             }
         }
 
+        viewModel.walletBalanceResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                walletBalance = response.data.balance
+                lifecycleScope.launch(Dispatchers.Main) {
+                    binding?.tvBalance?.text = "Available Balance : ${CommonMethod.formatPrice(walletBalance?:0.0)} KD"
+                }
+                isObserver = false
+            }
+        }
+
             viewModel.buyGiftCardPaymentResult.observe(viewLifecycleOwner) { response ->
                 if (isObserver) {
+                    ProgressDialogUtils.getInstance().hideProgress()
                     CommonMethod.showSuccessDialog(requireActivity(),"Gift card purchased successfully!"){
-                        findNavController().navigate(
+
+                        findNavController().popBackStack(
                             R.id.giftCard,
-                            null,
-                            NavOptions.Builder()
-                                .setPopUpTo(R.id.home_navigation_graph, true)
-                                .build()
+                            false
                         )
                     }
                     isObserver = false
@@ -173,8 +197,15 @@ class PaymentMethodFragment : BaseFragment() {
         if (transactionId!=null){
         map["transaction_id"] = transactionId
             }
+        map["Payment_method"] = paymetMehod//1 myfatoorah 2 wallet 3 Cod
         map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
         viewModel.buyGiftCardPayment(map)
+        isObserver = true
+    }
+
+    private fun getWalletBalance(){
+        viewModel.getWalletBalance()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
 
@@ -402,7 +433,7 @@ class PaymentMethodFragment : BaseFragment() {
                 is MFResult.Fail -> {
                     Log.d("executeRedirectPayment", "Fail: ${Gson().toJson(result.error)}")
                     result.error.message?.let { showToast(it) }
-                    showToast("Payment failed")
+//                    showToast("Payment failed")
 
                 }
                 MFResult.Loading -> {

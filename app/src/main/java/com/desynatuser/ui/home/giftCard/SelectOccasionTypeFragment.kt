@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.giftCard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,15 +52,15 @@ class SelectOccasionTypeFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Select Gift Card Category"
-
+            Log.e("selectedPos", "initView: ${selectedPos}")
             occasionList.clear()
-            val layoutManager = FlexboxLayoutManager(requireContext()).apply {
+           /* val layoutManager = FlexboxLayoutManager(requireContext()).apply {
                 flexDirection = FlexDirection.ROW
                 flexWrap = FlexWrap.WRAP
                 justifyContent = JustifyContent.FLEX_START
             }
 
-            rvOccasion.layoutManager = layoutManager
+            rvOccasion.layoutManager = layoutManager*/
             occasionTypeAdapter = OccasionTypeAdapter(requireActivity(),occasionList,object :OccasionTypeAdapter.OnClick{
                 override fun clickOnItem(position: Int) {
                     selectedPos = position
@@ -115,6 +116,10 @@ class SelectOccasionTypeFragment : BaseFragment() {
                 occasionList.clear()
                 occasionList.addAll(response.data)
                 occasionTypeAdapter?.notifyDataSetChanged()
+
+                if (selectedPos!=-1) {
+                    occasionTypeAdapter?.updateSelectedPos(selectedPos)
+                }
                 ProgressDialogUtils.getInstance().hideProgress()
                 isObserver = false
             }

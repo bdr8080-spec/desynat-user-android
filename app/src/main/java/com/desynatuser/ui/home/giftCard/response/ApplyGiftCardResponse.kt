@@ -13,7 +13,7 @@ data class ApplyGiftCardResponse(
 ) {
     data class Data(
         @SerializedName("GiftCardAmount")
-        val giftCardAmount: String,
+        val giftCardAmount: Double,
         @SerializedName("id")
         val id: Int
     )

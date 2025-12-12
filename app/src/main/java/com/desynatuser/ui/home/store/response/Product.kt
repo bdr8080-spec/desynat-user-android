@@ -67,7 +67,9 @@ data class Product(
         @SerializedName("updated_at")
         var updatedAt: String?=null,
         @SerializedName("waist")
-        var waist: String?=null
+        var waist: String?=null,
+        @SerializedName("quantity")
+        var quantity: Int?=0
     ){
         data class Size(
             @SerializedName("id")

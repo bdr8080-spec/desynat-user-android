@@ -13,11 +13,13 @@ import com.desynatuser.adapter.MyBagAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentMyBagBinding
+import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.response.GetAddressResponse
 import com.desynatuser.ui.home.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -29,12 +31,15 @@ class MyBagFragment : BaseFragment() {
     private var binding: FragmentMyBagBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var isCartObserver = false
+    var isAddressObserver = false
     private var myBagAdapter: MyBagAdapter?=null
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
     private var cartData : GetCartResponse.Data?=null
     private var selectedAddress : GetAddressResponse.Data?=null
     private var promoCode : ApplyPromoCodeResponse.Data?=null
     var selectedPos = -1
+    var actionType = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -170,6 +175,7 @@ class MyBagFragment : BaseFragment() {
     }
 
     private fun addCartQuantity(type:String){
+        actionType = type
         val map = HashMap<String,Any>()
         map["cart_id"] = myBagList[selectedPos].id.toString()
         map["type"] = type//// increment,decrement
@@ -181,7 +187,7 @@ class MyBagFragment : BaseFragment() {
     private fun viewCartDetail(){
         viewModel.viewCartDetail()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        isObserver = true
+        isCartObserver = true
     }
 
     override fun observe() {
@@ -194,26 +200,50 @@ class MyBagFragment : BaseFragment() {
         }
 
         viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
+            if (isCartObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 cartData = response.data
-                setData()
+               // setData()
                 myBagList.clear()
                 response?.data?.cartData?.let { myBagList.addAll(it) }
                 myBagAdapter?.notifyDataSetChanged()
+                Log.e("amount", "promoCode: ${promoCode}" )
+                if (promoCode != null) {
+                    Log.e("amount", "promoCode apply: ${cartData}" )
+
+                    applyPromoOnUpdatedCart()
+                } else {
+                    Log.e("amount", "setData apply: ${cartData}" )
+
+                    setData()
+                }
+
+
+                Constants.cartItem = myBagList.size
+                (requireActivity() as HomeActivity).updateAdapterCount()
                 checkData()
-                isObserver = false
+                isCartObserver = false
             }
         }
 
         viewModel.cartQuantityResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
-                ProgressDialogUtils.getInstance().hideProgress()
+                viewCartDetail()
+               /* ProgressDialogUtils.getInstance().hideProgress()
                 if (myBagList[selectedPos].quantity==1){
-                    myBagList.removeAt(selectedPos)
-                    myBagAdapter?.notifyItemRemoved(selectedPos)
-                    if (myBagList.size!=0){
-                        myBagAdapter?.notifyItemRangeChanged(selectedPos, myBagList.size - selectedPos)
+                    if (actionType=="increment"){
+                        myBagList[selectedPos].quantity = response.data.quantity
+                        myBagAdapter?.notifyItemChanged(selectedPos)
+                    }
+                    else {
+                        myBagList.removeAt(selectedPos)
+                        myBagAdapter?.notifyItemRemoved(selectedPos)
+                        if (myBagList.size != 0) {
+                            myBagAdapter?.notifyItemRangeChanged(
+                                selectedPos,
+                                myBagList.size - selectedPos
+                            )
+                        }
                     }
                 }
                 else{
@@ -233,12 +263,33 @@ class MyBagFragment : BaseFragment() {
                         }
                     }
                 }
-
+                Constants.cartItem = myBagList.size
+                (requireActivity() as HomeActivity).updateAdapterCount()
                 checkData()
-                selectedPos = -1
+                selectedPos = -1*/
                 isObserver = false
             }
         }
+
+        viewModel.addressResult.observe(viewLifecycleOwner) { response ->
+            if (isAddressObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                val savedAddressList = ArrayList<GetAddressResponse.Data>()
+                savedAddressList.clear()
+                 savedAddressList.addAll(response.data)
+                if (savedAddressList.isNotEmpty()){
+                    val defaultIndex = savedAddressList.indexOfFirst { it.setAsDefault == "1" }
+
+                    if (defaultIndex != -1) {
+                        selectedAddress = savedAddressList[defaultIndex]
+                        binding?.tvAddress?.text = selectedAddress?.address}
+                        SharedPreference.get(requireActivity()).saveDefaultAddress(savedAddressList[defaultIndex])
+
+                    }
+                isAddressObserver = false
+                }
+            }
+
     }
 
     private fun setData() {
@@ -279,12 +330,21 @@ class MyBagFragment : BaseFragment() {
             binding?.nsBag?.isVisible = true
             binding?.clPlaceOrder?.isVisible = true
             if(binding?.tvAddress?.text?.isEmpty() == true) {
+                if (SharedPreference.get(requireActivity()).getDefaultAddress()!=null){
                 selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
-                binding?.tvAddress?.text = selectedAddress?.address
-
+                binding?.tvAddress?.text = selectedAddress?.address}
+                else{
+                    getAddress()
+                }
             }
         }
 
+    }
+
+    private fun getAddress() {
+        viewModel.getAddress()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isAddressObserver = true
     }
 
     private fun updateBillingDetails(
@@ -295,6 +355,8 @@ class MyBagFragment : BaseFragment() {
         couponDiscount: Double = 0.0,
         finalAmount: Double
     ) {
+
+        Log.e("amount", "updateBillingDetails: ${finalAmount}" )
         binding?.apply {
 
             // Main values
@@ -317,6 +379,36 @@ class MyBagFragment : BaseFragment() {
             } KD on this"
         }
     }
+
+    private fun applyPromoOnUpdatedCart() {
+        promoCode?.let { promo ->
+            val amo =  (cartData?.totalAmount ?: 0.0) - (promo.applyDiscountValue ?: 0.0)
+            Log.e("amount", "totalAmount: calculate ${amo}" )
+            updateBillingDetails(
+                totalMrp = cartData?.totalMrp ?: 0.0,
+                discountOnMrp = cartData?.discountOnMrp ?: 0.0,
+                shippingFees = cartData?.shippingFees ?: 0.0,
+                tax = cartData?.tax ?: 0.0,
+                couponDiscount = promo.applyDiscountValue ?: 0.0,
+                finalAmount = (cartData?.totalAmount ?: 0.0) - (promo.applyDiscountValue ?: 0.0)
+            )
+
+            Log.e("amount", "totalAmount: applyPromoOnUpdatedCart ${cartData?.totalAmount}" )
+            Log.e("amount", "applyDiscountValue: applyPromoOnUpdatedCart ${promo.applyDiscountValue}" )
+
+
+            binding?.apply {
+                tvApplyPromoCode.isVisible = false
+                tvPromoCode.isVisible = true
+                tvRemove.isVisible = true
+                tvCouponDiscount.isVisible = true
+                tvCouponDiscountValue.isVisible = true
+                tvPromoCode.text = promo.discountCode
+                tvCouponDiscount.text = "Coupon Discount (${promo.discountCode})"
+            }
+        }
+    }
+
 
 
 }

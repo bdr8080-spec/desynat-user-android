@@ -12,6 +12,7 @@
         android:scaleType="centerCrop"
         android:clipToOutline="true"
         android:src="@drawable/newest"
+        android:layout_marginStart="@dimen/_10sdp"
         app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -35,6 +36,7 @@
         android:id="@+id/clCartQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/button_stroke"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvTitle">
@@ -212,6 +214,12 @@
         app:layout_constraintTop_toTopOf="@+id/tvPrice"
         app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
 
+    <View
+        android:id="@+id/viewImg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/ivStore"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvReturnPolicy"
         android:layout_width="match_parent"
@@ -220,9 +228,9 @@
         android:text="14 days return available"
         android:textColor="#17854C"
         android:textSize="@dimen/_9sdp"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivStore" />
+        app:layout_constraintTop_toBottomOf="@+id/viewImg" />
 
     <TextView
         android:id="@+id/tvDeliver"
@@ -233,6 +241,7 @@
         android:maxLines="1"
         android:text="Delivery by "
         android:textColor="@color/black"
+        android:layout_marginStart="@dimen/_10sdp"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvReturnPolicy" />
@@ -260,6 +269,7 @@
         android:fontFamily="@font/poppins_regular"
         android:maxLines="1"
         android:text="Seller"
+        android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
@@ -281,6 +291,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvSeller"/>
 
     <View
+        android:id="@+id/viewBottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#1A000000"

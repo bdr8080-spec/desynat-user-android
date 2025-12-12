@@ -2,6 +2,7 @@ package com.desynatuser.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.utils.CommonMethod
 
 class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartResponse.Data.CartData>, var foodBagClick:FoodBagClick) : RecyclerView.Adapter<MyBagAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemBagBinding) :
@@ -33,17 +35,48 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
         var cartData = cartList[position]
 
         holder.binding.apply {
+
+            if (position==cartList.size-1){
+                holder.binding.viewBottom.isVisible = false
+            }
+            else{
+                holder.binding.viewBottom.isVisible = true
+            }
             tvTitle.text = cartData.product.productNameEn
 
             tvPrice.text = "${cartData?.productVariants?.actualPrice} KD"
             tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
-            if (cartData?.product?.returnDays!=null) {
-                tvReturnPolicy.text = "${cartData?.product?.returnDays} days return available"
-                tvReturnPolicy.isVisible = true
+
+
+            val returnDays = cartData?.product?.returnDays
+            val exchangeDays = cartData?.product?.exchangableDays
+
+            val finalText = when {
+                returnDays != null && exchangeDays != null ->
+                    "${returnDays} Days Return & ${exchangeDays} Days Exchange"
+
+                returnDays != null ->
+                    "${returnDays} Days Return & No Exchange"
+
+                exchangeDays != null ->
+                    "No Return & ${exchangeDays} Days Exchange"
+
+                else ->
+                    "No Return & No Exchange"
             }
-            else{
-                tvReturnPolicy.isVisible = false
-            }
+
+            tvReturnPolicy.text = finalText
+
+            /*
+
+                        if (cartData?.product?.returnDays!=null) {
+                            tvReturnPolicy.text = "${cartData?.product?.returnDays} days return available"
+                            tvReturnPolicy.isVisible = true
+                        }
+                        else{
+                            tvReturnPolicy.isVisible = false
+                        }
+            */
 
             ivStore.load(cartData?.productVariants?.variantImage?.get(0)) {
                 crossfade(true)
@@ -52,7 +85,8 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             }
 
             tvSellerName.text = cartData?.product?.sellerDetails?.firstName+" "+ cartData?.product?.sellerDetails?.lastName
-          //  tvDeliverBy.text = cartData?.product
+          //  tvDeliverBy.text = CommonMethod.getExpectedDeliveryDate(output = "dd/MM/yyyy")
+            tvDeliverBy.text = "3 to 5 working days"
             tvSizeValue.text = cartData?.productVariants?.size?.name.toString()
             ivColor.setColorFilter(android.graphics.Color.parseColor(cartData?.productVariants?.color?.hexCode))
             tvQuantity.text = cartData?.quantity.toString()

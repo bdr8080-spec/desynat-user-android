@@ -10,6 +10,7 @@ import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
@@ -242,6 +243,9 @@ interface ApiServices {
 
     @POST(Constants.GET_ORDER_SUMMARY)
     suspend fun getSingleOrder(@Body map: HashMap<String,Any>): Response<GetSingleOrderSummaryResponse>
+
+    @GET(Constants.WALLET_BALANCE)
+    suspend fun getWalletBalance(): Response<WalletBalanceResponse>
 
 
 }

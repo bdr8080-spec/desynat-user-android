@@ -442,5 +442,27 @@ object CommonMethod {
         context.startActivity(Intent.createChooser(intent, "Share via"))
     }
 
+    fun getExpectedDeliveryDate(startDays: Int = 3, endDays: Int = 5,output:String="dd/MM/yyyy"): String {
+
+        val calendar = Calendar.getInstance()
+
+        var workingDaysAdded = 0
+
+        while (workingDaysAdded < endDays) {
+            calendar.add(Calendar.DAY_OF_WEEK, 1)
+
+            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+            if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
+                workingDaysAdded++
+            }
+        }
+
+        val sdf = SimpleDateFormat(output, Locale.getDefault())
+        val endDate = sdf.format(calendar.time)
+
+        return endDate
+    }
+
 
 }

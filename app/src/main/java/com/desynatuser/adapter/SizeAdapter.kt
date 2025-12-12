@@ -33,7 +33,7 @@ class SizeAdapter(var context:Context, var productSizeList: ArrayList<Product.Pr
 
             tvSize.text = productSizeList[position].size.name
 
-            if (selectedPos==position){
+            if (selectedPos==position&&productSizeList[selectedPos].totalStock.toIntOrNull()?:0>0){
                 ivColorSelected.isVisible = true
                 ivColor.isVisible = false
                 tvSize.setTextColor(Color.parseColor("#000000"))

@@ -17,6 +17,7 @@ import com.desynatuser.ui.home.BottomNavItem
 class BottomNavAdapter(var context:Context, var list: ArrayList<BottomNavItem>, var bottomNavItemClick:BottomNavItemClick) : RecyclerView.Adapter<BottomNavAdapter.ViewHolder>() {
 
     var selected = 0
+    var count = 0
     inner class ViewHolder(val binding: ItemBottomNavBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -39,6 +40,14 @@ class BottomNavAdapter(var context:Context, var list: ArrayList<BottomNavItem>, 
 
         holder.binding.tvName.text = list[position].name
         holder.binding.ivImage.setImageResource(list[position].image)
+
+        if (count!=0&&position==3){
+            holder.binding.relCount.isVisible = true
+            holder.binding.tvCount.text = count.toString()
+        }
+        else{
+            holder.binding.relCount.isVisible = false
+        }
 
         if (selected==position&&selected!=2){
             holder.binding.ivImage.setImageResource(list[position].selectedImage)
@@ -80,6 +89,11 @@ class BottomNavAdapter(var context:Context, var list: ArrayList<BottomNavItem>, 
         selected = position
         notifyItemChanged(oldPos)
         notifyItemChanged(selected)
+    }
+
+   fun setCartCount(itemCount:Int) {
+       count = itemCount
+       notifyDataSetChanged()
     }
 
     fun applyGradientText(

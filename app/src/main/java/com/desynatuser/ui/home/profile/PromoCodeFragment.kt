@@ -73,22 +73,30 @@ class PromoCodeFragment : BaseFragment() {
             }
 
             btnApply.setOnClickListener {
-                if (etPromoCode.text?.trim()?.isNotEmpty() == true){
-                   for(i in 0 until promoCodeList.size){
-                       if (etPromoCode.text?.trim().toString()==promoCodeList[i].nameEnglish) {
-                               val bundle = Bundle().apply {
-                                   putString("promoCode", Gson().toJson(promoCodeList[i]))
-                               }
-                               parentFragmentManager.setFragmentResult("promocode_request", bundle)
+                val enteredCode = etPromoCode.text?.trim().toString()
 
-                               findNavController().navigateUp()
-                           }
-                   }
-                }
-                else{
-                    showToast("Please enter promo code")
+                if (enteredCode.isNotEmpty()) {
+
+                    var isMatched = false
+
+                    for (i in promoCodeList.indices) {
+                        if (enteredCode.equals(promoCodeList[i].nameEnglish, ignoreCase = true)) {
+                            isMatched = true
+                            selectedPos = i
+                            applyPromoCode()
+                            break
+                        }
+                    }
+
+                    if (!isMatched) {
+                        showToast("Invalid Promocode")
+                    }
+
+                } else {
+                    showToast("Please enter promocode")
                 }
             }
+
 
         }
     }

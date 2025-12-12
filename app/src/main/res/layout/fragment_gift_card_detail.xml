@@ -216,26 +216,17 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTransaction"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Transaction Id: "
-            android:textColor="@color/black"
-            android:textSize="@dimen/_11sdp"
-            app:layout_constraintTop_toTopOf="@+id/tvPaid"
-            app:layout_constraintBottom_toBottomOf="@+id/tvPaid"
-            app:layout_constraintEnd_toStartOf="@+id/tvTransactionId"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTransactionId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semi_bold"
             android:text="124359526"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
-            app:layout_constraintTop_toTopOf="@+id/tvTransaction"
-            app:layout_constraintBottom_toBottomOf="@+id/tvTransaction"
+            android:textAlignment="textEnd"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="@+id/tvPaid"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPaid"
+            app:layout_constraintStart_toEndOf="@+id/tvPaid"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <RelativeLayout

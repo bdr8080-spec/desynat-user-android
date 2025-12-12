@@ -1,5 +1,7 @@
 package com.desynatuser.ui.home.myOrder
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,17 +52,32 @@ class OrderPlacedFragment : BaseFragment() {
             if (!addressJson.isNullOrEmpty()) {
                 selectedAddress = Gson().fromJson(addressJson, GetAddressResponse.Data::class.java)
             }
-             tvDeliveryDate.text = "Expected Delivery Date : 12 SEP 25"
-            tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} AED"
+             tvDeliveryDate.text = "Expected Delivery Date : 3 to 5 working days"
+//             tvDeliveryDate.text = "Expected Delivery Date : ${CommonMethod.getExpectedDeliveryDate(output = "dd MMM yy")}"
+            tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} KD"
             if (payment=="COD") {
-                relAmount.isInvisible = true
+                tvPrice.text = "Cash on Delivery"
+                tvPaid.isVisible = false
+            }
+            else if(payment =="WALLET"){
+                tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} KD"
+                tvPaid.isVisible = true
+                tvPaid.text = "Amount Paid with Wallet"
             }
             else{
-                relAmount.isVisible = true
+                tvPaid.text = "Amount Paid"
+                tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} KD"
+                tvPaid.isVisible = true
             }
                   tvAddress.text = selectedAddress?.name
                   tvAddress1.text = selectedAddress?.address
 
+        /*    lottieView.addAnimatorListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    lottieView.isVisible = false
+                    ivSuccess.isVisible = true
+                }
+            })*/
         }
     }
 
@@ -77,17 +94,10 @@ class OrderPlacedFragment : BaseFragment() {
                     null,
                     navOptions
                 )*/
-
-                findNavController().navigate(
-                    R.id.home,
-                    null,
-                    NavOptions.Builder()
-                        .setPopUpTo(R.id.home_navigation_graph, true)
-                        .build()
-                )
            }
 
             btnContinueShopping.setOnClickListener {
+                lottieView.cancelAnimation()
                 findNavController().navigate(
                     R.id.home,
                     null,

@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_35sdp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Order Placed"
                 android:textColor="@color/white"
@@ -52,9 +52,19 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatImageView
+                        android:visibility="gone"
+                        android:id="@+id/ivSuccess"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_success" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieView"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_90sdp"
+                        app:lottie_rawRes="@raw/success_animation"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -73,12 +83,13 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="#D1EFC7"
+                        android:paddingHorizontal="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:gravity="center_horizontal"
                         android:paddingVertical="@dimen/_5sdp"
                         android:text="Expected Delivery Date : 12 SEP 25"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_11sdp" />
 
                 </LinearLayout>
 
@@ -103,6 +114,7 @@
                     android:layout_centerVertical="true"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPaid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -171,7 +183,6 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
                 android:id="@+id/tvTrackOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

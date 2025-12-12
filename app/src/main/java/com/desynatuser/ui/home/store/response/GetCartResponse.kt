@@ -29,17 +29,17 @@ data class GetCartResponse(
     ) {
         data class CartData(
             @SerializedName("amount")
-            val amount: String,
+            val amount: Double,
             @SerializedName("check_stock")
             val checkStock: String,
             @SerializedName("created_at")
             val createdAt: String,
             @SerializedName("id")
-            val id: Int,
+            val id: String,
             @SerializedName("product")
             val product: Product,
             @SerializedName("product_id")
-            val productId: Int,
+            val productId: String,
             @SerializedName("product_variants")
             val productVariants: ProductVariants,
             @SerializedName("quantity")
@@ -49,7 +49,7 @@ data class GetCartResponse(
             @SerializedName("user_id")
             val userId: Int,
             @SerializedName("variants_id")
-            val variantsId: Int
+            val variantsId: String
         ) {
             data class Product(
                 @SerializedName("affiliated_product")

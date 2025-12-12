@@ -229,6 +229,10 @@ class HomeActivity : BaseActivity() {
         Log.d("test",requestCode.toString())
     }
 
+    fun updateAdapterCount(){
+       bottomAdapter?.setCartCount(Constants.cartItem)
+    }
+
 }
 
 data class PaymentResultEvent(

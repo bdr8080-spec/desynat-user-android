@@ -14,6 +14,7 @@ import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.response.AddAddressRequest
 import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
@@ -406,6 +407,17 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
     fun getOrderDetailInfo(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.getOrderDetailInfo(map)
+        }
+    }
+
+
+
+    val walletBalanceResult: LiveData<WalletBalanceResponse>
+        get() = repository.walletBalanceLiveData
+
+    fun getWalletBalance() {
+        viewModelScope.launch {
+            repository.getWalletBalance()
         }
     }
 

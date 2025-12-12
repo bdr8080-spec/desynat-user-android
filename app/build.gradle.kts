@@ -90,4 +90,5 @@ dependencies {
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     implementation ("org.greenrobot:eventbus:3.3.1")
     implementation ("com.google.android.gms:play-services-wallet:19.4.0")
+    implementation ("com.airbnb.android:lottie:6.7.1")
 }

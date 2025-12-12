@@ -222,12 +222,12 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                 showToast("Please enter wish message")
                 return false
             }
-
-            val note = etNote.text.toString().trim()
-            if (note.isEmpty()) {
-                showToast("Please enter note")
-                return false
-            }
+//
+//            val note = etNote.text.toString().trim()
+//            if (note.isEmpty()) {
+//                showToast("Please enter note")
+//                return false
+//            }
             return true
         }
 

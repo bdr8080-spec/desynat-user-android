@@ -51,6 +51,12 @@ class SavedAddressFragment : BaseFragment() {
             toolbar.tvToolbar.text = "Saved Address"
 
             from = arguments?.getString("from").toString()
+            if (from=="myBag"||from=="productDetail"){
+                btnProceed.isVisible = true
+            }
+            else{
+                btnProceed.isVisible = false
+            }
 
             savedAddressList.clear()
             savedAddressAdapter = SavedAddressAdapter(requireActivity(),savedAddressList,object :SavedAddressAdapter.AddressClick{
@@ -82,20 +88,22 @@ class SavedAddressFragment : BaseFragment() {
 
                         }
                         3->{
-                          /*  if (from=="myBag"){
-                                val bundle = Bundle().apply {
-                                    putString("address", savedAddressList[position].address)
-                                }
-                                parentFragmentManager.setFragmentResult("address_request", bundle)
 
-                                findNavController().navigateUp()
+//                                selectedPos = position
+//                                setDefaultAddress()
+
+                            if (from=="myBag"||from=="productDetail"){
+                                selectedPos = position
+                                for (i in 0 until savedAddressList.size){
+                                    savedAddressList[i].setAsDefault = "0"
+                                }
+                                savedAddressList[selectedPos].setAsDefault = "1"
+                                savedAddressAdapter?.notifyDataSetChanged()
                             }
-                            else{*/
+                            else{
                                 selectedPos = position
                                 setDefaultAddress()
-//                                savedAddressList[position].isSelected = !savedAddressList[position].isSelected
-//                                savedAddressAdapter?.notifyDataSetChanged()
-                         //   }
+                            }
                         }
                     }
                 }
@@ -118,6 +126,15 @@ class SavedAddressFragment : BaseFragment() {
 
             tvAddNewAddress.setOnClickListener {
                 findNavController().navigate(R.id.action_savedAddressFragment_to_addAddressFragment)
+            }
+
+            btnProceed.setOnClickListener {
+                if (selectedPos!=-1) {
+                    setDefaultAddress()
+                }
+                else{
+                    findNavController().popBackStack()
+                }
             }
         }
     }

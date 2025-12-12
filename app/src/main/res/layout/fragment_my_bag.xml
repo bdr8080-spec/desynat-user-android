@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/nsBag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,7 +39,7 @@
                 android:id="@+id/relCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:background="@drawable/card_background"
                 app:layout_constraintTop_toTopOf="parent">
@@ -68,9 +68,7 @@
                     android:id="@+id/ivPromo"
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
-                    app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
-                    android:src="@drawable/toprated"
-                    android:scaleType="centerCrop"
+                    android:src="@drawable/promocode"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_centerVertical="true" />
 
@@ -83,7 +81,7 @@
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:drawablePadding="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_10sdp"
-                android:drawableEnd="@drawable/ic_arrow_forward"
+                android:drawableEnd="@drawable/ic_arrow_forward1"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp"
                android:layout_toRightOf="@+id/ivPromo"
@@ -358,7 +356,6 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tvTotalAmount"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -379,6 +376,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
         android:id="@+id/clPlaceOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -405,6 +403,7 @@
                 android:text="239 KD"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -415,7 +414,7 @@
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_6sdp"
                 android:fontFamily="@font/poppins_light"
                 android:text="250 KD"
                 android:textColor="#99000000"
@@ -438,15 +437,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btnPlaceOrder"
-            style="@style/button"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:text="Place Order"
-            android:padding="@dimen/_8sdp"
-            android:background="@drawable/btn_gradient"
+           android:src="@drawable/img_placde_order_btn"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -459,14 +456,16 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:visibility="gone"
         android:id="@+id/tvNoDataFound"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/black"
-        android:fontFamily="@font/poppins_medium"
-        android:textSize="@dimen/_13sdp"
-        android:text="No item found in food bag"
-        app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_12sdp"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:text="There is nothing in your bag. Let's add some items "
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

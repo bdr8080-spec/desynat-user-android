@@ -26,7 +26,9 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
+import com.desynatuser.ui.home.store.response.AddToCartListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.store.response.GetProductDetailResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.Product
@@ -59,10 +61,12 @@ class ProductDetailFragment : BaseFragment() {
     private var selectedPos = 0
     private var selectedSizePos = 0
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
+    private var cartList = ArrayList<AddToCartListResponse.Data>()
     var productInfo = ArrayList<Product>()
 
-    var cartId = 0
+    var cartId:String? = null
     var cartQuantity = 0
+    var cartData : AddToCartListResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -144,7 +148,8 @@ class ProductDetailFragment : BaseFragment() {
 
         binding?.tvSearchAddress?.text = SharedPreference.get(requireActivity()).getDefaultAddress()?.address
 
-        getProductDetail()
+     //   getProductDetail()
+        viewCartDetail()
     }
 
     private fun setData() {
@@ -179,6 +184,17 @@ class ProductDetailFragment : BaseFragment() {
             tvTitle.text = storeData?.storeName
             tvProductName.text =  productData?.productNameEn+" (by ${storeData?.storeName})"
             tvName.text = productData?.brand?.nameEnglish
+
+            if (variant?.productVariation?.get(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0){
+                relAddToBag.isVisible = true
+                btnBuyNow.isVisible = true
+                viewBottom.isVisible = true
+            }
+            else{
+                relAddToBag.isVisible = false
+                btnBuyNow.isVisible = false
+                viewBottom.isVisible = false
+            }
 
             tvPrice.text = "${CommonMethod.formatPrice(variant?.productVariation?.get(selectedSizePos)?.actualPrice?:0.0)} KD"
             tvDiscountedPrice.text = "${CommonMethod.formatPrice(variant?.productVariation?.get(selectedSizePos)?.finalPrice?:0.0)} KD"
@@ -220,7 +236,29 @@ class ProductDetailFragment : BaseFragment() {
                 tvExchange.text = finalText
             }
 
-         //   tvExchange.text = "${productData?.returnDays} Days Return & ${productData?.exchangableDays} days Exchange"
+            Log.e("cart", "product: ${productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id}" )
+            Log.e("cart", "cart: ${cartData?.variantsId}" )
+
+            var matched = false
+            for (i in 0 until cartList.size){
+                if(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id==cartList[i].variantsId){
+                    matched = true
+                    cartData = cartList[i]
+                    cartId = cartData?.id.toString()
+                    cartQuantity = cartData?.quantity?:0
+                    Log.e("cart", "cartData: ${cartData}" )
+                    Log.e("cart", "cart: ${cartData?.variantsId}" )
+                    checkCartData(cartData?.quantity?:0)
+                }
+            }
+            if (matched==false) {
+                cartId = null
+                cartQuantity = 0
+                checkCartData(0)
+            }
+
+
+            //   tvExchange.text = "${productData?.returnDays} Days Return & ${productData?.exchangableDays} days Exchange"
 
         }
     }
@@ -275,7 +313,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnBuyNow.setOnClickListener {
-
+                findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
             }
 
             btnCustomOrder.setOnClickListener {
@@ -299,11 +337,39 @@ class ProductDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                myBagList.clear()
+                response?.data?.cartData?.let { myBagList.addAll(it) }
+                cartList.clear()
+                if (myBagList.isNotEmpty()){
+                    for(i in 0 until myBagList.size) {
+                        cartList.add(
+                            AddToCartListResponse.Data(
+                                amount = myBagList[i].amount,
+                                variantsId = myBagList[i].variantsId,
+                                id = myBagList[i].id,
+                                quantity = myBagList[i].quantity,
+                                productId = myBagList[i].productId
+                            )
+                        )
+                    }
+                    setData()
+                }
+                isObserver = false
+            }
+        }
+
+
         viewModel.addToCartResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                cartId = response.data.id
-                checkCartData(response.data.quantity)
+               var data = response.data
+                cartList.add(AddToCartListResponse.Data(amount = data.amount, productId = data.productId, variantsId = data.variantsId, id = data.id, quantity = data.quantity))
+                setData()
+               // cartId = response.data.id
+               // checkCartData(response.data.quantity)
                 showToast(response.message)
                 isObserver = false
             }
@@ -313,13 +379,31 @@ class ProductDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 if (cartQuantity==1&&response.data.quantity==1){
-                    cartQuantity = 0
-                    cartId = 0
-                    checkCartData(cartQuantity)
+                    var pos = -1
+                    for(i in 0 until cartList.size){
+                        if (cartList[i].id==cartId){
+                            pos = i
+
+                        }
+                    }
+                    if (pos!=-1) {
+                        cartList.removeAt(pos)
+                    }
+                    setData()
+//
+//                    cartQuantity = 0
+//                    cartId = null
+//                    checkCartData(cartQuantity)
                 }
                 else{
-                    cartQuantity = response.data.quantity
-                    checkCartData(response.data.quantity)
+//                    cartQuantity = response.data.quantity
+//                    checkCartData(response.data.quantity)
+                    for(i in 0 until cartList.size){
+                        if (cartList[i].id==cartId){
+                            cartList[i].quantity = response.data.quantity
+                        }
+                    }
+                    setData()
                 }
 
                 isObserver = false
@@ -349,38 +433,18 @@ class ProductDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 val quantity = response?.data?.addtocart?.quantity
 
-                if (quantity != null && quantity > 0) {
+               /* if (quantity != null && quantity > 0) {
+                    cartData = response?.data?.addtocart
                     cartQuantity = quantity?:0
                     cartId = response?.data?.addtocart?.id?:0
                     checkCartData(cartQuantity)
                 } else {
                     cartQuantity = 0
-                }
+                }*/
+
                 isObserver = false
             }
         }
-
-    }
-
-    private fun checkCartItem() {
-        Log.e("cart", "checkCartItem: ${productData?.id}" )
-       binding?.apply {
-           if (myBagList.isNotEmpty()) {
-               for(i in 0 until myBagList.size){
-                   if(myBagList[i].productId.toString()==productData?.id.toString()){
-                       Log.e("cart", "quantity: ${myBagList[i].quantity}" )
-                       cartQuantity = myBagList[i].quantity
-                       cartId = myBagList[i].id
-                   }
-               }
-
-               Log.e("cart", "cartQuantity: ${cartQuantity}" )
-               if(cartQuantity!=0){
-                   checkCartData(cartQuantity)
-               }
-           }
-
-       }
 
     }
 
@@ -405,7 +469,7 @@ class ProductDetailFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["product_id"] = productData?.id.toString()
         map["quantity"] = 1
-        map["variants_id"] = productData?.productVariants?.get(selectedPos)?.id.toString()
+        map["variants_id"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
         viewModel.addToCart(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -421,7 +485,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun addCartQuantity(type:String){
         val map = HashMap<String,Any>()
-        map["cart_id"] = cartId
+        map["cart_id"] = cartId.toString()
         map["type"] = type//// increment,decrement
         viewModel.addCartQuantity(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -537,5 +601,10 @@ class ProductDetailFragment : BaseFragment() {
         )
     }
 
+    private fun viewCartDetail(){
+        viewModel.viewCartDetail()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
 
 }

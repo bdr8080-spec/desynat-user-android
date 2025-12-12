@@ -28,8 +28,10 @@ import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.FragmentHomeBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
+import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.ui.home.response.GetCategoryResponse
 import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -44,6 +46,7 @@ class HomeFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val locationViewModel: LocationViewModel by activityViewModels()
     var isObserver = false
+    var isCartObserver = false
     private var adapter: ViewPagerAdapter?=null
     private var user: LoginResponse.Data?=null
 
@@ -56,6 +59,7 @@ class HomeFragment : BaseFragment() {
     private var newestProductAdapter: NewestProductAdapter?=null
     private var suggestedStoreAdapter: SuggestedStoreAdapter?=null
     private var topRatedAdapter: TopRatedAdapter?=null
+    private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
 
     private var homeWomenBannerViewPagerAdapter : HomeWomenBannerViewPagerAdapter? =null
     private var discountedDealBannerViewPagerAdapter : DiscountedDealBannerViewPagerAdapter? =null
@@ -173,6 +177,8 @@ class HomeFragment : BaseFragment() {
             }
             }
 
+        viewCartDetail()
+
     }
 
     override fun initControl() {
@@ -234,6 +240,17 @@ class HomeFragment : BaseFragment() {
 
                 }
                 isObserver = false
+            }
+        }
+
+        viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
+            if (isCartObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                myBagList.clear()
+                response?.data?.cartData?.let { myBagList.addAll(it) }
+                Constants.cartItem = myBagList.size
+                (requireActivity() as HomeActivity).updateAdapterCount()
+                isCartObserver = false
             }
         }
 
@@ -306,6 +323,12 @@ class HomeFragment : BaseFragment() {
             val lng = data?.getDoubleExtra("lng", 0.0)
             binding?.tvLocation?.text = address
         }
+    }
+
+    private fun viewCartDetail(){
+        viewModel.viewCartDetail()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isCartObserver = true
     }
 
 }

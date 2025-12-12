@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
@@ -50,6 +51,8 @@ import com.myfatoorah.sdk.views.MFResult
 import com.myfatoorah.sdk.views.MFSDK
 import com.myfatoorah.sdk.views.embeddedpayment.googlepay.MFGooglePayHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -62,12 +65,13 @@ class OrderPaymentFragment : BaseFragment() {
     var isPayment = false
     private var from = ""
     private var paymetMehod = ""
+    private var walletBalance = 0.0
     private var giftCardData : BuyGiftCardResponse.Data?=null
     private var applyGiftCard : ApplyGiftCardResponse.Data?=null
     private var cartData : GetCartResponse.Data?=null
     private var selectedAddress : GetAddressResponse.Data?=null
     private var promoCode : ApplyPromoCodeResponse.Data?=null
-
+    var totalAmount = 0.0
     private var orderPlacedResponse: PlaceOrderResponse.Data?=null
 
     private lateinit var selectedRadio: AppCompatImageView
@@ -107,7 +111,8 @@ class OrderPaymentFragment : BaseFragment() {
                 tvGiftCardNumber.isVisible = true
                 tvGiftCard.isVisible = true
                 tvGiftCardNumber.text = giftCardNumber
-                tvGiftCard.text = "AED ${CommonMethod.formatPrice(applyGiftCard?.giftCardAmount?.toDouble()?:0.0)} Gift Card Amount Redeemed"
+                totalAmount = totalAmount - applyGiftCard?.giftCardAmount!!
+                tvGiftCard.text = "KD ${CommonMethod.formatPrice(applyGiftCard?.giftCardAmount?.toDouble()?:0.0)} Gift Card Amount Redeemed"
             }
 
             toolbar.tvToolbar.text = "Payment Method"
@@ -130,13 +135,23 @@ class OrderPaymentFragment : BaseFragment() {
                 }
                 if (!itemCartJson.isNullOrEmpty()) {
                     cartData = Gson().fromJson(itemCartJson, GetCartResponse.Data::class.java)
+                    totalAmount = cartData?.totalAmount?:0.0
+                    Log.e("totalAmount", "itemCartJson: $totalAmount" )
                 }
                 if (!itemPromoJson.isNullOrEmpty()) {
                     promoCode = Gson().fromJson(itemPromoJson, ApplyPromoCodeResponse.Data::class.java)
+                    if (promoCode?.finalAmount?:0.0!=0.0) {
+                        totalAmount = promoCode?.finalAmount?:0.0
+                    }
+                    Log.e("totalAmount", "itemPromoJson: $totalAmount" )
+                }
+                if (giftCardData!=null) {
+                    totalAmount -= giftCardData?.amount!!
+                    Log.e("totalAmount", "giftCardData: $totalAmount" )
                 }
             }
         }
-
+        getWalletBalance()
         setupPaymentSelection()
 
     }
@@ -155,6 +170,7 @@ class OrderPaymentFragment : BaseFragment() {
             btnProceed.setOnClickListener {
                 when (selectedMethod) {
                     "KNET" -> {
+                        paymetMehod = "1"
                         executeRedirectPayment(1)   // PaymentMethodId = 2 (KNET)
                     }
 
@@ -163,6 +179,7 @@ class OrderPaymentFragment : BaseFragment() {
                     }
 
                     "VISA" -> {
+                        paymetMehod = "1"
                         executeRedirectPayment(2)  // Visa/MasterCard
                     }
 
@@ -170,13 +187,21 @@ class OrderPaymentFragment : BaseFragment() {
                         executeRedirectPayment(23) // Samsung Pay
                     }
                     "CREDIT_DEBIT" -> {
-                        executeRedirectPayment(8)
+                        paymetMehod = "1"
+                        executeRedirectPayment(2)
                           //  executeEmbeddedPayment()
                     }
                     "WALLET" -> {
-                        createOrder()
+                        paymetMehod = "2"
+                        if (walletBalance>=cartData?.totalAmount?:0.0) {
+                            createOrder()
+                        }
+                        else{
+                            showToast("Wallet balance is low")
+                        }
                     }
                     "COD" -> {
+                        paymetMehod = "3"
                         createOrder()
                     }
                 }
@@ -191,6 +216,17 @@ class OrderPaymentFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.walletBalanceResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                walletBalance = response.data.balance
+                lifecycleScope.launch(Dispatchers.Main) {
+                    binding?.tvBalance?.text = "Available Balance : ${CommonMethod.formatPrice(walletBalance?:0.0)} KD"
+                }
                 isObserver = false
             }
         }
@@ -238,7 +274,7 @@ class OrderPaymentFragment : BaseFragment() {
         val request = PlaceOrderRequest(deliveryAddress = selectedAddress?.id.toString(), discountMrp = cartData?.discountOnMrp.toString(), giftcardAmount = if (applyGiftCard!=null) applyGiftCard?.giftCardAmount.toString() else null , paymentMethod = paymetMehod , promocodeId = if (promoCode!=null) promoCode?.id else null, promocodeStatus = if (promoCode==null) "no" else "yes"
             , promocodeValue = if (promoCode!=null) promoCode?.applyDiscountValue.toString() else null,
             shippingFees = cartData?.shippingFees.toString(),
-            tax =cartData?.tax.toString() , totalMrp = cartData?.totalMrp.toString(), totalAmount = cartData?.totalAmount.toString())
+            tax =cartData?.tax.toString() , totalMrp = cartData?.totalMrp.toString(), totalAmount = totalAmount.toString())
         viewModel.placeOrder(request)
         isObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -306,9 +342,8 @@ class OrderPaymentFragment : BaseFragment() {
     }
 
     private fun executeEmbeddedPayment() {
-        val amount = if (from=="gift"){giftCardData?.amount} else {orderPlacedResponse?.totalAmount}
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        val request = MFExecutePaymentRequest(amount?.toDouble()).apply {
+        val request = MFExecutePaymentRequest(totalAmount).apply {
             customerReference = if (from=="gift"){giftCardData?.orderId} else {orderPlacedResponse?.orderId}
         }
         binding?.mfPaymentView?.validate { result: MFResult<String> ->
@@ -577,7 +612,7 @@ class OrderPaymentFragment : BaseFragment() {
 
         private fun executeRedirectPayment(paymentMethodId:Int) {
             ProgressDialogUtils.getInstance().showProgress(requireActivity())
-            val requestInitiate = MFInitiatePaymentRequest(0.100, MFCurrencyISO.KUWAIT_KWD)
+            val requestInitiate = MFInitiatePaymentRequest(totalAmount, MFCurrencyISO.KUWAIT_KWD)
             MFSDK.initiatePayment(
                 requestInitiate,
                 MFAPILanguage.EN
@@ -615,14 +650,19 @@ class OrderPaymentFragment : BaseFragment() {
                     is MFResult.Fail -> {
                         Log.d("executeRedirectPayment", "Fail: ${Gson().toJson(result.error)}")
                         result.error.message?.let { showToast(it) }
-                        showToast("Payment failed")
-
+                      //  showToast("Payment failed")
                     }
                     MFResult.Loading -> {
                     }
                 }
             }
         }
+
+    private fun getWalletBalance(){
+        viewModel.getWalletBalance()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
 
 
 }

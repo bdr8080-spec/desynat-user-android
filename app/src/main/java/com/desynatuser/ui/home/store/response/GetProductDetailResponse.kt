@@ -89,17 +89,17 @@ data class GetProductDetailResponse(
             @SerializedName("created_at")
             val createdAt: String? = null,
             @SerializedName("id")
-            val id: Int? = null,
+            val id: String? = null,
             @SerializedName("product_id")
-            val productId: Int? = null,
+            val productId: String? = null,
             @SerializedName("quantity")
             val quantity: Int? = null,
             @SerializedName("updated_at")
             val updatedAt: String? = null,
             @SerializedName("user_id")
-            val userId: Int? = null,
+            val userId: String? = null,
             @SerializedName("variants_id")
-            val variantsId: Int? = null
+            val variantsId: String? = null
         )
 
         data class Brand(

@@ -13,20 +13,20 @@ data class AddToCartResponse(
 ) {
     data class Data(
         @SerializedName("amount")
-        val amount: Int,
+        val amount: Double,
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("id")
-        val id: Int,
+        val id: String,
         @SerializedName("product_id")
-        val productId: Int,
+        val productId: String,
         @SerializedName("quantity")
         val quantity: Int,
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("user_id")
-        val userId: Int,
+        val userId: String,
         @SerializedName("variants_id")
-        val variantsId: Int
+        val variantsId: String
     )
 }

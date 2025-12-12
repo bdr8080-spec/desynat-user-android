@@ -52,4 +52,9 @@ class OccasionTypeAdapter(var context:Context, var occasionList: ArrayList<GetGi
         }
     }
 
+    fun updateSelectedPos(pos:Int){
+        selected = pos
+        notifyDataSetChanged()
+    }
+
 }

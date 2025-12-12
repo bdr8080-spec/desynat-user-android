@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentGiftCardDetailBinding
@@ -77,6 +79,10 @@ class GiftCardDetailFragment : BaseFragment() {
             tvGiftName.text = giftData?.giftDetails?.nameEnglish
             tvFromName.text = giftData?.senderName
             tvWishMessage.text = giftData?.wishMessage
+            if (giftData?.notes==null){
+                tvNoteMsg.isVisible = false
+                tvNote.isVisible = false
+            }
             tvNoteMsg.text = giftData?.notes
             tvEmail.text = giftData?.receiverEmail
             tvName.text = giftData?.receiverName
@@ -84,6 +90,11 @@ class GiftCardDetailFragment : BaseFragment() {
             tvPrice.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
             tvAmount.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
             tvTransaction.text = "Transaction Id: ${giftData?.transactionId}"
+            if(giftData?.transactionId=="wallet") {
+                tvTransaction.isVisible = false
+                ivPay.setImageResource(R.drawable.ic_wallet)
+                tvPayBy.text = "Paid by Wallet"
+            }
         }
     }
 

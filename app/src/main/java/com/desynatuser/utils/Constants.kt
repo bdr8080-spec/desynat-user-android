@@ -18,6 +18,7 @@ object Constants {
     var location=""
     var latitude=0.0
     var longitude=0.0
+    var cartItem=0
     var DEVICE_TYPE=1
 
     const val UPLOAD = "/api/upload"
@@ -69,6 +70,7 @@ object Constants {
     const val COMPLETE_ORDER_PAYMENT = "/api/user/product-order-complete-payment"
     const val GET_ALL_ORDER = "/api/user/All-order"
     const val GET_ORDER_SUMMARY = "/api/user/single-order-summary"
+    const val WALLET_BALANCE = "/api/user/waller-balance"
 
 
 }
