@@ -90,6 +90,11 @@ class GiftCardDetailFragment : BaseFragment() {
             tvPrice.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
             tvAmount.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
             tvTransaction.text = "Transaction Id: ${giftData?.transactionId}"
+            if(giftData?.paymentMethod=="2") {
+                tvTransaction.isVisible = false
+                ivPay.setImageResource(R.drawable.ic_wallet)
+                tvPayBy.text = "Paid by Wallet"
+            }
             if(giftData?.transactionId=="wallet") {
                 tvTransaction.isVisible = false
                 ivPay.setImageResource(R.drawable.ic_wallet)

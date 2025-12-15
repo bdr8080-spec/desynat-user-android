@@ -34,6 +34,8 @@ data class GetAllGiftCardResponse(
         val orderId: String,
         @SerializedName("payment_status")
         val paymentStatus: String,
+        @SerializedName("payment_method")
+        val paymentMethod: String,
         @SerializedName("receiver_email")
         val receiverEmail: String,
         @SerializedName("receiver_id")

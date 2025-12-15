@@ -45,6 +45,7 @@ class ProductDetailFragment : BaseFragment() {
     private var binding : FragmentProductDetailBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var isCartObserver = false
     private var storeData :GetStoreResponse.Data?=null
     private var productData :GetSingleStoreResponse.Data.AllProduct.Data?=null
     private var imageList = ArrayList<String>()
@@ -68,6 +69,8 @@ class ProductDetailFragment : BaseFragment() {
     var cartQuantity = 0
     var cartData : AddToCartListResponse.Data?=null
 
+    var fromBtn = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,7 +81,6 @@ class ProductDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ProgressDialogUtils.getInstance().hideProgress()
         initView()
         initControl()
         observe()
@@ -313,7 +315,20 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnBuyNow.setOnClickListener {
-                findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
+                if (selectedSizePos==-1){
+                    showToast("Please select size")
+                }
+                else {
+                    if (cartId!=null){
+                        findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
+                    }
+                    else{
+                        fromBtn = "buy"
+                        addToBag()
+                    }
+
+
+                }
             }
 
             btnCustomOrder.setOnClickListener {
@@ -338,7 +353,7 @@ class ProductDetailFragment : BaseFragment() {
         }
 
         viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
+            if (isCartObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 myBagList.clear()
                 response?.data?.cartData?.let { myBagList.addAll(it) }
@@ -357,7 +372,7 @@ class ProductDetailFragment : BaseFragment() {
                     }
                     setData()
                 }
-                isObserver = false
+                isCartObserver = false
             }
         }
 
@@ -365,12 +380,27 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.addToCartResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-               var data = response.data
-                cartList.add(AddToCartListResponse.Data(amount = data.amount, productId = data.productId, variantsId = data.variantsId, id = data.id, quantity = data.quantity))
-                setData()
-               // cartId = response.data.id
-               // checkCartData(response.data.quantity)
-                showToast(response.message)
+
+                if (fromBtn=="buy"){
+                    findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
+                    fromBtn = ""
+                }
+                else {
+                    var data = response.data
+                    cartList.add(
+                        AddToCartListResponse.Data(
+                            amount = data.amount,
+                            productId = data.productId,
+                            variantsId = data.variantsId,
+                            id = data.id,
+                            quantity = data.quantity
+                        )
+                    )
+                    setData()
+                    // cartId = response.data.id
+                    // checkCartData(response.data.quantity)
+                    showToast(response.message)
+                }
                 isObserver = false
             }
         }
@@ -604,7 +634,7 @@ class ProductDetailFragment : BaseFragment() {
     private fun viewCartDetail(){
         viewModel.viewCartDetail()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        isObserver = true
+        isCartObserver = true
     }
 
 }
