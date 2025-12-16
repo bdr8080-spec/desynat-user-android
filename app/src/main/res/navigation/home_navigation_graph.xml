@@ -87,6 +87,11 @@
             android:id="@+id/action_profileFragment_to_giftCardFragment"
             app:destination="@id/giftCard"/>
 
+        <action
+        android:id="@+id/action_profileFragment_to_myOrderFragment"
+        app:destination="@id/myOrder"/>
+
+
     </fragment>
 
     <fragment

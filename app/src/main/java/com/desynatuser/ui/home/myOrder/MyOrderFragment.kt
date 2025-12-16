@@ -1,22 +1,224 @@
 package com.desynatuser.ui.home.myOrder
 
+import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.Window
+import android.view.WindowManager
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
+import com.desynatuser.adapter.MyOrderAdapter
+import com.desynatuser.base.BaseFragment
+import com.desynatuser.data.view_model.HomeViewModel
+import com.desynatuser.databinding.FragmentMyOrderBinding
+import com.desynatuser.databinding.OrderFilterDialogBinding
+import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.HashMap
 
 @AndroidEntryPoint
-class MyOrderFragment : Fragment() {
+class MyOrderFragment : BaseFragment() {
+    private var binding : FragmentMyOrderBinding?=null
+    private val viewModel: HomeViewModel by activityViewModels()
+    var isObserver = false
+
+    private var myOrderAdapter: MyOrderAdapter?=null
+    private var myOrderList = ArrayList<GetAllOrderResponse.Data>()
+    private var filter:String?=null // // 1 all 2 ongoing 3 delivered 4 cancelled 5 return
+    private var search: Job? = null
+    private var lastQuery: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_order, container, false)
+        binding = FragmentMyOrderBinding.inflate(layoutInflater, container,false)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        ProgressDialogUtils.getInstance().hideProgress()
+        initView()
+        initControl()
+        observe()
+    }
+
+    override fun initView() {
+        binding?.apply {
+            toolbar.tvToolbar.text = "My Order"
+
+            myOrderAdapter = MyOrderAdapter(requireActivity(),myOrderList,object :MyOrderAdapter.OrderClick{
+                override fun onOrderClick(position: Int, type: String) {
+
+                }
+
+            })
+            rvOrder.adapter = myOrderAdapter
+
+            etSearch.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    val query = s.toString().trim()
+                    if (query == lastQuery) return
+                    lastQuery = query
+                    search?.cancel()
+                    search = lifecycleScope.launch {
+                        delay(600)
+                        if (!isObserver)
+                            getOrder()
+                    }
+
+                }
+            })
+
+            getOrder()
+        }
+    }
+
+    override fun initControl() {
+        binding?.apply {
+
+            toolbar.tvToolbar.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
+            tvOrder.setOnClickListener {
+                tvOrder.setBackgroundResource(R.drawable.selected_left_tab)
+                tvOrder.setTextColor(requireActivity().getColor(R.color.white))
+                tvCustomOrder.setTextColor(requireActivity().getColor(R.color.black))
+                tvCustomOrder.background = null
+                rvOrder.isVisible = true
+                checkData()
+            }
+
+            tvCustomOrder.setOnClickListener {
+                tvOrder.background = null
+                tvOrder.setTextColor(requireActivity().getColor(R.color.black))
+                tvCustomOrder.setTextColor(requireActivity().getColor(R.color.white))
+                tvCustomOrder.setBackgroundResource(R.drawable.selected_right_tab)
+                rvOrder.isVisible = false
+                tvNoDataFound.isVisible = true
+            }
+
+            ivFilter.setOnClickListener {
+                orderFilterDialog()
+            }
+        }
+    }
+
+    private fun getOrder(){
+        val map = HashMap<String,Any>()
+        if (lastQuery!=null) {
+            map["search"] = lastQuery.toString()
+        }
+        if (filter!=null) {
+            map["filter"] = filter.toString()
+        }
+        viewModel.getAllOrder(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.orderListResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                myOrderList.clear()
+                myOrderList.addAll(response.data)
+                myOrderAdapter?.notifyDataSetChanged()
+                checkData()
+                isObserver = false
+            }
+        }
+    }
+
+    private fun orderFilterDialog() {
+        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        val dialogBinding = OrderFilterDialogBinding.inflate(LayoutInflater.from(context))
+        dialogBinding.root.let { dialog.setContentView(it) }
+
+        val window: Window = dialog.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+
+        val params: WindowManager.LayoutParams = window.attributes
+        params.gravity = Gravity.BOTTOM
+        window.attributes = params
+
+        dialogBinding.apply {
+
+            when (filter) {
+                "1" -> radioGroup.check(R.id.rbAll)
+                "2" -> radioGroup.check(R.id.rbOngoing)
+                "3" -> radioGroup.check(R.id.rbDelivered)
+                "4" -> radioGroup.check(R.id.rbCancelled)
+                "5" -> radioGroup.check(R.id.rbReturn)
+
+            }
+
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                filter = when (checkedId) {
+                    R.id.rbAll -> "1"
+                    R.id.rbOngoing -> "2"
+                    R.id.rbDelivered -> "3"
+                    R.id.rbCancelled -> "4"
+                    R.id.rbReturn -> "5"
+                    else -> null
+                }
+            }
+
+
+            tvToolbar.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            tvClear.setOnClickListener {
+                filter = null
+                getOrder()
+                dialog.dismiss()
+            }
+
+            tvApply.setOnClickListener{
+                getOrder()
+                dialog.dismiss()
+            }
+
+        }
+
+        dialog.show()
+    }
+
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = myOrderList.isEmpty()
     }
 
 }

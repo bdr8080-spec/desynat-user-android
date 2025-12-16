@@ -43,19 +43,21 @@ data class GetAllOrderResponse(
         @SerializedName("promocode_value")
         val promocodeValue: String,
         @SerializedName("shipping_fees")
-        val shippingFees: String,
+        val shippingFees: Double,
         @SerializedName("tax")
-        val tax: String,
+        val tax: Double,
         @SerializedName("total_amount")
-        val totalAmount: String,
+        val totalAmount: Double,
         @SerializedName("total_mrp")
-        val totalMrp: String,
+        val totalMrp: Double,
         @SerializedName("transaction_id")
-        val transactionId: Any,
+        val transactionId: String,
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("user_id")
-        val userId: Int
+        val userId: Int,
+        @SerializedName("wallet_amount")
+        val walletAmount: String
     ) {
         data class DeliveryDetails(
             @SerializedName("address")
@@ -65,7 +67,7 @@ data class GetAllOrderResponse(
             @SerializedName("country_code")
             val countryCode: String,
             @SerializedName("country_name")
-            val countryName: Any,
+            val countryName: String,
             @SerializedName("created_at")
             val createdAt: String,
             @SerializedName("house_no")
@@ -91,7 +93,7 @@ data class GetAllOrderResponse(
             @SerializedName("status")
             val status: Int,
             @SerializedName("street_no")
-            val streetNo: Any,
+            val streetNo: String,
             @SerializedName("updated_at")
             val updatedAt: String,
             @SerializedName("user_id")
@@ -125,6 +127,8 @@ data class GetAllOrderResponse(
             val variationDetails: VariationDetails
         ) {
             data class ProductDetails(
+                @SerializedName("affiliated_commission")
+                val affiliatedCommission: String,
                 @SerializedName("affiliated_product")
                 val affiliatedProduct: String,
                 @SerializedName("brand")
@@ -146,7 +150,7 @@ data class GetAllOrderResponse(
                 @SerializedName("description_en")
                 val descriptionEn: String,
                 @SerializedName("exchangable_days")
-                val exchangableDays: Any,
+                val exchangableDays: String,
                 @SerializedName("id")
                 val id: Int,
                 @SerializedName("max_card_quantity")
@@ -154,9 +158,9 @@ data class GetAllOrderResponse(
                 @SerializedName("min_card_quantity")
                 val minCardQuantity: String,
                 @SerializedName("other_ar")
-                val otherAr: Any,
+                val otherAr: String,
                 @SerializedName("other_en")
-                val otherEn: Any,
+                val otherEn: String,
                 @SerializedName("product_active_status")
                 val productActiveStatus: Int,
                 @SerializedName("product_exchangable")
@@ -170,7 +174,7 @@ data class GetAllOrderResponse(
                 @SerializedName("ready_to_ship")
                 val readyToShip: String,
                 @SerializedName("return_days")
-                val returnDays: Any,
+                val returnDays: String,
                 @SerializedName("review_rating")
                 val reviewRating: String,
                 @SerializedName("seller_details")
@@ -295,7 +299,7 @@ data class GetAllOrderResponse(
                 @SerializedName("actual_price")
                 val actualPrice: String,
                 @SerializedName("bust")
-                val bust: Any,
+                val bust: String,
                 @SerializedName("color")
                 val color: Color,
                 @SerializedName("color_id")
@@ -305,21 +309,21 @@ data class GetAllOrderResponse(
                 @SerializedName("discount_type")
                 val discountType: String,
                 @SerializedName("discount_value")
-                val discountValue: String,
+                val discountValue: Double,
                 @SerializedName("final_price")
-                val finalPrice: String,
+                val finalPrice: Double,
                 @SerializedName("hip")
-                val hip: Any,
+                val hip: String,
                 @SerializedName("id")
                 val id: Int,
                 @SerializedName("length")
-                val length: Any,
+                val length: String,
                 @SerializedName("parent_child")
                 val parentChild: String,
                 @SerializedName("product_id")
                 val productId: Int,
                 @SerializedName("shoulder")
-                val shoulder: Any,
+                val shoulder: String,
                 @SerializedName("size")
                 val size: Size,
                 @SerializedName("size_id")
@@ -329,7 +333,7 @@ data class GetAllOrderResponse(
                 @SerializedName("sku_threshold_value")
                 val skuThresholdValue: Any,
                 @SerializedName("sleeve_length")
-                val sleeveLength: Any,
+                val sleeveLength: String,
                 @SerializedName("status")
                 val status: String,
                 @SerializedName("total_stock")
@@ -339,7 +343,7 @@ data class GetAllOrderResponse(
                 @SerializedName("variant_image")
                 val variantImage: List<String>,
                 @SerializedName("waist")
-                val waist: Any
+                val waist: String
             ) {
                 data class Color(
                     @SerializedName("created_at")

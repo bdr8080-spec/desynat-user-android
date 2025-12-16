@@ -70,6 +70,10 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_profileDetailsFragment)
             }
 
+            tvMyOrder.setOnClickListener{
+                findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
+            }
+
             tvSaveAddress.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("from", "profile")
@@ -97,17 +101,6 @@ class ProfileFragment : BaseFragment() {
                 }
                 else{
                      logout()
-                  /*  ProgressDialogUtils.getInstance().showProgress(requireActivity())
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        ProgressDialogUtils.getInstance().hideProgress()
-                        Constants.isLogout = true
-                        CommonMethod.clearData(requireActivity())
-                        requireActivity().startActivity(
-                            Intent(requireActivity(),
-                                AuthActivity::class.java)
-                        )
-                        requireActivity().finish()
-                    }, 500) // delay in milliseconds*/
                 }
             }
         }

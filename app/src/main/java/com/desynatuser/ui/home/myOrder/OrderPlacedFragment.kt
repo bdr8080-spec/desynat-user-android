@@ -85,7 +85,8 @@ class OrderPlacedFragment : BaseFragment() {
         binding?.apply {
 
             tvTrackOrder.setOnClickListener {
-               /* val navOptions = NavOptions.Builder()
+                lottieView.cancelAnimation()
+                val navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.home, false)
                     .build()
 
@@ -93,7 +94,7 @@ class OrderPlacedFragment : BaseFragment() {
                     R.id.action_orderPlacedFragment_to_myOrderFragment,
                     null,
                     navOptions
-                )*/
+                )
            }
 
             btnContinueShopping.setOnClickListener {
