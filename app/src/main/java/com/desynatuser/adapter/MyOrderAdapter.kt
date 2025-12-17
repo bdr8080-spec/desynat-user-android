@@ -17,7 +17,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
         RecyclerView.ViewHolder(binding.root)
 
     interface OrderClick{
-        fun onOrderClick(position: Int,type:String)
+        fun onOrderClick(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -62,7 +62,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                     btn.text = "Expected Delivery Date : 12 SEP 25"
 
                     tvStatus.text = "New"
-                    btn.setTextColor(Color.parseColor("#FF5F1B"))
+                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                 }
                 "2" -> {
                     btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
@@ -70,7 +70,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                     btn.text = "Expected Delivery Date : 12 SEP 25"
 
                     tvStatus.text = "Ongoing"
-                    btn.setTextColor(Color.parseColor("#FF5F1B"))
+                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                 }
                 "3" -> {
                     btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
@@ -78,7 +78,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                     btn.text = "Delivered On : 12 SEP 25"
 
                     tvStatus.text = "Delivered"
-                    btn.setTextColor(Color.parseColor("#16B364"))
+                    tvStatus.setTextColor(Color.parseColor("#16B364"))
                 }
 
                 "4" -> {
@@ -87,7 +87,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                     btn.text = "Cancelled  Date : 12 SEP 25"
 
                     tvStatus.text = "Cancelled"
-                    btn.setTextColor(Color.parseColor("#E70000"))
+                    tvStatus.setTextColor(Color.parseColor("#E70000"))
                 }
                 "5" -> {
                     btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
@@ -95,10 +95,14 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                     btn.text = "Pickup Date : 12 SEP 25"
 
                     tvStatus.text = "Return Req.."
-                    btn.setTextColor(Color.parseColor("#FF5F1B"))
+                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                 }
             }
 
+        }
+
+        holder.itemView.setOnClickListener{
+            orderClick.onOrderClick(position)
         }
 
     }

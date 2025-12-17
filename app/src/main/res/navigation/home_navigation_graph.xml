@@ -11,6 +11,11 @@
         android:label="Home Fragment"
         tools:layout="@layout/fragment_home">
 
+
+        <action
+            android:id="@+id/action_homeFragment_to_searchProductFragment"
+            app:destination="@id/searchProduct"/>
+
         <action
             android:id="@+id/action_homeFragment_to_storeFragment"
             app:destination="@id/store"/>
@@ -333,9 +338,15 @@
         tools:layout="@layout/fragment_my_order">
 
         <action
-            android:id="@+id/action_myOrderFragment_to_myOrderFragment"
-            app:destination="@id/enterGiftCardDetail"/>
+            android:id="@+id/action_myOrderFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetail"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/orderDetail"
+        android:name="com.desynatuser.ui.home.myOrder.OrderDetailFragment"
+        android:label="Order Detail Fragment"
+        tools:layout="@layout/fragment_order_detail"/>
 
 </navigation>

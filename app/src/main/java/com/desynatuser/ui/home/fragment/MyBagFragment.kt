@@ -107,7 +107,7 @@ class MyBagFragment : BaseFragment() {
 
             })
 
-            rvFoodBag.adapter = myBagAdapter
+            rvMyBag.adapter = myBagAdapter
         }
         if (cartData==null) {
             viewCartDetail()

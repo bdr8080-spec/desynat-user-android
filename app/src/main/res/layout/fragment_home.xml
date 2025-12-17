@@ -94,6 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/relToolbar">
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/edit_text"
@@ -103,6 +104,8 @@
             android:background="@drawable/edit_search"
             android:drawablePadding="@dimen/_5sdp"
             android:hint="Search Product or Brand"
+            android:editable="false"
+            android:focusable="false"
             android:textColorHint="@color/black"
             android:layout_centerVertical="true"
             android:drawableStart="@drawable/ic_search"

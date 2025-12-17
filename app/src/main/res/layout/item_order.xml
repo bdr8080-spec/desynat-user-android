@@ -28,7 +28,7 @@
         android:text="Ongoing"
         android:textColor="#FF5F1B"
         android:layout_margin="1dp"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_6sdp"
         android:paddingTop="@dimen/_2sdp"
@@ -45,7 +45,7 @@
         android:singleLine="true"
         android:text="Mooei 3 Pcs set"
         android:textColor="@color/black"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
         app:layout_constraintStart_toEndOf="@+id/ivProduct"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +59,7 @@
         android:singleLine="true"
         android:text="Order ID: #256398"
         android:textColor="@color/black"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
         app:layout_constraintStart_toEndOf="@+id/ivProduct"
         app:layout_constraintEnd_toStartOf="@+id/tvPrice"
@@ -74,7 +74,7 @@
         android:maxLines="1"
         android:text="155 KD"
         android:textColor="@color/black"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvOrderId" />
@@ -171,7 +171,7 @@
         android:maxLines="1"
         android:text="Placed"
         android:textColor="@color/black"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvSize" />
 
@@ -184,11 +184,10 @@
         android:maxLines="1"
         android:text="7PM  | 21 02 25"
         android:textColor="@color/black"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvPlaced"/>
-
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn"
@@ -196,7 +195,8 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:backgroundTint="#F4DDDD"
-        android:padding="@dimen/_8sdp"
+        android:padding="@dimen/_6sdp"
+        android:textSize="@dimen/_10sdp"
         android:textColor="#17854C"
         android:fontFamily="@font/poppins_light"
         android:text="Expected Delivery Date : 12 SEP 25"

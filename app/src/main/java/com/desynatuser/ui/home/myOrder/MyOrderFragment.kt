@@ -23,6 +23,7 @@ import com.desynatuser.databinding.OrderFilterDialogBinding
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -62,8 +63,11 @@ class MyOrderFragment : BaseFragment() {
             toolbar.tvToolbar.text = "My Order"
 
             myOrderAdapter = MyOrderAdapter(requireActivity(),myOrderList,object :MyOrderAdapter.OrderClick{
-                override fun onOrderClick(position: Int, type: String) {
-
+                override fun onOrderClick(position: Int) {
+                    val bundle = Bundle().apply {
+                        putString("orderData", Gson().toJson(myOrderList[position]))
+                    }
+                    findNavController().navigate(R.id.action_myOrderFragment_to_orderDetailFragment,bundle)
                 }
 
             })

@@ -21,7 +21,9 @@ data class GetAllOrderResponse(
         @SerializedName("delivery_status")
         val deliveryStatus: String,
         @SerializedName("discount_mrp")
-        val discountMrp: String,
+        val discountMrp: Double,
+        @SerializedName("discount_coupon")
+        val discountCoupon: Double,
         @SerializedName("giftcard_amount")
         val giftcardAmount: String,
         @SerializedName("giftcard_id")

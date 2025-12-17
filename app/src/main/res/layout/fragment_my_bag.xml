@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/nsBag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,13 +39,13 @@
                 android:id="@+id/relCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:background="@drawable/card_background"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvFoodBag"
+                    android:id="@+id/rvMyBag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"

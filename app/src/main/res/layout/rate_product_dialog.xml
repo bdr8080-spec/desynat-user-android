@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/_15sdp"
+    android:background="@drawable/half_rounded_corner"
+    android:backgroundTint="@color/white"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:background="@drawable/half_rounded_corner"
+        android:backgroundTint="#FFF7EA"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Rate this product"
+        android:textColor="@color/black"
+        android:drawableEnd="@drawable/close_icon"
+        android:textSize="@dimen/_13sdp"/>
+
+    <TextView
+        android:id="@+id/tvProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="Rate Nike T- Shirt"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_13sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp" />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/rbProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        style="@style/Widget.AppCompat.RatingBar"/>
+
+    <TextView
+        android:id="@+id/tvProductReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="Write Review"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_13sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:background="@drawable/edit_back">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etProductReview"
+        android:layout_width="match_parent"
+        style="@style/edit_text"
+        android:hint="Write Here"
+        android:inputType="textCapSentences"
+        android:background="@null"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_attachment"
+            android:padding="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="Rate Store"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_13sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp" />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/rbStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        style="@style/Widget.AppCompat.RatingBar"/>
+
+    <TextView
+        android:id="@+id/tvStoreReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="Write Review"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_13sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:background="@drawable/edit_back">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etStoreReview"
+            android:layout_width="match_parent"
+            style="@style/edit_text"
+            android:hint="Write Here"
+            android:inputType="textCapSentences"
+            android:background="@null"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_attachment"
+            android:padding="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_background"
+        android:gravity="center"
+        android:text="Submit"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp" />
+
+
+</LinearLayout>

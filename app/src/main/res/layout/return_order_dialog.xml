@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="@dimen/_15sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:background="@drawable/half_rounded_corner"
+        android:backgroundTint="#FFF7EA"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Return Request"
+        android:textColor="@color/black"
+        android:drawableEnd="@drawable/close_icon"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tvToolbar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="16sp"
+            android:text="Select Reason"
+            android:textSize="@dimen/_13sdp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="@dimen/_5sdp"
+                tools:listitem="@layout/item_reason"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecentSearches"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:visibility="gone"
+            android:id="@+id/etReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/edit_text"
+            android:maxLines="4"
+            android:lines="4"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="@dimen/_10sdp"
+            android:inputType="textMultiLine"
+            android:background="@drawable/edit_back"
+            android:hint="Write Here"
+            android:gravity="start"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="16sp"
+            android:text="Upload Image (optional)"
+            android:textSize="@dimen/_13sdp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_gravity="center_horizontal"
+            app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:background="@drawable/grey_dash_rectangle"
+            android:src="@drawable/upload_img"/>
+
+    <TextView
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_gradient"
+        android:gravity="center"
+        android:text="Submit"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp" />
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
