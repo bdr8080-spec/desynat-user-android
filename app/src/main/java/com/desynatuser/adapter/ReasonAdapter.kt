@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemReasonBinding
+import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 
-class ReasonAdapter(var context:Context, var sizeList: ArrayList<GetSizeListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<ReasonAdapter.ViewHolder>() {
-
+class ReasonAdapter(var context:Context, var reasonList: ArrayList<GetReasonListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<ReasonAdapter.ViewHolder>() {
+    var isSelected = -1
     interface OnClick{
         fun onClickItem(position: Int)
     }
@@ -22,15 +23,15 @@ class ReasonAdapter(var context:Context, var sizeList: ArrayList<GetSizeListResp
     }
 
     override fun getItemCount(): Int {
-        return sizeList.size
+        return reasonList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-            tvReason.text = sizeList[position].name
+            tvReason.text = reasonList[position].reasonEnglish
 
-            if (sizeList[position].isSelected){
+            if (isSelected==position){
                 ivImage.setImageResource(R.drawable.ic_radio_selected)
             }
             else{
@@ -39,8 +40,16 @@ class ReasonAdapter(var context:Context, var sizeList: ArrayList<GetSizeListResp
         }
 
         holder.itemView.setOnClickListener {
-            sizeList[position].isSelected = !sizeList[position].isSelected
-            notifyDataSetChanged()
+            val previousSelected = isSelected
+            isSelected = position
+
+            if (previousSelected != -1) {
+                notifyItemChanged(previousSelected)
+            }
+            notifyItemChanged(position)
+
+            onClick.onClickItem(position)
+
         }
 
     }

@@ -31,8 +31,8 @@ import com.desynatuser.databinding.FragmentHomeBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.HomeActivity
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
@@ -324,14 +324,15 @@ class HomeFragment : BaseFragment() {
             val state = data?.getStringExtra("state") ?: "N/A"
             val pincode = data?.getStringExtra("pincode") ?: "N/A"
             val houseno = data?.getStringExtra("houseno") ?: "N/A"
-            val address = data?.getStringExtra("addressH") ?: "N/A"
-            Constants.latitude = data?.getStringExtra("latitudeD")?.toDoubleOrNull() ?: 0.0
-            Constants.longitude = data?.getStringExtra("longitudeD")?.toDoubleOrNull() ?: 0.0
-            Constants.location = address
             val addressH = data?.getStringExtra("addressH") ?: "N/A"
-            val lat = data?.getDoubleExtra("lat", 0.0)
-            val lng = data?.getDoubleExtra("lng", 0.0)
-            binding?.tvLocation?.text = address
+            val countryField = data?.getStringExtra("country") ?: "N/A"
+
+            val lat = data?.getDoubleExtra("lat", 0.0)?:0.0
+            val lng = data?.getDoubleExtra("lng", 0.0)?:0.0
+            Constants.latitude = lat
+            Constants.longitude = lng
+            Constants.location = addressH
+            binding?.tvLocation?.text = addressH
         }
     }
 

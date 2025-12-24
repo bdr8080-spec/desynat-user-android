@@ -7,8 +7,8 @@ import com.desynatuser.R
 import com.desynatuser.adapter.SavedAddressAdapter
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
-import com.desynatuser.ui.home.response.GetAddressResponse
-import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

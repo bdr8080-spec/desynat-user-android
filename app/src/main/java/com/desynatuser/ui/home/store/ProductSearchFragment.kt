@@ -20,8 +20,10 @@ import com.desynatuser.adapter.RecentSearchAdapter
 import com.desynatuser.adapter.RecommendedAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
-import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.FragmentProductSearchBinding
+import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,8 +36,10 @@ class ProductSearchFragment : BaseFragment() {
     private var binding : FragmentProductSearchBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var searchList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
 
     var recentSearchAdapter: RecentSearchAdapter?=null
+    var recentSearchList = ArrayList<GetRecentSearchListResponse.Data>()
     var recommendedAdapter: RecommendedAdapter?=null
     var latestSearchAdapter: LatestSearchAdapter?=null
 
@@ -90,9 +94,10 @@ class ProductSearchFragment : BaseFragment() {
             })
             rvLatestSearch.adapter = latestSearchAdapter
 
-            recentSearchAdapter = RecentSearchAdapter(requireActivity(), arrayListOf("","",""),object: RecentSearchAdapter.ClickOnItem{
+            recentSearchList.clear()
+            recentSearchAdapter = RecentSearchAdapter(requireActivity(), recentSearchList,object: RecentSearchAdapter.ClickOnItem{
                 override fun onClickItem(position: Int) {
-
+                    etSearch.setText(recentSearchList[position].name)
                 }
 
             })
@@ -105,7 +110,25 @@ class ProductSearchFragment : BaseFragment() {
 
             })
             rvRecommended.adapter = recommendedAdapter
+
+            getRecentSearch()
         }
+    }
+
+    private fun getRecentSearch() {
+        viewModel.getRecentSearchList()
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+    }
+
+    private fun getHomeSearch() {
+        val map = HashMap<String,Any>()
+        if (lastQuery!=null) {
+            map["search"] = lastQuery.toString()
+        }
+        viewModel.homePageSearch(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
 
     override fun initControl() {
@@ -116,7 +139,7 @@ class ProductSearchFragment : BaseFragment() {
             }
 
             tvGo.setOnClickListener {
-                findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment)
+                getHomeSearch()
             }
 
             ivMic.setOnClickListener {
@@ -126,6 +149,37 @@ class ProductSearchFragment : BaseFragment() {
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getRecentSearchListResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                   recentSearchList.clear()
+                    recentSearchList.addAll(response.data)
+                    recentSearchAdapter?.notifyDataSetChanged()
+                }
+                isObserver = false
+            }
+        }
+        viewModel.homePageSearchResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                   searchList.clear()
+                    searchList.addAll(response.data.data)
+                    findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment)
+                }
+                isObserver = false
+            }
+        }
+
     }
 
     private fun openSpeechDialog() {

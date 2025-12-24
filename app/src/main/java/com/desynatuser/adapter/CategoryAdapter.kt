@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemCategoriesBinding
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 
 class CategoryAdapter(var context: Context, private val categoryList: List<GetSubCategoryResponse.Data>, var categoryClick:CategoryClick) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {

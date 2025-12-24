@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemOrderProductBinding
-import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 
-class OrderProductAdapter(var context:Context, private var productList: ArrayList<GetAllOrderResponse.Data.OrderDetail>,var clickOnItem:ClickOnItem) : RecyclerView.Adapter<OrderProductAdapter.ViewHolder>() {
+class OrderProductAdapter(var context:Context, private var productList: ArrayList<GetSingleOrderSummaryResponse.Data.OrderDetail>,var deliveryStatus:String,var clickOnItem:ClickOnItem) : RecyclerView.Adapter<OrderProductAdapter.ViewHolder>() {
 
    interface ClickOnItem{
        fun onClickOnItem(position: Int,type:Int)
@@ -81,7 +81,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
             val discountType = if (productData?.variationDetails?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
 
-            when(productData?.status){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+            when(deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                 "1" -> {
                     btnCancelOrder.isVisible = true
                     relRating.isVisible = false
@@ -96,9 +96,25 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 }
                 "3" -> {
                     btnCancelOrder.isVisible = false
-                    relRating.isVisible = true
-                    tvExchange.isVisible = true
-                    tvReturn.isVisible = true
+                    if (productData?.productDetails?.productReturn=="1"){
+                        tvReturn.isVisible = true
+                    }
+                    if (productData?.productDetails?.productExchangable=="1"){
+                        tvExchange.isVisible = true
+                    }
+
+                    if (productData?.userRatingReviewProvide!=null){
+                        relRating.isVisible = false
+                    }
+                    else{
+                        relRating.isVisible = true
+                    }
+                }
+                "7" -> {
+                    btnCancelOrder.isVisible = false
+                    relRating.isVisible = false
+                    tvExchange.isVisible = false
+                    tvReturn.isVisible = false
                 }
 
                 "4" -> {

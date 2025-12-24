@@ -12,7 +12,7 @@ import com.desynatuser.adapter.SavedAddressAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSavedAddressBinding
-import com.desynatuser.ui.home.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
@@ -149,7 +149,6 @@ class SavedAddressFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["address_id"]= savedAddressList[selectedPos].id
         viewModel.setDefaultAddress(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
 

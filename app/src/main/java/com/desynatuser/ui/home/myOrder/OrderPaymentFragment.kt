@@ -19,8 +19,8 @@ import com.desynatuser.databinding.FragmentOrderPaymentBinding
 import com.desynatuser.ui.home.PaymentResultEvent
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
-import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
-import com.desynatuser.ui.home.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
@@ -66,6 +66,7 @@ class OrderPaymentFragment : BaseFragment() {
     private var from = ""
     private var paymetMehod = ""
     private var walletBalance = 0.0
+    private var transactionId :String?=null
     private var giftCardData : BuyGiftCardResponse.Data?=null
     private var applyGiftCard : ApplyGiftCardResponse.Data?=null
     private var cartData : GetCartResponse.Data?=null
@@ -285,6 +286,9 @@ class OrderPaymentFragment : BaseFragment() {
         map["order_id"] = orderPlacedResponse?.orderId.toString()
         map["Payment_method"] = paymetMehod//1 myfatoorah 2 wallet 3 Cod
         map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
+        if (transactionId!=null){
+            map["transaction_id"] = transactionId.toString()
+        }
         viewModel.orderPayment(map)
         isPayment = true
     }
@@ -645,6 +649,8 @@ class OrderPaymentFragment : BaseFragment() {
                 when (result) {
                     is MFResult.Success -> {
                         Log.d("executeRedirectPayment", "Success: ${Gson().toJson(result.response)}")
+                        val paymentData =  result.response
+                        transactionId =  paymentData.invoiceTransactions?.get(0)?.transactionId
                         createOrder()
                     }
                     is MFResult.Fail -> {

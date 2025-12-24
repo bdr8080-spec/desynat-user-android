@@ -18,8 +18,8 @@ import com.desynatuser.adapter.TopRatedAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentWomenBinding
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast

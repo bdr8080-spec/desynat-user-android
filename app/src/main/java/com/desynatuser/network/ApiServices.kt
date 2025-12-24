@@ -5,6 +5,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -12,15 +14,16 @@ import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
-import com.desynatuser.ui.home.response.AddAddressRequest
-import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
-import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
-import com.desynatuser.ui.home.response.GetAddressResponse
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetPromoCodeResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
-import com.desynatuser.ui.home.response.UpdateAddressResponse
+import com.desynatuser.ui.home.profile.response.AddAddressRequest
+import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.ChangeMobileNumbeResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
@@ -243,6 +246,24 @@ interface ApiServices {
 
     @POST(Constants.GET_ORDER_SUMMARY)
     suspend fun getSingleOrder(@Body map: HashMap<String,Any>): Response<GetSingleOrderSummaryResponse>
+
+    @POST(Constants.GET_REASON)
+    suspend fun getReasonList(@Body map: HashMap<String,Any>): Response<GetReasonListResponse>
+
+    @POST(Constants.CANCEL_ORDER)
+    suspend fun cancelOrder(@Body map: HashMap<String,Any>): Response<CommonResponse>
+
+    @POST(Constants.RETURN_EXCHANGE_ORDER)
+    suspend fun returnExchangeOrder(@Body map: HashMap<String,Any>): Response<CommonResponse>
+
+    @POST(Constants.ORDER_RATING)
+    suspend fun orderRating(@Body map: HashMap<String,Any>): Response<CommonResponse>
+
+    @GET(Constants.RECENT_SEARCH_LIST)
+    suspend fun getRecentSearchList(): Response<GetRecentSearchListResponse>
+
+    @POST(Constants.HOME_PAGE_SEARCH)
+    suspend fun homePageSearch(@Body map: HashMap<String,Any>): Response<GetHomeSearchResponse>
 
     @GET(Constants.WALLET_BALANCE)
     suspend fun getWalletBalance(): Response<WalletBalanceResponse>

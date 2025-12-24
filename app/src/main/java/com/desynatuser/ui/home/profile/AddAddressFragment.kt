@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +23,8 @@ import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentAddAddressBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
-import com.desynatuser.ui.home.response.AddAddressRequest
-import com.desynatuser.ui.home.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.AddAddressRequest
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
@@ -270,17 +271,20 @@ class AddAddressFragment : BaseFragment() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
+
             val data = result.data
             val city = data?.getStringExtra("city") ?: "N/A"
             val street = data?.getStringExtra("street") ?: "N/A"
             val state = data?.getStringExtra("state") ?: "N/A"
             val pincode = data?.getStringExtra("pincode") ?: "N/A"
             val houseno = data?.getStringExtra("houseno") ?: "N/A"
-            val address = data?.getStringExtra("addressH") ?: "N/A"
-            val countryField = data?.getStringExtra("country") ?: "N/A"
             val addressH = data?.getStringExtra("addressH") ?: "N/A"
-            lat = data?.getDoubleExtra("lat", 0.0)
-            lng = data?.getDoubleExtra("lng", 0.0)
+            val countryField = data?.getStringExtra("country") ?: "N/A"
+
+            lat = data?.getDoubleExtra("lat", 0.0)?:0.0
+            lng = data?.getDoubleExtra("lng", 0.0)?:0.0
+
+            Log.e("send", "getnew: $lat $lng" )
 
             val parsed = parseAddress(addressH)
 

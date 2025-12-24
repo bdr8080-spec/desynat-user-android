@@ -39,6 +39,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
+        android:progressTint="#FFA41B"
+        android:secondaryProgressTint="#FFA41B"
+        android:progressBackgroundTint="#C7C7C7"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
         style="@style/Widget.AppCompat.RatingBar"/>
@@ -96,6 +99,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
+        android:progressTint="#FFA41B"
+        android:secondaryProgressTint="#FFA41B"
+        android:progressBackgroundTint="#C7C7C7"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
         style="@style/Widget.AppCompat.RatingBar"/>

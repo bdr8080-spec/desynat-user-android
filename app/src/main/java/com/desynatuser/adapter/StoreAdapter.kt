@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemStoreBinding
-import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 
 class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStoreResponse.Data>, var storeClick:StoreClick) : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {

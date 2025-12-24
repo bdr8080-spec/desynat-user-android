@@ -8,7 +8,7 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemProductBinding
 import com.desynatuser.databinding.ItemStoreBinding
-import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 
 class SimilarProductAdapter(var context:Context, private var productList: ArrayList<String>, var storeName:String, var productClick:ProductClick) : RecyclerView.Adapter<SimilarProductAdapter.ViewHolder>() {

@@ -30,8 +30,8 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSubCategoryBinding
 import com.desynatuser.databinding.MicDialogBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast

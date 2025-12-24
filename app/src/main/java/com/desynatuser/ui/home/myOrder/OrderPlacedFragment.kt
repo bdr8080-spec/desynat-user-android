@@ -15,7 +15,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentOrderPlacedBinding
-import com.desynatuser.ui.home.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast

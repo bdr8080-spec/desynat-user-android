@@ -14,9 +14,9 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentMyBagBinding
 import com.desynatuser.ui.home.HomeActivity
-import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
-import com.desynatuser.ui.home.response.GetAddressResponse
-import com.desynatuser.ui.home.response.GetPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants

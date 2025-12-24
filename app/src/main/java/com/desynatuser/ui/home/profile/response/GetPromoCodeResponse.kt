@@ -1,4 +1,4 @@
-package com.desynatuser.ui.home.response
+package com.desynatuser.ui.home.profile.response
 
 import com.google.gson.annotations.SerializedName
 

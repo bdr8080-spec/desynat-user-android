@@ -11,7 +11,7 @@ import com.desynatuser.adapter.PromoCodeAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentPromoCodeBinding
-import com.desynatuser.ui.home.response.GetPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson

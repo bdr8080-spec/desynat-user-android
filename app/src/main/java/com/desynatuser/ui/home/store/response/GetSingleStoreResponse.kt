@@ -46,6 +46,8 @@ data class GetSingleStoreResponse(
             val total: Int
         ) {
             data class Data(
+                @SerializedName("affiliated_commission")
+                val affiliatedCommission: String,
                 @SerializedName("affiliated_product")
                 val affiliatedProduct: String,
                 @SerializedName("brand")

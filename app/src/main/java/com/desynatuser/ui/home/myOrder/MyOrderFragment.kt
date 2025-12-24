@@ -104,6 +104,7 @@ class MyOrderFragment : BaseFragment() {
             }
 
             tvOrder.setOnClickListener {
+                getOrder()
                 tvOrder.setBackgroundResource(R.drawable.selected_left_tab)
                 tvOrder.setTextColor(requireActivity().getColor(R.color.white))
                 tvCustomOrder.setTextColor(requireActivity().getColor(R.color.black))

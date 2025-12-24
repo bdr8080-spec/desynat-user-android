@@ -70,6 +70,13 @@ object Constants {
     const val COMPLETE_ORDER_PAYMENT = "/api/user/product-order-complete-payment"
     const val GET_ALL_ORDER = "/api/user/All-order"
     const val GET_ORDER_SUMMARY = "/api/user/single-order-summary"
+    const val GET_REASON = "/api/user/get-reject-reason"
+    const val CANCEL_ORDER = "/api/user/cancelled-single-product"
+    const val RETURN_EXCHANGE_ORDER = "/api/user/return-exchange-product-after-delivered"
+    const val ORDER_RATING = "/api/user/product-rating"
+    const val RECENT_SEARCH_LIST = "/api/user/get-recent-search-data"
+    const val HOME_PAGE_SEARCH = "/api/user/home-page-search"
+
     const val WALLET_BALANCE = "/api/user/waller-balance"
 
 

@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemRecentSearchBinding
-import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 
-class RecentSearchAdapter(var context:Context, var list: ArrayList<String>, var onClick:ClickOnItem) : RecyclerView.Adapter<RecentSearchAdapter.ViewHolder>() {
+class RecentSearchAdapter(var context:Context, var list: ArrayList<GetRecentSearchListResponse.Data>, var onClick:ClickOnItem) : RecyclerView.Adapter<RecentSearchAdapter.ViewHolder>() {
 
     interface ClickOnItem{
         fun onClickItem(position: Int)
@@ -29,7 +29,7 @@ class RecentSearchAdapter(var context:Context, var list: ArrayList<String>, var 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-
+            tvRecentSearch.text = list[position].name
         }
 
         holder.itemView.setOnClickListener {

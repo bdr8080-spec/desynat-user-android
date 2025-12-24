@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemCategoryBinding
-import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 
 class CatalogAdapter(var context:Context, private var catalogList: ArrayList<GetCategoryResponse.Data>, var catalogClick:CatalogClick) : RecyclerView.Adapter<CatalogAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemCategoryBinding) :

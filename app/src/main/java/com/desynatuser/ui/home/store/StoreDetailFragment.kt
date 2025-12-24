@@ -42,8 +42,8 @@ import com.desynatuser.databinding.ProductFilterBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
 import com.desynatuser.databinding.SortProductBinding
 import com.desynatuser.databinding.StoreFilterBinding
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse

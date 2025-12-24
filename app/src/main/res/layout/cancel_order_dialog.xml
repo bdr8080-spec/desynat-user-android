@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="@dimen/_15sdp"
+    android:background="@drawable/bottom_sheet"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/_15sdp"
         android:paddingHorizontal="@dimen/_15sdp"
-        android:background="@drawable/half_rounded_corner"
+        android:background="@drawable/bottom_sheet"
         android:backgroundTint="#FFF7EA"
         android:fontFamily="@font/poppins_medium"
         android:text="Select Reason"
@@ -35,15 +36,27 @@
             android:text="Select Reason"
             android:textSize="@dimen/_13sdp" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tvRecentSearches">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvReason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintHeight_max="@dimen/_250sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 tools:listitem="@layout/item_reason"
-                app:layout_constraintTop_toBottomOf="@+id/tvRecentSearches"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="2"/>
+                tools:itemCount="10"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.appcompat.widget.AppCompatEditText
             android:visibility="gone"

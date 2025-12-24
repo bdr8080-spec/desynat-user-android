@@ -10,8 +10,8 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemCategoryBinding
 import com.desynatuser.databinding.ItemSavedAddressBinding
-import com.desynatuser.ui.home.response.GetAddressResponse
-import com.desynatuser.ui.home.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 
 class SavedAddressAdapter(var context:Context, private var addressList: ArrayList<GetAddressResponse.Data>, var addressClick:AddressClick) : RecyclerView.Adapter<SavedAddressAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemSavedAddressBinding) :

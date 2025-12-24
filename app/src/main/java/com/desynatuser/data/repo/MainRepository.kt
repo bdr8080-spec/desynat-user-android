@@ -11,6 +11,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -18,15 +20,16 @@ import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
-import com.desynatuser.ui.home.response.AddAddressRequest
-import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
-import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
-import com.desynatuser.ui.home.response.GetAddressResponse
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetPromoCodeResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
-import com.desynatuser.ui.home.response.UpdateAddressResponse
+import com.desynatuser.ui.home.profile.response.AddAddressRequest
+import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.ChangeMobileNumbeResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
@@ -261,7 +264,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
 
     val addAddressLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun addAddress(
-        request:AddAddressRequest
+        request: AddAddressRequest
     ) {
         handleApiCall(
             api = {
@@ -273,7 +276,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
 
     val editAddressLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun editAddress(
-        request:AddAddressRequest
+        request: AddAddressRequest
     ) {
         handleApiCall(
             api = {
@@ -572,6 +575,50 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
+  val getReasonListLiveData = SingleLiveEvent<GetReasonListResponse>()
+    suspend fun getReasonList(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getReasonList(map)
+            },
+            responseLiveData = getReasonListLiveData
+        )
+    }
+
+  val cancelOrderLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun cancelOrder(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.cancelOrder(map)
+            },
+            responseLiveData = cancelOrderLiveData
+        )
+    }
+
+ val returnExchangeOrderLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun returnExchangeOrder(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.returnExchangeOrder(map)
+            },
+            responseLiveData = returnExchangeOrderLiveData
+        )
+    }
+
+ val orderRatingLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun orderRating(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.orderRating(map)
+            },
+            responseLiveData = orderRatingLiveData
+        )
+    }
+
   val orderListLiveData = SingleLiveEvent<GetAllOrderResponse>()
     suspend fun getAllOrder(map: HashMap<String,Any>)
     {
@@ -591,6 +638,29 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.getWalletBalance()
             },
             responseLiveData = walletBalanceLiveData
+        )
+    }
+
+
+  val getRecentSearchListLiveData = SingleLiveEvent<GetRecentSearchListResponse>()
+    suspend fun getRecentSearchList()
+    {
+        handleApiCall(
+            api = {
+                api.getRecentSearchList()
+            },
+            responseLiveData = getRecentSearchListLiveData
+        )
+    }
+
+  val homePageSearchLiveData = SingleLiveEvent<GetHomeSearchResponse>()
+    suspend fun homePageSearch(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.homePageSearch(map)
+            },
+            responseLiveData = homePageSearchLiveData
         )
     }
 

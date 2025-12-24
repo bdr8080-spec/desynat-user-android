@@ -9,6 +9,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -16,15 +18,16 @@ import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
-import com.desynatuser.ui.home.response.AddAddressRequest
-import com.desynatuser.ui.home.response.ApplyPromoCodeResponse
-import com.desynatuser.ui.home.response.ChangeMobileNumbeResponse
-import com.desynatuser.ui.home.response.GetAddressResponse
-import com.desynatuser.ui.home.response.GetCategoryResponse
-import com.desynatuser.ui.home.response.GetPromoCodeResponse
-import com.desynatuser.ui.home.response.GetSubCategoryResponse
-import com.desynatuser.ui.home.response.UpdateAddressResponse
+import com.desynatuser.ui.home.profile.response.AddAddressRequest
+import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.ChangeMobileNumbeResponse
+import com.desynatuser.ui.home.profile.response.GetAddressResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
+import com.desynatuser.ui.home.profile.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
@@ -400,13 +403,48 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
         }
     }
 
-
     val orderDetailResult: LiveData<GetSingleOrderSummaryResponse>
         get() = repository.orderDetailLiveData
 
     fun getOrderDetailInfo(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.getOrderDetailInfo(map)
+        }
+    }
+
+    val getReasonListResult: LiveData<GetReasonListResponse>
+        get() = repository.getReasonListLiveData
+
+    fun getReasonList(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getReasonList(map)
+        }
+    }
+
+    val cancelOrderResult: LiveData<CommonResponse>
+        get() = repository.cancelOrderLiveData
+
+    fun cancelOrder(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.cancelOrder(map)
+        }
+    }
+
+    val returnExchangeOrderResult: LiveData<CommonResponse>
+        get() = repository.returnExchangeOrderLiveData
+
+    fun returnExchangeOrder(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.returnExchangeOrder(map)
+        }
+    }
+
+    val orderRatingResult: LiveData<CommonResponse>
+        get() = repository.orderRatingLiveData
+
+    fun orderRating(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.orderRating(map)
         }
     }
 
@@ -419,14 +457,30 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
         }
     }
 
-
-
     val walletBalanceResult: LiveData<WalletBalanceResponse>
         get() = repository.walletBalanceLiveData
 
     fun getWalletBalance() {
         viewModelScope.launch {
             repository.getWalletBalance()
+        }
+    }
+
+    val homePageSearchResult: LiveData<GetHomeSearchResponse>
+        get() = repository.homePageSearchLiveData
+
+    fun homePageSearch(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.homePageSearch(map)
+        }
+    }
+
+    val getRecentSearchListResult: LiveData<GetRecentSearchListResponse>
+        get() = repository.getRecentSearchListLiveData
+
+    fun getRecentSearchList() {
+        viewModelScope.launch {
+            repository.getRecentSearchList()
         }
     }
 

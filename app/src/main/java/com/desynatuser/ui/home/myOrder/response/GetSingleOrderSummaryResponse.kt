@@ -5,29 +5,45 @@ import com.google.gson.annotations.SerializedName
 
 data class GetSingleOrderSummaryResponse(
     @SerializedName("data")
-    val `data`: GetAllOrderResponse.Data,
+    val `data`: Data,
     @SerializedName("message")
     val message: String,
     @SerializedName("status")
     val status: String
 ) {
     data class Data(
+        @SerializedName("assign_date")
+        val assignDate: String,
+        @SerializedName("assign_status")
+        val assignStatus: String,
+        @SerializedName("cancel_reason")
+        val cancelReason: Any,
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("delivery_address")
         val deliveryAddress: Int,
+        @SerializedName("delivery_boy_id")
+        val deliveryBoyId: String,
         @SerializedName("delivery_details")
         val deliveryDetails: DeliveryDetails,
         @SerializedName("delivery_status")
         val deliveryStatus: String,
         @SerializedName("discount_mrp")
-        val discountMrp: String,
+        val discountMrp: Double,
+        @SerializedName("discount_coupon")
+        val discountCoupon: Double,
+        @SerializedName("gift_card_details")
+        val giftCardDetails: Any,
         @SerializedName("giftcard_amount")
-        val giftcardAmount: String,
+        val giftcardAmount: Any,
         @SerializedName("giftcard_id")
         val giftcardId: Any,
         @SerializedName("id")
         val id: Int,
+        @SerializedName("is_picked")
+        val isPicked: String,
+        @SerializedName("not_delivered_reason")
+        val notDeliveredReason: Any,
         @SerializedName("order_details")
         val orderDetails: List<OrderDetail>,
         @SerializedName("order_id")
@@ -36,6 +52,8 @@ data class GetSingleOrderSummaryResponse(
         val paymentMethod: String,
         @SerializedName("payment_status")
         val paymentStatus: String,
+        @SerializedName("promocode_details")
+        val promocodeDetails: PromocodeDetails,
         @SerializedName("promocode_id")
         val promocodeId: String,
         @SerializedName("promocode_status")
@@ -43,19 +61,21 @@ data class GetSingleOrderSummaryResponse(
         @SerializedName("promocode_value")
         val promocodeValue: String,
         @SerializedName("shipping_fees")
-        val shippingFees: String,
+        val shippingFees: Double,
         @SerializedName("tax")
-        val tax: String,
+        val tax: Double,
         @SerializedName("total_amount")
-        val totalAmount: String,
+        val totalAmount: Double,
         @SerializedName("total_mrp")
-        val totalMrp: String,
+        val totalMrp: Double,
         @SerializedName("transaction_id")
-        val transactionId: Any,
+        val transactionId: String,
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("user_id")
-        val userId: Int
+        val userId: Int,
+        @SerializedName("wallet_amount")
+        val walletAmount: Double
     ) {
         data class DeliveryDetails(
             @SerializedName("address")
@@ -83,7 +103,7 @@ data class GetSingleOrderSummaryResponse(
             @SerializedName("name")
             val name: String,
             @SerializedName("postal_code")
-            val postalCode: String,
+            val postalCode: Any,
             @SerializedName("save_address_as")
             val saveAddressAs: Int,
             @SerializedName("state")
@@ -101,30 +121,60 @@ data class GetSingleOrderSummaryResponse(
         data class OrderDetail(
             @SerializedName("amount")
             val amount: String,
+            @SerializedName("assign_date")
+            val assignDate: String,
+            @SerializedName("assign_status")
+            val assignStatus: String,
+            @SerializedName("cancel_reason")
+            val cancelReason: Any,
             @SerializedName("created_at")
             val createdAt: String,
+            @SerializedName("delivery_boy_id")
+            val deliveryBoyId: String,
+            @SerializedName("delivery_status")
+            val deliveryStatus: String,
+            @SerializedName("exchange_new_size")
+            val exchangeNewSize: Any,
+            @SerializedName("exchange_old_size")
+            val exchangeOldSize: Any,
+            @SerializedName("exchange_reason")
+            val exchangeReason: Any,
             @SerializedName("id")
-            val id: Int,
+            val id: String,
             @SerializedName("order_id")
             val orderId: Int,
+            @SerializedName("payment_status")
+            val paymentStatus: String,
             @SerializedName("product_details")
             val productDetails: ProductDetails,
             @SerializedName("product_id")
             val productId: Int,
             @SerializedName("quantity")
             val quantity: Int,
+            @SerializedName("r_e_approve")
+            val rEApprove: String,
+            @SerializedName("return_image")
+            val returnImage: Any,
+            @SerializedName("return_reason")
+            val returnReason: Any,
+            @SerializedName("return_type")
+            val returnType: String,
             @SerializedName("status")
             val status: String,
             @SerializedName("updated_at")
             val updatedAt: String,
             @SerializedName("user_id")
             val userId: Int,
+            @SerializedName("user_rating_review_provide")
+            val userRatingReviewProvide: UserRatingReviewProvide,
             @SerializedName("variants_id")
             val variantsId: Int,
             @SerializedName("variation_details")
             val variationDetails: VariationDetails
         ) {
             data class ProductDetails(
+                @SerializedName("affiliated_commission")
+                val affiliatedCommission: String,
                 @SerializedName("affiliated_product")
                 val affiliatedProduct: String,
                 @SerializedName("brand")
@@ -146,7 +196,7 @@ data class GetSingleOrderSummaryResponse(
                 @SerializedName("description_en")
                 val descriptionEn: String,
                 @SerializedName("exchangable_days")
-                val exchangableDays: Any,
+                val exchangableDays: String,
                 @SerializedName("id")
                 val id: Int,
                 @SerializedName("max_card_quantity")
@@ -170,7 +220,7 @@ data class GetSingleOrderSummaryResponse(
                 @SerializedName("ready_to_ship")
                 val readyToShip: String,
                 @SerializedName("return_days")
-                val returnDays: Any,
+                val returnDays: String,
                 @SerializedName("review_rating")
                 val reviewRating: String,
                 @SerializedName("seller_details")
@@ -238,9 +288,9 @@ data class GetSingleOrderSummaryResponse(
                     @SerializedName("created_at")
                     val createdAt: String,
                     @SerializedName("device_token")
-                    val deviceToken: Any,
+                    val deviceToken: String,
                     @SerializedName("device_type")
-                    val deviceType: Any,
+                    val deviceType: String,
                     @SerializedName("email")
                     val email: String,
                     @SerializedName("first_name")
@@ -290,6 +340,37 @@ data class GetSingleOrderSummaryResponse(
                     val updatedAt: String
                 )
             }
+
+            data class UserRatingReviewProvide(
+                @SerializedName("created_at")
+                val createdAt: String,
+                @SerializedName("id")
+                val id: Int,
+                @SerializedName("order_id")
+                val orderId: Int,
+                @SerializedName("orderdetails_id")
+                val orderdetailsId: Int,
+                @SerializedName("product_id")
+                val productId: Int,
+                @SerializedName("product_image")
+                val productImage: String,
+                @SerializedName("product_rating")
+                val productRating: String,
+                @SerializedName("product_review")
+                val productReview: String,
+                @SerializedName("store_id")
+                val storeId: Int,
+                @SerializedName("store_image")
+                val storeImage: String,
+                @SerializedName("store_rating")
+                val storeRating: String,
+                @SerializedName("store_review")
+                val storeReview: String,
+                @SerializedName("updated_at")
+                val updatedAt: String,
+                @SerializedName("user_id")
+                val userId: Int
+            )
 
             data class VariationDetails(
                 @SerializedName("actual_price")
@@ -366,5 +447,38 @@ data class GetSingleOrderSummaryResponse(
                 )
             }
         }
+
+        data class PromocodeDetails(
+            @SerializedName("applicable_for")
+            val applicableFor: Int,
+            @SerializedName("country_id")
+            val countryId: Int,
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("description_arabic")
+            val descriptionArabic: String,
+            @SerializedName("description_english")
+            val descriptionEnglish: String,
+            @SerializedName("discount_percent")
+            val discountPercent: String,
+            @SerializedName("end_date")
+            val endDate: String,
+            @SerializedName("id")
+            val id: Int,
+            @SerializedName("min_order_value")
+            val minOrderValue: String,
+            @SerializedName("name_arabic")
+            val nameArabic: String,
+            @SerializedName("name_english")
+            val nameEnglish: String,
+            @SerializedName("start_date")
+            val startDate: String,
+            @SerializedName("status")
+            val status: Int,
+            @SerializedName("updated_at")
+            val updatedAt: String,
+            @SerializedName("upto_discount")
+            val uptoDiscount: String
+        )
     }
 }

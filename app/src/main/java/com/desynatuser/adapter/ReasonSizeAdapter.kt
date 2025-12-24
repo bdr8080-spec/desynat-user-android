@@ -40,6 +40,7 @@ class ReasonSizeAdapter(var context:Context, var sizeList: ArrayList<GetSizeList
 
         holder.itemView.setOnClickListener {
             sizeList[position].isSelected = !sizeList[position].isSelected
+            onClick.onClickItem(position)
             notifyDataSetChanged()
         }
 

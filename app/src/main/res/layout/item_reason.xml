@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         android:text="Reason"
         android:layout_marginStart="@dimen/_8sdp"
-        android:fontFamily="@font/poppins_medium"
-        android:textColor="#1C1C1C"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/black"
         android:textSize="@dimen/_11sdp"/>
 
 </LinearLayout>

@@ -9,7 +9,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemGiftCardBinding
 import com.desynatuser.databinding.ItemPromoCodeBinding
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
-import com.desynatuser.ui.home.response.GetPromoCodeResponse
+import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
 
 class PromoCodeAdapter(var context:Context, var promoCodeList: ArrayList<GetPromoCodeResponse.Data>, var promoCodeClick:PromoCodeClick) : RecyclerView.Adapter<PromoCodeAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemPromoCodeBinding) :
