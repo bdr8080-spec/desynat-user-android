@@ -36,7 +36,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
 
         holder.binding.apply {
 
-            tvOrderId.text = "Order ID: ${orderData?.orderId}"
+            tvOrderId.text = "Order ID: ${orderData?.id}"
             tvTitle.text = orderData?.productDetails?.productNameEn
 
             tvPrice.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"

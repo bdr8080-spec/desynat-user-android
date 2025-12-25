@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="@dimen/_15sdp"
     android:background="@drawable/half_rounded_corner"
     android:backgroundTint="@color/white"
@@ -21,6 +22,15 @@
         android:textColor="@color/black"
         android:drawableEnd="@drawable/close_icon"
         android:textSize="@dimen/_13sdp"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvProduct"
@@ -74,12 +84,24 @@
         android:background="@null"/>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPickProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attachment"
             android:padding="@dimen/_10sdp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProductReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etProductReview"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_review"/>
 
     </RelativeLayout>
 
@@ -134,12 +156,23 @@
             android:background="@null"/>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPickStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attachment"
             android:padding="@dimen/_10sdp"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStoreReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etStoreReview"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_review"/>
 
     </RelativeLayout>
 
@@ -157,5 +190,8 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp" />
 
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

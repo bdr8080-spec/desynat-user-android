@@ -46,6 +46,7 @@ class ProductDetailFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
     var isCartObserver = false
+    var isProductObserver = false
     private var storeData :GetStoreResponse.Data?=null
     private var productData :GetSingleStoreResponse.Data.AllProduct.Data?=null
     private var imageList = ArrayList<String>()
@@ -70,6 +71,7 @@ class ProductDetailFragment : BaseFragment() {
     var cartData : AddToCartListResponse.Data?=null
 
     var fromBtn = ""
+    var storeName = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -145,13 +147,25 @@ class ProductDetailFragment : BaseFragment() {
 
         reviewAdapter = ReviewAdapter(requireActivity(), arrayListOf("",""))
         binding?.rvRating?.adapter = reviewAdapter
-
+        if (storeData==null){
+            getProductDetail()
+        }
+        else{
+            storeName = storeData?.storeName.toString()
+        }
         setData()
-
+        setStoreData()
         binding?.tvSearchAddress?.text = SharedPreference.get(requireActivity()).getDefaultAddress()?.address
 
-     //   getProductDetail()
+
         viewCartDetail()
+    }
+
+    private fun setStoreData(){
+        binding?.apply {
+            tvTitle.text = storeName
+            tvProductName.text =  productData?.productNameEn+" (by ${storeName})"
+        }
     }
 
     private fun setData() {
@@ -183,8 +197,6 @@ class ProductDetailFragment : BaseFragment() {
             variant?.productVariation?.let { sizeList.addAll(it) }
             sizeAdapter?.notifyDataSetChanged()
 
-            tvTitle.text = storeData?.storeName
-            tvProductName.text =  productData?.productNameEn+" (by ${storeData?.storeName})"
             tvName.text = productData?.brand?.nameEnglish
 
             if (variant?.productVariation?.get(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0){
@@ -459,9 +471,10 @@ class ProductDetailFragment : BaseFragment() {
         }
 
         viewModel.productDetailResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
+            if (isProductObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                val quantity = response?.data?.addtocart?.quantity
+                storeName = response.data.store.storeName
+                setStoreData()
 
                /* if (quantity != null && quantity > 0) {
                     cartData = response?.data?.addtocart
@@ -472,7 +485,7 @@ class ProductDetailFragment : BaseFragment() {
                     cartQuantity = 0
                 }*/
 
-                isObserver = false
+                isProductObserver = false
             }
         }
 
@@ -578,8 +591,7 @@ class ProductDetailFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["product_id"] = productData?.id.toString()
         viewModel.getProductDetailInfo(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        isObserver = true
+        isProductObserver = true
     }
 
     fun mapVariantsToProducts(

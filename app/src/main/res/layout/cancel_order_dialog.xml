@@ -34,7 +34,7 @@
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
             android:text="Select Reason"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clReason"

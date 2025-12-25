@@ -26,6 +26,7 @@ import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -86,9 +87,12 @@ class ProductSearchFragment : BaseFragment() {
                 }
             })
 
-            latestSearchAdapter = LatestSearchAdapter(requireActivity(), arrayListOf("","",""),object: LatestSearchAdapter.ClickOnItem{
+            latestSearchAdapter = LatestSearchAdapter(requireActivity(), recentSearchList,object: LatestSearchAdapter.ClickOnItem{
                 override fun onClickItem(position: Int) {
-
+                    val bundle = Bundle().apply {
+                        putString("search", recentSearchList[position].name)
+                    }
+                    findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment,bundle)
                 }
 
             })
@@ -97,7 +101,10 @@ class ProductSearchFragment : BaseFragment() {
             recentSearchList.clear()
             recentSearchAdapter = RecentSearchAdapter(requireActivity(), recentSearchList,object: RecentSearchAdapter.ClickOnItem{
                 override fun onClickItem(position: Int) {
-                    etSearch.setText(recentSearchList[position].name)
+                    val bundle = Bundle().apply {
+                        putString("search", recentSearchList[position].name)
+                    }
+                    findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment,bundle)
                 }
 
             })
@@ -139,7 +146,15 @@ class ProductSearchFragment : BaseFragment() {
             }
 
             tvGo.setOnClickListener {
-                getHomeSearch()
+                    val bundle = Bundle().apply {
+                        putString("search", etSearch.text.toString())
+                    }
+                    findNavController().navigate(
+                        R.id.action_searchProductFragment_to_searchProductListFragment,
+                        bundle
+                    )
+
+             //   getHomeSearch()
             }
 
             ivMic.setOnClickListener {
@@ -164,6 +179,7 @@ class ProductSearchFragment : BaseFragment() {
                    recentSearchList.clear()
                     recentSearchList.addAll(response.data)
                     recentSearchAdapter?.notifyDataSetChanged()
+                    latestSearchAdapter?.notifyDataSetChanged()
                 }
                 isObserver = false
             }
@@ -207,8 +223,13 @@ class ProductSearchFragment : BaseFragment() {
                 val text = list?.firstOrNull()
 
                 if (!text.isNullOrEmpty()) {
-                    binding?.etSearch?.setText(text)
-                    binding?.etSearch?.setSelection(text.length)
+                    val bundle = Bundle().apply {
+                        putString("search", text)
+                    }
+                    findNavController().navigate(
+                        R.id.action_searchProductFragment_to_searchProductListFragment,
+                        bundle
+                    )
                 }
             }
         }

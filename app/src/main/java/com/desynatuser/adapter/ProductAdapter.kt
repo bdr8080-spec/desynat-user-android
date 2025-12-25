@@ -13,7 +13,7 @@ import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.utils.CommonMethod
 
-class ProductAdapter(var context:Context, private var productList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>,var storeName:String, var productClick:ProductClick) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class ProductAdapter(var context:Context, private var productList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>,var storeName:String, var from:Int,var productClick:ProductClick) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -57,7 +57,7 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
                 error(R.drawable.ic_placeholder)
             }
 
-            if (storeName!="") {
+            if (from!=1) {
                 if (productData.wishlist == 1) {
                     ivLike.setImageResource(R.drawable.ic_like_filled)
                 } else {

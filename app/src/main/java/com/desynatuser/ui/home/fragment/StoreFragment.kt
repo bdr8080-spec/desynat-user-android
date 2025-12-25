@@ -44,6 +44,7 @@ class StoreFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
     private var subCategoryData: GetSubCategoryResponse.Data?=null
+    private var isFirstLoad = true
 
     private var storeAdapter: StoreAdapter? = null
     private var storeList = ArrayList<GetStoreResponse.Data>()
@@ -119,7 +120,10 @@ class StoreFragment : BaseFragment() {
             })
         }
 
-        getStoreList()
+        if (isFirstLoad) {
+            getStoreList()
+            isFirstLoad = false
+        }
     }
 
     override fun initControl() {

@@ -82,6 +82,8 @@ class StoreDetailFragment : BaseFragment() {
     private var search: Job? = null
     private var lastQuery: String? = null
 
+    private var sortAdapter: SortListAdapter? = null
+
     private var filterColorAdapter: FilterColorAdapter? = null
     private var filterBrandAdapter: FilterBrandAdapter? = null
     private var filterSizeAdapter: FilterSizeAdapter? = null
@@ -106,6 +108,7 @@ class StoreDetailFragment : BaseFragment() {
     var isSizeObserver = false
     var isColorObserver = false
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
+    private var isFirstLoad = true
 
 
     override fun onCreateView(
@@ -136,7 +139,7 @@ class StoreDetailFragment : BaseFragment() {
 
         binding?.apply {
 
-            productAdapter = ProductAdapter(requireActivity(),productList,storeData?.storeName.toString(),object: ProductAdapter.ProductClick{
+            productAdapter = ProductAdapter(requireActivity(),productList,storeData?.storeName.toString(),3,object: ProductAdapter.ProductClick{
                 override fun onProductClick(position: Int,type:Int) {
                     when(type){
                         1->{
@@ -185,8 +188,11 @@ class StoreDetailFragment : BaseFragment() {
 
         }
 
-        getStoreSortList()
-        getStoreDetail()
+        if (isFirstLoad) {
+            getStoreDetail()
+            isFirstLoad = false
+        }
+
     }
 
     private fun setData() {
@@ -386,6 +392,7 @@ class StoreDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 sortList.clear()
                 sortList.addAll(response.data)
+                sortAdapter?.notifyDataSetChanged()
                 isSortObserver = false
             }
         }
@@ -465,14 +472,17 @@ class StoreDetailFragment : BaseFragment() {
                     }
                 }
 
-           val adapter = SortListAdapter(requireActivity(),sortList,object:SortListAdapter.ClickOnItem{
+            sortAdapter = SortListAdapter(requireActivity(),sortList,object:SortListAdapter.ClickOnItem{
                override fun onClickItem(position: Int) {
                    sort = sortList[position].id.toString()
                }
 
            })
 
-            rvSort.adapter = adapter
+            rvSort.adapter = sortAdapter
+            if (sortList.size!=0) {
+                getStoreSortList()
+            }
 
             tvClear.setOnClickListener {
                 sortFilter = null

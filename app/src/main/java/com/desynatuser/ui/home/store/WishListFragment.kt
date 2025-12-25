@@ -55,7 +55,7 @@ class WishListFragment : BaseFragment() {
         binding?.apply {
             toolbar.tvToolbar.text = "Favourite"
 
-            productAdapter = ProductAdapter(requireActivity(),productList,storeName,object: ProductAdapter.ProductClick{
+            productAdapter = ProductAdapter(requireActivity(),productList,storeName,1,object: ProductAdapter.ProductClick{
                 override fun onProductClick(position: Int,type:Int) {
                     when(type){
                         1->{

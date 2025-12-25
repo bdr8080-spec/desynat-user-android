@@ -367,8 +367,15 @@ class HomeFragment : BaseFragment() {
                 val text = list?.firstOrNull()
 
                 if (!text.isNullOrEmpty()) {
-                    binding?.etSearch?.setText(text)
-                    binding?.etSearch?.setSelection(text.length)
+                    if (!text.isNullOrEmpty()) {
+                        val bundle = Bundle().apply {
+                            putString("search", text)
+                        }
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_searchProductListFragment,
+                            bundle
+                        )
+                    }
                 }
             }
         }

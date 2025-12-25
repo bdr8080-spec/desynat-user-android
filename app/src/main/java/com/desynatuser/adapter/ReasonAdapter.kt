@@ -40,13 +40,8 @@ class ReasonAdapter(var context:Context, var reasonList: ArrayList<GetReasonList
         }
 
         holder.itemView.setOnClickListener {
-            val previousSelected = isSelected
             isSelected = position
-
-            if (previousSelected != -1) {
-                notifyItemChanged(previousSelected)
-            }
-            notifyItemChanged(position)
+            notifyDataSetChanged()
 
             onClick.onClickItem(position)
 

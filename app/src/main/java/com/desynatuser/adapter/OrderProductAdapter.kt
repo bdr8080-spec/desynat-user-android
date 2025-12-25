@@ -97,10 +97,21 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 "3" -> {
                     btnCancelOrder.isVisible = false
                     if (productData?.productDetails?.productReturn=="1"){
-                        tvReturn.isVisible = true
+                        if (productData?.returnType=="1"){
+                            tvReturn.isVisible = false
+                        }
+                        else{
+                            tvReturn.isVisible = true
+                        }
+
                     }
                     if (productData?.productDetails?.productExchangable=="1"){
-                        tvExchange.isVisible = true
+                        if (productData?.returnType=="2"){
+                            tvExchange.isVisible = false
+                        }
+                        else{
+                            tvExchange.isVisible = true
+                        }
                     }
 
                     if (productData?.userRatingReviewProvide!=null){

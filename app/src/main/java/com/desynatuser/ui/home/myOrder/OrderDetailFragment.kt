@@ -16,8 +16,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.adapter.OrderProductAdapter
+import com.desynatuser.adapter.ProductReviewAdapter
 import com.desynatuser.adapter.ReasonAdapter
 import com.desynatuser.adapter.ReasonSizeAdapter
+import com.desynatuser.adapter.SpecificationAdapter
+import com.desynatuser.adapter.StoreReviewAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.CancelOrderDialogBinding
@@ -39,6 +42,7 @@ import java.io.File
 
 @AndroidEntryPoint
 class OrderDetailFragment : BaseFragment() {
+
     private var binding : FragmentOrderDetailBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
@@ -57,8 +61,12 @@ class OrderDetailFragment : BaseFragment() {
     private var returnDialogBinding : ReturnOrderDialogBinding?=null
 
     var isImageObserver = false
+    var exchangeReturn = ""
+    var imageType = 0//1-return,2-productrview,3-storereview
     private lateinit var imagePicker: ImagePicker
-    private var imageUrl:String?=null
+    private var productReviewImage = ArrayList<String>()
+    private var storeReviewImage = ArrayList<String>()
+    private var returnImage:String?=null
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -74,6 +82,13 @@ class OrderDetailFragment : BaseFragment() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             imagePicker.onPermissionResult(granted)
         }
+
+    private var exchangeDialog: Dialog?=null
+    private var returnDialog: Dialog?=null
+    private var cancelDialog: Dialog?=null
+
+    private var productReviewAdapter: ProductReviewAdapter?=null
+    private var storeReviewAdapter: StoreReviewAdapter?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -108,7 +123,18 @@ class OrderDetailFragment : BaseFragment() {
                 permissionLauncher
             ) { uri ->
                 uri?.let {
-                    returnDialogBinding?.ivImage?.setImageURI(it)
+                    when (imageType){
+                        1->{
+                            returnDialogBinding?.ivImage?.setImageURI(it)
+                        }
+                        2->{
+
+                        }
+                        3->{
+
+                        }
+                    }
+
                     uploadFile(CommonMethod.uriToFile(requireActivity(), it))
                 }
             }
@@ -125,27 +151,32 @@ class OrderDetailFragment : BaseFragment() {
     }
 
     private fun exchangeOrder(reason: String,size: String,id:String) {
+        exchangeReturn = "2"
         val map = HashMap<String,Any>()
         map["order_id"] = orderData?.id.toString()
         map["orderdetails_id"] = id
-        map["type"] = "2"  // 1 return 2 Exchange
+        map["type"] = exchangeReturn  // 1 return 2 Exchange
         map["exchange_reason"] = reason
         map["new_size"] = size
 
         viewModel.returnExchangeOrder(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
     }
 
     private fun returnOrder(reason:String,id:String) {
+        exchangeReturn = "1"
         val map = HashMap<String,Any>()
         map["order_id"] = orderData?.id.toString()
         map["orderdetails_id"] = id
-        map["type"] = "1"  // 1 return 2 Exchange
+        map["type"] = exchangeReturn  // 1 return 2 Exchange
         map["return_reason"] = reason
-        map["return_image"] = orderData?.orderId.toString()
+        if (returnImage!=null) {
+            map["return_image"] = returnImage.toString()
+        }
         viewModel.returnExchangeOrder(map)
-       /* CommonMethod.showSuccessDialog(requireActivity(),"Order Return Request Sent successfully!"){
-            findNavController().popBackStack()
-        }*/
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
     }
 
     private fun rateOrder(map:HashMap<String,Any>) {
@@ -186,7 +217,7 @@ class OrderDetailFragment : BaseFragment() {
             })
             rvProduct.adapter = orderProductAdapter
 
-            toolbar.tvToolbar.text = "#${orderData?.orderId}"
+            toolbar.tvToolbar.text = "#${getOrderData?.id}"
 
             tvPlacedDate.text = CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mma")
 
@@ -233,7 +264,7 @@ class OrderDetailFragment : BaseFragment() {
                 }
             }
 
-            when(orderData?.deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+            when(orderData?.deliveryStatus){
                 "1" -> {
                     btnInvoice.isVisible = false
                     relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
@@ -260,9 +291,30 @@ class OrderDetailFragment : BaseFragment() {
                     tvStatus.text = "Delivered"
 
                     btnInvoice.isVisible = true
-                    ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                    ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
-                    ivReturned.setImageResource(R.drawable.ic_order_return_selected)
+                    when (orderData?.orderDetails?.get(0)?.returnType){
+                        "1"->{
+                            tvPicked.text = "In Process"
+                            tvOnTheWay.text = "Picked Up"
+                            tvReturned.text = "Completed"
+                            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+                            ivReturned.setImageResource(R.drawable.ic_order_return)
+                        }
+                        "2"->{
+                            tvPicked.text = "In Process"
+                            tvOnTheWay.text = "Pick & \n Exchange"
+                            tvReturned.text = "Completed"
+                            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+                            ivReturned.setImageResource(R.drawable.ic_order_return)
+                        }
+                        else->{
+                            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                            ivReturned.setImageResource(R.drawable.ic_order_return_selected)
+                        }
+                    }
+
                 }
 
                 "7" -> {
@@ -285,14 +337,14 @@ class OrderDetailFragment : BaseFragment() {
                     tvOnTheWay.isVisible = false
                     ivOnTheWay.isVisible = false
                     ivReturned.setImageResource(R.drawable.ic_cancelled)
-                    tvOnTheWay.text = "Cancelled"
-                    tvOnTheWay.setTextColor(Color.parseColor("#D72E04"))
+                    tvReturned.text = "Cancelled"
+                    tvReturned.setTextColor(Color.parseColor("#D72E04"))
                 }
                 "5" -> {
                     btnInvoice.isVisible = false
                     relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
                     tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
-                    tvStatus.text = "Return Req.."
+
                 }
 
                 "6" -> {
@@ -309,6 +361,7 @@ class OrderDetailFragment : BaseFragment() {
                     relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
                     tvStatus.text = "Exchange Req.."
                     tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+
                 }
             }
 
@@ -342,7 +395,21 @@ class OrderDetailFragment : BaseFragment() {
             if (isImageObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    imageUrl = response.data.url
+                    when (imageType){
+                        1->{
+                            returnImage = response.data.url
+                        }
+                        2->{
+                            productReviewImage.add(response.data.url)
+                            productReviewAdapter?.notifyDataSetChanged()
+                        }
+                        3->{
+                            storeReviewImage.add(response.data.url)
+                            storeReviewAdapter?.notifyDataSetChanged()
+                        }
+                    }
+
+                    imageType = 0
                 }
                 isImageObserver = false
             }
@@ -351,6 +418,7 @@ class OrderDetailFragment : BaseFragment() {
         viewModel.cancelOrderResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                cancelDialog?.dismiss()
                 CommonMethod.showSuccessDialog(requireActivity(),"Order Cancelled successfully!"){
                     getOrderDetail()
                 }
@@ -362,9 +430,23 @@ class OrderDetailFragment : BaseFragment() {
         viewModel.returnExchangeOrderResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(requireActivity(),"Order Exchange Request Sent successfully!"){
-                    getOrderDetail()
+                if (exchangeReturn=="1"){
+                    returnDialog?.dismiss()
+                     CommonMethod.showSuccessDialog(requireActivity(),"Order Return Request Sent successfully!"){
+
+       }
                 }
+                else if (exchangeReturn=="2") {
+                    exchangeDialog?.dismiss()
+                    CommonMethod.showSuccessDialog(
+                        requireActivity(),
+                        "Order Exchange Request Sent successfully!"
+                    ) {
+
+                    }
+                }
+                getOrderDetail()
+                exchangeReturn = ""
                 isObserver = false
             }
         }
@@ -439,10 +521,19 @@ class OrderDetailFragment : BaseFragment() {
         dialogBinding.root.let { dialog.setContentView(it) }
 
         val window: Window = dialog.window!!
+
+        val displayMetrics = resources.displayMetrics
+        val height = (displayMetrics.heightPixels * 0.8).toInt()
+
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT
+            height
         )
+
+        /*window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )*/
         window.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setCancelable(false)
 
@@ -452,8 +543,36 @@ class OrderDetailFragment : BaseFragment() {
 
         dialogBinding.apply {
 
+            productReviewAdapter = ProductReviewAdapter(requireActivity(),productReviewImage,object :ProductReviewAdapter.Click{
+                override fun onClick(position: Int) {
+                    productReviewImage.removeAt(position)
+                    productReviewAdapter?.notifyDataSetChanged()
+                }
+
+            })
+            rvProductReview.adapter = productReviewAdapter
+
+            storeReviewAdapter = StoreReviewAdapter(requireActivity(),storeReviewImage,object :StoreReviewAdapter.Click{
+                override fun onClick(position: Int) {
+                    storeReviewImage.removeAt(position)
+                    storeReviewAdapter?.notifyDataSetChanged()
+                }
+
+            })
+            rvStoreReview.adapter = storeReviewAdapter
+
             tvToolbar.setOnClickListener {
                 dialog.dismiss()
+            }
+
+            ivPickProduct.setOnClickListener {
+                imageType=2
+                imagePicker.showImageSourceDialog()
+            }
+
+            ivPickStore.setOnClickListener {
+                imageType=3
+                imagePicker.showImageSourceDialog()
             }
 
             tvSubmit.setOnClickListener {
@@ -462,10 +581,16 @@ class OrderDetailFragment : BaseFragment() {
                 map["orderdetails_id"] = id
                 map["product_rating"] = rbProduct.rating
                 map["product_review"] = etProductReview.text?.trim().toString()
-                map["product_image"] = "https://desynat-bucket.s3.me-south-1.amazonaws.com//images//Sd87gO2FCO.png"
+                if (productReviewImage.size!=0) {
+                   // map["product_image"] = productReviewImage.toString()
+                    map["product_image"] = productReviewImage[0]
+                }
                 map["store_rating"] = rbStore.rating
                 map["store_review"] = etStoreReview.text?.trim().toString()
-                map["store_image"] = "https://desynat-bucket.s3.me-south-1.amazonaws.com//images//Sd87gO2FCO.png"
+                if (storeReviewImage.size!=0) {
+                 //   map["store_image"] = storeReviewImage.toString()
+                    map["store_image"] = storeReviewImage[0]
+                }
                 rateOrder(map)
                 dialog.dismiss()
             }
@@ -477,17 +602,17 @@ class OrderDetailFragment : BaseFragment() {
 
     private fun cancelOrderDialog() {
         var reason = ""
-        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        cancelDialog = Dialog(requireActivity(), R.style.CustomDialog)
         val dialogBinding = CancelOrderDialogBinding.inflate(LayoutInflater.from(context))
-        dialogBinding.root.let { dialog.setContentView(it) }
+        dialogBinding.root.let { cancelDialog?.setContentView(it) }
 
-        val window: Window = dialog.window!!
+        val window: Window = cancelDialog?.window!!
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.setCancelable(false)
+        cancelDialog?.setCancelable(false)
 
         val params: WindowManager.LayoutParams = window.attributes
         params.gravity = Gravity.BOTTOM
@@ -507,36 +632,49 @@ class OrderDetailFragment : BaseFragment() {
             getReasonList(3)
 
             tvToolbar.setOnClickListener {
-                dialog.dismiss()
+                cancelDialog?.dismiss()
             }
 
 
             btnSubmit.setOnClickListener {
-                cancelOrder(reason)
-                dialog.dismiss()
+                if (etReason.isVisible){
+                    if (etReason.text?.trim().toString().isEmpty()){
+                        showToast("Please enter reason")
+                    }
+                    else{
+                        reason = etReason.text?.trim().toString()
+                        cancelOrder(reason)
+                    }
+                }
+                else if(reason==""){
+                    showToast("Please select reason")
+                }
+                else {
+                    cancelOrder(reason)
+                }
             }
         }
 
-        dialog.show()
+        cancelDialog?.show()
     }
 
     private fun returnOrderDialog(id: String) {
         var reason = ""
-        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+         returnDialog = Dialog(requireActivity(), R.style.CustomDialog)
         returnDialogBinding = ReturnOrderDialogBinding.inflate(LayoutInflater.from(context))
         returnDialogBinding?.root.let {
             if (it != null) {
-                dialog.setContentView(it)
+                returnDialog?.setContentView(it)
             }
         }
 
-        val window: Window = dialog.window!!
+        val window: Window = returnDialog?.window!!
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.setCancelable(false)
+        returnDialog?.setCancelable(false)
 
         val params: WindowManager.LayoutParams = window.attributes
         params.gravity = Gravity.BOTTOM
@@ -559,32 +697,50 @@ class OrderDetailFragment : BaseFragment() {
             }
 
             tvToolbar.setOnClickListener {
-                dialog.dismiss()
+                returnDialog?.dismiss()
             }
 
             btnSubmit.setOnClickListener {
-                returnOrder(reason,id)
-                dialog.dismiss()
+                if (etReason.isVisible){
+                    if (etReason.text?.trim().toString().isEmpty()){
+                        showToast("Please enter reason")
+                    }
+                    else{
+                        reason = etReason.text?.trim().toString()
+                        returnOrder(reason, id)
+                    }
+                }
+                else if(reason==""){
+                    showToast("Please select reason")
+                }
+                else {
+                    returnOrder(reason, id)
+                }
+            }
+
+            ivImage.setOnClickListener {
+                imageType = 1
+                imagePicker.showImageSourceDialog()
             }
         }
 
-        dialog.show()
+        returnDialog?.show()
     }
 
     private fun exchangeOrderDialog(id: String) {
         var reason = ""
         var size = ""
-        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        exchangeDialog = Dialog(requireActivity(), R.style.CustomDialog)
         val dialogBinding = ExchangeOrderDialogBinding.inflate(LayoutInflater.from(context))
-        dialogBinding.root.let { dialog.setContentView(it) }
+        dialogBinding.root.let { exchangeDialog?.setContentView(it) }
 
-        val window: Window = dialog.window!!
+        val window: Window = exchangeDialog?.window!!
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.setCancelable(false)
+        exchangeDialog?.setCancelable(false)
 
         val params: WindowManager.LayoutParams = window.attributes
         params.gravity = Gravity.BOTTOM
@@ -613,12 +769,32 @@ class OrderDetailFragment : BaseFragment() {
             getReasonList(1)
 
             tvToolbar.setOnClickListener {
-                dialog.dismiss()
+                exchangeDialog?.dismiss()
             }
 
             btnSubmit.setOnClickListener {
+                if(etReason.isVisible){
+                    if (etReason.text?.trim().toString().isEmpty()){
+                        showToast("Please enter reason")
+                    }
+                    else if(size==""){
+                        showToast("Please select size")
+                    }
+                    else{
+                        reason = etReason.text?.trim().toString()
+                        exchangeOrder(reason,size,id)
+                    }
+                }
+                else if(reason==""){
+                showToast("Please select reason")
+            }
+                else if(size==""){
+                    showToast("Please select size")
+                }
+            else {
                 exchangeOrder(reason,size,id)
-                dialog.dismiss()
+            }
+
             }
             if (sizeList.isEmpty()) {
                 viewModel.getSizeList()
@@ -627,7 +803,7 @@ class OrderDetailFragment : BaseFragment() {
             }
         }
 
-        dialog.show()
+        exchangeDialog?.show()
     }
 
 }
