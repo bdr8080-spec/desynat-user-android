@@ -293,6 +293,7 @@
             app:layout_constraintTop_toBottomOf="@+id/clBillingData" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:id="@+id/tvInstruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -306,6 +307,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvSavePrice"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:id="@+id/tvDeliveryInstruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

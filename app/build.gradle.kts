@@ -91,4 +91,6 @@ dependencies {
     implementation ("org.greenrobot:eventbus:3.3.1")
     implementation ("com.google.android.gms:play-services-wallet:19.4.0")
     implementation ("com.airbnb.android:lottie:6.7.1")
+
+    implementation ("com.google.mlkit:object-detection:17.0.2")
 }

@@ -1,11 +1,14 @@
 package com.desynatuser.ui.home.store
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +24,15 @@ import com.desynatuser.adapter.RecommendedAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductSearchBinding
-import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
-import com.google.gson.Gson
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.objects.DetectedObject
+import com.google.mlkit.vision.objects.ObjectDetection
+import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -47,6 +53,24 @@ class ProductSearchFragment : BaseFragment() {
     private var search: Job? = null
     private var lastQuery: String? = null
 
+    private lateinit var imagePicker: ImagePicker
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            imagePicker.onCameraResult(success)
+        }
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            imagePicker.onGalleryResult(uri)
+        }
+
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            imagePicker.onPermissionResult(granted)
+        }
+
+    private var hasNavigatedFromML = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +90,17 @@ class ProductSearchFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Search"
+
+            imagePicker = ImagePicker(
+                requireActivity(),
+                cameraLauncher,
+                galleryLauncher,
+                permissionLauncher
+            ) { uri ->
+                uri?.let {
+                    detectObjects(uri)
+                }
+            }
 
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -160,6 +195,10 @@ class ProductSearchFragment : BaseFragment() {
             ivMic.setOnClickListener {
                 openSpeechDialog()
             }
+
+            ivCamera.setOnClickListener {
+                imagePicker.showImageSourceDialog()
+            }
         }
     }
 
@@ -233,5 +272,78 @@ class ProductSearchFragment : BaseFragment() {
                 }
             }
         }
+
+    private fun detectObjects(uri: Uri) {
+        val image = InputImage.fromFilePath(requireContext(), uri)
+
+        val options = ObjectDetectorOptions.Builder()
+            .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
+            .enableMultipleObjects()
+            .enableClassification()
+            .build()
+
+        val detector = ObjectDetection.getClient(options)
+
+        detector.process(image)
+            .addOnSuccessListener { objects ->
+                Log.d("ML_KIT", "Detected objects: ${objects.size}")
+
+                if (objects.isEmpty()) return@addOnSuccessListener
+
+                val detectedLabel = objects
+                    .firstOrNull { it.labels.isNotEmpty() }
+                    ?.labels
+                    ?.firstOrNull()
+                    ?.text
+
+                if (detectedLabel.isNullOrEmpty()) {
+                    Log.d("ML_KIT", "No valid label found")
+                    return@addOnSuccessListener
+                }
+
+                val navController = findNavController()
+                if (
+                    !hasNavigatedFromML &&
+                    navController.currentDestination?.id == R.id.home
+                ) {
+                    hasNavigatedFromML = true
+
+                    val bundle = Bundle().apply {
+                        putString("search", detectedLabel)
+                    }
+
+                    navController.navigate(
+                        R.id.action_searchProductFragment_to_searchProductListFragment,
+                        bundle
+                    )
+                }
+            }
+    }
+
+
+    private fun cropAndSend(
+        objects: List<DetectedObject>,
+        uri: Uri
+    ) {
+        val bitmap = MediaStore.Images.Media.getBitmap(
+            requireContext().contentResolver,
+            uri
+        )
+
+        objects.forEachIndexed { index, obj ->
+            val box = obj.boundingBox
+
+            val cropped = Bitmap.createBitmap(
+                bitmap,
+                box.left.coerceAtLeast(0),
+                box.top.coerceAtLeast(0),
+                box.width().coerceAtMost(bitmap.width),
+                box.height().coerceAtMost(bitmap.height)
+            )
+
+           // sendToBackend(cropped, obj.labels.firstOrNull()?.text)
+        }
+    }
+
 
 }

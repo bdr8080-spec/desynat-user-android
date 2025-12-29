@@ -81,8 +81,77 @@ data class GetProductDetailResponse(
         @SerializedName("upload_size_chart")
         val uploadSizeChart: String,
         @SerializedName("wishlist")
-        val wishlist: Int
+        val wishlist: Int,
+        @SerializedName("review")
+        val review: List<Review>,
     ) {
+        data class Review(
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("id")
+            val id: Int,
+            @SerializedName("order_id")
+            val orderId: Int,
+            @SerializedName("orderdetails_id")
+            val orderdetailsId: Int,
+            @SerializedName("product_id")
+            val productId: Int,
+            @SerializedName("product_image")
+            val productImage: String,
+            @SerializedName("product_rating")
+            val productRating: Float,
+            @SerializedName("product_review")
+            val productReview: String,
+            @SerializedName("store_id")
+            val storeId: Int,
+            @SerializedName("store_image")
+            val storeImage: String,
+            @SerializedName("store_rating")
+            val storeRating: Float,
+            @SerializedName("store_review")
+            val storeReview: String,
+            @SerializedName("updated_at")
+            val updatedAt: String,
+            @SerializedName("user_details")
+            val userDetails: UserDetails,
+            @SerializedName("user_id")
+            val userId: Int
+        ){
+            data class UserDetails(
+                @SerializedName("country_code")
+                val countryCode: String,
+                @SerializedName("created_at")
+                val createdAt: String,
+                @SerializedName("device_token")
+                val deviceToken: Any,
+                @SerializedName("device_type")
+                val deviceType: String,
+                @SerializedName("email")
+                val email: String,
+                @SerializedName("email_verified_at")
+                val emailVerifiedAt: Any,
+                @SerializedName("full_name")
+                val fullName: String,
+                @SerializedName("id")
+                val id: Int,
+                @SerializedName("let")
+                val let: Any,
+                @SerializedName("long")
+                val long: Any,
+                @SerializedName("mobile")
+                val mobile: String,
+                @SerializedName("otp")
+                val otp: String,
+                @SerializedName("otp_verify")
+                val otpVerify: String,
+                @SerializedName("profile_image")
+                val profileImage: Any,
+                @SerializedName("status")
+                val status: String,
+                @SerializedName("updated_at")
+                val updatedAt: String
+            )
+        }
         data class Addtocart(
             @SerializedName("amount")
             val amount: String? = null,

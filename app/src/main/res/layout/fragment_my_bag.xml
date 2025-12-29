@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/nsBag"
         android:layout_width="match_parent"
         android:layout_height="0dp"

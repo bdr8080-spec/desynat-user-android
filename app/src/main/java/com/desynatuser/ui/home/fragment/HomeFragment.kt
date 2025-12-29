@@ -2,8 +2,12 @@ package com.desynatuser.ui.home.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.speech.RecognizerIntent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,11 +39,16 @@ import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.Constants
+import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.objects.DetectedObject
+import com.google.mlkit.vision.objects.ObjectDetection
+import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,6 +58,8 @@ class HomeFragment : BaseFragment() {
     private val locationViewModel: LocationViewModel by activityViewModels()
     var isObserver = false
     var isCartObserver = false
+    private var hasNavigatedFromML = false
+
     private var adapter: ViewPagerAdapter?=null
     private var user: LoginResponse.Data?=null
 
@@ -66,6 +77,23 @@ class HomeFragment : BaseFragment() {
     private var homeWomenBannerViewPagerAdapter : HomeWomenBannerViewPagerAdapter? =null
     private var discountedDealBannerViewPagerAdapter : DiscountedDealBannerViewPagerAdapter? =null
     private var premiumStoreBannerViewPagerAdapter : PremiumStoreBannerViewPagerAdapter? =null
+
+    private lateinit var imagePicker: ImagePicker
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            imagePicker.onCameraResult(success)
+        }
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            imagePicker.onGalleryResult(uri)
+        }
+
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            imagePicker.onPermissionResult(granted)
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -177,6 +205,18 @@ class HomeFragment : BaseFragment() {
                         viewWomen.isInvisible = true
             }
             }
+
+            imagePicker = ImagePicker(
+                requireActivity(),
+                cameraLauncher,
+                galleryLauncher,
+                permissionLauncher
+            ) { uri ->
+                uri?.let {
+                    detectObjects(uri)
+                }
+            }
+
             }
 
         viewCartDetail()
@@ -196,6 +236,10 @@ class HomeFragment : BaseFragment() {
 
             ivMic.setOnClickListener{
                 openSpeechDialog()
+            }
+
+            ivCamera.setOnClickListener{
+                imagePicker.showImageSourceDialog()
             }
 
             ivWishlist.setOnClickListener{
@@ -379,5 +423,76 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
+
+    private fun detectObjects(uri: Uri) {
+        val image = InputImage.fromFilePath(requireContext(), uri)
+
+        val options = ObjectDetectorOptions.Builder()
+            .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
+            .enableMultipleObjects()
+            .enableClassification()
+            .build()
+
+        val detector = ObjectDetection.getClient(options)
+
+        detector.process(image)
+            .addOnSuccessListener { objects ->
+                Log.d("ML_KIT", "Detected objects: ${objects.size}")
+
+                if (objects.isEmpty()) return@addOnSuccessListener
+
+                val detectedLabel = objects
+                    .firstOrNull { it.labels.isNotEmpty() }
+                    ?.labels
+                    ?.firstOrNull()
+                    ?.text
+
+                if (detectedLabel.isNullOrEmpty()) {
+                    Log.d("ML_KIT", "No valid label found")
+                    return@addOnSuccessListener
+                }
+
+                val navController = findNavController()
+                if (
+                    !hasNavigatedFromML &&
+                    navController.currentDestination?.id == R.id.home
+                ) {
+                    hasNavigatedFromML = true
+
+                    val bundle = Bundle().apply {
+                        putString("search", detectedLabel)
+                    }
+
+                    navController.navigate(
+                        R.id.action_homeFragment_to_searchProductListFragment,
+                        bundle
+                    )
+                }
+            }
+    }
+
+    private fun cropAndSend(
+        objects: List<DetectedObject>,
+        uri: Uri
+    ) {
+        val bitmap = MediaStore.Images.Media.getBitmap(
+            requireContext().contentResolver,
+            uri
+        )
+
+        objects.forEachIndexed { index, obj ->
+            val box = obj.boundingBox
+
+            val cropped = Bitmap.createBitmap(
+                bitmap,
+                box.left.coerceAtLeast(0),
+                box.top.coerceAtLeast(0),
+                box.width().coerceAtMost(bitmap.width),
+                box.height().coerceAtMost(bitmap.height)
+            )
+            Log.d("ML_KIT", cropped.toString())
+            // sendToBackend(cropped, obj.labels.firstOrNull()?.text)
+        }
+    }
 
 }

@@ -49,6 +49,7 @@ class ProductDetailFragment : BaseFragment() {
     var isProductObserver = false
     private var storeData :GetStoreResponse.Data?=null
     private var productData :GetSingleStoreResponse.Data.AllProduct.Data?=null
+    private var productDetailData :GetProductDetailResponse.Data?=null
     private var imageList = ArrayList<String>()
     private var colorList = ArrayList<Product>()
     private var sizeList = ArrayList<Product.ProductVariation>()
@@ -65,13 +66,13 @@ class ProductDetailFragment : BaseFragment() {
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
     private var cartList = ArrayList<AddToCartListResponse.Data>()
     var productInfo = ArrayList<Product>()
+    var ratingList = ArrayList<GetProductDetailResponse.Data.Review>()
 
     var cartId:String? = null
     var cartQuantity = 0
     var cartData : AddToCartListResponse.Data?=null
 
     var fromBtn = ""
-    var storeName = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -145,16 +146,10 @@ class ProductDetailFragment : BaseFragment() {
 
         TabLayoutMediator(binding!!.dotsIndicator, binding!!.viewPager) { _, _ -> }.attach()
 
-        reviewAdapter = ReviewAdapter(requireActivity(), arrayListOf("",""))
+        reviewAdapter = ReviewAdapter(requireActivity(), ratingList)
         binding?.rvRating?.adapter = reviewAdapter
-        if (storeData==null){
-            getProductDetail()
-        }
-        else{
-            storeName = storeData?.storeName.toString()
-        }
+        getProductDetail()
         setData()
-        setStoreData()
         binding?.tvSearchAddress?.text = SharedPreference.get(requireActivity()).getDefaultAddress()?.address
 
 
@@ -163,8 +158,9 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun setStoreData(){
         binding?.apply {
-            tvTitle.text = storeName
-            tvProductName.text =  productData?.productNameEn+" (by ${storeName})"
+            tvTitle.text = productDetailData?.store?.storeName
+            tvProductName.text =  productData?.productNameEn+" (by ${productDetailData?.store?.storeName})"
+            tvRating.text = "(${ratingList.size})"
         }
     }
 
@@ -271,9 +267,6 @@ class ProductDetailFragment : BaseFragment() {
                 checkCartData(0)
             }
 
-
-            //   tvExchange.text = "${productData?.returnDays} Days Return & ${productData?.exchangableDays} days Exchange"
-
         }
     }
 
@@ -285,8 +278,7 @@ class ProductDetailFragment : BaseFragment() {
                     putString("from", "productDetail")
                 }
                 findNavController().navigate(R.id.action_productDetailFragment_to_savedAddressFragment,bundle)
-           /*     val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
-                locationResultLauncher.launch(intent)*/
+
             }
 
             ivBack.setOnClickListener {
@@ -338,7 +330,6 @@ class ProductDetailFragment : BaseFragment() {
                         fromBtn = "buy"
                         addToBag()
                     }
-
 
                 }
             }
@@ -409,8 +400,6 @@ class ProductDetailFragment : BaseFragment() {
                         )
                     )
                     setData()
-                    // cartId = response.data.id
-                    // checkCartData(response.data.quantity)
                     showToast(response.message)
                 }
                 isObserver = false
@@ -432,14 +421,8 @@ class ProductDetailFragment : BaseFragment() {
                         cartList.removeAt(pos)
                     }
                     setData()
-//
-//                    cartQuantity = 0
-//                    cartId = null
-//                    checkCartData(cartQuantity)
                 }
                 else{
-//                    cartQuantity = response.data.quantity
-//                    checkCartData(response.data.quantity)
                     for(i in 0 until cartList.size){
                         if (cartList[i].id==cartId){
                             cartList[i].quantity = response.data.quantity
@@ -473,7 +456,20 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.productDetailResult.observe(viewLifecycleOwner) { response ->
             if (isProductObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                storeName = response.data.store.storeName
+                productDetailData = response.data
+                ratingList.clear()
+                productDetailData?.review?.let { ratingList.addAll(it) }
+                reviewAdapter?.notifyDataSetChanged()
+                if (ratingList.isNotEmpty()){
+                    binding?.rvRating?.isVisible = true
+                    binding?.tvCustomerRating?.isVisible = true
+                    binding?.tvViewAll?.isVisible = true
+                }
+                else{
+                    binding?.rvRating?.isVisible = false
+                    binding?.tvCustomerRating?.isVisible = false
+                    binding?.tvViewAll?.isVisible = false
+                }
                 setStoreData()
 
                /* if (quantity != null && quantity > 0) {

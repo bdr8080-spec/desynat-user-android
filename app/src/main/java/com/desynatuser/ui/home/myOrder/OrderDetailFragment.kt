@@ -148,6 +148,8 @@ class OrderDetailFragment : BaseFragment() {
         map["order_id"] = orderData?.id.toString()
         map["reason"] = reason
         viewModel.cancelOrder(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
     }
 
     private fun exchangeOrder(reason: String,size: String,id:String) {
@@ -264,16 +266,16 @@ class OrderDetailFragment : BaseFragment() {
                 }
             }
 
-            when(orderData?.deliveryStatus){
+            when(orderData?.orderDetails?.get(0)?.deliveryStatus){
                 "1" -> {
                     btnInvoice.isVisible = false
                     relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
                     tvStatus.setTextColor(Color.parseColor("#17854C"))
                     if (orderData?.assignStatus=="1"){
-                        tvStatus.text = "New"
+                        tvStatus.text = "Driver Assigned"
                     }
                     else{
-                        tvStatus.text = "Driver Assigned"
+                        tvStatus.text = "New"
                     }
                 }
                 "2" -> {
@@ -297,7 +299,7 @@ class OrderDetailFragment : BaseFragment() {
                             tvOnTheWay.text = "Picked Up"
                             tvReturned.text = "Completed"
                             ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
                             ivReturned.setImageResource(R.drawable.ic_order_return)
                         }
                         "2"->{
@@ -623,7 +625,14 @@ class OrderDetailFragment : BaseFragment() {
             reasonAdapter = ReasonAdapter(requireActivity(), reasonList,object :
                 ReasonAdapter.OnClick{
                 override fun onClickItem(position: Int) {
-                    reason = reasonList[position].reasonEnglish.toString()
+                    if (position==reasonList.size-1){
+                        etReason.isVisible = true
+                        reason = ""
+                    }
+                    else{
+                        etReason.isVisible = false
+                        reason = reasonList[position].reasonEnglish.toString()
+                    }
                 }
 
             })
@@ -685,7 +694,14 @@ class OrderDetailFragment : BaseFragment() {
             reasonAdapter = ReasonAdapter(requireActivity(), reasonList,object :
                 ReasonAdapter.OnClick{
                 override fun onClickItem(position: Int) {
-                    reason = reasonList[position].reasonEnglish.toString()
+                    if (position==reasonList.size-1){
+                        etReason.isVisible = true
+                        reason = ""
+                    }
+                    else{
+                        etReason.isVisible = false
+                        reason = reasonList[position].reasonEnglish.toString()
+                    }
                 }
 
             })
@@ -761,7 +777,14 @@ class OrderDetailFragment : BaseFragment() {
             reasonAdapter = ReasonAdapter(requireActivity(), reasonList,object :
                 ReasonAdapter.OnClick{
                 override fun onClickItem(position: Int) {
-                    reason = reasonList[position].id.toString()
+                    if (position==reasonList.size-1){
+                        etReason.isVisible = true
+                        reason = ""
+                    }
+                    else{
+                        etReason.isVisible = false
+                        reason = reasonList[position].reasonEnglish.toString()
+                    }
                 }
 
             })

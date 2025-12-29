@@ -56,17 +56,17 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
 
 
 
-            when(orderData?.order?.deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+            when(orderData?.deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                 "1" -> {
                     btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
                     btn.setTextColor(Color.parseColor("#17854C"))
                     btn.text = "Expected Delivery Date : 12 SEP 25"
 
                     if (orderData?.order?.assignStatus=="1"){
-                        tvStatus.text = "New"
+                        tvStatus.text = "Driver Assigned"
                     }
                     else{
-                        tvStatus.text = "Driver Assigned"
+                        tvStatus.text = "New"
                     }
                     tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                 }

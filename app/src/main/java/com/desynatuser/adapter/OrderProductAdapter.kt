@@ -81,7 +81,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
             val discountType = if (productData?.variationDetails?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
 
-            when(deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+            when(productData?.deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                 "1" -> {
                     btnCancelOrder.isVisible = true
                     relRating.isVisible = false
@@ -89,7 +89,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                     tvReturn.isVisible = false
                 }
                 "2" -> {
-                    btnCancelOrder.isVisible = true
+                    btnCancelOrder.isVisible = false
                     relRating.isVisible = false
                     tvExchange.isVisible = false
                     tvReturn.isVisible = false
@@ -122,6 +122,12 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                     }
                 }
                 "7" -> {
+                    btnCancelOrder.isVisible = false
+                    relRating.isVisible = false
+                    tvExchange.isVisible = false
+                    tvReturn.isVisible = false
+                }
+                "8" -> {
                     btnCancelOrder.isVisible = false
                     relRating.isVisible = false
                     tvExchange.isVisible = false
