@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
@@ -58,41 +59,63 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
 
             when(orderData?.deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                 "1" -> {
-                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
+                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                     btn.setTextColor(Color.parseColor("#17854C"))
-                    btn.text = "Expected Delivery Date : 12 SEP 25"
+                    btn.text = "Expected Delivery Date : 3 to 5 working days"
 
                     if (orderData?.order?.assignStatus=="1"){
                         tvStatus.text = "Driver Assigned"
                     }
                     else{
-                        tvStatus.text = "New"
+                        tvStatus.text = "Ongoing"
                     }
                     tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                 }
                 "2" -> {
-                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
+                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                     btn.setTextColor(Color.parseColor("#17854C"))
-                    btn.text = "Expected Delivery Date : 12 SEP 25"
+                    btn.text = "Expected Delivery Date : 3 to 5 working days"
 
                     tvStatus.text = "Confirmed"
                     tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                 }
                 "7" -> {
-                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
+                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                     btn.setTextColor(Color.parseColor("#FF5F1B"))
-                    btn.text = "Expected Delivery Date : 12 SEP 25"
+                    btn.text = "Expected Delivery Date : 3 to 5 working days"
 
                     tvStatus.text = "Ongoing"
-                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                    tvStatus.setTextColor(Color.parseColor("#17854C"))
                 }
                 "3" -> {
-                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
-                    btn.setTextColor(Color.parseColor("#16B364"))
-                    btn.text = "Delivered On : 12 SEP 25"
 
-                    tvStatus.text = "Delivered"
-                    tvStatus.setTextColor(Color.parseColor("#16B364"))
+                    when (orderData?.returnType){
+                        "1"->{
+                            btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                            btn.setTextColor(Color.parseColor("#FF5F1B"))
+                            btn.text = "Pickup Date : 12 SEP 25"
+
+                            tvStatus.text = "Return Req.."
+                            tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                        }
+                        "2"->{
+                            btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                            btn.setTextColor(Color.parseColor("#FF5F1B"))
+                            btn.text = "Pickup Date : 12 SEP 25"
+
+                            tvStatus.text = "Exchange Req.."
+                            tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                        }
+                        else->{
+                            btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
+                            btn.setTextColor(Color.parseColor("#16B364"))
+                            btn.text = "Delivered On : 12 SEP 25"
+
+                            tvStatus.text = "Delivered"
+                            tvStatus.setTextColor(Color.parseColor("#16B364"))
+                        }
+                    }
+
                 }
 
                 "4" -> {
@@ -114,7 +137,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                 "6" -> {
                     btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A16B364"))
                     btn.setTextColor(Color.parseColor("#17854C"))
-                    btn.text = "Expected Delivery Date : 12 SEP 25"
+                    btn.text = "Expected Delivery Date : 3 to 5 working days"
 
                     tvStatus.text = "Confirmed"
                     tvStatus.setTextColor(Color.parseColor("#FF5F1B"))

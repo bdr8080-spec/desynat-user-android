@@ -1,6 +1,7 @@
 package com.desynatuser.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemOrderProductBinding
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 
-class OrderProductAdapter(var context:Context, private var productList: ArrayList<GetSingleOrderSummaryResponse.Data.OrderDetail>,var deliveryStatus:String,var clickOnItem:ClickOnItem) : RecyclerView.Adapter<OrderProductAdapter.ViewHolder>() {
+class OrderProductAdapter(var context:Context, private var productList: ArrayList<GetSingleOrderSummaryResponse.Data>,var deliveryStatus:String,var clickOnItem:ClickOnItem) : RecyclerView.Adapter<OrderProductAdapter.ViewHolder>() {
 
    interface ClickOnItem{
        fun onClickOnItem(position: Int,type:Int)
@@ -95,31 +96,52 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                     tvReturn.isVisible = false
                 }
                 "3" -> {
-                    btnCancelOrder.isVisible = false
-                    if (productData?.productDetails?.productReturn=="1"){
-                        if (productData?.returnType=="1"){
+
+                    when (productData?.returnType){
+                        "1"->{
+                            btnCancelOrder.isVisible = false
                             tvReturn.isVisible = false
-                        }
-                        else{
-                            tvReturn.isVisible = true
-                        }
-
-                    }
-                    if (productData?.productDetails?.productExchangable=="1"){
-                        if (productData?.returnType=="2"){
                             tvExchange.isVisible = false
+                            relRating.isVisible = false
                         }
-                        else{
-                            tvExchange.isVisible = true
+                        "2"->{
+                            btnCancelOrder.isVisible = false
+                            tvReturn.isVisible = false
+                            tvExchange.isVisible = false
+                            relRating.isVisible = false
+                        }
+                        else->{
+                            btnCancelOrder.isVisible = false
+                            if (productData?.productDetails?.productReturn=="1"){
+                                if (productData?.returnType=="1"){
+                                    tvReturn.isVisible = false
+                                }
+                                else{
+                                    tvReturn.isVisible = true
+                                }
+
+                            }
+                            if (productData?.productDetails?.productExchangable=="1"){
+                                if (productData?.returnType=="2"){
+                                    tvExchange.isVisible = false
+                                }
+                                else{
+                                    tvExchange.isVisible = true
+                                }
+                            }
+
+                            if (productData?.userRatingReviewProvide!=null){
+                                relRating.isVisible = false
+                            }
+                            else{
+                                relRating.isVisible = true
+                            }
                         }
                     }
 
-                    if (productData?.userRatingReviewProvide!=null){
-                        relRating.isVisible = false
-                    }
-                    else{
-                        relRating.isVisible = true
-                    }
+
+
+
                 }
                 "7" -> {
                     btnCancelOrder.isVisible = false

@@ -263,6 +263,7 @@
         android:gravity="center"
         android:layout_marginStart="@dimen/_5sdp"
         android:text="Return"
+        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
         android:paddingVertical="@dimen/_6sdp"
@@ -270,8 +271,7 @@
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvExchange"
-        app:layout_constraintBottom_toBottomOf="@+id/tvExchange"
-        app:layout_constraintTop_toTopOf="@+id/tvExchange" />
+        app:layout_constraintTop_toBottomOf="@+id/relRating" />
 
     <View
         android:id="@+id/viewBottom"

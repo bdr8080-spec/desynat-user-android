@@ -1,12 +1,14 @@
 package com.desynatuser.ui.home.fragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +37,10 @@ import com.desynatuser.databinding.FragmentHomeBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.HomeActivity
+import com.desynatuser.ui.home.imageDetector.AnnotateRequest
+import com.desynatuser.ui.home.imageDetector.Feature
+import com.desynatuser.ui.home.imageDetector.ImageContent
+import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
@@ -43,13 +49,13 @@ import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
-import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
@@ -57,6 +63,7 @@ class HomeFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val locationViewModel: LocationViewModel by activityViewModels()
     var isObserver = false
+    var isDetactImage = false
     var isCartObserver = false
     private var hasNavigatedFromML = false
 
@@ -338,6 +345,22 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+        viewModel.detectImageResult.observe(viewLifecycleOwner) { response ->
+            if (isDetactImage) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    val labels = response.responses
+                        .firstOrNull()
+                        ?.labelAnnotations
+
+                    labels?.forEach {
+                        Log.d("VISION_API", "${it.description} - ${it.score}")
+                    }
+                }
+                isDetactImage = false
+            }
+        }
+
     }
 
     private fun getDashboardApi(){
@@ -452,7 +475,8 @@ class HomeFragment : BaseFragment() {
                     return@addOnSuccessListener
                 }
 
-                val navController = findNavController()
+                cropAndSend(objects,uri)
+              /*  val navController = findNavController()
                 if (
                     !hasNavigatedFromML &&
                     navController.currentDestination?.id == R.id.home
@@ -467,7 +491,7 @@ class HomeFragment : BaseFragment() {
                         R.id.action_homeFragment_to_searchProductListFragment,
                         bundle
                     )
-                }
+                }*/
             }
     }
 
@@ -492,7 +516,34 @@ class HomeFragment : BaseFragment() {
             )
             Log.d("ML_KIT", cropped.toString())
             // sendToBackend(cropped, obj.labels.firstOrNull()?.text)
+            detectImageAPi(cropped)
         }
+    }
+
+    fun bitmapToBase64(bitmap: Bitmap): String {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+        return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
+    }
+
+    private fun detectImageAPi(bitmap:Bitmap){
+        val request = VisionRequestBody(
+            requests = listOf(
+                AnnotateRequest(
+                    image = ImageContent(bitmapToBase64(bitmap)),
+                    features = listOf(
+                        Feature(
+                            type = "LABEL_DETECTION",
+                            maxResults = 5
+                        )
+                    )
+                )
+            )
+        )
+
+        viewModel.detectImage(key = getString(R.string.google_vision_api_key),request)
+      //  ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isDetactImage = true
     }
 
 }

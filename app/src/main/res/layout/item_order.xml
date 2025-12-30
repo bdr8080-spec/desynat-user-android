@@ -194,7 +194,7 @@
         style="@style/button"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
-        android:backgroundTint="#F4DDDD"
+        android:backgroundTint="#1A1AB364"
         android:padding="@dimen/_6sdp"
         android:textSize="@dimen/_10sdp"
         android:textColor="#17854C"

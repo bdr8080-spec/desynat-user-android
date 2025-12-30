@@ -19,6 +19,8 @@ import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
+import com.desynatuser.ui.home.imageDetector.VisionRequestBody
+import com.desynatuser.ui.home.imageDetector.VisionResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
@@ -663,6 +665,18 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
             responseLiveData = homePageSearchLiveData
         )
     }
+
+    val detectImageLiveData = SingleLiveEvent<VisionResponse>()
+    suspend fun detectImage(key:String,request: VisionRequestBody)
+    {
+        handleApiCall(
+            api = {
+                api.detectImage(key,request)
+            },
+            responseLiveData = detectImageLiveData
+        )
+    }
+
 
 
 }

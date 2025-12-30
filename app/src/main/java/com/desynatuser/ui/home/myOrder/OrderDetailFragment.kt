@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.desynatuser.R
 import com.desynatuser.adapter.OrderProductAdapter
 import com.desynatuser.adapter.ProductReviewAdapter
@@ -46,11 +47,12 @@ class OrderDetailFragment : BaseFragment() {
     private var binding : FragmentOrderDetailBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
+    private var isReturnObserver = false
     private var isSizeObserver = false
     private var getOrderData : GetAllOrderResponse.Data?=null
     private var orderData : GetSingleOrderSummaryResponse.Data?=null
     private var orderProductAdapter: OrderProductAdapter?=null
-    private var productList = ArrayList<GetSingleOrderSummaryResponse.Data.OrderDetail>()
+    private var productList = ArrayList<GetSingleOrderSummaryResponse.Data>()
     private var orderId = ""
 
     private var sizeList = ArrayList<GetSizeListResponse.Data>()
@@ -148,7 +150,7 @@ class OrderDetailFragment : BaseFragment() {
         map["order_id"] = orderData?.id.toString()
         map["reason"] = reason
         viewModel.cancelOrder(map)
-        isObserver = true
+        isReturnObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
     }
 
@@ -162,7 +164,7 @@ class OrderDetailFragment : BaseFragment() {
         map["new_size"] = size
 
         viewModel.returnExchangeOrder(map)
-        isObserver = true
+        isReturnObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
     }
 
@@ -197,7 +199,7 @@ class OrderDetailFragment : BaseFragment() {
         binding?.apply {
 
             productList.clear()
-            orderData?.orderDetails?.let { productList.addAll(it) }
+            orderData?.let { productList.add(it) }
             orderProductAdapter = OrderProductAdapter(requireActivity(),productList,orderData?.deliveryStatus.toString(),object :OrderProductAdapter.ClickOnItem{
                 override fun onClickOnItem(position: Int, type: Int) {
                     when(type){
@@ -221,16 +223,27 @@ class OrderDetailFragment : BaseFragment() {
 
             toolbar.tvToolbar.text = "#${getOrderData?.id}"
 
-            tvPlacedDate.text = CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mma")
+            tvPlacedDate.text = "Placed On "+CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mma")
 
-            tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.totalMrp?:0.0)} KD"
-            tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.discountMrp?:0.0)} KD"
-            tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.shippingFees?:0.0)} KD"
-            tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.tax?:0.0)} KD"
+            tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.order?.totalMrp?:0.0)} KD"
+            tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?:0.0)} KD"
+            tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?:0.0)} KD"
+            tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?:0.0)} KD"
+            if (orderData?.order?.promocodeStatus=="yes"){
+                tvPromoCode.isVisible = true
+                tvPromoCodeValue.isVisible = true
+                tvPromoCode.text = "Coupon Discount (${orderData?.order?.promocodeDetails?.nameEnglish})"
+                tvPromoCodeValue.text = "${CommonMethod.formatPrice(orderData?.order?.promocodeValue?:0.0)} KD"
 
-            tvDeliveryAddress.text = orderData?.deliveryDetails?.address
+            }
+            else{
+                tvPromoCode.isVisible = false
+                tvPromoCodeValue.isVisible = false
+            }
 
-            if (orderData?.discountCoupon!=0.0) {
+            tvDeliveryAddress.text = orderData?.order?.deliveryDetails?.address
+
+            if (orderData?.order?.discountCoupon!=0.0) {
                 tvCouponDiscount.isVisible = true
                 tvCouponDiscountValue.isVisible = true
             }
@@ -238,17 +251,17 @@ class OrderDetailFragment : BaseFragment() {
                 tvCouponDiscount.isVisible = false
                 tvCouponDiscountValue.isVisible = false
             }
-            tvCouponDiscountValue.text = "${CommonMethod.formatPrice(orderData?.discountCoupon?:0.0)} KD"
+            tvCouponDiscountValue.text = "${CommonMethod.formatPrice(orderData?.order?.discountCoupon?:0.0)} KD"
 
-            tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.totalAmount?:0.0)} KD"
+            tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"
 
-            tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.discountMrp ?: 0.0) + (orderData?.discountCoupon ?: 0.0))} KD on this"
+            tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.order?.discountMrp ?: 0.0) + (orderData?.order?.discountCoupon ?: 0.0))} KD on this"
 
 
-            tvAmount.text = "${CommonMethod.formatPrice(orderData?.totalAmount?:0.0)} KD"
+            tvAmount.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"
 
-            tvTransaction.text = "Transaction Id: ${orderData?.transactionId}"
-            when(orderData?.paymentMethod){
+            tvTransaction.text = "Transaction Id: ${orderData?.order?.transactionId}"
+            when(orderData?.order?.paymentMethod){
                 "1" ->{
                     tvTransaction.isVisible = true
                     ivPay.setImageResource(R.drawable.ic_visa)
@@ -266,7 +279,7 @@ class OrderDetailFragment : BaseFragment() {
                 }
             }
 
-            when(orderData?.orderDetails?.get(0)?.deliveryStatus){
+            when(orderData?.deliveryStatus){
                 "1" -> {
                     btnInvoice.isVisible = false
                     relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
@@ -275,7 +288,7 @@ class OrderDetailFragment : BaseFragment() {
                         tvStatus.text = "Driver Assigned"
                     }
                     else{
-                        tvStatus.text = "New"
+                        tvStatus.text = "Ongoing"
                     }
                 }
                 "2" -> {
@@ -288,29 +301,18 @@ class OrderDetailFragment : BaseFragment() {
                     ivReturned.setImageResource(R.drawable.ic_order_return)
                 }
                 "3" -> {
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#16B364"))
-                    tvStatus.setTextColor(Color.parseColor("#16B364"))
-                    tvStatus.text = "Delivered"
-
-                    btnInvoice.isVisible = true
-                    when (orderData?.orderDetails?.get(0)?.returnType){
+                    when (orderData?.returnType){
                         "1"->{
-                            tvPicked.text = "In Process"
-                            tvOnTheWay.text = "Picked Up"
-                            tvReturned.text = "Completed"
-                            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
-                            ivReturned.setImageResource(R.drawable.ic_order_return)
+                            returnData()
                         }
                         "2"->{
-                            tvPicked.text = "In Process"
-                            tvOnTheWay.text = "Pick & \n Exchange"
-                            tvReturned.text = "Completed"
-                            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
-                            ivReturned.setImageResource(R.drawable.ic_order_return)
+                            exchangeData()
                         }
                         else->{
+                            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#16B364"))
+                            tvStatus.setTextColor(Color.parseColor("#16B364"))
+                            tvStatus.text = "Delivered"
+                            btnInvoice.isVisible = true
                             ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
                             ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
                             ivReturned.setImageResource(R.drawable.ic_order_return_selected)
@@ -331,22 +333,10 @@ class OrderDetailFragment : BaseFragment() {
                 }
 
                 "4" -> {
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E70000"))
-                    tvStatus.setTextColor(Color.parseColor("#E70000"))
-                    tvStatus.text = "Cancelled"
-
-                    btnInvoice.isVisible = false
-                    tvOnTheWay.isVisible = false
-                    ivOnTheWay.isVisible = false
-                    ivReturned.setImageResource(R.drawable.ic_cancelled)
-                    tvReturned.text = "Cancelled"
-                    tvReturned.setTextColor(Color.parseColor("#D72E04"))
+                    cancelData()
                 }
                 "5" -> {
-                    btnInvoice.isVisible = false
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
-                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
-
+                    returnData()
                 }
 
                 "6" -> {
@@ -360,9 +350,7 @@ class OrderDetailFragment : BaseFragment() {
                     tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                 }
                 "9" -> {
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
-                    tvStatus.text = "Exchange Req.."
-                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                    exchangeData()
 
                 }
             }
@@ -418,19 +406,19 @@ class OrderDetailFragment : BaseFragment() {
         }
 
         viewModel.cancelOrderResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
+            if (isReturnObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 cancelDialog?.dismiss()
                 CommonMethod.showSuccessDialog(requireActivity(),"Order Cancelled successfully!"){
                     getOrderDetail()
                 }
-                isObserver = false
+                isReturnObserver = false
             }
         }
 
 
         viewModel.returnExchangeOrderResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
+            if (isReturnObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 if (exchangeReturn=="1"){
                     returnDialog?.dismiss()
@@ -449,7 +437,7 @@ class OrderDetailFragment : BaseFragment() {
                 }
                 getOrderDetail()
                 exchangeReturn = ""
-                isObserver = false
+                isReturnObserver = false
             }
         }
 
@@ -503,7 +491,8 @@ class OrderDetailFragment : BaseFragment() {
 
     private fun getOrderDetail(){
         val map = HashMap<String,Any>()
-        map["order_id"] = orderId
+        map["order_id"] = getOrderData?.orderId.toString()
+        map["orderdetails_id"] = getOrderData?.id.toString()
         viewModel.getOrderDetailInfo(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -562,6 +551,14 @@ class OrderDetailFragment : BaseFragment() {
 
             })
             rvStoreReview.adapter = storeReviewAdapter
+
+            rbProduct.setOnRatingBarChangeListener { _, rating, _ ->
+                if (rating > 0f) {
+                    tvSubmit.isVisible = true
+                } else {
+                    tvSubmit.isVisible = false
+                }
+            }
 
             tvToolbar.setOnClickListener {
                 dialog.dismiss()
@@ -827,6 +824,104 @@ class OrderDetailFragment : BaseFragment() {
         }
 
         exchangeDialog?.show()
+    }
+
+    private fun cancelData(){
+        binding?.apply {
+            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E70000"))
+            tvStatus.setTextColor(Color.parseColor("#E70000"))
+            tvStatus.text = "Cancelled"
+
+            btnInvoice.isVisible = false
+            tvOnTheWay.isVisible = false
+            ivOnTheWay.isVisible = false
+            ivReturned.setImageResource(R.drawable.ic_cancelled)
+            tvReturned.text = "Cancelled"
+            tvReturned.setTextColor(Color.parseColor("#D72E04"))
+            llReturnDetail.isVisible = true
+            tvExchangeSize.isVisible = false
+            tvExchangeSizeValue.isVisible = false
+            tvUploadedImage.isVisible = false
+            relUploadImage.isVisible = false
+            tvReturnDetails.text = "Cancellation details"
+            tvReturnOn.text = "Cancelled on"
+            tvReturnRequestId.text = "Cancelled Request ID"
+            tvReturnRequestIdValue.text = "#"+orderData?.id
+            tvReturnOnValue.text = CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mm a")
+            tvReturnReasonValue.text = orderData?.cancelReason
+            ivReturnImage
+        }
+    }
+
+    private fun returnData(){
+        binding?.apply {
+
+            btnInvoice.isVisible = false
+            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
+            tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
+            tvStatus.text = "Return Req.."
+            tvOrderStatus.text = "Return Status"
+            tvPicked.text = "In Process"
+            tvOnTheWay.text = "Picked Up"
+            tvReturned.text = "Completed"
+
+            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+            ivReturned.setImageResource(R.drawable.ic_order_return)
+
+            llReturnDetail.isVisible = true
+            tvExchangeSize.isVisible = false
+            tvExchangeSizeValue.isVisible = false
+
+
+            tvReturnRequestIdValue.text = "#"+orderData?.id
+            tvReturnOnValue.text = CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mm a")
+            tvReturnReasonValue.text = orderData?.returnReason
+            if (orderData?.returnImage != null && orderData?.returnImage != "" && orderData?.returnImage != "null"
+            ) {
+                relUploadImage.isVisible = true
+                tvUploadedImage.isVisible = true
+                ivReturnImage.load(orderData?.returnImage) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_placeholder)
+                    error(R.drawable.ic_placeholder)
+                }
+            } else {
+                tvUploadedImage.isVisible = false
+                relUploadImage.isVisible = false
+            }
+        }
+    }
+
+    private fun exchangeData(){
+        binding?.apply {
+
+            tvPicked.text = "In Process"
+            tvOnTheWay.text = "Pick & \n Exchange"
+            tvReturned.text = "Completed"
+            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+            ivReturned.setImageResource(R.drawable.ic_order_return)
+
+            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
+            tvStatus.text = "Exchange Req.."
+            tvOrderStatus.text = "Exchange Status"
+            tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+            llReturnDetail.isVisible = true
+            tvExchangeSize.isVisible = true
+            tvExchangeSizeValue.isVisible = true
+            tvUploadedImage.isVisible = false
+            relUploadImage.isVisible = false
+            tvReturnDetails.text = "Exchange Details"
+            tvReturnOn.text = "Exchange on"
+            tvReturnRequestId.text = "Exchange Request ID"
+            tvReturnRequestIdValue.text = "#"+orderData?.id
+            tvReturnOnValue.text = CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mm a")
+            tvExchangeSizeValue.text =  orderData?.exchangeNewSize
+            tvReturnReasonValue.text =  orderData?.exchangeReason
+
+        }
     }
 
 }

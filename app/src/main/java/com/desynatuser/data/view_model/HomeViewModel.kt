@@ -17,6 +17,8 @@ import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
+import com.desynatuser.ui.home.imageDetector.VisionRequestBody
+import com.desynatuser.ui.home.imageDetector.VisionResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
@@ -481,6 +483,15 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
     fun getRecentSearchList() {
         viewModelScope.launch {
             repository.getRecentSearchList()
+        }
+    }
+
+    val detectImageResult: LiveData<VisionResponse>
+        get() = repository.detectImageLiveData
+
+    fun detectImage(key:String,request: VisionRequestBody) {
+        viewModelScope.launch {
+            repository.detectImage(key,request)
         }
     }
 

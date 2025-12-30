@@ -13,6 +13,8 @@ import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
+import com.desynatuser.ui.home.imageDetector.VisionRequestBody
+import com.desynatuser.ui.home.imageDetector.VisionResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
@@ -268,5 +270,10 @@ interface ApiServices {
     @GET(Constants.WALLET_BALANCE)
     suspend fun getWalletBalance(): Response<WalletBalanceResponse>
 
+    @POST("https://vision.googleapis.com/v1/images:annotate")
+    suspend fun detectImage(
+        @Query("key") apiKey: String,
+        @Body request: VisionRequestBody
+    ): Response<VisionResponse>
 
 }

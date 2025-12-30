@@ -35,7 +35,7 @@ class MyOrderFragment : BaseFragment() {
     private var binding : FragmentMyOrderBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
-
+    private var isFirstLoad = true
     private var myOrderAdapter: MyOrderAdapter?=null
     private var myOrderList = ArrayList<GetAllOrderResponse.Data>()
     private var filter:String?=null // // 1 all 2 ongoing 3 delivered 4 cancelled 5 return
@@ -91,8 +91,11 @@ class MyOrderFragment : BaseFragment() {
 
                 }
             })
+            if (isFirstLoad) {
+                getOrder()
+                isFirstLoad = false
+            }
 
-            getOrder()
         }
     }
 

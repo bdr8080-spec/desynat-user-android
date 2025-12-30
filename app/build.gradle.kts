@@ -40,6 +40,16 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    configurations.all {
+        resolutionStrategy {
+            // Force a single guava version
+            force("com.google.guava:guava:30.1.1-android")
+
+            // Exclude listenablefuture completely
+            exclude(group = "com.google.guava", module = "listenablefuture")
+        }
+    }
 }
 
 dependencies {
@@ -93,4 +103,14 @@ dependencies {
     implementation ("com.airbnb.android:lottie:6.7.1")
 
     implementation ("com.google.mlkit:object-detection:17.0.2")
+
+    implementation("com.google.api-client:google-api-client-android:1.35.2") {
+        exclude(module = "httpclient")
+        exclude(group = "com.google.guava", module = "listenablefuture")
+    }
+    implementation("com.google.http-client:google-http-client-gson:1.42.3") {
+        exclude(module = "httpclient")
+        exclude(group = "com.google.guava", module = "listenablefuture")
+    }
+
 }
