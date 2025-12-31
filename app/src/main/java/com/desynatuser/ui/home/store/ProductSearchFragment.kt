@@ -43,10 +43,12 @@ class ProductSearchFragment : BaseFragment() {
     private var binding : FragmentProductSearchBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var isRecommendedObserver = false
     var searchList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
 
     var recentSearchAdapter: RecentSearchAdapter?=null
     var recentSearchList = ArrayList<GetRecentSearchListResponse.Data>()
+    var recommendedList = ArrayList<GetRecentSearchListResponse.Data>()
     var recommendedAdapter: RecommendedAdapter?=null
     var latestSearchAdapter: LatestSearchAdapter?=null
 
@@ -145,21 +147,31 @@ class ProductSearchFragment : BaseFragment() {
             })
             rvRecentSearch.adapter = recentSearchAdapter
 
-            recommendedAdapter = RecommendedAdapter(requireActivity(), arrayListOf("","",""),object: RecommendedAdapter.ClickOnItem{
+            recommendedAdapter = RecommendedAdapter(requireActivity(), recommendedList,object: RecommendedAdapter.ClickOnItem{
                 override fun onClickItem(position: Int) {
-
+                    val bundle = Bundle().apply {
+                        putString("search", recommendedList[position].name)
+                    }
+                    findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment,bundle)
                 }
 
             })
             rvRecommended.adapter = recommendedAdapter
 
             getRecentSearch()
+            getRecommendedSearchList()
         }
     }
 
     private fun getRecentSearch() {
         viewModel.getRecentSearchList()
         isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+    }
+
+    private fun getRecommendedSearchList() {
+        viewModel.getRecommendedSearchList()
+        isRecommendedObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
 
@@ -221,6 +233,17 @@ class ProductSearchFragment : BaseFragment() {
                     latestSearchAdapter?.notifyDataSetChanged()
                 }
                 isObserver = false
+            }
+        }
+        viewModel.getRecommendedSearchListResult.observe(viewLifecycleOwner) { response ->
+            if (isRecommendedObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    recommendedList.clear()
+                    recommendedList.addAll(response.data)
+                    recommendedAdapter?.notifyDataSetChanged()
+                }
+                isRecommendedObserver = false
             }
         }
         viewModel.homePageSearchResult.observe(viewLifecycleOwner) { response ->

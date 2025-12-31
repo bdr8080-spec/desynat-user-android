@@ -48,6 +48,7 @@ class OrderDetailFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
     private var isReturnObserver = false
+    private var isOrderRatingObserver = false
     private var isSizeObserver = false
     private var getOrderData : GetAllOrderResponse.Data?=null
     private var orderData : GetSingleOrderSummaryResponse.Data?=null
@@ -145,9 +146,10 @@ class OrderDetailFragment : BaseFragment() {
         }
     }
 
-    private fun cancelOrder(reason: String) {
+    private fun cancelOrder(reason: String,id:String) {
         val map = HashMap<String,Any>()
-        map["order_id"] = orderData?.id.toString()
+        map["order_id"] = orderData?.orderId.toString()
+        map["orderdetails_id"] = id
         map["reason"] = reason
         viewModel.cancelOrder(map)
         isReturnObserver = true
@@ -157,7 +159,7 @@ class OrderDetailFragment : BaseFragment() {
     private fun exchangeOrder(reason: String,size: String,id:String) {
         exchangeReturn = "2"
         val map = HashMap<String,Any>()
-        map["order_id"] = orderData?.id.toString()
+        map["order_id"] = orderData?.orderId.toString()
         map["orderdetails_id"] = id
         map["type"] = exchangeReturn  // 1 return 2 Exchange
         map["exchange_reason"] = reason
@@ -171,7 +173,7 @@ class OrderDetailFragment : BaseFragment() {
     private fun returnOrder(reason:String,id:String) {
         exchangeReturn = "1"
         val map = HashMap<String,Any>()
-        map["order_id"] = orderData?.id.toString()
+        map["order_id"] = orderData?.orderId.toString()
         map["orderdetails_id"] = id
         map["type"] = exchangeReturn  // 1 return 2 Exchange
         map["return_reason"] = reason
@@ -179,14 +181,14 @@ class OrderDetailFragment : BaseFragment() {
             map["return_image"] = returnImage.toString()
         }
         viewModel.returnExchangeOrder(map)
-        isObserver = true
+        isReturnObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
     }
 
     private fun rateOrder(map:HashMap<String,Any>) {
         viewModel.orderRating(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
-        isObserver = true
+        isOrderRatingObserver = true
     }
 
     fun uploadFile(image:File){
@@ -204,7 +206,7 @@ class OrderDetailFragment : BaseFragment() {
                 override fun onClickOnItem(position: Int, type: Int) {
                     when(type){
                         1->{
-                            cancelOrderDialog()
+                            cancelOrderDialog(productList[position].id)
                         }
                         2->{
                             exchangeOrderDialog(productList[position].id)
@@ -241,7 +243,7 @@ class OrderDetailFragment : BaseFragment() {
                 tvPromoCodeValue.isVisible = false
             }
 
-            tvDeliveryAddress.text = orderData?.order?.deliveryDetails?.address
+            tvDeliveryAddress.text = orderData?.order?.deliveryDetails?.address+" "+orderData?.order?.deliveryDetails?.state
 
             if (orderData?.order?.discountCoupon!=0.0) {
                 tvCouponDiscount.isVisible = true
@@ -279,79 +281,101 @@ class OrderDetailFragment : BaseFragment() {
                 }
             }
 
-            when(orderData?.deliveryStatus){
-                "1" -> {
-                    btnInvoice.isVisible = false
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
-                    tvStatus.setTextColor(Color.parseColor("#17854C"))
-                    if (orderData?.assignStatus=="1"){
-                        tvStatus.text = "Driver Assigned"
-                    }
-                    else{
+            if (orderData?.paymentStatus=="2"||orderData?.paymentStatus=="3"){
+                tvStatus.text = "Cancelled"
+                tvStatus.setTextColor(Color.parseColor("#D53B36"))
+                relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D53B36"))
+                ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                ivOnTheWay.isVisible = false
+                tvOnTheWay.isVisible = false
+                tvDeliveryDate.isVisible = false
+                ivReturned.setImageResource(R.drawable.ic_cancelled)
+                tvPicked.text = "In Process"
+                tvOrderStatus.text = "Cancel Status"
+                tvReturned.text = "Cancelled"
+                tvReturned.setTextColor(Color.parseColor("#E70000"))
+                viewOnTheWay.setBackgroundColor(Color.parseColor("#80D72E04"))
+                viewPicked.setBackgroundColor(Color.parseColor("#80D72E04"))
+            }
+            else{
+                when(orderData?.deliveryStatus){
+                    "1" -> {
+                        btnInvoice.isVisible = false
                         tvStatus.text = "Ongoing"
+                        tvStatus.setTextColor(Color.parseColor("#17854C"))
+                        relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
                     }
-                }
-                "2" -> {
-                    btnInvoice.isVisible = false
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
-                    tvStatus.setTextColor(Color.parseColor("#17854C"))
-                    tvStatus.text = "Ongoing"
-                    ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                    ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
-                    ivReturned.setImageResource(R.drawable.ic_order_return)
-                }
-                "3" -> {
-                    when (orderData?.returnType){
-                        "1"->{
-                            returnData()
+                    "2" -> {
+                        btnInvoice.isVisible = false
+                        relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
+                        tvStatus.setTextColor(Color.parseColor("#17854C"))
+                        tvStatus.text = "Ongoing"
+                        ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                        ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                        ivReturned.setImageResource(R.drawable.ic_order_return)
+                    }
+                    "3" -> {
+                        when (orderData?.returnType){
+                            "1"->{
+                                returnData()
+                            }
+                            "2"->{
+                                exchangeData()
+                            }
+                            else->{
+                                relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#16B364"))
+                                tvStatus.setTextColor(Color.parseColor("#16B364"))
+                                tvStatus.text = "Delivered"
+                                btnInvoice.isVisible = true
+                                ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                                ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                                ivReturned.setImageResource(R.drawable.ic_order_return_selected)
+                                tvDeliveryDate.text = "Delivery Date ${CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd/MM/yyyy")}"
+                            }
                         }
-                        "2"->{
-                            exchangeData()
-                        }
-                        else->{
-                            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#16B364"))
-                            tvStatus.setTextColor(Color.parseColor("#16B364"))
-                            tvStatus.text = "Delivered"
-                            btnInvoice.isVisible = true
-                            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
-                            ivReturned.setImageResource(R.drawable.ic_order_return_selected)
-                        }
+
                     }
 
-                }
+                    "7" -> {
+                        btnInvoice.isVisible = false
+                        relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
+                        tvStatus.setTextColor(Color.parseColor("#17854C"))
+                        tvStatus.text = "Ongoing"
+                        ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                        ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                        ivReturned.setImageResource(R.drawable.ic_order_return)
 
-                "7" -> {
-                    btnInvoice.isVisible = false
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
-                    tvStatus.setTextColor(Color.parseColor("#17854C"))
-                    tvStatus.text = "Ongoing"
-                    ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                    ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
-                    ivReturned.setImageResource(R.drawable.ic_order_return)
+                    }
 
-                }
+                    "4" -> {
+                        cancelData()
+                    }
+                    "5" -> {
+                        returnData()
+                    }
 
-                "4" -> {
-                    cancelData()
-                }
-                "5" -> {
-                    returnData()
-                }
+                    "6" -> {
+                        relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
+                        tvStatus.text = "Confirmed"
+                        tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                    }
+                    "8" -> {
+                        relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
+                        tvStatus.text = "Not Delivered"
+                        tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                        ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                        ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                        ivReturned.setImageResource(R.drawable.ic_order_return)
+                        tvReturned.text = "Not Delivered"
+                        ivReturned.setImageResource(R.drawable.ic_cancelled)
+                        tvReturned.setTextColor(Color.parseColor("#E70000"))
+                        viewOnTheWay.setBackgroundColor(Color.parseColor("#80D72E04"))
+                        tvDeliveryDate.isVisible = false
+                    }
+                    "9" -> {
+                        exchangeData()
 
-                "6" -> {
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
-                    tvStatus.text = "Confirmed"
-                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
-                }
-                "8" -> {
-                    relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
-                    tvStatus.text = "Not Delivered"
-                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
-                }
-                "9" -> {
-                    exchangeData()
-
+                    }
                 }
             }
 
@@ -372,12 +396,14 @@ class OrderDetailFragment : BaseFragment() {
 
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (isObserver||isImageObserver||isSizeObserver) {
+            if (isObserver||isImageObserver||isSizeObserver||isReturnObserver||isOrderRatingObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
                 isObserver = false
                 isImageObserver = false
                 isSizeObserver = false
+                isReturnObserver = false
+                isOrderRatingObserver = false
             }
         }
 
@@ -423,7 +449,8 @@ class OrderDetailFragment : BaseFragment() {
                 if (exchangeReturn=="1"){
                     returnDialog?.dismiss()
                      CommonMethod.showSuccessDialog(requireActivity(),"Order Return Request Sent successfully!"){
-
+                         getOrderDetail()
+                         exchangeReturn = ""
        }
                 }
                 else if (exchangeReturn=="2") {
@@ -432,22 +459,22 @@ class OrderDetailFragment : BaseFragment() {
                         requireActivity(),
                         "Order Exchange Request Sent successfully!"
                     ) {
-
+                        getOrderDetail()
+                        exchangeReturn = ""
                     }
                 }
-                getOrderDetail()
-                exchangeReturn = ""
+
                 isReturnObserver = false
             }
         }
 
         viewModel.orderRatingResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
+            if (isOrderRatingObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 CommonMethod.showSuccessDialog(requireActivity(),"Review Submitted successfully!"){
                     getOrderDetail()
                 }
-                isObserver = false
+                isOrderRatingObserver = false
             }
         }
 
@@ -514,7 +541,7 @@ class OrderDetailFragment : BaseFragment() {
         val window: Window = dialog.window!!
 
         val displayMetrics = resources.displayMetrics
-        val height = (displayMetrics.heightPixels * 0.8).toInt()
+        val height = (displayMetrics.heightPixels * 0.9).toInt()
 
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -576,8 +603,8 @@ class OrderDetailFragment : BaseFragment() {
 
             tvSubmit.setOnClickListener {
                 val map = HashMap<String,Any>()
-                map["order_id"] = orderData?.id.toString()
-                map["orderdetails_id"] = id
+                map["order_id"] = orderData?.orderId.toString()
+                map["orderdetails_id"] = orderData?.id.toString()
                 map["product_rating"] = rbProduct.rating
                 map["product_review"] = etProductReview.text?.trim().toString()
                 if (productReviewImage.size!=0) {
@@ -599,7 +626,7 @@ class OrderDetailFragment : BaseFragment() {
         dialog.show()
     }
 
-    private fun cancelOrderDialog() {
+    private fun cancelOrderDialog(id:String) {
         var reason = ""
         cancelDialog = Dialog(requireActivity(), R.style.CustomDialog)
         val dialogBinding = CancelOrderDialogBinding.inflate(LayoutInflater.from(context))
@@ -649,14 +676,14 @@ class OrderDetailFragment : BaseFragment() {
                     }
                     else{
                         reason = etReason.text?.trim().toString()
-                        cancelOrder(reason)
+                        cancelOrder(reason,id)
                     }
                 }
                 else if(reason==""){
                     showToast("Please select reason")
                 }
                 else {
-                    cancelOrder(reason)
+                    cancelOrder(reason,id)
                 }
             }
         }
@@ -849,7 +876,6 @@ class OrderDetailFragment : BaseFragment() {
             tvReturnRequestIdValue.text = "#"+orderData?.id
             tvReturnOnValue.text = CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mm a")
             tvReturnReasonValue.text = orderData?.cancelReason
-            ivReturnImage
         }
     }
 
@@ -878,11 +904,11 @@ class OrderDetailFragment : BaseFragment() {
             tvReturnRequestIdValue.text = "#"+orderData?.id
             tvReturnOnValue.text = CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mm a")
             tvReturnReasonValue.text = orderData?.returnReason
-            if (orderData?.returnImage != null && orderData?.returnImage != "" && orderData?.returnImage != "null"
+            if (getOrderData?.returnImage != null && getOrderData?.returnImage != "" && getOrderData?.returnImage != "null"
             ) {
                 relUploadImage.isVisible = true
                 tvUploadedImage.isVisible = true
-                ivReturnImage.load(orderData?.returnImage) {
+                ivReturnImage.load(getOrderData?.returnImage) {
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
                     error(R.drawable.ic_placeholder)

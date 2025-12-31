@@ -485,6 +485,14 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
             repository.getRecentSearchList()
         }
     }
+    val getRecommendedSearchListResult: LiveData<GetRecentSearchListResponse>
+        get() = repository.getRecommendedSearchListLiveData
+
+    fun getRecommendedSearchList() {
+        viewModelScope.launch {
+            repository.getRecommendedSearchList()
+        }
+    }
 
     val detectImageResult: LiveData<VisionResponse>
         get() = repository.detectImageLiveData

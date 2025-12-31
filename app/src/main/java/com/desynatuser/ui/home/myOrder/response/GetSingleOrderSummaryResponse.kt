@@ -15,7 +15,7 @@ data class GetSingleOrderSummaryResponse(
         @SerializedName("allOtherOrderVarient")
         val allOtherOrderVarient: List<Any>,
         @SerializedName("amount")
-        val amount: String,
+        val amount: Double,
         @SerializedName("assign_date")
         val assignDate: String,
         @SerializedName("assign_status")

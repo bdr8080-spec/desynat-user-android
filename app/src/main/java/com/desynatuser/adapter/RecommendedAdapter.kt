@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemRecommendedBinding
-class RecommendedAdapter(var context:Context, var list: ArrayList<String>, var onClick:ClickOnItem) : RecyclerView.Adapter<RecommendedAdapter.ViewHolder>() {
+import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+
+class RecommendedAdapter(var context:Context, var list: ArrayList<GetRecentSearchListResponse.Data>, var onClick:ClickOnItem) : RecyclerView.Adapter<RecommendedAdapter.ViewHolder>() {
 
     interface ClickOnItem{
         fun onClickItem(position: Int)
@@ -27,7 +29,7 @@ class RecommendedAdapter(var context:Context, var list: ArrayList<String>, var o
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-
+            tvName.text = list[position].name
         }
 
         holder.itemView.setOnClickListener {

@@ -86,15 +86,13 @@ class MyOrderFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver)
-                            getOrder()
+                            getOrder(false)
                     }
 
                 }
             })
-            if (isFirstLoad) {
                 getOrder()
-                isFirstLoad = false
-            }
+
 
         }
     }
@@ -131,7 +129,7 @@ class MyOrderFragment : BaseFragment() {
         }
     }
 
-    private fun getOrder(){
+    private fun getOrder(loading:Boolean = true){
         val map = HashMap<String,Any>()
         if (lastQuery!=null) {
             map["search"] = lastQuery.toString()
@@ -140,7 +138,9 @@ class MyOrderFragment : BaseFragment() {
             map["filter"] = filter.toString()
         }
         viewModel.getAllOrder(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        if (loading) {
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        }
         isObserver = true
     }
 

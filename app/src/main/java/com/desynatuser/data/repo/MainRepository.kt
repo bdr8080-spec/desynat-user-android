@@ -655,6 +655,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
+  val getRecommendedSearchListLiveData = SingleLiveEvent<GetRecentSearchListResponse>()
+    suspend fun getRecommendedSearchList()
+    {
+        handleApiCall(
+            api = {
+                api.getRecommendedSearchList()
+            },
+            responseLiveData = getRecommendedSearchListLiveData
+        )
+    }
+
   val homePageSearchLiveData = SingleLiveEvent<GetHomeSearchResponse>()
     suspend fun homePageSearch(map: HashMap<String,Any>)
     {

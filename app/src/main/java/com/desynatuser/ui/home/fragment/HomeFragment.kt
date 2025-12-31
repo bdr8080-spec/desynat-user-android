@@ -475,8 +475,8 @@ class HomeFragment : BaseFragment() {
                     return@addOnSuccessListener
                 }
 
-                cropAndSend(objects,uri)
-              /*  val navController = findNavController()
+             //   cropAndSend(objects,uri)
+                val navController = findNavController()
                 if (
                     !hasNavigatedFromML &&
                     navController.currentDestination?.id == R.id.home
@@ -491,7 +491,7 @@ class HomeFragment : BaseFragment() {
                         R.id.action_homeFragment_to_searchProductListFragment,
                         bundle
                     )
-                }*/
+                }
             }
     }
 

@@ -82,91 +82,99 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
             val discountType = if (productData?.variationDetails?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
 
-            when(productData?.deliveryStatus){//1 all 2 ongoing 3 delivered 4 cancelled 5 return
-                "1" -> {
-                    btnCancelOrder.isVisible = true
-                    relRating.isVisible = false
-                    tvExchange.isVisible = false
-                    tvReturn.isVisible = false
-                }
-                "2" -> {
-                    btnCancelOrder.isVisible = false
-                    relRating.isVisible = false
-                    tvExchange.isVisible = false
-                    tvReturn.isVisible = false
-                }
-                "3" -> {
+            if (productData?.paymentStatus=="2"||productData?.paymentStatus=="3"){
+                btnCancelOrder.isVisible = false
+            }
+            else {
+                when (productData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+                    "1" -> {
 
-                    when (productData?.returnType){
-                        "1"->{
-                            btnCancelOrder.isVisible = false
-                            tvReturn.isVisible = false
-                            tvExchange.isVisible = false
-                            relRating.isVisible = false
-                        }
-                        "2"->{
-                            btnCancelOrder.isVisible = false
-                            tvReturn.isVisible = false
-                            tvExchange.isVisible = false
-                            relRating.isVisible = false
-                        }
-                        else->{
-                            btnCancelOrder.isVisible = false
-                            if (productData?.productDetails?.productReturn=="1"){
-                                if (productData?.returnType=="1"){
-                                    tvReturn.isVisible = false
-                                }
-                                else{
-                                    tvReturn.isVisible = true
-                                }
-
-                            }
-                            if (productData?.productDetails?.productExchangable=="1"){
-                                if (productData?.returnType=="2"){
-                                    tvExchange.isVisible = false
-                                }
-                                else{
-                                    tvExchange.isVisible = true
-                                }
-                            }
-
-                            if (productData?.userRatingReviewProvide!=null){
-                                relRating.isVisible = false
-                            }
-                            else{
-                                relRating.isVisible = true
-                            }
-                        }
+                        btnCancelOrder.isVisible = true
+                        relRating.isVisible = false
+                        tvExchange.isVisible = false
+                        tvReturn.isVisible = false
                     }
 
+                    "2" -> {
+                        btnCancelOrder.isVisible = false
+                        relRating.isVisible = false
+                        tvExchange.isVisible = false
+                        tvReturn.isVisible = false
+                    }
+
+                    "3" -> {
+
+                        when (productData?.returnType) {
+                            "1" -> {
+                                btnCancelOrder.isVisible = false
+                                tvReturn.isVisible = false
+                                tvExchange.isVisible = false
+                                relRating.isVisible = false
+                            }
+
+                            "2" -> {
+                                btnCancelOrder.isVisible = false
+                                tvReturn.isVisible = false
+                                tvExchange.isVisible = false
+                                relRating.isVisible = false
+                            }
+
+                            else -> {
+                                btnCancelOrder.isVisible = false
+                                if (productData?.productDetails?.productReturn == "1") {
+                                    if (productData?.returnType == "1") {
+                                        tvReturn.isVisible = false
+                                    } else {
+                                        tvReturn.isVisible = true
+                                    }
+
+                                }
+                                if (productData?.productDetails?.productExchangable == "1") {
+                                    if (productData?.returnType == "2") {
+                                        tvExchange.isVisible = false
+                                    } else {
+                                        tvExchange.isVisible = true
+                                    }
+                                }
+
+                                if (productData?.userRatingReviewProvide != null) {
+                                    relRating.isVisible = false
+                                } else {
+                                    relRating.isVisible = true
+                                }
+                            }
+                        }
 
 
+                    }
 
-                }
-                "7" -> {
-                    btnCancelOrder.isVisible = false
-                    relRating.isVisible = false
-                    tvExchange.isVisible = false
-                    tvReturn.isVisible = false
-                }
-                "8" -> {
-                    btnCancelOrder.isVisible = false
-                    relRating.isVisible = false
-                    tvExchange.isVisible = false
-                    tvReturn.isVisible = false
-                }
+                    "7" -> {
+                        btnCancelOrder.isVisible = false
+                        relRating.isVisible = false
+                        tvExchange.isVisible = false
+                        tvReturn.isVisible = false
+                    }
 
-                "4" -> {
-                    btnCancelOrder.isVisible = false
-                    relRating.isVisible = false
-                    tvExchange.isVisible = false
-                    tvReturn.isVisible = false
-                }
-                "5" -> {
-                    btnCancelOrder.isVisible = false
-                    relRating.isVisible = false
-                    tvExchange.isVisible = false
-                    tvReturn.isVisible = false
+                    "8" -> {
+                        btnCancelOrder.isVisible = false
+                        relRating.isVisible = false
+                        tvExchange.isVisible = false
+                        tvReturn.isVisible = false
+                    }
+
+                    "4" -> {
+                        btnCancelOrder.isVisible = false
+                        relRating.isVisible = false
+                        tvExchange.isVisible = false
+                        tvReturn.isVisible = false
+                    }
+
+                    "5" -> {
+                        btnCancelOrder.isVisible = false
+                        relRating.isVisible = false
+                        tvExchange.isVisible = false
+                        tvReturn.isVisible = false
+                    }
                 }
             }
 

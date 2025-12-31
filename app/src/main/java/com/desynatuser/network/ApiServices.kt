@@ -264,6 +264,9 @@ interface ApiServices {
     @GET(Constants.RECENT_SEARCH_LIST)
     suspend fun getRecentSearchList(): Response<GetRecentSearchListResponse>
 
+ @GET(Constants.RECOMMENDED_SEARCH_LIST)
+    suspend fun getRecommendedSearchList(): Response<GetRecentSearchListResponse>
+
     @POST(Constants.HOME_PAGE_SEARCH)
     suspend fun homePageSearch(@Body map: HashMap<String,Any>): Response<GetHomeSearchResponse>
 

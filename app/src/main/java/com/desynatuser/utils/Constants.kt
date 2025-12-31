@@ -75,6 +75,7 @@ object Constants {
     const val RETURN_EXCHANGE_ORDER = "/api/user/return-exchange-product-after-delivered"
     const val ORDER_RATING = "/api/user/product-rating"
     const val RECENT_SEARCH_LIST = "/api/user/get-recent-search-data"
+    const val RECOMMENDED_SEARCH_LIST = "/api/user/get-recommnded-search-data"
     const val HOME_PAGE_SEARCH = "/api/user/home-page-search"
 
     const val WALLET_BALANCE = "/api/user/waller-balance"
