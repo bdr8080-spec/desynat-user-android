@@ -1,13 +1,16 @@
 package com.desynatuser.ui.home.store
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,30 +28,35 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProductSearchBinding
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
+import com.desynatuser.ui.home.imageDetector.AnnotateRequest
+import com.desynatuser.ui.home.imageDetector.Feature
+import com.desynatuser.ui.home.imageDetector.ImageContent
+import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.objects.DetectedObject
-import com.google.mlkit.vision.objects.ObjectDetection
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
+import com.desynatuser.vision.VisionRetrofit
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class ProductSearchFragment : BaseFragment() {
     private var binding : FragmentProductSearchBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var isLatestObserver = false
     var isRecommendedObserver = false
     var searchList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
 
     var recentSearchAdapter: RecentSearchAdapter?=null
     var recentSearchList = ArrayList<GetRecentSearchListResponse.Data>()
-    var recommendedList = ArrayList<GetRecentSearchListResponse.Data>()
+    var latestSearchList = ArrayList<GetRecentSearchListResponse.Data>()
+    var recommendedList = ArrayList<GetRecommendedResponse.Data>()
     var recommendedAdapter: RecommendedAdapter?=null
     var latestSearchAdapter: LatestSearchAdapter?=null
 
@@ -100,7 +108,8 @@ class ProductSearchFragment : BaseFragment() {
                 permissionLauncher
             ) { uri ->
                 uri?.let {
-                    detectObjects(uri)
+                    val bitmap = uriToBitmap(requireContext(), uri)
+                    callVisionApi(bitmap)
                 }
             }
 
@@ -124,10 +133,10 @@ class ProductSearchFragment : BaseFragment() {
                 }
             })
 
-            latestSearchAdapter = LatestSearchAdapter(requireActivity(), recentSearchList,object: LatestSearchAdapter.ClickOnItem{
+            latestSearchAdapter = LatestSearchAdapter(requireActivity(), latestSearchList,object: LatestSearchAdapter.ClickOnItem{
                 override fun onClickItem(position: Int) {
                     val bundle = Bundle().apply {
-                        putString("search", recentSearchList[position].name)
+                        putString("search", latestSearchList[position].name)
                     }
                     findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment,bundle)
                 }
@@ -150,7 +159,7 @@ class ProductSearchFragment : BaseFragment() {
             recommendedAdapter = RecommendedAdapter(requireActivity(), recommendedList,object: RecommendedAdapter.ClickOnItem{
                 override fun onClickItem(position: Int) {
                     val bundle = Bundle().apply {
-                        putString("search", recommendedList[position].name)
+                        putString("search", recommendedList[position].nameEnglish)
                     }
                     findNavController().navigate(R.id.action_searchProductFragment_to_searchProductListFragment,bundle)
                 }
@@ -159,6 +168,7 @@ class ProductSearchFragment : BaseFragment() {
             rvRecommended.adapter = recommendedAdapter
 
             getRecentSearch()
+            getLatestSearch()
             getRecommendedSearchList()
         }
     }
@@ -166,6 +176,12 @@ class ProductSearchFragment : BaseFragment() {
     private fun getRecentSearch() {
         viewModel.getRecentSearchList()
         isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+    }
+
+ private fun getLatestSearch() {
+        viewModel.getLatestSearchList()
+     isLatestObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
 
@@ -230,9 +246,19 @@ class ProductSearchFragment : BaseFragment() {
                    recentSearchList.clear()
                     recentSearchList.addAll(response.data)
                     recentSearchAdapter?.notifyDataSetChanged()
-                    latestSearchAdapter?.notifyDataSetChanged()
                 }
                 isObserver = false
+            }
+        }
+        viewModel.getLatestSearchListResult.observe(viewLifecycleOwner) { response ->
+            if (isLatestObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                   latestSearchList.clear()
+                    latestSearchList.addAll(response.data)
+                    latestSearchAdapter?.notifyDataSetChanged()
+                }
+                isLatestObserver = false
             }
         }
         viewModel.getRecommendedSearchListResult.observe(viewLifecycleOwner) { response ->
@@ -296,77 +322,85 @@ class ProductSearchFragment : BaseFragment() {
             }
         }
 
-    private fun detectObjects(uri: Uri) {
-        val image = InputImage.fromFilePath(requireContext(), uri)
 
-        val options = ObjectDetectorOptions.Builder()
-            .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
-            .enableMultipleObjects()
-            .enableClassification()
-            .build()
+    fun callVisionApi(bitmap: Bitmap) {
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
 
-        val detector = ObjectDetection.getClient(options)
+        val base64Image = bitmapToBase64(bitmap)
 
-        detector.process(image)
-            .addOnSuccessListener { objects ->
-                Log.d("ML_KIT", "Detected objects: ${objects.size}")
+        val request = VisionRequestBody(
+            requests = listOf(
+                AnnotateRequest(
+                    image = ImageContent(base64Image),
+                    features = listOf(
+                        Feature(type = "LABEL_DETECTION", maxResults = 5),
+                        Feature(type = "OBJECT_LOCALIZATION", maxResults = 5),
 
-                if (objects.isEmpty()) return@addOnSuccessListener
-
-                val detectedLabel = objects
-                    .firstOrNull { it.labels.isNotEmpty() }
-                    ?.labels
-                    ?.firstOrNull()
-                    ?.text
-
-                if (detectedLabel.isNullOrEmpty()) {
-                    Log.d("ML_KIT", "No valid label found")
-                    return@addOnSuccessListener
-                }
-
-                val navController = findNavController()
-                if (
-                    !hasNavigatedFromML &&
-                    navController.currentDestination?.id == R.id.home
-                ) {
-                    hasNavigatedFromML = true
-
-                    val bundle = Bundle().apply {
-                        putString("search", detectedLabel)
-                    }
-
-                    navController.navigate(
-                        R.id.action_searchProductFragment_to_searchProductListFragment,
-                        bundle
+                        Feature(type = "LOGO_DETECTION", maxResults = 5),
+                        Feature(type = "WEB_DETECTION", maxResults = 5),
+                        Feature(type = "IMAGE_PROPERTIES", maxResults = 5),
+                        Feature(type = "TEXT_DETECTION", maxResults = 5),
+                        Feature(type = "BARCODE_DETECTION", maxResults = 5)
                     )
-                }
-            }
-    }
-
-
-    private fun cropAndSend(
-        objects: List<DetectedObject>,
-        uri: Uri
-    ) {
-        val bitmap = MediaStore.Images.Media.getBitmap(
-            requireContext().contentResolver,
-            uri
+                )
+            )
         )
 
-        objects.forEachIndexed { index, obj ->
-            val box = obj.boundingBox
+        lifecycleScope.launch {
+            try {
+                val response = VisionRetrofit.api.detectImage(
+                    apiKey = "AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18",
+                    request = request
+                )
+                ProgressDialogUtils.getInstance().hideProgress()
+                Log.e("VISION_RESPONSE_123", response.body().toString() ?: "Error")
+                val labels = response.body()?.responses
+                    ?.firstOrNull()
+                    ?.labelAnnotations
+                    ?.map { it.description }
+                    ?: emptyList()
 
-            val cropped = Bitmap.createBitmap(
-                bitmap,
-                box.left.coerceAtLeast(0),
-                box.top.coerceAtLeast(0),
-                box.width().coerceAtMost(bitmap.width),
-                box.height().coerceAtMost(bitmap.height)
-            )
+                searchThroughImage(labels)
 
-           // sendToBackend(cropped, obj.labels.firstOrNull()?.text)
+            } catch (e: Exception) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                Log.e("VISION_ERROR", e.message ?: "Error")
+            }
         }
     }
 
+    fun bitmapToBase64(bitmap: Bitmap): String {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+        return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
+    }
+
+
+    private fun searchThroughImage(detectedLabel:List<String>){
+        val navController = findNavController()
+        if (
+            !hasNavigatedFromML &&
+            navController.currentDestination?.id == R.id.searchProduct
+        ) {
+            hasNavigatedFromML = true
+
+            val bundle = Bundle().apply {
+                putStringArrayList("searchList", ArrayList(detectedLabel))
+            }
+            findNavController().navigate(
+                R.id.action_searchProductFragment_to_searchProductListFragment,
+                bundle
+            )
+        }
+    }
+
+    fun uriToBitmap(context: Context, uri: Uri): Bitmap {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(context.contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+        }
+    }
 
 }

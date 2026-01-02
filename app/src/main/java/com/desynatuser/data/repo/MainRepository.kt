@@ -13,6 +13,7 @@ import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -22,6 +23,7 @@ import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.imageDetector.VisionResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetInvoiceResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.profile.response.AddAddressRequest
@@ -655,7 +657,19 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-  val getRecommendedSearchListLiveData = SingleLiveEvent<GetRecentSearchListResponse>()
+
+  val getLatestSearchListLiveData = SingleLiveEvent<GetRecentSearchListResponse>()
+    suspend fun getLatestSearchList()
+    {
+        handleApiCall(
+            api = {
+                api.getLatestSearchList()
+            },
+            responseLiveData = getLatestSearchListLiveData
+        )
+    }
+
+  val getRecommendedSearchListLiveData = SingleLiveEvent<GetRecommendedResponse>()
     suspend fun getRecommendedSearchList()
     {
         handleApiCall(
@@ -688,7 +702,16 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-
+    val invoiceLiveData = SingleLiveEvent<GetInvoiceResponse>()
+    suspend fun getInvoice(id:String)
+    {
+        handleApiCall(
+            api = {
+                api.getInvoice(id)
+            },
+            responseLiveData = invoiceLiveData
+        )
+    }
 
 }
 

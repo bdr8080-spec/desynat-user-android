@@ -11,6 +11,7 @@ import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -20,6 +21,7 @@ import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.imageDetector.VisionResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetInvoiceResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.profile.response.AddAddressRequest
@@ -485,7 +487,15 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
             repository.getRecentSearchList()
         }
     }
-    val getRecommendedSearchListResult: LiveData<GetRecentSearchListResponse>
+    val getLatestSearchListResult: LiveData<GetRecentSearchListResponse>
+        get() = repository.getLatestSearchListLiveData
+
+    fun getLatestSearchList() {
+        viewModelScope.launch {
+            repository.getLatestSearchList()
+        }
+    }
+    val getRecommendedSearchListResult: LiveData<GetRecommendedResponse>
         get() = repository.getRecommendedSearchListLiveData
 
     fun getRecommendedSearchList() {
@@ -500,6 +510,15 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
     fun detectImage(key:String,request: VisionRequestBody) {
         viewModelScope.launch {
             repository.detectImage(key,request)
+        }
+    }
+
+    val invoiceResult: LiveData<GetInvoiceResponse>
+        get() = repository.invoiceLiveData
+
+    fun getInvoice(id:String) {
+        viewModelScope.launch {
+            repository.getInvoice(id)
         }
     }
 

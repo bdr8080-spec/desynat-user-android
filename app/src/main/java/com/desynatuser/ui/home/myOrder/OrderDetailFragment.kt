@@ -389,9 +389,16 @@ class OrderDetailFragment : BaseFragment() {
             }
 
             btnInvoice.setOnClickListener {
-
+                CommonMethod.openPdfInBrowser(requireActivity(),"http://157.241.119.72/Invoice/${orderData?.order?.orderId.toString()}")
+               // getInvoice()
             }
         }
+    }
+
+    private fun getInvoice() {
+        viewModel.getInvoice(orderData?.order?.orderId.toString())
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
     override fun observe() {
@@ -442,6 +449,13 @@ class OrderDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.invoiceResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                CommonMethod.downloadPdf(requireActivity(),response?.data.toString(),orderData?.order?.orderId.toString())
+                isObserver = false
+            }
+        }
 
         viewModel.returnExchangeOrderResult.observe(viewLifecycleOwner) { response ->
             if (isReturnObserver) {

@@ -1,11 +1,18 @@
 package com.desynatuser.ui.home.store
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -33,20 +40,27 @@ import com.desynatuser.databinding.FragmentProductDetailBinding
 import com.desynatuser.databinding.FragmentSearchProductListBinding
 import com.desynatuser.databinding.ProductFilterBinding
 import com.desynatuser.databinding.SortProductBinding
+import com.desynatuser.ui.home.imageDetector.AnnotateRequest
+import com.desynatuser.ui.home.imageDetector.Feature
+import com.desynatuser.ui.home.imageDetector.ImageContent
+import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.desynatuser.vision.VisionRetrofit
 import com.google.android.material.slider.RangeSlider
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class SearchProductListFragment : BaseFragment() {
@@ -91,6 +105,24 @@ class SearchProductListFragment : BaseFragment() {
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
 
     var searchData = ""
+    private var searchList: ArrayList<String> = arrayListOf()
+
+    private lateinit var imagePicker: ImagePicker
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            imagePicker.onCameraResult(success)
+        }
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            imagePicker.onGalleryResult(uri)
+        }
+
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            imagePicker.onPermissionResult(granted)
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -109,6 +141,7 @@ class SearchProductListFragment : BaseFragment() {
 
     override fun initView() {
         searchData = arguments?.getString("search").toString()
+        searchList = arguments?.getStringArrayList("searchList") ?: arrayListOf()
         binding?.apply {
             productAdapter = ProductAdapter(requireActivity(),productList,"",2,object: ProductAdapter.ProductClick{
                 override fun onProductClick(position: Int,type:Int) {
@@ -131,6 +164,10 @@ class SearchProductListFragment : BaseFragment() {
 
             })
             rvProduct.adapter = productAdapter
+            if (searchData!=null&&searchData!="null"&&searchData!=""){
+                lastQuery = searchData
+                etSearch.setText(searchData)
+            }
 
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -149,6 +186,19 @@ class SearchProductListFragment : BaseFragment() {
 
                 }
             })
+
+            imagePicker = ImagePicker(
+                requireActivity(),
+                cameraLauncher,
+                galleryLauncher,
+                permissionLauncher
+            ) { uri ->
+                uri?.let {
+                    val bitmap = uriToBitmap(requireContext(), uri)
+                    callVisionApi(bitmap)
+                }
+            }
+
         }
         if (isFirstLoad) {
             getHomeSearch()
@@ -168,6 +218,10 @@ class SearchProductListFragment : BaseFragment() {
 
             ivMic.setOnClickListener {
                 openSpeechDialog()
+            }
+
+            ivCamera.setOnClickListener {
+                imagePicker.showImageSourceDialog()
             }
 
             tvSort.setOnClickListener {
@@ -288,11 +342,11 @@ class SearchProductListFragment : BaseFragment() {
         if (sortFilter!=null) {
             map["sort_filter"] = sortFilter.toString()
         }
-        if (lastQuery!=null&&lastQuery!="") {
+        if (lastQuery!=null&&lastQuery!="null"&&lastQuery!="") {
             map["search"] = lastQuery.toString()
         }
-        else if(searchData!=""){
-            map["search"] = searchData
+        if(searchList.isNotEmpty()){
+            map["attributes_data"] = searchList
         }
 
         if (selectedCategory!=null) {
@@ -687,6 +741,67 @@ class SearchProductListFragment : BaseFragment() {
         isBrandObserver = true
         isSizeObserver = true
         isColorObserver = true
+    }
+
+    fun callVisionApi(bitmap: Bitmap) {
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+
+        val base64Image = bitmapToBase64(bitmap)
+
+        val request = VisionRequestBody(
+            requests = listOf(
+                AnnotateRequest(
+                    image = ImageContent(base64Image),
+                    features = listOf(
+                        Feature(type = "LABEL_DETECTION", maxResults = 5),
+                        Feature(type = "OBJECT_LOCALIZATION", maxResults = 5),
+                        Feature(type = "LOGO_DETECTION", maxResults = 5),
+                        Feature(type = "WEB_DETECTION", maxResults = 5),
+                        Feature(type = "IMAGE_PROPERTIES", maxResults = 5),
+                        Feature(type = "TEXT_DETECTION", maxResults = 5),
+                        Feature(type = "BARCODE_DETECTION", maxResults = 5)
+                    )
+                )
+            )
+        )
+
+        lifecycleScope.launch {
+            try {
+                val response = VisionRetrofit.api.detectImage(
+                    apiKey = "AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18",
+                    request = request
+                )
+                ProgressDialogUtils.getInstance().hideProgress()
+                Log.e("VISION_RESPONSE_123", response.body().toString() ?: "Error")
+                val labels = response.body()?.responses
+                    ?.firstOrNull()
+                    ?.labelAnnotations
+                    ?.map { it.description }
+                    ?: emptyList()
+                searchList = ArrayList(labels)
+                getHomeSearch()
+
+            } catch (e: Exception) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                Log.e("VISION_ERROR", e.message ?: "Error")
+            }
+        }
+    }
+
+    fun bitmapToBase64(bitmap: Bitmap): String {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+        return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
+    }
+
+
+    fun uriToBitmap(context: Context, uri: Uri): Bitmap {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(context.contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+        }
     }
 
 }

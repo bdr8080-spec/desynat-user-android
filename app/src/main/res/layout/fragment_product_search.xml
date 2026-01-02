@@ -144,7 +144,6 @@
                 tools:itemCount="3"/>
 
  <androidx.appcompat.widget.AppCompatTextView
-     android:visibility="gone"
                 android:id="@+id/tvRecentSearches"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -158,7 +157,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/rvRecommended" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
                 android:id="@+id/rvRecentSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,6 +167,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvRecentSearches"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="2"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                app:layout_constraintTop_toBottomOf="@+id/rvRecentSearch"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -131,8 +131,14 @@ class MyOrderFragment : BaseFragment() {
 
     private fun getOrder(loading:Boolean = true){
         val map = HashMap<String,Any>()
-        if (lastQuery!=null) {
-            map["search"] = lastQuery.toString()
+//        if (lastQuery!=null) {
+//            map["search"] = lastQuery.toString()
+//        }
+        lastQuery?.let { searchId ->
+            map["search"] =
+                myOrderList.firstOrNull { order ->
+                    order.id.toString() == searchId
+                }?.order?.orderId ?: searchId
         }
         if (filter!=null) {
             map["filter"] = filter.toString()

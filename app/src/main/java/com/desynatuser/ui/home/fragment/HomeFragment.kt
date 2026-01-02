@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,6 +20,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.adapter.BestSellingAdapter
@@ -49,12 +51,10 @@ import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
+import com.desynatuser.vision.VisionRetrofit
 import com.google.gson.Gson
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.objects.DetectedObject
-import com.google.mlkit.vision.objects.ObjectDetection
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
@@ -220,7 +220,8 @@ class HomeFragment : BaseFragment() {
                 permissionLauncher
             ) { uri ->
                 uri?.let {
-                    detectObjects(uri)
+                    val bitmap = uriToBitmap(requireContext(), uri)
+                    callVisionApi(bitmap)
                 }
             }
 
@@ -345,22 +346,6 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        viewModel.detectImageResult.observe(viewLifecycleOwner) { response ->
-            if (isDetactImage) {
-                ProgressDialogUtils.getInstance().hideProgress()
-                response?.let {
-                    val labels = response.responses
-                        .firstOrNull()
-                        ?.labelAnnotations
-
-                    labels?.forEach {
-                        Log.d("VISION_API", "${it.description} - ${it.score}")
-                    }
-                }
-                isDetactImage = false
-            }
-        }
-
     }
 
     private fun getDashboardApi(){
@@ -447,76 +432,48 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-    private fun detectObjects(uri: Uri) {
-        val image = InputImage.fromFilePath(requireContext(), uri)
+    fun callVisionApi(bitmap: Bitmap) {
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        val base64Image = bitmapToBase64(bitmap)
 
-        val options = ObjectDetectorOptions.Builder()
-            .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
-            .enableMultipleObjects()
-            .enableClassification()
-            .build()
-
-        val detector = ObjectDetection.getClient(options)
-
-        detector.process(image)
-            .addOnSuccessListener { objects ->
-                Log.d("ML_KIT", "Detected objects: ${objects.size}")
-
-                if (objects.isEmpty()) return@addOnSuccessListener
-
-                val detectedLabel = objects
-                    .firstOrNull { it.labels.isNotEmpty() }
-                    ?.labels
-                    ?.firstOrNull()
-                    ?.text
-
-                if (detectedLabel.isNullOrEmpty()) {
-                    Log.d("ML_KIT", "No valid label found")
-                    return@addOnSuccessListener
-                }
-
-             //   cropAndSend(objects,uri)
-                val navController = findNavController()
-                if (
-                    !hasNavigatedFromML &&
-                    navController.currentDestination?.id == R.id.home
-                ) {
-                    hasNavigatedFromML = true
-
-                    val bundle = Bundle().apply {
-                        putString("search", detectedLabel)
-                    }
-
-                    navController.navigate(
-                        R.id.action_homeFragment_to_searchProductListFragment,
-                        bundle
+        val request = VisionRequestBody(
+            requests = listOf(
+                AnnotateRequest(
+                    image = ImageContent(base64Image),
+                    features = listOf(
+                        Feature(type = "LABEL_DETECTION", maxResults = 5),
+                        Feature(type = "OBJECT_LOCALIZATION", maxResults = 5),
+                        Feature(type = "LOGO_DETECTION", maxResults = 5),
+                        Feature(type = "WEB_DETECTION", maxResults = 5),
+                        Feature(type = "IMAGE_PROPERTIES", maxResults = 5),
+                        Feature(type = "TEXT_DETECTION", maxResults = 5),
+                        Feature(type = "BARCODE_DETECTION", maxResults = 5)
                     )
-                }
-            }
-    }
-
-    private fun cropAndSend(
-        objects: List<DetectedObject>,
-        uri: Uri
-    ) {
-        val bitmap = MediaStore.Images.Media.getBitmap(
-            requireContext().contentResolver,
-            uri
+                )
+            )
         )
 
-        objects.forEachIndexed { index, obj ->
-            val box = obj.boundingBox
+        lifecycleScope.launch {
+            try {
+                val response = VisionRetrofit.api.detectImage(
+                    apiKey = "AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18",
+                    request = request
+                )
+                ProgressDialogUtils.getInstance().hideProgress()
+                Log.e("VISION_RESPONSE", response.body().toString() ?: "Error")
 
-            val cropped = Bitmap.createBitmap(
-                bitmap,
-                box.left.coerceAtLeast(0),
-                box.top.coerceAtLeast(0),
-                box.width().coerceAtMost(bitmap.width),
-                box.height().coerceAtMost(bitmap.height)
-            )
-            Log.d("ML_KIT", cropped.toString())
-            // sendToBackend(cropped, obj.labels.firstOrNull()?.text)
-            detectImageAPi(cropped)
+                val labels = response.body()?.responses
+                    ?.firstOrNull()
+                    ?.labelAnnotations
+                    ?.map { it.description }
+                    ?: emptyList()
+
+                searchThroughImage(labels)
+
+            } catch (e: Exception) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                Log.e("VISION_ERROR", e.message ?: "Error")
+            }
         }
     }
 
@@ -526,24 +483,33 @@ class HomeFragment : BaseFragment() {
         return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
     }
 
-    private fun detectImageAPi(bitmap:Bitmap){
-        val request = VisionRequestBody(
-            requests = listOf(
-                AnnotateRequest(
-                    image = ImageContent(bitmapToBase64(bitmap)),
-                    features = listOf(
-                        Feature(
-                            type = "LABEL_DETECTION",
-                            maxResults = 5
-                        )
-                    )
-                )
-            )
-        )
 
-        viewModel.detectImage(key = getString(R.string.google_vision_api_key),request)
-      //  ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        isDetactImage = true
+    private fun searchThroughImage(detectedLabel:List<String>){
+            val navController = findNavController()
+              if (
+                  !hasNavigatedFromML &&
+                  navController.currentDestination?.id == R.id.home
+              ) {
+                  hasNavigatedFromML = true
+
+                  val bundle = Bundle().apply {
+                      putStringArrayList("searchList", ArrayList(detectedLabel))
+                  }
+
+                  navController.navigate(
+                      R.id.action_homeFragment_to_searchProductListFragment,
+                      bundle
+                  )
+              }
+    }
+
+    fun uriToBitmap(context: Context, uri: Uri): Bitmap {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(context.contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+        }
     }
 
 }

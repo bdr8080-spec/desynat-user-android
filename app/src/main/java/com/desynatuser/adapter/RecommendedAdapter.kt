@@ -4,11 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemRecommendedBinding
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 
-class RecommendedAdapter(var context:Context, var list: ArrayList<GetRecentSearchListResponse.Data>, var onClick:ClickOnItem) : RecyclerView.Adapter<RecommendedAdapter.ViewHolder>() {
+class RecommendedAdapter(var context:Context, var list: ArrayList<GetRecommendedResponse.Data>, var onClick:ClickOnItem) : RecyclerView.Adapter<RecommendedAdapter.ViewHolder>() {
 
     interface ClickOnItem{
         fun onClickItem(position: Int)
@@ -29,7 +31,12 @@ class RecommendedAdapter(var context:Context, var list: ArrayList<GetRecentSearc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            tvName.text = list[position].name
+            tvName.text = list[position].nameEnglish
+            ivImage.load(list[position].image){
+                crossfade(true)
+                placeholder(R.drawable.ic_placeholder)
+                error(R.drawable.ic_placeholder)
+            }
         }
 
         holder.itemView.setOnClickListener {

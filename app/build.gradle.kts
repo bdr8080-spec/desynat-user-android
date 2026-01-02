@@ -102,8 +102,6 @@ dependencies {
     implementation ("com.google.android.gms:play-services-wallet:19.4.0")
     implementation ("com.airbnb.android:lottie:6.7.1")
 
-    implementation ("com.google.mlkit:object-detection:17.0.2")
-
     implementation("com.google.api-client:google-api-client-android:1.35.2") {
         exclude(module = "httpclient")
         exclude(group = "com.google.guava", module = "listenablefuture")

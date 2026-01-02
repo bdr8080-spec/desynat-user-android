@@ -7,6 +7,7 @@ import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -16,6 +17,7 @@ import com.desynatuser.ui.home.giftCard.response.WalletBalanceResponse
 import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.imageDetector.VisionResponse
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
+import com.desynatuser.ui.home.myOrder.response.GetInvoiceResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.profile.response.AddAddressRequest
@@ -264,14 +266,20 @@ interface ApiServices {
     @GET(Constants.RECENT_SEARCH_LIST)
     suspend fun getRecentSearchList(): Response<GetRecentSearchListResponse>
 
+    @GET(Constants.LATEST_SEARCH_LIST)
+    suspend fun getLatestSearchList(): Response<GetRecentSearchListResponse>
+
  @GET(Constants.RECOMMENDED_SEARCH_LIST)
-    suspend fun getRecommendedSearchList(): Response<GetRecentSearchListResponse>
+    suspend fun getRecommendedSearchList(): Response<GetRecommendedResponse>
 
     @POST(Constants.HOME_PAGE_SEARCH)
     suspend fun homePageSearch(@Body map: HashMap<String,Any>): Response<GetHomeSearchResponse>
 
     @GET(Constants.WALLET_BALANCE)
     suspend fun getWalletBalance(): Response<WalletBalanceResponse>
+
+    @POST("${Constants.INVOICE}")
+    suspend fun getInvoice( @Query("order_id") orderId: String): Response<GetInvoiceResponse>
 
     @POST("https://vision.googleapis.com/v1/images:annotate")
     suspend fun detectImage(
