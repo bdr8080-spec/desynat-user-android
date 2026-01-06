@@ -15,6 +15,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentOtpVerificationBinding
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -173,6 +174,7 @@ class OtpVerificationFragment : BaseFragment() {
                 response?.let {
                     when(from){
                         "login" -> {
+                            Constants.isFromLoginSignup = true
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
                             showToast("OTP verified successfully")
@@ -183,6 +185,7 @@ class OtpVerificationFragment : BaseFragment() {
                             requireActivity().finish()
                         }
                         "signUp" -> {
+                            Constants.isFromLoginSignup = true
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
                             CommonMethod.showSuccessDialog(requireActivity(),"Thank you for sinning up with DESYNAT"){

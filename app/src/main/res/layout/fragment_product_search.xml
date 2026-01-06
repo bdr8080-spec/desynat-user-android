@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.store.ProductSearchFragment">
 
@@ -20,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
+           <!-- <RelativeLayout
                 android:id="@+id/relSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -71,6 +72,58 @@
                     android:src="@drawable/ic_mic"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+-->
+            <RelativeLayout
+                android:id="@+id/relSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_back"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvGo"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_9sdp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginVertical="1dp"
+                    android:background="@drawable/edit_search"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:hint="Search"
+                    android:textSize="@dimen/_11sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:singleLine="true"
+                    android:textColorHint="@color/black"
+                    android:layout_centerVertical="true"
+                    android:drawableStart="@drawable/ic_search"
+                    android:layout_toLeftOf="@+id/ivCamera"/>
+
+                <ImageView
+                    android:id="@+id/ivMic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:src="@drawable/ic_mic"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
+
+                <ImageView
+                    android:id="@+id/ivCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_camera"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/ivMic"/>
 
             </RelativeLayout>
 

@@ -1,19 +1,25 @@
 package com.desynatuser.ui.home.fragment
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.util.Base64
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
@@ -22,6 +28,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.desynatuser.R
 import com.desynatuser.adapter.BestSellingAdapter
 import com.desynatuser.adapter.CategoryAdapter
@@ -29,6 +36,7 @@ import com.desynatuser.adapter.DiscountedDealBannerViewPagerAdapter
 import com.desynatuser.adapter.HomeWomenBannerViewPagerAdapter
 import com.desynatuser.adapter.NewestProductAdapter
 import com.desynatuser.adapter.PremiumStoreBannerViewPagerAdapter
+import com.desynatuser.adapter.ProductImageAdapter
 import com.desynatuser.adapter.SuggestedStoreAdapter
 import com.desynatuser.adapter.TopRatedAdapter
 import com.desynatuser.adapter.ViewPagerAdapter
@@ -36,6 +44,7 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.FragmentHomeBinding
+import com.desynatuser.databinding.HomeBannerDialogBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.HomeActivity
@@ -52,6 +61,7 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.vision.VisionRetrofit
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -117,6 +127,11 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initView() {
+
+//        if (Constants.isFromLoginSignup){
+//            showBannerDialog(arrayListOf("https://desynat-bucket.s3.me-south-1.amazonaws.com/Product/1764228507_6927fd9b789d1.png","https://desynat-bucket.s3.me-south-1.amazonaws.com/Product/1764228507_6927fd9b789d1.png"))
+//            Constants.isFromLoginSignup = false
+//        }
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
             if (!Constants.isGuest){
@@ -229,6 +244,69 @@ class HomeFragment : BaseFragment() {
 
         viewCartDetail()
 
+    }
+
+    private fun showBannerDialog(imageList: ArrayList<String>) {
+
+        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        val dialogBinding = HomeBannerDialogBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
+
+        dialog.window?.apply {
+            setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+            setBackgroundDrawableResource(android.R.color.transparent)
+            attributes = attributes.apply {
+                gravity = Gravity.CENTER
+            }
+        }
+
+        dialog.setCancelable(false)
+
+        val handler = Handler(Looper.getMainLooper())
+        val dismissRunnable = Runnable {
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
+        }
+
+        dialogBinding.apply {
+
+            tvSkip.setOnClickListener {
+                handler.removeCallbacks(dismissRunnable)
+                dialog.dismiss()
+            }
+
+            val productImageAdapter =
+                ProductImageAdapter(requireActivity(), imageList, object :
+                    ProductImageAdapter.OnClick {
+                    override fun onClick(position: Int) {}
+                })
+
+            viewPager.adapter = productImageAdapter
+
+            TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
+
+            viewPager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    if (position == imageList.size - 1) {
+                        handler.postDelayed(dismissRunnable, 500)
+                    }
+                }
+            })
+        }
+
+        dialog.setOnDismissListener {
+            handler.removeCallbacks(dismissRunnable)
+        }
+
+        dialog.show()
     }
 
     override fun initControl() {

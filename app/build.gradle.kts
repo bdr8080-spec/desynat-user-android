@@ -111,4 +111,6 @@ dependencies {
         exclude(group = "com.google.guava", module = "listenablefuture")
     }
 
+    implementation("io.getstream:photoview:1.0.2")
+
 }

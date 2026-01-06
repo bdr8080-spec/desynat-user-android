@@ -79,6 +79,7 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:hint="Search"
                     android:textSize="@dimen/_11sdp"
+                    android:singleLine="true"
                     android:layout_centerVertical="true"
                     android:drawableStart="@drawable/ic_search"
                     android:layout_toLeftOf="@+id/ivFilter"/>

@@ -1,19 +1,17 @@
 package com.desynatuser.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemProductBinding
 import com.desynatuser.databinding.ItemProductImageBinding
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
-import com.desynatuser.utils.CommonMethod
+class ProductImageAdapter(var context:Context, var productList: ArrayList<String>,var click:OnClick) : RecyclerView.Adapter<ProductImageAdapter.ViewHolder>() {
 
-class ProductImageAdapter(var context:Context, var productList: ArrayList<String>) : RecyclerView.Adapter<ProductImageAdapter.ViewHolder>() {
+    interface OnClick{
+        fun onClick(position: Int)
+    }
 
     inner class ViewHolder(val binding: ItemProductImageBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -36,6 +34,10 @@ class ProductImageAdapter(var context:Context, var productList: ArrayList<String
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
+            }
+
+            ivProduct.setOnClickListener {
+                click.onClick(position)
             }
 
         }

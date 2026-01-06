@@ -15,6 +15,7 @@ object Constants {
     var Category = "Women"
 
     var isLogout=false
+    var isFromLoginSignup=false
     var location=""
     var latitude=0.0
     var longitude=0.0
