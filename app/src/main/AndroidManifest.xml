@@ -21,18 +21,24 @@
     <application
         android:name=".CoreApplication"
         android:allowBackup="false"
-        android:hardwareAccelerated="true"
-        android:forceDarkAllowed="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:forceDarkAllowed="false"
         android:fullBackupContent="@xml/backup_rules"
-        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher_app"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DesynatUser"
-        tools:targetApi="31"
-        tools:replace="android:theme">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:theme"
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.home.chat.response.ChatActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
+
         <activity
             android:name=".ui.UpdateLocationActivity"
             android:exported="false"
@@ -40,13 +46,13 @@
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true"
@@ -58,6 +64,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -71,11 +78,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
-
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true"/>
-
+            android:value="true" />
     </application>
 
 </manifest>

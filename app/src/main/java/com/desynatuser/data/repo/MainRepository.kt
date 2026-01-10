@@ -11,6 +11,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.chat.response.GetChatListResponse
+import com.desynatuser.ui.home.chat.response.GetChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -712,6 +714,95 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
             responseLiveData = invoiceLiveData
         )
     }
+
+    val createCustomOrderLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun createCustomOrder(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.createCustomOrder(map)
+            },
+            responseLiveData = createCustomOrderLiveData
+        )
+    }
+
+val sendCustomOrderRequestLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun sendCustomOrderRequest(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.sendCustomOrderRequest(map)
+            },
+            responseLiveData = sendCustomOrderRequestLiveData
+        )
+    }
+
+    val applyCustomOrderGiftCardLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun applyCustomOrderGiftCard(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.applyCustomOrderGiftCard(map)
+            },
+            responseLiveData = applyCustomOrderGiftCardLiveData
+        )
+    }
+
+    val customOrderPaymentLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun customOrderPayment(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.customOrderPayment(map)
+            },
+            responseLiveData = customOrderPaymentLiveData
+        )
+    }
+
+    val getAllChatListLiveData = SingleLiveEvent<GetChatListResponse>()
+    suspend fun getAllChatList(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getAllChatList(map)
+            },
+            responseLiveData = getAllChatListLiveData
+        )
+    }
+
+    val chatDetailLiveData = SingleLiveEvent<GetChatResponse>()
+    suspend fun chatDetail(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.chatDetail(map)
+            },
+            responseLiveData = chatDetailLiveData
+        )
+    }
+
+    val sendMessageLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun sendMessage(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.sendMessage(map)
+            },
+            responseLiveData = sendMessageLiveData
+        )
+    }
+
+    val chatWithSellerLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun chatWithSeller(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.chatWithSeller(map)
+            },
+            responseLiveData = chatWithSellerLiveData
+        )
+    }
+
 
 }
 

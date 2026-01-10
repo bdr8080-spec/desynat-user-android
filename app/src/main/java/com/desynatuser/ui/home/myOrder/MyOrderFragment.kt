@@ -41,6 +41,7 @@ class MyOrderFragment : BaseFragment() {
     private var filter:String?=null // // 1 all 2 ongoing 3 delivered 4 cancelled 5 return
     private var search: Job? = null
     private var lastQuery: String? = null
+    private var orderType = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,8 +92,28 @@ class MyOrderFragment : BaseFragment() {
 
                 }
             })
-                getOrder()
 
+            if (orderType==2) {
+                orderType = 2
+                getOrder()
+                tvOrder.background = null
+                tvOrder.setTextColor(requireActivity().getColor(R.color.black))
+                tvCustomOrder.setTextColor(requireActivity().getColor(R.color.white))
+                tvCustomOrder.setBackgroundResource(R.drawable.selected_right_tab)
+                rvOrder.isVisible = true
+                checkData()
+            }
+
+            else {
+                orderType = 1
+                getOrder()
+                tvOrder.setBackgroundResource(R.drawable.selected_left_tab)
+                tvOrder.setTextColor(requireActivity().getColor(R.color.white))
+                tvCustomOrder.setTextColor(requireActivity().getColor(R.color.black))
+                tvCustomOrder.background = null
+                rvOrder.isVisible = true
+                checkData()
+            }
 
         }
     }
@@ -105,6 +126,7 @@ class MyOrderFragment : BaseFragment() {
             }
 
             tvOrder.setOnClickListener {
+                orderType = 1
                 getOrder()
                 tvOrder.setBackgroundResource(R.drawable.selected_left_tab)
                 tvOrder.setTextColor(requireActivity().getColor(R.color.white))
@@ -115,12 +137,14 @@ class MyOrderFragment : BaseFragment() {
             }
 
             tvCustomOrder.setOnClickListener {
+                orderType = 2
+                getOrder()
                 tvOrder.background = null
                 tvOrder.setTextColor(requireActivity().getColor(R.color.black))
                 tvCustomOrder.setTextColor(requireActivity().getColor(R.color.white))
                 tvCustomOrder.setBackgroundResource(R.drawable.selected_right_tab)
-                rvOrder.isVisible = false
-                tvNoDataFound.isVisible = true
+                rvOrder.isVisible = true
+                checkData()
             }
 
             ivFilter.setOnClickListener {
@@ -131,9 +155,7 @@ class MyOrderFragment : BaseFragment() {
 
     private fun getOrder(loading:Boolean = true){
         val map = HashMap<String,Any>()
-//        if (lastQuery!=null) {
-//            map["search"] = lastQuery.toString()
-//        }
+        map["order_type"] = orderType.toString()
         lastQuery?.let { searchId ->
             map["search"] =
                 myOrderList.firstOrNull { order ->

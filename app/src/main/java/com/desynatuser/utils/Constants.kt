@@ -83,5 +83,15 @@ object Constants {
     const val WALLET_BALANCE = "/api/user/waller-balance"
     const val INVOICE = "/api/user/get-Invoice"
 
+    const val CREATE_CUSTOM_ORDER = "/api/user/create-Custom-order"
+    const val SEND_CUSTOM_ORDER_REQUEST = "/api/user/send-custom-order-request"
+    const val APPLY_CUSTOM_ORDER_GIFT_CARD = "/api/user/custom-create-order"
+    const val CUSTOM_ORDER_COMPLETE_PAYMENT = "/api/user/product-order-complete-payment"
+
+    const val USER_ALL_CHAT = "/api/user/user-all-chats"
+    const val USER_SINGLE_CHAT = "/api/user/user-Single-chats"
+    const val SEND_MESSAGE = "/api/user/send-message-in-chats"
+    const val CHAT_WITH_SELLER = "/api/user/user-normal-chat-with-seller"
+
 
 }

@@ -60,6 +60,8 @@ data class GetAllOrderResponse(
         data class Order(
             @SerializedName("assign_date")
             val assignDate: String,
+            @SerializedName("order_type")
+            val orderType: String,
             @SerializedName("assign_status")
             val assignStatus: String,
             @SerializedName("created_at")

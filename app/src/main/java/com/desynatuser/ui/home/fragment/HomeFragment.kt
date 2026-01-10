@@ -328,6 +328,10 @@ class HomeFragment : BaseFragment() {
                 imagePicker.showImageSourceDialog()
             }
 
+            ivChat.setOnClickListener{
+                findNavController().navigate(R.id.action_homeFragment_to_chatListFragment)
+            }
+
             ivWishlist.setOnClickListener{
                 findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
             }

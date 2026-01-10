@@ -6,35 +6,42 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
+import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
+import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentEnterGiftCardDetailBinding
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EnterGiftCardDetailFragment : BaseFragment() {
-    private var binding: FragmentEnterGiftCardDetailBinding?=null
+    private var binding: FragmentEnterGiftCardDetailBinding? = null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
-    var occasionData : GetGiftCardOccasionTypeResponse.Data?=null
+    var occasionData: GetGiftCardOccasionTypeResponse.Data? = null
     var amount = ""
+    var countryList = ArrayList<GetCountryResponse.Data>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentEnterGiftCardDetailBinding.inflate(layoutInflater,container,false)
+        binding = FragmentEnterGiftCardDetailBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -46,6 +53,7 @@ class EnterGiftCardDetailFragment : BaseFragment() {
     }
 
     override fun initView() {
+        setCountry()
         binding?.apply {
             toolbar.tvToolbar.text = "Enter Details"
             CommonMethod.removeSpace(etName)
@@ -55,13 +63,20 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             CommonMethod.removeAllTextSpaces(etEmail)
             val itemJson = arguments?.getString("occasionData")
             if (!itemJson.isNullOrEmpty()) {
-                occasionData = Gson().fromJson(itemJson, GetGiftCardOccasionTypeResponse.Data::class.java)
+                occasionData =
+                    Gson().fromJson(itemJson, GetGiftCardOccasionTypeResponse.Data::class.java)
             }
 
             etAmount.addTextChangedListener(object : TextWatcher {
                 private var isEditing = false
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
@@ -87,6 +102,11 @@ class EnterGiftCardDetailFragment : BaseFragment() {
 
             toolbar.tvToolbar.setOnClickListener {
                 findNavController().popBackStack()
+            }
+
+
+            tvCountryPicker.setOnClickListener {
+                showCustomDropdown(etMobile)
             }
 
             tv100.setOnClickListener {
@@ -124,7 +144,8 @@ class EnterGiftCardDetailFragment : BaseFragment() {
 
                 tv100.background = requireActivity().getDrawable(R.drawable.button_stroke)
                 tv200.background = requireActivity().getDrawable(R.drawable.button_stroke)
-                tvEnterAmount.background = requireActivity().getDrawable(R.drawable.button_stroke_gradient)
+                tvEnterAmount.background =
+                    requireActivity().getDrawable(R.drawable.button_stroke_gradient)
                 etAmount.isVisible = true
             }
 
@@ -153,14 +174,17 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                     putString("from", "gift")
                     putString("giftCardData", Gson().toJson(response.data))
                 }
-                findNavController().navigate(R.id.action_enterGiftCardDetailFragment_to_paymentFragment,bundle)
+                findNavController().navigate(
+                    R.id.action_enterGiftCardDetailFragment_to_paymentFragment,
+                    bundle
+                )
                 isObserver = false
             }
         }
     }
 
-    private fun buyGiftCard(){
-        if (amount==""){
+    private fun buyGiftCard() {
+        if (amount == "") {
             amount = binding?.etAmount?.text.toString()
         }
         val request = AddGiftCardRequest(
@@ -170,7 +194,8 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             receiverEmail = binding?.etEmail?.text?.trim().toString(),
             receiverName = binding?.etName?.text?.trim().toString(),
             senderName = binding?.etFromName?.text?.trim().toString(),
-          //  senderEmail = binding?.etEmail?.text?.trim().toString(),
+            countryCode = binding?.tvCountryPicker?.text?.trim().toString(),
+            mobile = binding?.etMobile?.text?.trim().toString(),
             wishMessage = binding?.etWishMsg?.text?.trim().toString()
         )
         viewModel.buyGiftCard(request)
@@ -180,21 +205,21 @@ class EnterGiftCardDetailFragment : BaseFragment() {
 
     private fun validation(): Boolean {
         binding?.apply {
-           if (amount==""){
-               if (etAmount.isVisible){
-                   if (etAmount.text?.trim()?.isEmpty() == true) {
-                       showToast("Please enter amount")
-                       return false
-                   }
-               }
-               else {
-                   showToast("Please choose amount")
-                   return false
-               }
-           }
+            if (amount == "") {
+                if (etAmount.isVisible) {
+                    if (etAmount.text?.trim()?.isEmpty() == true) {
+                        showToast("Please enter amount")
+                        return false
+                    }
+                } else {
+                    showToast("Please choose amount")
+                    return false
+                }
+            }
 
             val name = etName.text.toString().trim()
             val email = etEmail.text.toString().trim()
+            val mobile = etMobile.text.toString().trim()
 
             if (name.isEmpty()) {
                 showToast("Please enter recipient name")
@@ -211,6 +236,17 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                 showToast("Please enter a valid email id")
                 return false
             }
+
+            if (mobile.isEmpty()) {
+                showToast("Please enter mobile number")
+                return false
+            }
+
+            if (mobile.length < 7) {
+                showToast("Please enter a valid mobile number")
+                return false
+            }
+
             val fromName = etFromName.text.toString().trim()
             if (fromName.isEmpty()) {
                 showToast("Please enter your name")
@@ -234,6 +270,39 @@ class EnterGiftCardDetailFragment : BaseFragment() {
         return false
     }
 
+    private fun showCustomDropdown(anchor: View) {
 
+        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
+
+        val popupWindow = PopupWindow(
+            dropdownBinding.root,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.isOutsideTouchable = true
+        popupWindow.elevation = 20f
+
+        popupWindow.showAsDropDown(anchor)
+
+        dropdownBinding.apply {
+
+            rvCountry.adapter = CountryPickerAdapter(requireActivity(), countryList, object :
+                CountryPickerAdapter.ClickOnItem {
+                override fun onClickItem(position: Int) {
+                    binding?.tvCountryPicker?.text = countryList[position].dialCode
+                    popupWindow.dismiss()
+                }
+
+            })
+        }
+    }
+
+    private fun setCountry() {
+        val data = SharedPreference.get(requireActivity()).getCountryList()
+        countryList.clear()
+        data?.let { countryList.addAll(it) }
+    }
 
 }

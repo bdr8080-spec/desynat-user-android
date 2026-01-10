@@ -15,6 +15,10 @@
             android:id="@+id/action_homeFragment_to_searchProductListFragment"
             app:destination="@id/searchProductList"/>
 
+ <action
+            android:id="@+id/action_homeFragment_to_chatListFragment"
+            app:destination="@id/chatList"/>
+
         <action
             android:id="@+id/action_homeFragment_to_searchProductFragment"
             app:destination="@id/searchProduct"/>
@@ -207,6 +211,10 @@
             app:destination="@id/myBag"/>
 
         <action
+            android:id="@+id/action_productDetailFragment_to_chatFragment"
+            app:destination="@id/chat"/>
+
+        <action
             android:id="@+id/action_productDetailFragment_to_savedAddressFragment"
             app:destination="@id/savedAddress"/>
 
@@ -351,5 +359,23 @@
         android:name="com.desynatuser.ui.home.myOrder.OrderDetailFragment"
         android:label="Order Detail Fragment"
         tools:layout="@layout/fragment_order_detail"/>
+
+    <fragment
+        android:id="@+id/chat"
+        android:name="com.desynatuser.ui.home.chat.ChatFragment"
+        android:label="Chat Fragment"
+        tools:layout="@layout/fragment_chat"/>
+
+    <fragment
+        android:id="@+id/chatList"
+        android:name="com.desynatuser.ui.home.chat.ChatListFragment"
+        android:label="Chat List Fragment"
+        tools:layout="@layout/fragment_chat_list">
+
+         <action
+            android:id="@+id/action_chatListFragment_to_chatFragment"
+    app:destination="@id/chat"/>
+
+    </fragment>
 
 </navigation>

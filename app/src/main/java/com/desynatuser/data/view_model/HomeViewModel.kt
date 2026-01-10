@@ -9,6 +9,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.chat.response.GetChatListResponse
+import com.desynatuser.ui.home.chat.response.GetChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -519,6 +521,74 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
     fun getInvoice(id:String) {
         viewModelScope.launch {
             repository.getInvoice(id)
+        }
+    }
+
+    val createCustomOrderResult: LiveData<CommonResponse>
+        get() = repository.createCustomOrderLiveData
+
+    fun createCustomOrder(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.createCustomOrder(map)
+        }
+    }
+    val sendCustomOrderRequestResult: LiveData<CommonResponse>
+        get() = repository.sendCustomOrderRequestLiveData
+
+    fun sendCustomOrderRequest(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.sendCustomOrderRequest(map)
+        }
+    }
+
+    val applyCustomOrderGiftCardResult: LiveData<CommonResponse>
+        get() = repository.applyCustomOrderGiftCardLiveData
+
+    fun applyCustomOrderGiftCard(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.applyCustomOrderGiftCard(map)
+        }
+    }
+    val customOrderPaymentResult: LiveData<CommonResponse>
+        get() = repository.customOrderPaymentLiveData
+
+    fun customOrderPayment(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.customOrderPayment(map)
+        }
+    }
+
+    val getAllChatListResult: LiveData<GetChatListResponse>
+        get() = repository.getAllChatListLiveData
+
+    fun getAllChatList(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAllChatList(map)
+        }
+    }
+    val chatDetailResult: LiveData<GetChatResponse>
+        get() = repository.chatDetailLiveData
+
+    fun chatDetail(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.chatDetail(map)
+        }
+    }
+
+    val sendMessageResult: LiveData<CommonResponse>
+        get() = repository.sendMessageLiveData
+
+    fun sendMessage(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.sendMessage(map)
+        }
+    }
+    val chatWithSellerResult: LiveData<CommonResponse>
+        get() = repository.chatWithSellerLiveData
+
+    fun chatWithSeller(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.chatWithSeller(map)
         }
     }
 

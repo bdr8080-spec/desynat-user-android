@@ -1,14 +1,15 @@
 package com.desynatuser.adapter
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemChatBinding
+import com.desynatuser.ui.home.chat.response.ChatMessage
+import com.desynatuser.utils.CommonMethod
 
-class ChatAdapter(var context:Context, var chatList: ArrayList<String>, var chatClick:ChatClick) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+class ChatAdapter(var context:Context, var chatList: ArrayList<ChatMessage>, var chatClick:ChatClick) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     interface ChatClick{
         fun onChatClick(position: Int)
@@ -31,7 +32,25 @@ class ChatAdapter(var context:Context, var chatList: ArrayList<String>, var chat
         val chatData = chatList[position]
         holder.binding.apply {
 
-            //tvName.text = chatData?.productNameEn
+            if (chatData.by == "user") {
+                relMy.isVisible = true
+                relOther.isVisible = false
+                tvMyMsg.text = chatData.message
+                if (chatData.read_status==1){
+                    ivRead.isVisible = true
+                }
+                else{
+                    ivRead.isVisible = false
+                }
+                tvMyMsgTime.text = CommonMethod.customizeChangeDateFormat(chatData.times.toString(),"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'","hh:mma")
+            }
+            else{
+                relMy.isVisible = false
+                relOther.isVisible = true
+                tvOtherMsg.text = chatData.message
+                tvOtherMsgTime.text = CommonMethod.customizeChangeDateFormat(chatData.times.toString(),"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'","hh:mma")
+            }
+
         }
 
         holder.itemView.setOnClickListener {

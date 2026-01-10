@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     id("kotlin-parcelize")
     alias(libs.plugins.hilt.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -112,5 +113,9 @@ dependencies {
     }
 
     implementation("io.getstream:photoview:1.0.2")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation ("com.google.firebase:firebase-database-ktx")
+    implementation ("com.google.firebase:firebase-auth-ktx")
 
 }

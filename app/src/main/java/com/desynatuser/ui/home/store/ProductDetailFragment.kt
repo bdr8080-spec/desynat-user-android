@@ -342,7 +342,15 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnCustomOrder.setOnClickListener {
-
+                val bundle = Bundle().apply {
+                    putString("from", "productDetail")
+                    putString("productId", productData?.id.toString())
+                    putString("storeName", productDetailData?.store?.storeName)
+                    putString("productName", productDetailData?.productNameEn)
+                    putString("productInfo",Gson().toJson(productInfo?.getOrNull(selectedPos)))
+                    putString("productVariant",Gson().toJson(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)))
+                }
+                findNavController().navigate(R.id.action_productDetailFragment_to_chatFragment,bundle)
             }
 
             relCartItem.setOnClickListener {

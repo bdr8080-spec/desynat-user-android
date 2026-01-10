@@ -1,0 +1,10 @@
+package com.desynatuser.ui.home.chat.response
+
+data class SendMessageRequest(
+    val by: String,
+    val message: String,
+    val type: String,
+    val unique_id: String,
+    val times: String,
+    val user_id: Long
+)

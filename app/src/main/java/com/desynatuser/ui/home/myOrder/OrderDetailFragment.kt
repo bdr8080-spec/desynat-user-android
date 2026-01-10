@@ -534,6 +534,7 @@ class OrderDetailFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["order_id"] = getOrderData?.orderId.toString()
         map["orderdetails_id"] = getOrderData?.id.toString()
+        map["order_type"] = getOrderData?.order?.orderType.toString()
         viewModel.getOrderDetailInfo(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -681,7 +682,6 @@ class OrderDetailFragment : BaseFragment() {
             tvToolbar.setOnClickListener {
                 cancelDialog?.dismiss()
             }
-
 
             btnSubmit.setOnClickListener {
                 if (etReason.isVisible){

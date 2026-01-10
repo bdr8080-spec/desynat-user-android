@@ -5,6 +5,8 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.chat.response.GetChatListResponse
+import com.desynatuser.ui.home.chat.response.GetChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -286,5 +288,45 @@ interface ApiServices {
         @Query("key") apiKey: String,
         @Body request: VisionRequestBody
     ): Response<VisionResponse>
+
+    @POST(Constants.CREATE_CUSTOM_ORDER)
+    suspend fun createCustomOrder(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
+    @POST(Constants.SEND_CUSTOM_ORDER_REQUEST)
+    suspend fun sendCustomOrderRequest(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
+    @POST(Constants.APPLY_CUSTOM_ORDER_GIFT_CARD)
+    suspend fun applyCustomOrderGiftCard(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
+    @POST(Constants.CUSTOM_ORDER_COMPLETE_PAYMENT)
+    suspend fun customOrderPayment(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
+    @POST(Constants.USER_ALL_CHAT)
+    suspend fun getAllChatList(
+        @Body map: HashMap<String,Any>
+    ): Response<GetChatListResponse>
+
+    @POST(Constants.USER_SINGLE_CHAT)
+    suspend fun chatDetail(
+        @Body map: HashMap<String,Any>
+    ): Response<GetChatResponse>
+
+    @POST(Constants.SEND_MESSAGE)
+    suspend fun sendMessage(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
+    @POST(Constants.CHAT_WITH_SELLER)
+    suspend fun chatWithSeller(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
 
 }

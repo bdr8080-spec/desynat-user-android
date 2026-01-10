@@ -25,6 +25,7 @@
             android:text="Hello John Deo! consectetur adipiscing elit ames."/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvOtherMsgTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="08:32 AM"
@@ -55,7 +56,8 @@
             android:fontFamily="@font/poppins_regular"
             android:textColor="@color/white"
             android:textSize="@dimen/_11sdp"
-            android:text="Hello John Deo! consectetur adipiscing elit ames."/>
+            android:text="Hello John Deo!"
+            android:layout_alignParentEnd="true"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivRead"
@@ -68,6 +70,7 @@
             android:layout_below="@+id/tvMyMsg"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMyMsgTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="08:32 AM"

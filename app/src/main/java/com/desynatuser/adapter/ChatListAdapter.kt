@@ -6,10 +6,10 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.desynatuser.databinding.ItemChatBinding
 import com.desynatuser.databinding.ItemChatListBinding
+import com.desynatuser.ui.home.chat.response.GetChatListResponse
 
-class ChatListAdapter(var context:Context, var chatList: ArrayList<String>, var chatClick:ChatClick) : RecyclerView.Adapter<ChatListAdapter.ViewHolder>() {
+class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListResponse.Data>, var chatClick:ChatClick) : RecyclerView.Adapter<ChatListAdapter.ViewHolder>() {
 
     interface ChatClick{
         fun onChatClick(position: Int)
@@ -33,7 +33,7 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<String>, var 
         var status = "1"
         holder.binding.apply {
 
-            //tvName.text = chatData?.productNameEn
+            tvName.text = chatData?.quantity
            when(status){
                 "1"->{
                     tvStatus.text = "Waiting"

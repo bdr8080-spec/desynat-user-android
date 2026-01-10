@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.chat
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,7 +20,11 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.ChatFilterDialogBinding
 import com.desynatuser.databinding.FragmentChatListBinding
+import com.desynatuser.ui.home.chat.response.ChatActivity
+import com.desynatuser.ui.home.chat.response.GetChatListResponse
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -31,7 +36,7 @@ class ChatListFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
     private var chatAdapter: ChatListAdapter?=null
-    private var chatList = ArrayList<String>()
+    private var chatList = ArrayList<GetChatListResponse.Data>()
     private var search: Job? = null
     private var lastQuery: String? = null
     var chatFilter:String? = null
@@ -57,7 +62,17 @@ class ChatListFragment : BaseFragment() {
 
             chatAdapter = ChatListAdapter(requireActivity(),chatList,object :ChatListAdapter.ChatClick{
                 override fun onChatClick(position: Int) {
+//                    val bundle = Bundle().apply {
+//                        putString("from", "chat")
+//                        putString("chatData", Gson().toJson(chatList[position]))
+//                    }
+//                    findNavController().navigate(R.id.action_chatListFragment_to_chatFragment,bundle)
 
+                    val intent = Intent(requireContext(), ChatActivity::class.java).apply {
+                        putExtra("from", "chat")
+                        putExtra("chatData", Gson().toJson(chatList[position]))
+                    }
+                    startActivity(intent)
                 }
 
             })
@@ -93,6 +108,8 @@ class ChatListFragment : BaseFragment() {
                 }
             })
         }
+
+        getChat()
     }
 
     override fun initControl() {
@@ -109,7 +126,24 @@ class ChatListFragment : BaseFragment() {
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
 
+        viewModel.getAllChatListResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                chatList
+                chatList.clear()
+                chatList.addAll(response.data)
+                chatAdapter?.notifyDataSetChanged()
+                ProgressDialogUtils.getInstance().hideProgress()
+                isObserver = false
+            }
+        }
     }
 
     private fun chatFilterDialog() {
@@ -182,7 +216,10 @@ class ChatListFragment : BaseFragment() {
     }
 
     private fun getChat(){
-
+        val map = HashMap<String, Any>()
+        viewModel.getAllChatList(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }
