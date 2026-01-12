@@ -11,8 +11,13 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.ChatDetailResponse
+import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.GetChatResponse
+import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -715,7 +720,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val createCustomOrderLiveData = SingleLiveEvent<CommonResponse>()
+    val createCustomOrderLiveData = SingleLiveEvent<CreateCustomOrderResponse>()
     suspend fun createCustomOrder(map: HashMap<String,Any>)
     {
         handleApiCall(
@@ -726,7 +731,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-val sendCustomOrderRequestLiveData = SingleLiveEvent<CommonResponse>()
+val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>()
     suspend fun sendCustomOrderRequest(map: HashMap<String,Any>)
     {
         handleApiCall(
@@ -737,7 +742,7 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val applyCustomOrderGiftCardLiveData = SingleLiveEvent<CommonResponse>()
+    val applyCustomOrderGiftCardLiveData = SingleLiveEvent<AcceptCustomOrderResponse>()
     suspend fun applyCustomOrderGiftCard(map: HashMap<String,Any>)
     {
         handleApiCall(
@@ -770,7 +775,7 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val chatDetailLiveData = SingleLiveEvent<GetChatResponse>()
+    val chatDetailLiveData = SingleLiveEvent<ChatDetailResponse>()
     suspend fun chatDetail(map: HashMap<String,Any>)
     {
         handleApiCall(
@@ -792,7 +797,7 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val chatWithSellerLiveData = SingleLiveEvent<CommonResponse>()
+    val chatWithSellerLiveData = SingleLiveEvent<NormalChatResponse>()
     suspend fun chatWithSeller(map: HashMap<String,Any>)
     {
         handleApiCall(

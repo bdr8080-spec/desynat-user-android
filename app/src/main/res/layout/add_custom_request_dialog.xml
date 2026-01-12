@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/_15sdp"
+    android:background="@drawable/bottom_sheet"
+    android:backgroundTint="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:background="@drawable/bottom_sheet"
+        android:backgroundTint="#FFF7EA"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Custom Order"
+        android:textColor="@color/black"
+        android:drawableEnd="@drawable/close_icon"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:padding="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tvToolbar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Add Quantity"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etAddQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/edit_text"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="@dimen/_10sdp"
+            android:inputType="number"
+            android:background="@drawable/edit_back"
+            android:hint="Add Quantity"
+            android:gravity="start"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="16sp"
+            android:text="Delivering Address"
+            android:textSize="@dimen/_13sdp" />
+
+        <RelativeLayout
+            android:id="@+id/relDeliveryAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/card_background"
+            app:layout_constraintTop_toBottomOf="@+id/tvDeliveryAdd">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/edit_text"
+                android:background="@null"
+                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginVertical="1dp"
+                android:hint="Select Address"
+                android:textSize="@dimen/_11sdp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tvChange" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/tvChange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:src="@drawable/ic_change_address"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/edit_text_title"
+            android:layout_marginTop="16sp"
+            android:text="Custom details" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etCustomDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/edit_text"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="@dimen/_10sdp"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:background="@drawable/edit_back"
+            android:hint="Write Here"
+            android:gravity="start"/>
+
+        <TextView
+        android:id="@+id/btnSendRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_gradient"
+        android:gravity="center"
+        android:text="Send Request"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingVertical="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

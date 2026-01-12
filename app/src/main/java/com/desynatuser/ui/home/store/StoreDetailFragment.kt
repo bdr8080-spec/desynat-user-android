@@ -271,10 +271,19 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             ivChat.setOnClickListener {
-
+                chatWithSeller()
             }
         }
     }
+
+    private fun chatWithSeller(){
+        val map = HashMap<String, Any>()
+        map["seller_id"] = storeData?.sellerId.toString()
+        viewModel.chatWithSeller(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
 
     private fun getStoreSortList(){
         viewModel.getStoreSorList()
@@ -402,6 +411,18 @@ class StoreDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 storeDetailData = response.data
                 setProductData()
+                isObserver = false
+            }
+        }
+
+        viewModel.chatWithSellerResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                val bundle = Bundle().apply {
+                    putString("from", "store")
+                    putString("normalChatData", Gson().toJson(response.data))
+                }
+                findNavController().navigate(R.id.action_storeDetailFragment_to_chatFragment,bundle)
                 isObserver = false
             }
         }

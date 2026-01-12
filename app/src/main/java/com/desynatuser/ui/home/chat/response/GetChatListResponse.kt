@@ -22,6 +22,10 @@ data class GetChatListResponse(
         val deliveryAddress: String,
         @SerializedName("id")
         val id: Int,
+        @SerializedName("last_chat")
+        val lastChat: String,
+        @SerializedName("last_chat_time")
+        val lastChatTime: String,
         @SerializedName("price")
         val price: String,
         @SerializedName("product_id")
@@ -32,6 +36,8 @@ data class GetChatListResponse(
         val productVariation: ProductVariation,
         @SerializedName("quantity")
         val quantity: String,
+        @SerializedName("seller_details")
+        val sellerDetails: SellerDetails,
         @SerializedName("seller_id")
         val sellerId: Int,
         @SerializedName("shipping")
@@ -46,6 +52,8 @@ data class GetChatListResponse(
         val uniqueId: String,
         @SerializedName("updated_at")
         val updatedAt: String,
+        @SerializedName("user_details")
+        val userDetails: UserDetails,
         @SerializedName("user_id")
         val userId: Int,
         @SerializedName("variation_id")
@@ -119,7 +127,7 @@ data class GetChatListResponse(
                 @SerializedName("description_en")
                 val descriptionEn: String,
                 @SerializedName("exchangable_days")
-                val exchangableDays: Any,
+                val exchangableDays: String,
                 @SerializedName("id")
                 val id: Int,
                 @SerializedName("max_card_quantity")
@@ -143,7 +151,7 @@ data class GetChatListResponse(
                 @SerializedName("ready_to_ship")
                 val readyToShip: String,
                 @SerializedName("return_days")
-                val returnDays: Any,
+                val returnDays: String,
                 @SerializedName("review_rating")
                 val reviewRating: String,
                 @SerializedName("seller_id")
@@ -158,5 +166,87 @@ data class GetChatListResponse(
                 val uploadSizeChart: String
             )
         }
+
+        data class SellerDetails(
+            @SerializedName("accept_terms")
+            val acceptTerms: String,
+            @SerializedName("admin_verify")
+            val adminVerify: String,
+            @SerializedName("affilate_commission")
+            val affilateCommission: String,
+            @SerializedName("bank_information")
+            val bankInformation: String,
+            @SerializedName("country_code")
+            val countryCode: String,
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("device_token")
+            val deviceToken: String,
+            @SerializedName("device_type")
+            val deviceType: String,
+            @SerializedName("email")
+            val email: String,
+            @SerializedName("first_name")
+            val firstName: String,
+            @SerializedName("id")
+            val id: Int,
+            @SerializedName("is_block")
+            val isBlock: Int,
+            @SerializedName("lang")
+            val lang: Any,
+            @SerializedName("last_name")
+            val lastName: String,
+            @SerializedName("mobile")
+            val mobile: String,
+            @SerializedName("otp")
+            val otp: String,
+            @SerializedName("otp_verify")
+            val otpVerify: String,
+            @SerializedName("password")
+            val password: String,
+            @SerializedName("profile_pic")
+            val profilePic: String,
+            @SerializedName("reject_reason")
+            val rejectReason: Any,
+            @SerializedName("store_information")
+            val storeInformation: String,
+            @SerializedName("updated_at")
+            val updatedAt: String
+        )
+
+        data class UserDetails(
+            @SerializedName("country_code")
+            val countryCode: String,
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("device_token")
+            val deviceToken: Any,
+            @SerializedName("device_type")
+            val deviceType: String,
+            @SerializedName("email")
+            val email: String,
+            @SerializedName("email_verified_at")
+            val emailVerifiedAt: Any,
+            @SerializedName("full_name")
+            val fullName: String,
+            @SerializedName("id")
+            val id: Int,
+            @SerializedName("let")
+            val let: Any,
+            @SerializedName("long")
+            val long: Any,
+            @SerializedName("mobile")
+            val mobile: String,
+            @SerializedName("otp")
+            val otp: String,
+            @SerializedName("otp_verify")
+            val otpVerify: String,
+            @SerializedName("profile_image")
+            val profileImage: String,
+            @SerializedName("status")
+            val status: String,
+            @SerializedName("updated_at")
+            val updatedAt: String
+        )
     }
 }

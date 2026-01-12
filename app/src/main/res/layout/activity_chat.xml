@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.chat.response.ChatActivity">
+    tools:context=".ui.home.chat.ChatActivity">
 
     <LinearLayout
         android:id="@+id/llToolbar"
@@ -133,7 +133,7 @@
                         android:id="@+id/ivSendReq"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_waiting_txt"/>
+                        android:src="@drawable/iv_send_request_txt"/>
 
                 </RelativeLayout>
 
@@ -524,10 +524,10 @@
         android:background="@drawable/edit_back"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ivSend"
-        app:layout_constraintTop_toTopOf="@+id/ivSend"
-        app:layout_constraintBottom_toBottomOf="@+id/ivSend">
+        app:layout_constraintBottom_toTopOf="@+id/viewBottom">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etMessage"
@@ -553,13 +553,13 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivSend"
-        android:layout_width="@dimen/_36sdp"
-        android:layout_height="@dimen/_36sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_send"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/viewBottom"/>
+        app:layout_constraintTop_toTopOf="@+id/relInput"
+        app:layout_constraintBottom_toBottomOf="@+id/relInput"/>
 
     <View
         android:visibility="gone"
@@ -567,5 +567,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_22sdp"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/pbLoader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/brown" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

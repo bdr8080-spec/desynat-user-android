@@ -7,6 +7,6 @@ data class ChatMessage(
     var times: String? = null,
     var type: String? = null,
     var unique_id: String? = null,
-    var user_id: Long? = null,
-    var read_status: Int? = 0
+    var user_id: String? = null,
+    var read: Int? = 0
 )

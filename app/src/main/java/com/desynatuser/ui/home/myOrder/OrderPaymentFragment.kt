@@ -17,6 +17,7 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentOrderPaymentBinding
 import com.desynatuser.ui.home.PaymentResultEvent
+import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
@@ -79,6 +80,10 @@ class OrderPaymentFragment : BaseFragment() {
     private var selectedMethod: String = ""
     private var mfGooglePayHelper: MFGooglePayHelper? = null
     private val googlePayRequestCODE: Int = 991
+
+    private var chatDetailData : ChatDetailResponse.Data.Record?=null
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -123,6 +128,18 @@ class OrderPaymentFragment : BaseFragment() {
                 val itemGiftCardJson = arguments?.getString("giftCardData")
                 if (!itemGiftCardJson.isNullOrEmpty()) {
                     giftCardData = Gson().fromJson(itemGiftCardJson, BuyGiftCardResponse.Data::class.java)
+                }
+            }
+            else if(from=="chat"){
+                relGiftCard.isVisible = true
+                val itemJson = arguments?.getString("chatData")
+                if (!itemJson.isNullOrEmpty()) {
+                    chatDetailData = Gson().fromJson(itemJson, ChatDetailResponse.Data.Record::class.java)
+                    totalAmount = chatDetailData?.totalAmount?:0.0
+                }
+                if (giftCardData!=null) {
+                    totalAmount -= giftCardData?.amount!!
+                    Log.e("totalAmount", "giftCardData: $totalAmount" )
                 }
             }
             else{
@@ -195,7 +212,13 @@ class OrderPaymentFragment : BaseFragment() {
                     "WALLET" -> {
                         paymetMehod = "2"
                         if (walletBalance>=cartData?.totalAmount?:0.0) {
-                            createOrder()
+                            if (from=="chat"){
+                                customOrderApplyGiftCard()
+                            }
+                            else{
+                                createOrder()
+                            }
+
                         }
                         else{
                             showToast("Wallet balance is low")
@@ -203,7 +226,12 @@ class OrderPaymentFragment : BaseFragment() {
                     }
                     "COD" -> {
                         paymetMehod = "3"
-                        createOrder()
+                        if (from=="chat"){
+                            customOrderApplyGiftCard()
+                        }
+                        else {
+                            createOrder()
+                        }
                     }
                 }
 
@@ -269,6 +297,27 @@ class OrderPaymentFragment : BaseFragment() {
             }
         }
 
+        viewModel.applyCustomOrderGiftCardResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                customOrderCompletePayment(response.data.orderId)
+                isObserver = false
+            }
+        }
+
+        viewModel.customOrderPaymentResult.observe(viewLifecycleOwner) { response ->
+            if (isPayment) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                val bundle = Bundle().apply {
+                    putString("amount", CommonMethod.formatPrice(chatDetailData?.totalAmount?:0.0))
+                  //  putString("address", Gson().toJson(selectedAddress))
+                    putString("payment", selectedMethod)
+                }
+                findNavController().navigate(R.id.action_orderPaymentFragment_to_orderPlacedFragment,bundle)
+                isPayment = false
+            }
+        }
+
     }
 
     private fun createOrder(){
@@ -300,6 +349,29 @@ class OrderPaymentFragment : BaseFragment() {
         map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
         viewModel.buyGiftCardPayment(map)
         isPayment = true
+    }
+
+        private fun customOrderApplyGiftCard() {
+        val map = HashMap<String, Any>()
+        map["unique_id"] = chatDetailData?.uniqueId.toString()
+            if (giftCardData!=null) {
+                map["giftcard_id"] = giftCardData?.orderId.toString()
+                map["giftcard_amount"] = giftCardData?.amount.toString()
+            }
+        map["Payment_method"] = paymetMehod
+        viewModel.applyCustomOrderGiftCard(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+        private fun customOrderCompletePayment(orderId: String) {
+        val map = HashMap<String, Any>()
+        map["order_id"] = orderId
+        map["Payment_method"] = paymetMehod //1 myfatoorah 2 wallet 3 Cod
+        map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
+        viewModel.customOrderPayment(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+            isPayment = true
     }
 
     private fun cardStyling() {
@@ -631,7 +703,7 @@ class OrderPaymentFragment : BaseFragment() {
                 }
             }
 
-            val request = MFExecutePaymentRequest(paymentMethodId, cartData?.totalAmount).apply {
+            val request = MFExecutePaymentRequest(paymentMethodId, totalAmount).apply {
                /* customerReference = subscriptionData?.id.toString()
                 customerName = "${profileData?.firstName} ${profileData?.lastName}"
                 mobileCountryCode = profileData?.countryCode
@@ -651,7 +723,12 @@ class OrderPaymentFragment : BaseFragment() {
                         Log.d("executeRedirectPayment", "Success: ${Gson().toJson(result.response)}")
                         val paymentData =  result.response
                         transactionId =  paymentData.invoiceTransactions?.get(0)?.transactionId
-                        createOrder()
+                        if (from=="chat"){
+                            customOrderApplyGiftCard()
+                        }
+                        else{
+                            createOrder()
+                        }
                     }
                     is MFResult.Fail -> {
                         Log.d("executeRedirectPayment", "Fail: ${Gson().toJson(result.error)}")

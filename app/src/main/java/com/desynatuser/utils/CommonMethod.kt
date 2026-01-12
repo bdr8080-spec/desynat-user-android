@@ -42,6 +42,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import java.util.concurrent.TimeUnit
 
 object CommonMethod {
 
@@ -493,6 +494,48 @@ object CommonMethod {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
+        }
+    }
+
+    fun formatChatTime(inputTime: String): String {
+        val inputFormat = SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.ENGLISH)
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        val fullDateFormat = SimpleDateFormat("dd/MM/yy, hh:mm a", Locale.ENGLISH)
+
+        val messageDate = inputFormat.parse(inputTime) ?: return inputTime
+        val now = Date()
+
+        val calendar = Calendar.getInstance()
+        calendar.time = now
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        val startOfToday = calendar.time
+
+        calendar.add(Calendar.DAY_OF_YEAR, -1)
+        val startOfYesterday = calendar.time
+
+        return when {
+            messageDate.after(startOfToday) -> {
+                "Today, ${timeFormat.format(messageDate)}"
+            }
+
+            messageDate.after(startOfYesterday) -> {
+                "Yesterday, ${timeFormat.format(messageDate)}"
+            }
+
+            else -> {
+                val diffMillis = now.time - messageDate.time
+                val daysDiff = TimeUnit.MILLISECONDS.toDays(diffMillis)
+
+                if (daysDiff in 2..30) {
+                    "$daysDiff days ago, ${timeFormat.format(messageDate)}"
+                } else {
+                    fullDateFormat.format(messageDate)
+                }
+            }
         }
     }
 

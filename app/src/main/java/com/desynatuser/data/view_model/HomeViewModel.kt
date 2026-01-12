@@ -9,8 +9,13 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.ChatDetailResponse
+import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.GetChatResponse
+import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -524,7 +529,7 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
         }
     }
 
-    val createCustomOrderResult: LiveData<CommonResponse>
+    val createCustomOrderResult: LiveData<CreateCustomOrderResponse>
         get() = repository.createCustomOrderLiveData
 
     fun createCustomOrder(map: HashMap<String,Any>) {
@@ -532,7 +537,7 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
             repository.createCustomOrder(map)
         }
     }
-    val sendCustomOrderRequestResult: LiveData<CommonResponse>
+    val sendCustomOrderRequestResult: LiveData<CreateCustomOrderResponse>
         get() = repository.sendCustomOrderRequestLiveData
 
     fun sendCustomOrderRequest(map: HashMap<String,Any>) {
@@ -541,7 +546,7 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
         }
     }
 
-    val applyCustomOrderGiftCardResult: LiveData<CommonResponse>
+    val applyCustomOrderGiftCardResult: LiveData<AcceptCustomOrderResponse>
         get() = repository.applyCustomOrderGiftCardLiveData
 
     fun applyCustomOrderGiftCard(map: HashMap<String,Any>) {
@@ -566,7 +571,7 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
             repository.getAllChatList(map)
         }
     }
-    val chatDetailResult: LiveData<GetChatResponse>
+    val chatDetailResult: LiveData<ChatDetailResponse>
         get() = repository.chatDetailLiveData
 
     fun chatDetail(map: HashMap<String,Any>) {
@@ -583,7 +588,7 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
             repository.sendMessage(map)
         }
     }
-    val chatWithSellerResult: LiveData<CommonResponse>
+    val chatWithSellerResult: LiveData<NormalChatResponse>
         get() = repository.chatWithSellerLiveData
 
     fun chatWithSeller(map: HashMap<String,Any>) {

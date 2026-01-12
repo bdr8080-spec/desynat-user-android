@@ -51,7 +51,7 @@ class SavedAddressFragment : BaseFragment() {
             toolbar.tvToolbar.text = "Saved Address"
 
             from = arguments?.getString("from").toString()
-            if (from=="myBag"||from=="productDetail"){
+            if (from=="myBag"||from=="productDetail"||from=="chat"){
                 btnProceed.isVisible = true
             }
             else{
@@ -201,7 +201,7 @@ class SavedAddressFragment : BaseFragment() {
                 savedAddressList[selectedPos].setAsDefault = "1"
                 savedAddressAdapter?.notifyDataSetChanged()
                 SharedPreference.get(requireActivity()).saveDefaultAddress(savedAddressList[selectedPos])
-                if (from=="myBag"||from=="productDetail"){
+                if (from=="myBag"||from=="productDetail"||from=="chat"){
                     val bundle = Bundle().apply {
                         putString("address", Gson().toJson(savedAddressList[selectedPos]))
                     }

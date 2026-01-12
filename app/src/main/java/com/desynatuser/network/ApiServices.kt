@@ -5,8 +5,13 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.ChatDetailResponse
+import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.GetChatResponse
+import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -292,17 +297,17 @@ interface ApiServices {
     @POST(Constants.CREATE_CUSTOM_ORDER)
     suspend fun createCustomOrder(
         @Body map: HashMap<String,Any>
-    ): Response<CommonResponse>
+    ): Response<CreateCustomOrderResponse>
 
     @POST(Constants.SEND_CUSTOM_ORDER_REQUEST)
     suspend fun sendCustomOrderRequest(
         @Body map: HashMap<String,Any>
-    ): Response<CommonResponse>
+    ): Response<CreateCustomOrderResponse>
 
     @POST(Constants.APPLY_CUSTOM_ORDER_GIFT_CARD)
     suspend fun applyCustomOrderGiftCard(
         @Body map: HashMap<String,Any>
-    ): Response<CommonResponse>
+    ): Response<AcceptCustomOrderResponse>
 
     @POST(Constants.CUSTOM_ORDER_COMPLETE_PAYMENT)
     suspend fun customOrderPayment(
@@ -317,7 +322,7 @@ interface ApiServices {
     @POST(Constants.USER_SINGLE_CHAT)
     suspend fun chatDetail(
         @Body map: HashMap<String,Any>
-    ): Response<GetChatResponse>
+    ): Response<ChatDetailResponse>
 
     @POST(Constants.SEND_MESSAGE)
     suspend fun sendMessage(
@@ -327,6 +332,6 @@ interface ApiServices {
     @POST(Constants.CHAT_WITH_SELLER)
     suspend fun chatWithSeller(
         @Body map: HashMap<String,Any>
-    ): Response<CommonResponse>
+    ): Response<NormalChatResponse>
 
 }

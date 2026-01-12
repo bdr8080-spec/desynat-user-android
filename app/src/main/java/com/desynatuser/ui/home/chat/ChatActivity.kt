@@ -1,25 +1,31 @@
-package com.desynatuser.ui.home.chat.response
+package com.desynatuser.ui.home.chat
 
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.adapter.ChatAdapter
 import com.desynatuser.base.BaseActivity
+import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.ActivityChatBinding
+import com.desynatuser.databinding.AddCustomRequestDialogBinding
+import com.desynatuser.databinding.AddDeliveryAddressDialogBinding
 import com.desynatuser.databinding.ViewCustomOrderDetailDialogBinding
+import com.desynatuser.ui.home.chat.response.ChatMessage
+import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.GetChatListResponse
+import com.desynatuser.ui.home.chat.response.SendMessageRequest
 import com.desynatuser.ui.home.store.response.Product
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.firebase.database.ChildEventListener
@@ -27,23 +33,24 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 
+@AndroidEntryPoint
 class ChatActivity : BaseActivity() {
     private var binding: ActivityChatBinding? =null
-
+    private val viewModel: HomeViewModel by viewModels()
+    var isObserver = false
     private var chatAdapter: ChatAdapter?=null
     private var chatList = ArrayList<ChatMessage>()
-    var isObserver = false
     var from = ""
-    var productId = ""
-    var storeName = ""
-    var productName = ""
+    var customOrderInfo: CreateCustomOrderResponse.Data?=null
     var productInfo: Product?=null
     var productVariant: Product.ProductVariation?=null
-    var chatData:GetChatListResponse.Data?=null
+    var chatData: GetChatListResponse.Data?=null
 
     private var uniqueId = ""
+    var isFirstMessageLoaded = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,19 +71,20 @@ class ChatActivity : BaseActivity() {
             if (from=="productDetail"){
                 clQuotation.isVisible = true
                 toolbar.isVisible = false
-                productId = intent?.getStringExtra("productId").toString()
-                storeName = intent?.getStringExtra("storeName").toString()
-                productName = intent?.getStringExtra("productName").toString()
                 val itemJson = intent?.getStringExtra("productInfo")
                 if (!itemJson.isNullOrEmpty()) {
                     productInfo = Gson().fromJson(itemJson, Product::class.java)
-                    setQuotationData()
                 }
                 val itemJsonProductVariant = intent?.getStringExtra("productVariant")
                 if (!itemJson.isNullOrEmpty()) {
                     productVariant = Gson().fromJson(itemJsonProductVariant, Product.ProductVariation::class.java)
-                    setQuotationData()
                 }
+                val itemJsonCustomOrderData = intent?.getStringExtra("customOrderData")
+                if (!itemJsonCustomOrderData.isNullOrEmpty()) {
+                    customOrderInfo = Gson().fromJson(itemJsonCustomOrderData, CreateCustomOrderResponse.Data::class.java)
+                }
+                uniqueId = customOrderInfo?.uniqueId.toString()
+                setQuotationData()
             }
             else{
                 val itemJson = intent?.getStringExtra("chatData")
@@ -98,11 +106,16 @@ class ChatActivity : BaseActivity() {
             rvChat.adapter = chatAdapter
 
             listenMessages(uniqueId = uniqueId) { message ->
+                if (!isFirstMessageLoaded) {
+                   pbLoader.isVisible = false
+                    isFirstMessageLoaded = true
+                }
+
                 chatList.add(message)
                 chatAdapter?.notifyItemInserted(chatList.size - 1)
                 rvChat?.scrollToPosition(chatList.size - 1)
 
-                if (message.by != "user" && message.read_status == 0 && message.id != null) {
+                if (message.by != "user" && message.read == 0 && message.id != null) {
                     markMessageRead(uniqueId, message.id!!)
                 }
             }
@@ -113,9 +126,26 @@ class ChatActivity : BaseActivity() {
         binding?.apply {
             clQuotation.isVisible = true
             toolbar.isVisible = false
-            tvToolbar.text = storeName
+            tvToolbar.text = customOrderInfo?.productVariation?.productDetails?.productNameEn
 
-            tvProductName.text = productName
+            if (customOrderInfo?.customDetails!=null){
+                ivViewRequest.isVisible = true
+                ivWaiting.isVisible = false
+                ivSendReq.isVisible = false
+
+                clCustomerRequest.isVisible = true
+                tvTotalQuantityValue.text = customOrderInfo?.quantity.toString()
+                tvAddressValue.text = customOrderInfo?.deliveryAddress.toString()
+                tvCustomDetail.text = customOrderInfo?.customDetails.toString()
+            }
+            else{
+                ivViewRequest.isVisible = false
+                ivWaiting.isVisible = false
+                ivSendReq.isVisible = true
+                clCustomerRequest.isVisible = false
+            }
+
+            tvProductName.text = customOrderInfo?.productVariation?.productDetails?.productNameEn
             tvSizeValue.text = productVariant?.size?.name.toString()
             ivColor.setColorFilter(Color.parseColor(productInfo?.color?.hex_code))
 
@@ -127,6 +157,7 @@ class ChatActivity : BaseActivity() {
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
+
         }
     }
 
@@ -167,6 +198,9 @@ class ChatActivity : BaseActivity() {
                 viewCustomOrderDialog()
             }
 
+            ivSendReq.setOnClickListener {
+                addCustomRequestDialog()
+            }
         }
     }
 
@@ -224,6 +258,11 @@ class ChatActivity : BaseActivity() {
         window.attributes = params
 
         dialogBinding.apply {
+
+            tvTotalQuantityValue.text = customOrderInfo?.quantity.toString()
+            tvAddressValue.text = customOrderInfo?.deliveryAddress.toString()
+            tvCustomDetail.text = customOrderInfo?.customDetails.toString()
+
             tvToolbar.setOnClickListener {
                 dialog?.dismiss()
             }
@@ -231,14 +270,92 @@ class ChatActivity : BaseActivity() {
         dialog?.show()
     }
 
+    private fun addCustomRequestDialog() {
+        val dialog = Dialog(this, R.style.CustomDialog)
+        val dialogBinding = AddCustomRequestDialogBinding.inflate(LayoutInflater.from(this))
+        dialogBinding.root.let { dialog?.setContentView(it) }
+
+        val window: Window = dialog?.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.setCancelable(false)
+
+        val params: WindowManager.LayoutParams = window.attributes
+        params.gravity = Gravity.BOTTOM
+        window.attributes = params
+
+        dialogBinding.apply {
+            tvToolbar.setOnClickListener {
+                dialog?.dismiss()
+            }
+
+            relDeliveryAddress.setOnClickListener {
+                addNewAddressDialog()
+            }
+
+            btnSendRequest.setOnClickListener {
+                val map = HashMap<String, Any>()
+                map["unique_id"] = uniqueId
+                map["quantity"] = etAddQuantity.text?.trim().toString()
+                map["custom_details"] = etCustomDetails.text?.trim().toString()
+                map["delivery_address"] = tvAddress.text?.trim().toString()
+                sendCustomOrderRequest(map)
+            }
+        }
+        dialog?.show()
+    }
+
+    private fun addNewAddressDialog() {
+        val dialog = Dialog(this, R.style.CustomDialog)
+        val dialogBinding = AddDeliveryAddressDialogBinding.inflate(LayoutInflater.from(this))
+        dialogBinding.root.let { dialog?.setContentView(it) }
+
+        val window: Window = dialog?.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.setCancelable(false)
+
+        val params: WindowManager.LayoutParams = window.attributes
+        params.gravity = Gravity.BOTTOM
+        window.attributes = params
+
+        dialogBinding.apply {
+            tvToolbar.setOnClickListener {
+                dialog?.dismiss()
+            }
+
+            btnAdd.setOnClickListener {
+               dialog?.dismiss()
+            }
+        }
+        dialog?.show()
+    }
 
     private val database =
         FirebaseDatabase.getInstance().reference
 
-    fun sendMessage(uniqueId: String, message: String,type:String) {
-        val msg = SendMessageRequest(by = "user", message = message, type = type, unique_id = uniqueId, times = Instant.now().toString(), user_id = SharedPreference.get(this).getUser()?.id?.toLong()?:0)
+    fun sendMessage(uniqueId: String, message: String, type: String) {
+        val ref = database.child("chats").child(uniqueId).push()
+        val messageId = ref.key ?: return
 
-        database.child("chats").child(uniqueId).push().setValue(msg)
+        val msg = SendMessageRequest(
+            id = messageId,
+            by = "user",
+            message = message,
+            type = type,
+            unique_id = uniqueId,
+            times = Instant.now().toString(),
+            user_id = SharedPreference.get(this).getUser()?.id.toString(),
+            read = 0
+        )
+
+        ref.setValue(msg)
     }
 
     fun listenMessages(
@@ -263,7 +380,7 @@ class ChatActivity : BaseActivity() {
 
     fun markMessageRead(uniqueId: String, messageId: String) {
         val map = HashMap<String, Any>()
-        map["read_status"] = 1
+        map["read"] = 1
 
         database.child("chats")
             .child(uniqueId)
@@ -272,6 +389,31 @@ class ChatActivity : BaseActivity() {
     }
 
     override fun observer() {
+        viewModel.error.observe(this) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
 
+        viewModel.sendCustomOrderRequestResult.observe(this) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                CommonMethod.showSuccessDialog(this,"Request Sent successfully!")
+                customOrderInfo = response.data
+                setQuotationData()
+                isObserver = false
+            }
+        }
     }
+
+    private fun sendCustomOrderRequest(map:HashMap<String,Any>) {
+
+        viewModel.sendCustomOrderRequest(map)
+        ProgressDialogUtils.getInstance().showProgress(this)
+        isObserver = true
+    }
+
+
     }

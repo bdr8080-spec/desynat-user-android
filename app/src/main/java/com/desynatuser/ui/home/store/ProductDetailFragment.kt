@@ -344,13 +344,12 @@ class ProductDetailFragment : BaseFragment() {
             btnCustomOrder.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("from", "productDetail")
-                    putString("productId", productData?.id.toString())
-                    putString("storeName", productDetailData?.store?.storeName)
-                    putString("productName", productDetailData?.productNameEn)
+                    putString("sellerName", storeData?.sellerInformation?.firstName+" "+storeData?.sellerInformation?.lastName)
                     putString("productInfo",Gson().toJson(productInfo?.getOrNull(selectedPos)))
                     putString("productVariant",Gson().toJson(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)))
                 }
                 findNavController().navigate(R.id.action_productDetailFragment_to_chatFragment,bundle)
+               // createCustomOrder()
             }
 
             relCartItem.setOnClickListener {
@@ -468,6 +467,20 @@ class ProductDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.createCustomOrderResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                val bundle = Bundle().apply {
+                    putString("from", "productDetail")
+                    putString("productInfo",Gson().toJson(productInfo?.getOrNull(selectedPos)))
+                    putString("customOrderData",Gson().toJson(response.data))
+                    putString("productVariant",Gson().toJson(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)))
+                }
+                findNavController().navigate(R.id.action_productDetailFragment_to_chatFragment,bundle)
+                isObserver = false
+            }
+        }
+
         viewModel.productDetailResult.observe(viewLifecycleOwner) { response ->
             if (isProductObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -525,6 +538,16 @@ class ProductDetailFragment : BaseFragment() {
         map["quantity"] = 1
         map["variants_id"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
         viewModel.addToCart(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+
+    private fun createCustomOrder() {
+        val map = HashMap<String, Any>()
+        map["product_id"] = productData?.id.toString()
+        map["variation_id"] =productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
+        viewModel.createCustomOrder(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }

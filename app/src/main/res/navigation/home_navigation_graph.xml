@@ -198,6 +198,10 @@
             android:id="@+id/action_storeDetailFragment_to_productDetailFragment"
             app:destination="@id/productDetail"/>
 
+        <action
+            android:id="@+id/action_storeDetailFragment_to_chatFragment"
+            app:destination="@id/chat"/>
+
     </fragment>
 
     <fragment
@@ -364,7 +368,16 @@
         android:id="@+id/chat"
         android:name="com.desynatuser.ui.home.chat.ChatFragment"
         android:label="Chat Fragment"
-        tools:layout="@layout/fragment_chat"/>
+        tools:layout="@layout/fragment_chat">
+
+        <action
+            android:id="@+id/action_chatFragment_to_savedAddressFragment"
+            app:destination="@id/savedAddress"/>
+        <action
+            android:id="@+id/action_chatFragment_to_orderPaymentFragment"
+            app:destination="@id/orderPayment"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/chatList"

@@ -1,7 +1,6 @@
 package com.desynatuser.ui.home.chat
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,7 +19,6 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.ChatFilterDialogBinding
 import com.desynatuser.databinding.FragmentChatListBinding
-import com.desynatuser.ui.home.chat.response.ChatActivity
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -62,17 +60,11 @@ class ChatListFragment : BaseFragment() {
 
             chatAdapter = ChatListAdapter(requireActivity(),chatList,object :ChatListAdapter.ChatClick{
                 override fun onChatClick(position: Int) {
-//                    val bundle = Bundle().apply {
-//                        putString("from", "chat")
-//                        putString("chatData", Gson().toJson(chatList[position]))
-//                    }
-//                    findNavController().navigate(R.id.action_chatListFragment_to_chatFragment,bundle)
-
-                    val intent = Intent(requireContext(), ChatActivity::class.java).apply {
-                        putExtra("from", "chat")
-                        putExtra("chatData", Gson().toJson(chatList[position]))
+                    val bundle = Bundle().apply {
+                        putString("from", "chat")
+                        putString("chatData", Gson().toJson(chatList[position]))
                     }
-                    startActivity(intent)
+                    findNavController().navigate(R.id.action_chatListFragment_to_chatFragment,bundle)
                 }
 
             })
