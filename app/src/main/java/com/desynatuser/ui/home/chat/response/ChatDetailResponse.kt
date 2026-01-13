@@ -18,10 +18,14 @@ data class ChatDetailResponse(
         data class Record(
             @SerializedName("action")
             var action: String,
+            @SerializedName("order_create_status")
+            var orderCreateStatus: String,
             @SerializedName("created_at")
             val createdAt: String,
             @SerializedName("custom_details")
             var customDetails: String,
+            @SerializedName("delivery_details")
+            val deliveryDetails: DeliveryDetails,
             @SerializedName("delivery_address")
             var deliveryAddress: String,
             @SerializedName("id")
@@ -59,11 +63,55 @@ data class ChatDetailResponse(
             @SerializedName("variation_id")
             val variationId: String
         ) {
+            data class DeliveryDetails(
+                @SerializedName("address")
+                var address: String,
+                @SerializedName("city")
+                val city: String,
+                @SerializedName("country_code")
+                val countryCode: String,
+                @SerializedName("country_name")
+                val countryName: String,
+                @SerializedName("created_at")
+                val createdAt: String,
+                @SerializedName("house_no")
+                val houseNo: String,
+                @SerializedName("id")
+                val id: Int,
+                @SerializedName("landmark")
+                val landmark: String,
+                @SerializedName("latitude")
+                val latitude: String,
+                @SerializedName("longitude")
+                val longitude: String,
+                @SerializedName("mobile")
+                val mobile: String,
+                @SerializedName("name")
+                val name: String,
+                @SerializedName("postal_code")
+                val postalCode: String,
+                @SerializedName("save_address_as")
+                val saveAddressAs: Int,
+                @SerializedName("set_as_default")
+                val setAsDefault: String,
+                @SerializedName("state")
+                val state: String,
+                @SerializedName("status")
+                val status: Int,
+                @SerializedName("street_no")
+                val streetNo: String,
+                @SerializedName("updated_at")
+                val updatedAt: String,
+                @SerializedName("user_id")
+                val userId: Int
+            )
             data class ProductVariation(
                 @SerializedName("actual_price")
                 val actualPrice: Double,
                 @SerializedName("bust")
                 val bust: String,
+                @SerializedName("color")
+                val color: Color,
                 @SerializedName("color_id")
                 val colorId: String,
                 @SerializedName("created_at")
@@ -88,6 +136,8 @@ data class ChatDetailResponse(
                 val productId: Int,
                 @SerializedName("shoulder")
                 val shoulder: String,
+                @SerializedName("size")
+                val size: Size,
                 @SerializedName("size_id")
                 val sizeId: String,
                 @SerializedName("sku")
@@ -107,6 +157,29 @@ data class ChatDetailResponse(
                 @SerializedName("waist")
                 val waist: String
             ) {
+
+                data class Color(
+                    @SerializedName("created_at")
+                    val createdAt: String,
+                    @SerializedName("hex_code")
+                    val hexCode: String,
+                    @SerializedName("id")
+                    val id: Int,
+                    @SerializedName("name")
+                    val name: String,
+                    @SerializedName("updated_at")
+                    val updatedAt: String
+                )
+                data class Size(
+                    @SerializedName("created_at")
+                    val createdAt: String,
+                    @SerializedName("id")
+                    val id: Int,
+                    @SerializedName("name")
+                    val name: String,
+                    @SerializedName("updated_at")
+                    val updatedAt: String
+                )
                 data class ProductDetails(
                     @SerializedName("affiliated_commission")
                     val affiliatedCommission: Any,

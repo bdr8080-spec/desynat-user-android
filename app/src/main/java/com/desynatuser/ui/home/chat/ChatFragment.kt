@@ -18,12 +18,14 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.adapter.ChatAdapter
+import com.desynatuser.adapter.ImagePreviewAdapter
 import com.desynatuser.adapter.UploadMsgImageAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.AddCustomRequestDialogBinding
 import com.desynatuser.databinding.AddDeliveryAddressDialogBinding
 import com.desynatuser.databinding.FragmentChatBinding
+import com.desynatuser.databinding.ImagePreviewDialogBinding
 import com.desynatuser.databinding.ViewCustomOrderDetailDialogBinding
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.ChatMessage
@@ -32,7 +34,6 @@ import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.chat.response.SendMessageRequest
 import com.desynatuser.ui.home.profile.response.GetAddressResponse
-import com.desynatuser.ui.home.store.response.Product
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
@@ -65,13 +66,13 @@ class ChatFragment : BaseFragment() {
     var sellerId = ""
     var customOrderInfo: CreateCustomOrderResponse.Data?=null
     var normalChatData: NormalChatResponse.Data?=null
-    var productInfo: Product?=null
-    var productVariant: Product.ProductVariation?=null
     var chatData:GetChatListResponse.Data?=null
 
     private var uniqueId = ""
     var isFirstMessageLoaded = false
     private var selectedAddress : GetAddressResponse.Data?=null
+    private var selectedQuantity : String?=null
+    private var customDetail : String?=null
     private var addCustomRequestDialog:Dialog?=null
     private var addCustomRequestDialogBinding:AddCustomRequestDialogBinding?=null
 
@@ -120,48 +121,19 @@ class ChatFragment : BaseFragment() {
 
                 val addressJson = bundle.getString("address")
                 selectedAddress = Gson().fromJson(addressJson, GetAddressResponse.Data::class.java)
-
-                addCustomRequestDialogBinding?.tvAddress?.text = selectedAddress?.address
+                addCustomRequestDialog()
             }
 
 
             from = arguments?.getString("from").toString()
             if (from=="productDetail"){
 
-                clQuotation.isVisible = true
-                toolbar.isVisible = false
-                etMessage.isEnabled = false
-                val itemJson = arguments?.getString("productInfo")
-                val sellerName = arguments?.getString("sellerName")
+                val itemJson = arguments?.getString("customOrderData")
                 if (!itemJson.isNullOrEmpty()) {
-                    productInfo = Gson().fromJson(itemJson, Product::class.java)
+                    customOrderInfo = Gson().fromJson(itemJson, CreateCustomOrderResponse.Data::class.java)
+                    uniqueId = customOrderInfo?.uniqueId.toString()
                 }
-                val itemJsonProductVariant = arguments?.getString("productVariant")
-                if (!itemJson.isNullOrEmpty()) {
-                    productVariant = Gson().fromJson(itemJsonProductVariant, Product.ProductVariation::class.java)
-                }
-                tvToolbar.text = sellerName
-                toolbar.isVisible = false
-                clQuotation.isVisible = true
-                clProduct.isVisible = true
-                clQuotationDetail.isVisible = false
-                clCustomerRequest.isVisible = false
-                tvRequestId.isVisible = false
-                ivViewRequest.isVisible = false
-                ivSendReq.isVisible = true
-                ivWaiting.isVisible = false
-                tvProductName.text = chatDetailData?.productVariation?.productDetails?.productNameEn
-            tvSizeValue.text = productVariant?.size?.name.toString()
-            ivColor.setColorFilter(Color.parseColor(productInfo?.color?.hex_code))
 
-                tvPrice.text = "${CommonMethod.formatPrice(chatDetailData?.productVariation?.actualPrice?:0.0)} KD"
-                tvDiscountPrice.text = "${CommonMethod.formatPrice(chatDetailData?.productVariation?.finalPrice?:0.0)} KD"
-
-                ivProduct.load(chatDetailData?.productVariation?.variantImage?.get(0)) {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_placeholder)
-                    error(R.drawable.ic_placeholder)
-                }
             }
             else if(from=="store"){
                 val itemJson = arguments?.getString("normalChatData")
@@ -169,8 +141,6 @@ class ChatFragment : BaseFragment() {
                     normalChatData = Gson().fromJson(itemJson, NormalChatResponse.Data::class.java)
                     uniqueId = normalChatData?.uniqueId.toString()
                 }
-                clQuotation.isVisible = false
-                toolbar.isVisible = true
             }
             else{
                 val itemJson = arguments?.getString("chatData")
@@ -178,14 +148,12 @@ class ChatFragment : BaseFragment() {
                     chatData = Gson().fromJson(itemJson, GetChatListResponse.Data::class.java)
                     uniqueId = chatData?.uniqueId.toString()
                 }
-                clQuotation.isVisible = false
-                toolbar.isVisible = true
             }
 
 
             chatAdapter = ChatAdapter(requireActivity(),chatList,object : ChatAdapter.ChatClick{
                 override fun onChatClick(position: Int) {
-
+                    chatList[position].message?.let { imagePreviewDialog(it) }
                 }
 
             })
@@ -285,7 +253,7 @@ class ChatFragment : BaseFragment() {
                         ivViewRequest.isVisible = false
                         ivWaiting.isVisible = false
                         ivSendReq.isVisible = true
-                        clCustomerRequest.isVisible = true
+                        clCustomerRequest.isVisible = false
                         clQuotationDetail.isVisible = false
                         tvAccept.isVisible = false
                         tvReject.isVisible = false
@@ -311,6 +279,7 @@ class ChatFragment : BaseFragment() {
                     tvAccept.isVisible = true
                     tvReject.isVisible = true
                     btnPayNow.isVisible = false
+
                 }
                 "3" -> {
                     ivViewRequest.isVisible = true
@@ -322,20 +291,36 @@ class ChatFragment : BaseFragment() {
                     tvReject.isVisible = false
                     btnPayNow.isVisible = true
                 }
+                "4"->{
+                    ivViewRequest.isVisible = true
+                    ivWaiting.isVisible = false
+                    ivSendReq.isVisible = false
+                    tvAccept.isVisible = false
+                    tvReject.isVisible = false
+                    btnPayNow.isVisible = false
+                }
+                "5"->{
+                    ivViewRequest.isVisible = true
+                    ivWaiting.isVisible = false
+                    ivSendReq.isVisible = false
+                    tvAccept.isVisible = false
+                    tvReject.isVisible = false
+                    btnPayNow.isVisible = false
+                }
 
             }
                 tvTotalQuantityValue.text = chatDetailData?.quantity.toString()
-                tvAddressValue.text = chatDetailData?.deliveryAddress.toString()
+                tvAddressValue.text = chatDetailData?.deliveryDetails?.address.toString()
                 tvCustomDetail.text = chatDetailData?.customDetails.toString()
-            tvRequestId.text = "Request Id #${chatData?.id}"
+            tvRequestId.text = "Request Id #${chatDetailData?.id}"
             tvPerItemPriceValue.text = "${CommonMethod.formatPrice(chatDetailData?.price?:0.0)} KD"
             tvShippingFeesValue.text = "${CommonMethod.formatPrice(chatDetailData?.shipping?:0.0)} KD"
             tvTaxValue.text = "${CommonMethod.formatPrice(chatDetailData?.tax?:0.0)} KD"
             tvTotalAmountValue.text = "${CommonMethod.formatPrice(chatDetailData?.totalAmount?:0.0)} KD"
 
             tvProductName.text = chatDetailData?.productVariation?.productDetails?.productNameEn
-//            tvSizeValue.text = productVariant?.size?.name.toString()
-//            ivColor.setColorFilter(Color.parseColor(productInfo?.color?.hex_code))
+            tvSizeValue.text = chatDetailData?.productVariation?.size?.name.toString()
+            ivColor.setColorFilter(Color.parseColor(chatDetailData?.productVariation?.color?.hexCode))
 
             tvPrice.text = "${CommonMethod.formatPrice(chatDetailData?.productVariation?.actualPrice?:0.0)} KD"
             tvDiscountPrice.text = "${CommonMethod.formatPrice(chatDetailData?.productVariation?.finalPrice?:0.0)} KD"
@@ -406,13 +391,11 @@ class ChatFragment : BaseFragment() {
             }
 
             tvAccept.setOnClickListener {
-                tvAccept.isVisible = false
-                tvReject.isVisible = false
-                btnPayNow.isVisible = true
+                acceptRejectQuotation("5")
             }
 
             tvReject.setOnClickListener {
-
+                acceptRejectQuotation("4")
             }
 
             ivViewRequest.setOnClickListener {
@@ -463,9 +446,9 @@ class ChatFragment : BaseFragment() {
 
         dialogBinding.apply {
 
-            tvTotalQuantityValue.text = customOrderInfo?.quantity.toString()
-            tvAddressValue.text = customOrderInfo?.deliveryAddress.toString()
-            tvCustomDetail.text = customOrderInfo?.customDetails.toString()
+            tvTotalQuantityValue.text = chatDetailData?.quantity.toString()
+            tvAddressValue.text = chatDetailData?.deliveryDetails?.address.toString()
+            tvCustomDetail.text = chatDetailData?.customDetails.toString()
 
             tvToolbar.setOnClickListener {
                 dialog?.dismiss()
@@ -496,9 +479,8 @@ class ChatFragment : BaseFragment() {
         window.attributes = params
 
         addCustomRequestDialogBinding?.apply {
-            selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
 
-            if(selectedAddress!=null) {
+            if(selectedAddress==null) {
                 if (SharedPreference.get(requireActivity()).getDefaultAddress()!=null){
                     selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
                     tvAddress.text = selectedAddress?.address}
@@ -506,20 +488,39 @@ class ChatFragment : BaseFragment() {
                     getAddress()
                 }
             }
+            else{
+                addCustomRequestDialogBinding?.tvAddress?.text = selectedAddress?.address
+            }
+
+            if (selectedQuantity!=null) {
+                etAddQuantity.setText(selectedQuantity)
+                selectedQuantity = null
+            }
+            if (customDetail!=null) {
+                etCustomDetails.setText(customDetail)
+                customDetail = null
+            }
 
             tvToolbar.setOnClickListener {
                 addCustomRequestDialog?.dismiss()
             }
 
             tvChange.setOnClickListener {
+                if (etAddQuantity.text?.trim().toString().isNotEmpty()) {
+                    selectedQuantity = etAddQuantity.text.toString()
+                }
+                if (etCustomDetails.text?.trim().toString().isNotEmpty()) {
+                    customDetail = etCustomDetails.text.toString()
+                }
                 val bundle = Bundle().apply {
                     putString("from", "chat")
                 }
                 findNavController().navigate(R.id.action_chatFragment_to_savedAddressFragment,bundle)
+                addCustomRequestDialog?.dismiss()
             }
 
             btnSendRequest.setOnClickListener {
-                createCustomOrder()
+                sendCustomOrderRequest()
             }
         }
         addCustomRequestDialog?.show()
@@ -656,6 +657,28 @@ class ChatFragment : BaseFragment() {
             }
         }
 
+        viewModel.acceptRejectQuotationResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+
+                chatDetailData?.action = response.data.action
+                setQuotationData()
+
+                if (response.data.action=="4"){
+                    CommonMethod.showSuccessDialog(requireActivity(),"Quotation rejected Successfully"){
+
+                    }
+                }
+                else{
+                    CommonMethod.showSuccessDialog(requireActivity(),"Quotation accepted Successfully"){
+
+                    }
+                }
+
+                }
+            isObserver = false
+            }
+
         viewModel.addressResult.observe(viewLifecycleOwner) { response ->
             if (isAddressObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -680,19 +703,16 @@ class ChatFragment : BaseFragment() {
         viewModel.sendCustomOrderRequestResult.observe(viewLifecycleOwner) { response ->
             if (isCustomObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                chatDetailData?.action = response.data.action
+                chatDetailData?.deliveryAddress = response.data.deliveryAddress
+                chatDetailData?.deliveryDetails?.address = selectedAddress?.address.toString()
+                chatDetailData?.customDetails = response.data.customDetails
+                chatDetailData?.quantity = response.data.quantity
+                setQuotationData()
                 CommonMethod.showSuccessDialog(requireActivity(),"Request Sent successfully!"){
                     addCustomRequestDialog?.dismiss()
                 }
-                if (chatDetailData!=null) {
-                    chatDetailData?.action = response.data.action
-                    chatDetailData?.deliveryAddress = response.data.deliveryAddress
-                    chatDetailData?.customDetails = response.data.customDetails
-                    chatDetailData?.quantity = response.data.quantity
-                    setQuotationData()
-                }
-                else{
-                    getChat()
-                }
+
                 isCustomObserver = false
             }
         }
@@ -706,18 +726,9 @@ class ChatFragment : BaseFragment() {
             }
         }
 
-        viewModel.createCustomOrderResult.observe(viewLifecycleOwner) { response ->
-            if (isObserver) {
-                uniqueId = response.data.uniqueId
-                sendCustomOrderRequest()
-                isObserver = false
-            }
-        }
-
     }
 
     private fun sendCustomOrderRequest() {
-        binding?.etMessage?.isEnabled = true
         val map = HashMap<String, Any>()
         map["unique_id"] = uniqueId
         map["quantity"] = addCustomRequestDialogBinding?.etAddQuantity?.text?.trim().toString()
@@ -726,6 +737,15 @@ class ChatFragment : BaseFragment() {
         viewModel.sendCustomOrderRequest(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isCustomObserver = true
+    }
+
+    private fun acceptRejectQuotation(status:String) {
+        val map = HashMap<String, Any>()
+        map["unique_id"] = uniqueId
+        map["status"] = status
+        viewModel.acceptRejectQuotation(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
     private fun getAddress() {
@@ -738,15 +758,6 @@ class ChatFragment : BaseFragment() {
         val map = HashMap<String, Any>()
         map["unique_id"] = uniqueId
         viewModel.chatDetail(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        isObserver = true
-    }
-
-    private fun createCustomOrder() {
-        val map = HashMap<String, Any>()
-        map["product_id"] = productInfo?.productId.toString()
-        map["variation_id"] =productVariant?.id.toString()
-        viewModel.createCustomOrder(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -825,6 +836,40 @@ class ChatFragment : BaseFragment() {
 //        ProgressDialogUtils.getInstance().showProgress(requireActivity())
 //        isObserver = true
 //    }
+
+    private fun imagePreviewDialog(image: String) {
+        var imageList = arrayListOf(image)
+        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        val dialogBinding = ImagePreviewDialogBinding.inflate(LayoutInflater.from(requireActivity()))
+        dialogBinding.root.let { dialog?.setContentView(it) }
+
+        val window: Window = dialog?.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.setCancelable(false)
+
+        val params: WindowManager.LayoutParams = window.attributes
+        params.gravity = Gravity.CENTER
+        window.attributes = params
+
+        dialogBinding.apply {
+
+            ivCross.setOnClickListener{
+                dialog?.dismiss()
+            }
+
+            dotsIndicator.isVisible = false
+
+            val imagePreviewAdapter = ImagePreviewAdapter(requireActivity(),imageList)
+            viewPager?.adapter = imagePreviewAdapter
+
+        }
+
+        dialog?.show()
+    }
 
 
 }

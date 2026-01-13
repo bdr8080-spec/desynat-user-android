@@ -131,6 +131,7 @@
         </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAddressTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
@@ -142,6 +143,7 @@
                 android:textSize="@dimen/_12sdp" />
 
             <RelativeLayout
+                android:id="@+id/relAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"

@@ -10,6 +10,7 @@ import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
@@ -53,6 +54,7 @@ import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
+import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -588,12 +590,31 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
             repository.sendMessage(map)
         }
     }
+
     val chatWithSellerResult: LiveData<NormalChatResponse>
         get() = repository.chatWithSellerLiveData
 
     fun chatWithSeller(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.chatWithSeller(map)
+        }
+    }
+
+    val acceptRejectQuotationResult: LiveData<AcceptRejectQuotationRequestResponse>
+        get() = repository.acceptRejectQuotationLiveData
+
+    fun acceptRejectQuotation(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.acceptRejectQuotation(map)
+        }
+    }
+
+val getHomeScreenBannerResult: LiveData<GetHomeScreenPopUpBanner>
+        get() = repository.getHomeScreenBannerLiveData
+
+    fun getHomeScreenBanner() {
+        viewModelScope.launch {
+            repository.getHomeScreenBanner()
         }
     }
 

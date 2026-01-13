@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/clQuotation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:backgroundTint="@color/white"
                 android:paddingVertical="@dimen/_8sdp"
                 android:paddingHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:background="@drawable/card_background"
                 app:layout_constraintTop_toBottomOf="@+id/tvRequestId">
@@ -231,7 +231,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/clCustomerRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -327,11 +327,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:backgroundTint="@color/white"
                 android:paddingVertical="@dimen/_5sdp"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:background="@drawable/card_background"
+                android:background="@drawable/grey_stroke_card_background"
                 app:layout_constraintTop_toBottomOf="@+id/clCustomerRequest">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -339,7 +338,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_light"
-                    android:text="Per Item Price"
+                    android:text="Item Price"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"

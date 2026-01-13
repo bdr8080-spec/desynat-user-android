@@ -92,6 +92,7 @@ object Constants {
     const val USER_SINGLE_CHAT = "/api/user/user-Single-chats"
     const val SEND_MESSAGE = "/api/user/send-message-in-chats"
     const val CHAT_WITH_SELLER = "/api/user/user-normal-chat-with-seller"
-
+    const val HOME_SCREEN_BANNER = "/api/user/popUp-Home-screen-Banner"
+    const val ACCEPT_REJECT_ORDER_REQUEST = "/api/user/custom-accept-reject-order-request"
 
 }

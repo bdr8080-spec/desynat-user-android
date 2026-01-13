@@ -6,6 +6,7 @@ import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
@@ -49,6 +50,7 @@ import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
+import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -333,5 +335,15 @@ interface ApiServices {
     suspend fun chatWithSeller(
         @Body map: HashMap<String,Any>
     ): Response<NormalChatResponse>
+
+    @POST(Constants.ACCEPT_REJECT_ORDER_REQUEST)
+    suspend fun acceptRejectQuotation(
+        @Body map: HashMap<String,Any>
+    ): Response<AcceptRejectQuotationRequestResponse>
+
+    @POST(Constants.HOME_SCREEN_BANNER)
+    suspend fun getHomeScreenBanner(
+
+    ): Response<GetHomeScreenPopUpBanner>
 
 }

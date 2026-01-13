@@ -61,6 +61,9 @@ class MyOrderFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
+
+            orderType = arguments?.getInt("orderType", 1) ?: 1
+
             toolbar.tvToolbar.text = "My Order"
 
             myOrderAdapter = MyOrderAdapter(requireActivity(),myOrderList,object :MyOrderAdapter.OrderClick{
@@ -101,7 +104,6 @@ class MyOrderFragment : BaseFragment() {
                 tvCustomOrder.setTextColor(requireActivity().getColor(R.color.white))
                 tvCustomOrder.setBackgroundResource(R.drawable.selected_right_tab)
                 rvOrder.isVisible = true
-                checkData()
             }
 
             else {
@@ -112,7 +114,6 @@ class MyOrderFragment : BaseFragment() {
                 tvCustomOrder.setTextColor(requireActivity().getColor(R.color.black))
                 tvCustomOrder.background = null
                 rvOrder.isVisible = true
-                checkData()
             }
 
         }
@@ -133,7 +134,6 @@ class MyOrderFragment : BaseFragment() {
                 tvCustomOrder.setTextColor(requireActivity().getColor(R.color.black))
                 tvCustomOrder.background = null
                 rvOrder.isVisible = true
-                checkData()
             }
 
             tvCustomOrder.setOnClickListener {
@@ -144,7 +144,6 @@ class MyOrderFragment : BaseFragment() {
                 tvCustomOrder.setTextColor(requireActivity().getColor(R.color.white))
                 tvCustomOrder.setBackgroundResource(R.drawable.selected_right_tab)
                 rvOrder.isVisible = true
-                checkData()
             }
 
             ivFilter.setOnClickListener {

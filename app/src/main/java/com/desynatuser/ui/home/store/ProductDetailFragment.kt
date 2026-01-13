@@ -342,14 +342,14 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnCustomOrder.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("from", "productDetail")
-                    putString("sellerName", storeData?.sellerInformation?.firstName+" "+storeData?.sellerInformation?.lastName)
-                    putString("productInfo",Gson().toJson(productInfo?.getOrNull(selectedPos)))
-                    putString("productVariant",Gson().toJson(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)))
-                }
-                findNavController().navigate(R.id.action_productDetailFragment_to_chatFragment,bundle)
-               // createCustomOrder()
+//                val bundle = Bundle().apply {
+//                    putString("from", "productDetail")
+//                    putString("sellerName", storeData?.sellerInformation?.firstName+" "+storeData?.sellerInformation?.lastName)
+//                    putString("productInfo",Gson().toJson(productInfo?.getOrNull(selectedPos)))
+//                    putString("productVariant",Gson().toJson(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)))
+//                }
+//                findNavController().navigate(R.id.action_productDetailFragment_to_chatFragment,bundle)
+                createCustomOrder()
             }
 
             relCartItem.setOnClickListener {
@@ -472,9 +472,7 @@ class ProductDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 val bundle = Bundle().apply {
                     putString("from", "productDetail")
-                    putString("productInfo",Gson().toJson(productInfo?.getOrNull(selectedPos)))
                     putString("customOrderData",Gson().toJson(response.data))
-                    putString("productVariant",Gson().toJson(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)))
                 }
                 findNavController().navigate(R.id.action_productDetailFragment_to_chatFragment,bundle)
                 isObserver = false

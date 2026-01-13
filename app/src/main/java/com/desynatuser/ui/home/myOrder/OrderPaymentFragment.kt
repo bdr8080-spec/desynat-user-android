@@ -310,7 +310,7 @@ class OrderPaymentFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 val bundle = Bundle().apply {
                     putString("amount", CommonMethod.formatPrice(chatDetailData?.totalAmount?:0.0))
-                  //  putString("address", Gson().toJson(selectedAddress))
+                    putString("chatData", Gson().toJson(chatDetailData))
                     putString("payment", selectedMethod)
                 }
                 findNavController().navigate(R.id.action_orderPaymentFragment_to_orderPlacedFragment,bundle)

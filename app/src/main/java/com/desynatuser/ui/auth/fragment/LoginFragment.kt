@@ -112,6 +112,7 @@ class LoginFragment : BaseFragment() {
 
             tvGuest.setOnClickListener {
                 Constants.isGuest = true
+                Constants.isFromLoginSignup = true
                 Constants.Category = "Women"
                 requireActivity().startActivity(
                     Intent(requireActivity(),

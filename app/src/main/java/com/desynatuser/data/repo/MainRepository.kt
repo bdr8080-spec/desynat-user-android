@@ -12,6 +12,7 @@ import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
+import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
@@ -55,6 +56,7 @@ import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
+import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.http.Body
@@ -805,6 +807,28 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
                 api.chatWithSeller(map)
             },
             responseLiveData = chatWithSellerLiveData
+        )
+    }
+
+    val acceptRejectQuotationLiveData = SingleLiveEvent<AcceptRejectQuotationRequestResponse>()
+    suspend fun acceptRejectQuotation(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.acceptRejectQuotation(map)
+            },
+            responseLiveData = acceptRejectQuotationLiveData
+        )
+    }
+
+    val getHomeScreenBannerLiveData = SingleLiveEvent<GetHomeScreenPopUpBanner>()
+    suspend fun getHomeScreenBanner()
+    {
+        handleApiCall(
+            api = {
+                api.getHomeScreenBanner()
+            },
+            responseLiveData = getHomeScreenBannerLiveData
         )
     }
 

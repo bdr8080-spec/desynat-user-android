@@ -55,6 +55,7 @@ import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
@@ -73,6 +74,7 @@ class HomeFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val locationViewModel: LocationViewModel by activityViewModels()
     var isObserver = false
+    var isHomeBannerObserver = false
     var isDetactImage = false
     var isCartObserver = false
     private var hasNavigatedFromML = false
@@ -128,10 +130,14 @@ class HomeFragment : BaseFragment() {
 
     override fun initView() {
 
-//        if (Constants.isFromLoginSignup){
-//            showBannerDialog(arrayListOf("https://desynat-bucket.s3.me-south-1.amazonaws.com/Product/1764228507_6927fd9b789d1.png","https://desynat-bucket.s3.me-south-1.amazonaws.com/Product/1764228507_6927fd9b789d1.png"))
-//            Constants.isFromLoginSignup = false
-//        }
+        if (Constants.isFromLoginSignup){
+            binding?.clMain?.isVisible = false
+            viewModel.getHomeScreenBanner()
+            isHomeBannerObserver = true
+        }
+        else{
+            binding?.clMain?.isVisible = true
+        }
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
             if (!Constants.isGuest){
@@ -242,11 +248,20 @@ class HomeFragment : BaseFragment() {
 
             }
 
-        viewCartDetail()
+        if (Constants.isGuest==false){
+            viewCartDetail()
+        }
 
     }
 
-    private fun showBannerDialog(imageList: ArrayList<String>) {
+    private fun showBannerDialog(list: ArrayList<GetHomeScreenPopUpBanner.Data>) {
+        Constants.isFromLoginSignup = false
+        binding?.clMain?.isVisible = true
+        val imageList = ArrayList<String>()
+
+        for (i in 0 until list.size){
+            imageList.add(list[i].image)
+        }
 
         val dialog = Dialog(requireActivity(), R.style.CustomDialog)
         val dialogBinding = HomeBannerDialogBinding.inflate(LayoutInflater.from(context))
@@ -296,7 +311,7 @@ class HomeFragment : BaseFragment() {
                     super.onPageSelected(position)
 
                     if (position == imageList.size - 1) {
-                        handler.postDelayed(dismissRunnable, 500)
+                        handler.postDelayed(dismissRunnable, 5000)
                     }
                 }
             })
@@ -367,6 +382,7 @@ class HomeFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
+                binding?.clMain?.isVisible = true
                 isObserver = false
             }
 
@@ -384,6 +400,16 @@ class HomeFragment : BaseFragment() {
 
                 }
                 isObserver = false
+            }
+        }
+        viewModel.getHomeScreenBannerResult.observe(viewLifecycleOwner) { response ->
+            if (isHomeBannerObserver) {
+                response?.let {
+
+                    showBannerDialog(response.data)
+
+                }
+                isHomeBannerObserver = false
             }
         }
 

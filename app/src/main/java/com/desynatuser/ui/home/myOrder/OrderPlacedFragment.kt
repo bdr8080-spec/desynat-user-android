@@ -15,6 +15,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentOrderPlacedBinding
+import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
@@ -28,6 +29,7 @@ class OrderPlacedFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
     private var selectedAddress: GetAddressResponse.Data?=null
+    private var chatDataDetail: ChatDetailResponse.Data.Record?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,8 +51,12 @@ class OrderPlacedFragment : BaseFragment() {
             val amount = arguments?.getString("amount")
             val addressJson = arguments?.getString("address")
             val payment = arguments?.getString("payment")
+            val chatData = arguments?.getString("chatData")
             if (!addressJson.isNullOrEmpty()) {
                 selectedAddress = Gson().fromJson(addressJson, GetAddressResponse.Data::class.java)
+            }
+            if (!chatData.isNullOrEmpty()) {
+                chatDataDetail = Gson().fromJson(chatData, ChatDetailResponse.Data.Record::class.java)
             }
              tvDeliveryDate.text = "Expected Delivery Date : 3 to 5 working days"
 //             tvDeliveryDate.text = "Expected Delivery Date : ${CommonMethod.getExpectedDeliveryDate(output = "dd MMM yy")}"
@@ -69,8 +75,15 @@ class OrderPlacedFragment : BaseFragment() {
                 tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} KD"
                 tvPaid.isVisible = true
             }
-                  tvAddress.text = selectedAddress?.name
-                  tvAddress1.text = selectedAddress?.address
+
+            if (selectedAddress!=null) {
+                tvAddress.text = selectedAddress?.name
+                tvAddress1.text = selectedAddress?.address
+            }
+            else{
+                tvAddress.text = chatDataDetail?.deliveryDetails?.name
+                tvAddress1.text = chatDataDetail?.deliveryDetails?.address
+            }
 
         /*    lottieView.addAnimatorListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
@@ -86,13 +99,16 @@ class OrderPlacedFragment : BaseFragment() {
 
             tvTrackOrder.setOnClickListener {
                 lottieView.cancelAnimation()
+                val bundle = Bundle().apply {
+                    putInt("orderType", if (chatDataDetail!=null) 2 else 1)
+                }
                 val navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.home, false)
                     .build()
 
                 findNavController().navigate(
                     R.id.action_orderPlacedFragment_to_myOrderFragment,
-                    null,
+                    bundle,
                     navOptions
                 )
            }

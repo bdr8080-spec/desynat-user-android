@@ -93,8 +93,8 @@ class ChatListFragment : BaseFragment() {
                     lastQuery = query
                     search?.cancel()
                     search = lifecycleScope.launch {
-                        getChat()
                         delay(600)
+                        getChat()
 
                     }
                 }
