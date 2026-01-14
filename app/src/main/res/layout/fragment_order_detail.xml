@@ -95,6 +95,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/relProduct" />
 
+        <LinearLayout
+            android:id="@+id/llBilling"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tvBillingDetails"
+            android:orientation="vertical">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clBillingData"
             android:layout_width="match_parent"
@@ -305,6 +312,136 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="gone"
+                android:id="@+id/clCustomBillingDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:background="@drawable/card_background"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPerItemPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Item Price"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPerItemPriceValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="400 KD"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:textAlignment="textEnd"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvPerItemPrice"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvPerItemPrice"
+                    app:layout_constraintTop_toTopOf="@id/tvPerItemPrice" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvShippingFees"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Shipping Fees"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPerItemPrice" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvShippingFeesValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="20 KD"
+                    android:textColor="@color/black"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvShippingFees"
+                    app:layout_constraintTop_toTopOf="@id/tvShippingFees" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCustomTax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Tax"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvShippingFees" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCustomTaxValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="0 KD"
+                    android:textColor="@color/black"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvCustomTax"
+                    app:layout_constraintTop_toTopOf="@id/tvCustomTax" />
+
+                <View
+                    android:id="@+id/viewTax"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#1A000000"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCustomTax"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCustomTotalAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Total Amount"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewTax" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCustomTotalAmountValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="480 KD"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:textAlignment="textEnd"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvCustomTotalAmount"
+                    app:layout_constraintTop_toTopOf="@id/tvCustomTotalAmount" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSavePrice"
             android:layout_width="match_parent"
@@ -316,7 +453,7 @@
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clBillingData" />
+            app:layout_constraintTop_toBottomOf="@+id/llBilling" />
 
         <LinearLayout
             android:visibility="gone"
@@ -581,7 +718,7 @@
                 android:id="@+id/ivInProcess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_order_picked_selected"
+                android:src="@drawable/ic_order_picked"
                 app:layout_constraintTop_toTopOf="@+id/ivConfirmed"
                 app:layout_constraintStart_toEndOf="@+id/viewConfirmed"
                 app:layout_constraintEnd_toStartOf="@+id/viewPicked"/>

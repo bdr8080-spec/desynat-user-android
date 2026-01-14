@@ -115,8 +115,8 @@ class ChatActivity : BaseActivity() {
                 chatAdapter?.notifyItemInserted(chatList.size - 1)
                 rvChat?.scrollToPosition(chatList.size - 1)
 
-                if (message.by != "user" && message.read == 0 && message.id != null) {
-                    markMessageRead(uniqueId, message.id!!)
+                if (message.by.toSafeString() != "user" && message.read.toSafeInt() == 0 && message.id.toSafeString() != null) {
+                    markMessageRead(uniqueId, message.id.toSafeString())
                 }
             }
         }
@@ -173,7 +173,7 @@ class ChatActivity : BaseActivity() {
                     showToast("Please enter message")
                 }
                 else{
-                    sendMessage(uniqueId = uniqueId, message = etMessage.text?.trim().toString(), type = "0")
+                    sendMessage(uniqueId = uniqueId, message = etMessage.text?.trim().toString(), type = 0)
                     etMessage.setText("")
                 }
             }
@@ -340,7 +340,7 @@ class ChatActivity : BaseActivity() {
     private val database =
         FirebaseDatabase.getInstance().reference
 
-    fun sendMessage(uniqueId: String, message: String, type: String) {
+    fun sendMessage(uniqueId: String, message: String, type: Int) {
         val ref = database.child("chats").child(uniqueId).push()
         val messageId = ref.key ?: return
 
@@ -351,7 +351,7 @@ class ChatActivity : BaseActivity() {
             type = type,
             unique_id = uniqueId,
             times = Instant.now().toString(),
-            user_id = SharedPreference.get(this).getUser()?.id.toString(),
+            user_id = SharedPreference.get(this).getUser()?.id?.toLong()?:0,
             read = 0
         )
 

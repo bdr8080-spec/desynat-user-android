@@ -71,11 +71,53 @@ data class GetSingleOrderSummaryResponse(
         @SerializedName("variants_id")
         val variantsId: Int,
         @SerializedName("variation_details")
-        val variationDetails: VariationDetails
+        val variationDetails: VariationDetails,
+        @SerializedName("ChatroomRecordtable")
+        val chatroomRecordtable: ChatroomRecordtable,
     ) {
+        data class ChatroomRecordtable(
+            @SerializedName("action")
+            val action: String,
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("custom_details")
+            val customDetails: String,
+            @SerializedName("delivery_address")
+            val deliveryAddress: String,
+            @SerializedName("id")
+            val id: Int,
+            @SerializedName("price")
+            val price: String,
+            @SerializedName("product_id")
+            val productId: String,
+            @SerializedName("product_request")
+            val productRequest: String,
+            @SerializedName("quantity")
+            val quantity: String,
+            @SerializedName("seller_id")
+            val sellerId: Int,
+            @SerializedName("shipping")
+            val shipping: String,
+            @SerializedName("tax")
+            val tax: String,
+            @SerializedName("total_amount")
+            val totalAmount: String,
+            @SerializedName("type")
+            val type: String,
+            @SerializedName("unique_id")
+            val uniqueId: String,
+            @SerializedName("updated_at")
+            val updatedAt: String,
+            @SerializedName("user_id")
+            val userId: Int,
+            @SerializedName("variation_id")
+            val variationId: String
+        )
         data class Order(
             @SerializedName("assign_date")
             val assignDate: String,
+            @SerializedName("order_type")
+            val orderType: String,
             @SerializedName("assign_status")
             val assignStatus: String,
             @SerializedName("cancel_reason")

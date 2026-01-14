@@ -46,6 +46,11 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
             if (chatData.lastChatTime!=null&&chatData.lastChatTime!="null"&&chatData.lastChatTime!="") {
                 tvTime.text = CommonMethod.formatChatTime(chatData?.lastChatTime.toString())
             }
+            else{
+                tvTime.text = CommonMethod.formatChatTime(CommonMethod.customizeChangeDateFormat(
+                    chatData?.updatedAt.toString(), outputFormat = "dd MMM yyyy, hh:mm a"
+                ) )
+            }
 
           if(chatData.type=="2") {
               tvStatus.isVisible = true
@@ -89,10 +94,16 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
                           ColorStateList.valueOf(Color.parseColor("#1AD53B36"))
                   }
                   "5"->{
-                      tvStatus.text = "Quotation Accepted"
-                      tvStatus.setTextColor(Color.parseColor("#16B364"))
-                      tvStatus.backgroundTintList =
-                          ColorStateList.valueOf(Color.parseColor("#1A16B364"))
+                      if (chatData?.orderCreateStatus!=null){
+                          tvStatus.isVisible = false
+                      }
+                      else{
+                          tvStatus.text = "Quotation Accepted"
+                          tvStatus.setTextColor(Color.parseColor("#16B364"))
+                          tvStatus.backgroundTintList =
+                              ColorStateList.valueOf(Color.parseColor("#1A16B364"))
+                      }
+
                   }
                   else ->{
                       tvStatus.isVisible = false

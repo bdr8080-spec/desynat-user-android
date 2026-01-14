@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_10sdp"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivStore"
@@ -281,4 +287,323 @@
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/tvExchange"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
+        android:id="@+id/clCustomOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRequestId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:text="Request Id #23618"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <View
+            android:id="@+id/viewRequestId"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1A000000"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvRequestId"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivCustomStore"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:src="@drawable/toprated"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
+            app:layout_constraintTop_toBottomOf="@+id/viewRequestId"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvCustomTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:singleLine="true"
+            android:text="Mooei 3 Pcs set"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:textSize="@dimen/_11sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@+id/ivCustomStore"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivCustomStore" />
+
+        <TextView
+            android:id="@+id/tvCustomSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_light"
+            android:text="Size: "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintStart_toStartOf="@+id/tvCustomTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvCustomTitle" />
+
+        <TextView
+            android:id="@+id/tvCustomSizeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_light"
+            android:text="M"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintStart_toEndOf="@+id/tvCustomSize"
+            app:layout_constraintTop_toTopOf="@+id/tvCustomSize"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCustomSize"/>
+
+        <TextView
+            android:id="@+id/tvCustomCustomColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_light"
+            android:text="Color"
+            android:drawableStart="@drawable/ic_cart_dot"
+            android:drawablePadding="@dimen/_3sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            app:layout_constraintStart_toEndOf="@+id/tvCustomSizeValue"
+            app:layout_constraintTop_toTopOf="@+id/tvCustomSize"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCustomSize"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivCustomColor"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:src="@color/light_brown"
+            android:layout_marginStart="@dimen/_5sdp"
+            app:shapeAppearanceOverlay="@style/rounded_corner2sdp"
+            app:layout_constraintTop_toTopOf="@+id/tvCustomSize"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCustomSize"
+            app:layout_constraintStart_toEndOf="@+id/tvCustomCustomColor"/>
+
+        <TextView
+            android:id="@+id/tvCustomQnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_light"
+            android:text="Qnt: "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:drawableStart="@drawable/ic_cart_dot"
+            android:drawablePadding="@dimen/_3sdp"
+            app:layout_constraintStart_toEndOf="@+id/ivCustomColor"
+            app:layout_constraintTop_toTopOf="@+id/tvCustomSize"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCustomSize"/>
+
+        <TextView
+            android:id="@+id/tvCustomQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_light"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintStart_toEndOf="@+id/tvCustomQnt"
+            app:layout_constraintTop_toTopOf="@+id/tvCustomSize"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCustomSize"/>
+
+        <TextView
+            android:id="@+id/tvPerItemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:maxLines="1"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:text="Per Item Price"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@+id/tvCustomTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvCustomSize" />
+
+        <TextView
+            android:id="@+id/tvPerItemPriceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:text="KD 239"
+            android:textColor="#99000000"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            app:layout_constraintStart_toEndOf="@+id/tvPerItemPrice"
+            app:layout_constraintTop_toTopOf="@+id/tvPerItemPrice" />
+
+        <View
+            android:id="@+id/viewCustomImg"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/ivCustomStore"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTotalQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:text="Total Quantity"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewCustomImg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTotalQuantityValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvTotalQuantity"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTotalQuantity"
+            app:layout_constraintTop_toTopOf="@id/tvTotalQuantity" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:text="Address"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTotalQuantity" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAddressValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Sector 63, Bismilla Apartment, Kuwait"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvTotalQuantity"
+            app:layout_constraintTop_toTopOf="@id/tvAddress" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCustom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:text="Custom Details"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddressValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCustomDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="lorem ipsum dolor sit amet, sectetur adipisicing elit, sed do eiusmod . "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvTotalQuantity"
+            app:layout_constraintTop_toTopOf="@id/tvCustom" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnCustomCancelOrder"
+            style="@style/button"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp"
+            android:textColor="#D53B36"
+            android:background="@drawable/red_stroke"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Cancel Order"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCustomDetail"/>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/relCustomRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF7EA"
+            android:paddingVertical="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/btnCustomCancelOrder">
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/Customrating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:stepSize="1"
+                android:numStars="5"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCustomRateProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Rate this product"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:layout_below="@+id/Customrating"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/viewCustomBottom"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#1A000000"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/relCustomRating"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</LinearLayout>

@@ -228,9 +228,34 @@ class OrderDetailFragment : BaseFragment() {
             tvPlacedDate.text = "Placed On "+CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mma")
 
             tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.order?.totalMrp?:0.0)} KD"
-            tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?:0.0)} KD"
+
+            if (orderData?.order?.orderType=="2"){
+                clCustomBillingDetail.isVisible = true
+                clBillingData.isVisible = false
+            }
+            else{
+                clBillingData.isVisible = true
+                clCustomBillingDetail.isVisible = false
+            }
+            if (orderData?.order?.discountMrp==0.0){
+                tvDiscountOnMrp.isVisible = false
+                tvDiscountOnMRP.isVisible = false
+            }
+            else{
+                tvDiscountOnMrp.isVisible = true
+                tvDiscountOnMRP.isVisible = true
+                tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?:0.0)} KD"
+            }
+
             tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?:0.0)} KD"
             tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?:0.0)} KD"
+
+            tvPerItemPrice.text = "Item Price (${CommonMethod.formatPrice(orderData?.amount?:0.0)} X ${orderData?.quantity})"
+            tvPerItemPriceValue.text = "${CommonMethod.formatPrice((orderData?.amount?:0.0 )* (orderData?.quantity?:1))} KD"
+            tvShippingFeesValue.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?:0.0)} KD"
+            tvCustomTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?:0.0)} KD"
+            tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"
+
             if (orderData?.order?.promocodeStatus=="yes"){
                 tvPromoCode.isVisible = true
                 tvPromoCodeValue.isVisible = true
@@ -256,9 +281,13 @@ class OrderDetailFragment : BaseFragment() {
             tvCouponDiscountValue.text = "${CommonMethod.formatPrice(orderData?.order?.discountCoupon?:0.0)} KD"
 
             tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"
-
-            tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.order?.discountMrp ?: 0.0) + (orderData?.order?.discountCoupon ?: 0.0))} KD on this"
-
+            var savedAmount = CommonMethod.formatPrice((orderData?.order?.discountMrp ?: 0.0) + (orderData?.order?.discountCoupon ?: 0.0))
+            if (savedAmount!="0"){
+                tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.order?.discountMrp ?: 0.0) + (orderData?.order?.discountCoupon ?: 0.0))} KD on this"
+            }
+            else{
+                tvSavePrice.isVisible = false
+            }
 
             tvAmount.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"
 
@@ -299,9 +328,20 @@ class OrderDetailFragment : BaseFragment() {
             }
             else{
                 when(orderData?.deliveryStatus){
+                    "0" -> {
+                        when (orderData?.returnType){
+                            "1"->{
+                                returnData()
+                            }
+                            "2"->{
+                                exchangeData()
+                            }
+                        }
+
+                    }
                     "1" -> {
                         btnInvoice.isVisible = false
-                        tvStatus.text = "Ongoing"
+                        tvStatus.text = "Confirmed"
                         tvStatus.setTextColor(Color.parseColor("#17854C"))
                         relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
                     }
@@ -309,9 +349,18 @@ class OrderDetailFragment : BaseFragment() {
                         btnInvoice.isVisible = false
                         relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
                         tvStatus.setTextColor(Color.parseColor("#17854C"))
-                        tvStatus.text = "Ongoing"
+                        tvStatus.text = "Confirmed"
+                        ivInProcess.setImageResource(R.drawable.ic_order_picked)
+                        ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+                        ivReturned.setImageResource(R.drawable.ic_order_return)
+                    }
+                    "2.1" -> {
+                        btnInvoice.isVisible = false
+                        relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
+                        tvStatus.setTextColor(Color.parseColor("#17854C"))
+                        tvStatus.text = "Shipped"
                         ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-                        ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                        ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
                         ivReturned.setImageResource(R.drawable.ic_order_return)
                     }
                     "3" -> {
@@ -337,14 +386,27 @@ class OrderDetailFragment : BaseFragment() {
                     }
 
                     "7" -> {
-                        btnInvoice.isVisible = false
-                        relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#17854C"))
-                        tvStatus.setTextColor(Color.parseColor("#17854C"))
-                        tvStatus.text = "Ongoing"
+                        when (orderData?.returnType){
+                            "1"->{
+                                returnData()
+                            }
+                            "2"->{
+                                exchangeData()
+                            }
+                            else-> {
+                                btnInvoice.isVisible = false
+                                relStatus.backgroundTintList =
+                                    ColorStateList.valueOf(Color.parseColor("#17854C"))
+                                tvStatus.setTextColor(Color.parseColor("#17854C"))
+                                tvStatus.text = "Ongoing"
+                                ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                                ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                                ivReturned.setImageResource(R.drawable.ic_order_return)
+                            }
+                            }
                         ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
                         ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
                         ivReturned.setImageResource(R.drawable.ic_order_return)
-
                     }
 
                     "4" -> {
@@ -896,19 +958,34 @@ class OrderDetailFragment : BaseFragment() {
     private fun returnData(){
         binding?.apply {
 
+            if (orderData?.deliveryStatus=="7"){
+                relStatus.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor("#17854C"))
+                tvStatus.setTextColor(Color.parseColor("#17854C"))
+                tvStatus.text = "Ongoing"
+
+                ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                ivReturned.setImageResource(R.drawable.ic_order_return)
+            }
+            else{
+                tvStatus.text = "Return Req.."
+                tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
+                ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+                ivReturned.setImageResource(R.drawable.ic_order_return)
+            }
+
             btnInvoice.isVisible = false
-            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
-            tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
-            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
-            tvStatus.text = "Return Req.."
+
+
             tvOrderStatus.text = "Return Status"
             tvPicked.text = "In Process"
             tvOnTheWay.text = "Picked Up"
             tvReturned.text = "Completed"
 
-            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
-            ivReturned.setImageResource(R.drawable.ic_order_return)
+
 
             llReturnDetail.isVisible = true
             tvExchangeSize.isVisible = false
@@ -937,17 +1014,31 @@ class OrderDetailFragment : BaseFragment() {
     private fun exchangeData(){
         binding?.apply {
 
+            if (orderData?.deliveryStatus=="7"){
+                relStatus.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor("#17854C"))
+                tvStatus.setTextColor(Color.parseColor("#17854C"))
+                tvStatus.text = "Ongoing"
+                ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                ivOnTheWay.setImageResource(R.drawable.ic_order_on_way_selected)
+                ivReturned.setImageResource(R.drawable.ic_order_return)
+
+            }
+            else{
+                relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
+                tvStatus.text = "Exchange Req.."
+                tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
+                ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
+                ivReturned.setImageResource(R.drawable.ic_order_return)
+
+            }
+
             tvPicked.text = "In Process"
             tvOnTheWay.text = "Pick & \n Exchange"
             tvReturned.text = "Completed"
-            ivInProcess.setImageResource(R.drawable.ic_order_picked_selected)
-            ivOnTheWay.setImageResource(R.drawable.ic_order_on_way)
-            ivReturned.setImageResource(R.drawable.ic_order_return)
 
-            relStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF5F1B"))
-            tvStatus.text = "Exchange Req.."
             tvOrderStatus.text = "Exchange Status"
-            tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
             llReturnDetail.isVisible = true
             tvExchangeSize.isVisible = true
             tvExchangeSizeValue.isVisible = true

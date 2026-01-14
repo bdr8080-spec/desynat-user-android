@@ -62,7 +62,7 @@ class MyOrderFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
 
-            orderType = arguments?.getInt("orderType", 1) ?: 1
+            orderType = arguments?.getInt("orderType", 1) ?: orderType
 
             toolbar.tvToolbar.text = "My Order"
 

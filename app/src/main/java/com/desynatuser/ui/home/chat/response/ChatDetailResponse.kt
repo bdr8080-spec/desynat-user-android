@@ -19,7 +19,7 @@ data class ChatDetailResponse(
             @SerializedName("action")
             var action: String,
             @SerializedName("order_create_status")
-            var orderCreateStatus: String,
+            val orderCreateStatus: OrderCreateStatus,
             @SerializedName("created_at")
             val createdAt: String,
             @SerializedName("custom_details")
@@ -63,6 +63,63 @@ data class ChatDetailResponse(
             @SerializedName("variation_id")
             val variationId: String
         ) {
+
+            data class OrderCreateStatus(
+                @SerializedName("assign_date")
+                val assignDate: Any,
+                @SerializedName("assign_status")
+                val assignStatus: String,
+                @SerializedName("cancel_reason")
+                val cancelReason: Any,
+                @SerializedName("created_at")
+                val createdAt: String,
+                @SerializedName("delivery_address")
+                val deliveryAddress: Int,
+                @SerializedName("delivery_boy_id")
+                val deliveryBoyId: Any,
+                @SerializedName("delivery_status")
+                val deliveryStatus: String,
+                @SerializedName("discount_mrp")
+                val discountMrp: String,
+                @SerializedName("giftcard_amount")
+                val giftcardAmount: Any,
+                @SerializedName("giftcard_id")
+                val giftcardId: Any,
+                @SerializedName("id")
+                val id: Int,
+                @SerializedName("order_id")
+                val orderId: String,
+                @SerializedName("order_type")
+                val orderType: String,
+                @SerializedName("payment_method")
+                val paymentMethod: String,
+                @SerializedName("payment_status")
+                val paymentStatus: String,
+                @SerializedName("promocode_id")
+                val promocodeId: Any,
+                @SerializedName("promocode_status")
+                val promocodeStatus: String,
+                @SerializedName("promocode_value")
+                val promocodeValue: Any,
+                @SerializedName("shipping_fees")
+                val shippingFees: String,
+                @SerializedName("tax")
+                val tax: String,
+                @SerializedName("total_amount")
+                val totalAmount: String,
+                @SerializedName("total_mrp")
+                val totalMrp: String,
+                @SerializedName("transaction_id")
+                val transactionId: Any,
+                @SerializedName("unique_id")
+                val uniqueId: String,
+                @SerializedName("updated_at")
+                val updatedAt: String,
+                @SerializedName("user_id")
+                val userId: Int,
+                @SerializedName("wallet_amount")
+                val walletAmount: Any
+            )
             data class DeliveryDetails(
                 @SerializedName("address")
                 var address: String,

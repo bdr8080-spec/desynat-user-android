@@ -153,7 +153,7 @@ class ChatFragment : BaseFragment() {
 
             chatAdapter = ChatAdapter(requireActivity(),chatList,object : ChatAdapter.ChatClick{
                 override fun onChatClick(position: Int) {
-                    chatList[position].message?.let { imagePreviewDialog(it) }
+                    chatList[position].message.toSafeString()?.let { imagePreviewDialog(it) }
                 }
 
             })
@@ -186,14 +186,14 @@ class ChatFragment : BaseFragment() {
                     chatAdapter?.notifyItemInserted(chatList.size - 1)
                     rvChat.scrollToPosition(chatList.size - 1)
 
-                    if (message.by != "user" && message.read == 0 && message.id != null) {
-                        markMessageRead(uniqueId, message.id!!)
+                    if (message.by.toSafeString() != "user" && message.read.toSafeInt() == 0 && message.id.toSafeString() != null) {
+                        markMessageRead(uniqueId, message.id.toSafeString())
                     }
                 },
                 onMessageUpdated = { updatedMessage ->
                     Log.e("update", "initView: ${updatedMessage}" )
 
-                    val index = chatList.indexOfFirst { it.id == updatedMessage.id }
+                    val index = chatList.indexOfFirst { it.id.toSafeString() == updatedMessage.id.toSafeString() }
                     Log.e("update", "id: ${index}" )
                     Log.e("update", "id: ${chatList[index]}" )
                     if (index != -1) {
@@ -305,12 +305,25 @@ class ChatFragment : BaseFragment() {
                     ivSendReq.isVisible = false
                     tvAccept.isVisible = false
                     tvReject.isVisible = false
-                    btnPayNow.isVisible = false
+                    if (chatDetailData?.orderCreateStatus!=null){
+                        btnPayNow.isVisible = false
+                    }
+                    else{
+                        btnPayNow.isVisible = true
+                    }
+
                 }
 
             }
                 tvTotalQuantityValue.text = chatDetailData?.quantity.toString()
+            if (chatDetailData?.deliveryDetails?.address!="null"&&chatDetailData?.deliveryDetails?.address!=null&&chatDetailData?.deliveryDetails?.address!=""){
                 tvAddressValue.text = chatDetailData?.deliveryDetails?.address.toString()
+            }
+            else{
+                tvAddressValue.text = selectedAddress?.address.toString()
+            }
+
+            Log.e("deliveryDetails", "observe: ${chatDetailData?.deliveryDetails?.address}" )
                 tvCustomDetail.text = chatDetailData?.customDetails.toString()
             tvRequestId.text = "Request Id #${chatDetailData?.id}"
             tvPerItemPriceValue.text = "${CommonMethod.formatPrice(chatDetailData?.price?:0.0)} KD"
@@ -360,7 +373,7 @@ class ChatFragment : BaseFragment() {
                     sendMessage(
                         uniqueId = uniqueId,
                         message = textMessage,
-                        type = "0"
+                        type = 0
                     )
                     etMessage.setText("")
                 }
@@ -370,7 +383,7 @@ class ChatFragment : BaseFragment() {
                         sendMessage(
                             uniqueId = uniqueId,
                             message = image.imageUrl,
-                            type = "1"
+                            type = 1
                         )
                     }
                     uploadImageList.clear()
@@ -520,7 +533,18 @@ class ChatFragment : BaseFragment() {
             }
 
             btnSendRequest.setOnClickListener {
-                sendCustomOrderRequest()
+                if (etAddQuantity.text?.trim()?.isEmpty() == true){
+                    showToast("Please enter quantity")
+                }
+                else if (tvAddress.text?.trim()?.isEmpty() == true){
+                    showToast("Please add delivery address")
+                }
+                else if (etCustomDetails.text?.trim()?.isEmpty() == true){
+                    showToast("Please enter custom detail")
+                }
+                else {
+                    sendCustomOrderRequest()
+                }
             }
         }
         addCustomRequestDialog?.show()
@@ -558,7 +582,7 @@ class ChatFragment : BaseFragment() {
     private val database =
         FirebaseDatabase.getInstance().reference
 
-    fun sendMessage(uniqueId: String, message: String, type: String) {
+    fun sendMessage(uniqueId: String, message: String, type: Int) {
         val ref = database.child("chats").child(uniqueId).push()
         val messageId = ref.key ?: return
 
@@ -569,7 +593,7 @@ class ChatFragment : BaseFragment() {
             type = type,
             unique_id = uniqueId,
             times = Instant.now().toString(),
-            user_id = SharedPreference.get(requireActivity()).getUser()?.id.toString(),
+            user_id = SharedPreference.get(requireActivity()).getUser()?.id?.toLong()?:0L,
             read = 0
         )
 
@@ -708,8 +732,11 @@ class ChatFragment : BaseFragment() {
                 chatDetailData?.deliveryDetails?.address = selectedAddress?.address.toString()
                 chatDetailData?.customDetails = response.data.customDetails
                 chatDetailData?.quantity = response.data.quantity
+                Log.e("deliveryDetails", "observe: ${selectedAddress?.address.toString()}" )
+                Log.e("deliveryDetails", "observe: ${chatDetailData?.deliveryDetails?.address}" )
                 setQuotationData()
                 CommonMethod.showSuccessDialog(requireActivity(),"Request Sent successfully!"){
+
                     addCustomRequestDialog?.dismiss()
                 }
 
@@ -754,11 +781,13 @@ class ChatFragment : BaseFragment() {
         isAddressObserver = true
     }
 
-    private fun getChat(){
+    private fun getChat(isLoading:Boolean=true){
         val map = HashMap<String, Any>()
         map["unique_id"] = uniqueId
         viewModel.chatDetail(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        if (isLoading) {
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        }
         isObserver = true
     }
 
@@ -871,8 +900,36 @@ class ChatFragment : BaseFragment() {
         dialog?.show()
     }
 
-
 }
+
+fun Any?.toSafeString(): String {
+    return when (this) {
+        is String -> this
+        is Long -> this.toString()
+        is Int -> this.toString()
+        is Double -> this.toString()
+        else -> ""
+    }
+}
+
+fun Any?.toSafeInt(): Int {
+    return when (this) {
+        is Int -> this
+        is Long -> this.toInt()
+        is String -> this.toIntOrNull() ?: 0
+        else -> 0
+    }
+}
+
+fun Any?.toSafeLong(): Long {
+    return when (this) {
+        is Long -> this
+        is Int -> this.toLong()
+        is String -> this.toLongOrNull() ?: 0L
+        else -> 0L
+    }
+}
+
 
 data class UploadImageType(
     var image:Uri,

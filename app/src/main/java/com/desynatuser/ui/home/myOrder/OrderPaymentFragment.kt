@@ -135,7 +135,8 @@ class OrderPaymentFragment : BaseFragment() {
                 val itemJson = arguments?.getString("chatData")
                 if (!itemJson.isNullOrEmpty()) {
                     chatDetailData = Gson().fromJson(itemJson, ChatDetailResponse.Data.Record::class.java)
-                    totalAmount = chatDetailData?.totalAmount?:0.0
+                    val quantity = chatDetailData?.quantity?.toInt()?:1
+                    totalAmount = chatDetailData?.totalAmount?:0.0 * quantity
                 }
                 if (giftCardData!=null) {
                     totalAmount -= giftCardData?.amount!!
@@ -309,7 +310,7 @@ class OrderPaymentFragment : BaseFragment() {
             if (isPayment) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 val bundle = Bundle().apply {
-                    putString("amount", CommonMethod.formatPrice(chatDetailData?.totalAmount?:0.0))
+                    putString("amount", CommonMethod.formatPrice(totalAmount))
                     putString("chatData", Gson().toJson(chatDetailData))
                     putString("payment", selectedMethod)
                 }

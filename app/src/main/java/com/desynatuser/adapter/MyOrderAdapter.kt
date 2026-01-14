@@ -65,14 +65,40 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
             else {
 
                 when (orderData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+                    "0" -> {
+
+                        when (orderData?.returnType) {
+                            "1" -> {
+                                btn.backgroundTintList =
+                                    ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                                btn.setTextColor(Color.parseColor("#FF5F1B"))
+                                btn.text = "Pickup Date : 2 JAN 26"
+
+                                tvStatus.text = "Return Req.."
+                                tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                            }
+
+                            "2" -> {
+                                btn.backgroundTintList =
+                                    ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                                btn.setTextColor(Color.parseColor("#FF5F1B"))
+                                btn.text = "Pickup Date : 2 JAN 26"
+
+                                tvStatus.text = "Exchange Req.."
+                                tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                            }
+                        }
+
+                    }
                     "1" -> {
-                        tvStatus.text = "Ongoing"
-                        tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                        tvStatus.text = "Confirmed"
+                        tvStatus.setTextColor(Color.parseColor("#17854C"))
                         btn.backgroundTintList =
                             ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                         btn.setTextColor(Color.parseColor("#17854C"))
                         btn.text = "Expected Delivery Date : 3 to 5 working days"
                     }
+
 
                     "2" -> {
                         btn.backgroundTintList =
@@ -82,6 +108,14 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
 
                         tvStatus.text = "Confirmed"
                         tvStatus.setTextColor(Color.parseColor("#17854C"))
+                    }
+                    "2.1" -> {
+                        tvStatus.text = "Shipped"
+                        tvStatus.setTextColor(Color.parseColor("#17854C"))
+                        btn.backgroundTintList =
+                            ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
+                        btn.setTextColor(Color.parseColor("#17854C"))
+                        btn.text = "Expected Delivery Date : 3 to 5 working days"
                     }
 
                     "7" -> {
