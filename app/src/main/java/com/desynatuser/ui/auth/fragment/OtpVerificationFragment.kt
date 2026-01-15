@@ -189,11 +189,12 @@ class OtpVerificationFragment : BaseFragment() {
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
                             CommonMethod.showSuccessDialog(requireActivity(),"Thank you for sinning up with DESYNAT"){
-                                requireActivity().startActivity(
-                                    Intent(requireActivity(),
-                                        HomeActivity::class.java)
-                                )
-                                requireActivity().finish()
+                               findNavController().navigate(R.id.action_otpFragment_to_bannerFragment)
+//                                requireActivity().startActivity(
+//                                    Intent(requireActivity(),
+//                                        HomeActivity::class.java)
+//                                )
+//                                requireActivity().finish()
                             }
                         }
                         "forgot" -> {

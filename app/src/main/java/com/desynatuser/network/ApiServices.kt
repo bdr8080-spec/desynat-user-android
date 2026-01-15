@@ -50,6 +50,7 @@ import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
+import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.Constants
 import okhttp3.MultipartBody
@@ -343,7 +344,21 @@ interface ApiServices {
 
     @POST(Constants.HOME_SCREEN_BANNER)
     suspend fun getHomeScreenBanner(
-
     ): Response<GetHomeScreenPopUpBanner>
+
+    @POST(Constants.HOME_SCREEN_ALL_BANNER)
+    suspend fun getHomeScreenAllBanner(
+        @Body map: HashMap<String,Any>
+    ): Response<GetHomeScreenAllBannerResponse>
+
+    @POST(Constants.HOME_SCREEN_ALL_BANNER)
+    suspend fun getHomeScreenBottomBanner(
+        @Body map: HashMap<String,Any>
+    ): Response<GetHomeScreenAllBannerResponse>
+
+    @POST(Constants.HOME_SCREEN_ALL_BANNER)
+    suspend fun getHomeScreenCategoryBanner(
+        @Body map: HashMap<String,Any>
+    ): Response<GetHomeScreenAllBannerResponse>
 
 }

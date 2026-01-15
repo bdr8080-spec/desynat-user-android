@@ -12,7 +12,9 @@ import com.desynatuser.adapter.BannerViewPagerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.databinding.FragmentOnBoardingBinding
 import com.desynatuser.utils.SharedPreference
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnBoardingFragment : BaseFragment() {
     private var binding: FragmentOnBoardingBinding? = null
     private var bannerAdapter : BannerViewPagerAdapter? =null

@@ -66,13 +66,18 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
 
                 when (orderData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                     "0" -> {
-
-                        when (orderData?.returnType) {
+                        tvStatus.text = "Confirmed"
+                        tvStatus.setTextColor(Color.parseColor("#17854C"))
+                        btn.backgroundTintList =
+                            ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                        btn.setTextColor(Color.parseColor("#FF5F1B"))
+                        btn.text = "Pickup Date : 20 JAN 26"
+                     /*   when (orderData?.returnType) {
                             "1" -> {
                                 btn.backgroundTintList =
                                     ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
                                 btn.setTextColor(Color.parseColor("#FF5F1B"))
-                                btn.text = "Pickup Date : 2 JAN 26"
+                                btn.text = "Pickup Date : 20 JAN 26"
 
                                 tvStatus.text = "Return Req.."
                                 tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
@@ -82,12 +87,12 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                                 btn.backgroundTintList =
                                     ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
                                 btn.setTextColor(Color.parseColor("#FF5F1B"))
-                                btn.text = "Pickup Date : 2 JAN 26"
+                                btn.text = "Pickup Date : 20 JAN 26"
 
                                 tvStatus.text = "Exchange Req.."
                                 tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                             }
-                        }
+                        }*/
 
                     }
                     "1" -> {
@@ -110,12 +115,22 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                         tvStatus.setTextColor(Color.parseColor("#17854C"))
                     }
                     "2.1" -> {
-                        tvStatus.text = "Shipped"
-                        tvStatus.setTextColor(Color.parseColor("#17854C"))
                         btn.backgroundTintList =
                             ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                         btn.setTextColor(Color.parseColor("#17854C"))
                         btn.text = "Expected Delivery Date : 3 to 5 working days"
+
+                        tvStatus.text = "Ongoing"
+                        tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                    }
+  "2.2" -> {
+                        btn.backgroundTintList =
+                            ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
+                        btn.setTextColor(Color.parseColor("#17854C"))
+                        btn.text = "Expected Delivery Date : 3 to 5 working days"
+
+                        tvStatus.text = "Ongoing"
+                        tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                     }
 
                     "7" -> {
@@ -129,50 +144,56 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                     }
 
                     "3" -> {
+                       /* if (orderData?.rEApprove=="1"){
+                            tvStatus.text = "Confirmed"
+                            tvStatus.setTextColor(Color.parseColor("#17854C"))
+                            btn.backgroundTintList =
+                                ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                            btn.setTextColor(Color.parseColor("#FF5F1B"))
+                            btn.text = "Pickup Date : 20 JAN 26"
+                        }*/
+                            when (orderData?.returnType) {
+                                "1" -> {
+                                    btn.backgroundTintList =
+                                        ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                                    btn.setTextColor(Color.parseColor("#FF5F1B"))
+                                    btn.text = "Pickup Date : 20 JAN 26"
 
-                        when (orderData?.returnType) {
-                            "1" -> {
-                                btn.backgroundTintList =
-                                    ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
-                                btn.setTextColor(Color.parseColor("#FF5F1B"))
-                                btn.text = "Pickup Date : 2 JAN 26"
+                                    tvStatus.text = "Return Req.."
+                                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                                }
 
-                                tvStatus.text = "Return Req.."
-                                tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                                "2" -> {
+                                    btn.backgroundTintList =
+                                        ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
+                                    btn.setTextColor(Color.parseColor("#FF5F1B"))
+                                    btn.text = "Pickup Date : 20 JAN 26"
+
+                                    tvStatus.text = "Exchange Req.."
+                                    tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
+                                }
+
+                                else -> {
+                                    btn.backgroundTintList =
+                                        ColorStateList.valueOf(Color.parseColor("#1A16B364"))
+                                    btn.setTextColor(Color.parseColor("#16B364"))
+                                    btn.text = "Delivered On : ${
+                                        CommonMethod.customizeChangeDateFormat(
+                                            orderData?.updatedAt.toString(),
+                                            outputFormat = "dd MMM yy"
+                                        )
+                                    }"
+
+                                    tvStatus.text = "Delivered"
+                                    tvStatus.setTextColor(Color.parseColor("#16B364"))
+                                }
                             }
-
-                            "2" -> {
-                                btn.backgroundTintList =
-                                    ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
-                                btn.setTextColor(Color.parseColor("#FF5F1B"))
-                                btn.text = "Pickup Date : 2 JAN 26"
-
-                                tvStatus.text = "Exchange Req.."
-                                tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
-                            }
-
-                            else -> {
-                                btn.backgroundTintList =
-                                    ColorStateList.valueOf(Color.parseColor("#1A16B364"))
-                                btn.setTextColor(Color.parseColor("#16B364"))
-                                btn.text = "Delivered On : ${
-                                    CommonMethod.customizeChangeDateFormat(
-                                        orderData?.updatedAt.toString(),
-                                        outputFormat = "dd MMM yy"
-                                    )
-                                }"
-
-                                tvStatus.text = "Delivered"
-                                tvStatus.setTextColor(Color.parseColor("#16B364"))
-                            }
-                        }
-
                     }
 
                     "4" -> {
                         btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F4DDDD"))
                         btn.setTextColor(Color.parseColor("#E70000"))
-                        btn.text = "Cancelled  Date : 2 JAN 26"
+                        btn.text = "Cancelled  Date : ${CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd MMM yy")}"
 
                         tvStatus.text = "Cancelled"
                         tvStatus.setTextColor(Color.parseColor("#E70000"))
@@ -182,7 +203,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                         btn.backgroundTintList =
                             ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
                         btn.setTextColor(Color.parseColor("#FF5F1B"))
-                        btn.text = "Pickup Date : 2 JAN 26"
+                        btn.text = "Pickup Date : 20 JAN 26"
 
                         tvStatus.text = "Return Req.."
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
@@ -202,7 +223,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                         btn.backgroundTintList =
                             ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
                         btn.setTextColor(Color.parseColor("#FF5F1B"))
-                        btn.text = "Pickup Date : 2 JAN 26"
+                        btn.text = "Pickup Date : 20 JAN 26"
 
                         tvStatus.text = "Not Delivered"
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
@@ -212,7 +233,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                         btn.backgroundTintList =
                             ColorStateList.valueOf(Color.parseColor("#26FF5F1B"))
                         btn.setTextColor(Color.parseColor("#FF5F1B"))
-                        btn.text = "Pickup Date : 2 JAN 26"
+                        btn.text = "Pickup Date : 20 JAN 26"
 
                         tvStatus.text = "Exchange Req.."
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))

@@ -18,6 +18,10 @@ data class GetSingleOrderSummaryResponse(
         val amount: Double,
         @SerializedName("assign_date")
         val assignDate: String,
+        @SerializedName("r_e_type")
+        val r_e_type: String,
+        @SerializedName("p_orderdetails_id")
+        val p_orderdetails_id: String,
         @SerializedName("assign_status")
         val assignStatus: String,
         @SerializedName("cancel_reason")
@@ -55,7 +59,7 @@ data class GetSingleOrderSummaryResponse(
         @SerializedName("r_e_approve")
         val rEApprove: String,
         @SerializedName("return_image")
-        val returnImage: String,
+        val returnImage: ArrayList<String>,
         @SerializedName("return_reason")
         val returnReason: String,
         @SerializedName("return_type")

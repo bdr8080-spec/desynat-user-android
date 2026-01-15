@@ -74,12 +74,15 @@
             android:gravity="start"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAvailableSize"
+            android:visibility="gone"
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
             android:text="Select Available Size"
             android:textSize="@dimen/_13sdp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
             android:id="@+id/clSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

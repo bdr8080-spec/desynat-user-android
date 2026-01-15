@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -47,6 +49,23 @@ class HomeActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        CommonMethod.detectGestureMode(binding?.root!!,binding?.viewBottom!!)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+            val imeInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+
+            val reduceBy = resources.getDimensionPixelSize(R.dimen.keyboard_padding_reduce)
+
+            v.setPadding(
+                v.paddingLeft,
+                v.paddingTop,
+                v.paddingRight,
+                imeInset
+              //  if (binding?.viewBottom?.isVisible == true)  imeInset - reduceBy else imeInset
+            )
+            insets
+        }
+
         MFSDK.setUpActionBar(isShowToolBar = false)
         initView()
         initControl()
@@ -55,7 +74,7 @@ class HomeActivity : BaseActivity() {
 
     override fun initView() {
 
-        CommonMethod.detectGestureMode(binding?.root!!,binding?.viewBottom!!)
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 

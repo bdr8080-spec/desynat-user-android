@@ -61,15 +61,15 @@ class WomenFragment :  BaseFragment() {
     override fun initView() {
         binding?.apply {
 
-            homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(listOf(R.drawable.banner,R.drawable.premium,R.drawable.deal,R.drawable.banner))
+         //   homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(listOf(R.drawable.banner,R.drawable.premium,R.drawable.deal,R.drawable.banner))
             viewPager.adapter = homeWomenBannerViewPagerAdapter
             dotsIndicator.attachTo(binding?.viewPager!!)
 
-            discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(listOf(R.drawable.deal,R.drawable.banner,R.drawable.premium,R.drawable.deal))
+          //  discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(listOf(R.drawable.deal,R.drawable.banner,R.drawable.premium,R.drawable.deal))
             viewPagerDiscountedDeals.adapter = discountedDealBannerViewPagerAdapter
             dotsIndicatorDiscountedDeals.attachTo(binding?.viewPagerDiscountedDeals!!)
 
-            premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(listOf(R.drawable.premium,R.drawable.deal,R.drawable.banner,R.drawable.premium))
+          //  premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(listOf(R.drawable.premium,R.drawable.deal,R.drawable.banner,R.drawable.premium))
             viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
             dotsIndicatorPremium.attachTo(binding?.viewPagerPremium!!)
 

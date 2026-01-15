@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -47,6 +49,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.time.Instant
+import kotlin.time.times
 
 @AndroidEntryPoint
 class ChatFragment : BaseFragment() {
@@ -115,7 +118,6 @@ class ChatFragment : BaseFragment() {
     override fun initView() {
 
         binding?.apply {
-            CommonMethod.detectGestureMode(root, viewBottom)
 
             parentFragmentManager.setFragmentResultListener("address_request", viewLifecycleOwner) { _, bundle ->
 
@@ -234,8 +236,6 @@ class ChatFragment : BaseFragment() {
 
     private fun setQuotationData() {
         binding?.apply {
-            clQuotation.isVisible = true
-            toolbar.isVisible = false
             when (chatDetailData?.action) {
                 "0" -> {
 
@@ -298,6 +298,8 @@ class ChatFragment : BaseFragment() {
                     tvAccept.isVisible = false
                     tvReject.isVisible = false
                     btnPayNow.isVisible = false
+                    clCustomerRequest.isVisible = false
+                    clQuotationDetail.isVisible = false
                 }
                 "5"->{
                     ivViewRequest.isVisible = true
@@ -309,6 +311,8 @@ class ChatFragment : BaseFragment() {
                         btnPayNow.isVisible = false
                     }
                     else{
+                        clCustomerRequest.isVisible = false
+                        clQuotationDetail.isVisible = true
                         btnPayNow.isVisible = true
                     }
 
@@ -326,7 +330,14 @@ class ChatFragment : BaseFragment() {
             Log.e("deliveryDetails", "observe: ${chatDetailData?.deliveryDetails?.address}" )
                 tvCustomDetail.text = chatDetailData?.customDetails.toString()
             tvRequestId.text = "Request Id #${chatDetailData?.id}"
-            tvPerItemPriceValue.text = "${CommonMethod.formatPrice(chatDetailData?.price?:0.0)} KD"
+
+
+            tvPerItemPrice.text =
+                "Item Price (${CommonMethod.formatPrice(chatDetailData?.price?:0.0)} X ${chatDetailData?.quantity})"
+            val itemPrice = chatDetailData?.price ?: 0.0
+            val quantity = chatDetailData?.quantity?.toIntOrNull() ?: 1
+            val subTotal = itemPrice * quantity
+            tvPerItemPriceValue.text = "${CommonMethod.formatPrice(subTotal)} KD"
             tvShippingFeesValue.text = "${CommonMethod.formatPrice(chatDetailData?.shipping?:0.0)} KD"
             tvTaxValue.text = "${CommonMethod.formatPrice(chatDetailData?.tax?:0.0)} KD"
             tvTotalAmountValue.text = "${CommonMethod.formatPrice(chatDetailData?.totalAmount?:0.0)} KD"

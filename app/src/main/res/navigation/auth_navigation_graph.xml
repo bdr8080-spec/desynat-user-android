@@ -43,6 +43,10 @@
             android:id="@+id/action_loginFragment_to_OtpFragment"
             app:destination="@id/otp"/>
 
+<action
+            android:id="@+id/action_loginFragment_to_BannerFragment"
+            app:destination="@id/banner"/>
+
         <action
             android:id="@+id/action_loginFragment_to_forgotFragment"
             app:destination="@id/forgot"/>
@@ -54,6 +58,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/banner"
+        android:name="com.desynatuser.ui.auth.fragment.FullScreenBannerFragment"
+        android:label="Full Screen Banner Fragment"
+        tools:layout="@layout/fragment_full_screen_banner"/>
+
+    <fragment
         android:id="@+id/otp"
         android:name="com.desynatuser.ui.auth.fragment.OtpVerificationFragment"
         android:label="Otp Fragment"
@@ -62,6 +72,9 @@
     <action
         android:id="@+id/action_otpFragment_to_resetPasswordFragment"
         app:destination="@id/resetPassword"/>
+    <action
+        android:id="@+id/action_otpFragment_to_bannerFragment"
+        app:destination="@id/banner"/>
 
     </fragment>
 

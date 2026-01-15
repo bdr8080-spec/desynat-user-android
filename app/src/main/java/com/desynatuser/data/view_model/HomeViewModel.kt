@@ -54,6 +54,7 @@ import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
+import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -615,6 +616,34 @@ val getHomeScreenBannerResult: LiveData<GetHomeScreenPopUpBanner>
     fun getHomeScreenBanner() {
         viewModelScope.launch {
             repository.getHomeScreenBanner()
+        }
+    }
+
+val getHomeScreenAllBannerResult: LiveData<GetHomeScreenAllBannerResponse>
+        get() = repository.getHomeScreenAllBannerLiveData
+
+    fun getHomeScreenAllBanner(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getHomeScreenAllBanner(map)
+        }
+    }
+
+val getHomeScreenBottomBannerResult: LiveData<GetHomeScreenAllBannerResponse>
+        get() = repository.getHomeScreenBottomBannerLiveData
+
+    fun getHomeScreenBottomBanner(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getHomeScreenBottomBanner(map)
+        }
+    }
+
+
+val getHomeScreenCategoryBannerResult: LiveData<GetHomeScreenAllBannerResponse>
+        get() = repository.getHomeScreenCategoryBannerLiveData
+
+    fun getHomeScreenCategoryBanner(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getHomeScreenCategoryBanner(map)
         }
     }
 

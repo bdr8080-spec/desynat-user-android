@@ -9,6 +9,7 @@ import com.desynatuser.databinding.ItemReasonBinding
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 
 class ReasonSizeAdapter(var context:Context, var sizeList: ArrayList<GetSizeListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<ReasonSizeAdapter.ViewHolder>() {
+    var isSelected = -1
 
     interface OnClick{
         fun onClickItem(position: Int)
@@ -30,7 +31,7 @@ class ReasonSizeAdapter(var context:Context, var sizeList: ArrayList<GetSizeList
 
             tvReason.text = sizeList[position].name
 
-            if (sizeList[position].isSelected){
+            if (isSelected==position){
                 ivImage.setImageResource(R.drawable.ic_radio_selected)
             }
             else{
@@ -39,9 +40,10 @@ class ReasonSizeAdapter(var context:Context, var sizeList: ArrayList<GetSizeList
         }
 
         holder.itemView.setOnClickListener {
-            sizeList[position].isSelected = !sizeList[position].isSelected
-            onClick.onClickItem(position)
+            isSelected = position
             notifyDataSetChanged()
+
+            onClick.onClickItem(position)
         }
 
     }

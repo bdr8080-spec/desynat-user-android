@@ -29,6 +29,8 @@ import com.desynatuser.databinding.StoreFilterBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
+import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
@@ -43,13 +45,14 @@ class StoreFragment : BaseFragment() {
     private var binding: FragmentStoreBinding?=null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    var isAllBannerObserver = false
     private var subCategoryData: GetSubCategoryResponse.Data?=null
     private var isFirstLoad = true
 
     private var storeAdapter: StoreAdapter? = null
     private var storeList = ArrayList<GetStoreResponse.Data>()
     var premiumStoreViewPagerAdapter : PremiumStoreViewPagerAdapter?=null
-    var premiumStoreList = ArrayList<Int>()
+    var premiumStoreList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
     private var search: Job? = null
     private var lastQuery: String? = null
     var filter:String? = null
@@ -90,10 +93,6 @@ class StoreFragment : BaseFragment() {
             rvStore.adapter = storeAdapter
 
 
-            premiumStoreList.clear()
-            premiumStoreList.add(R.drawable.premium)
-            premiumStoreList.add(R.drawable.newest)
-            premiumStoreList.add(R.drawable.banner)
             premiumStoreViewPagerAdapter = PremiumStoreViewPagerAdapter(requireActivity(),premiumStoreList)
             binding?.viewPager?.adapter = premiumStoreViewPagerAdapter
 
@@ -124,6 +123,7 @@ class StoreFragment : BaseFragment() {
             getStoreList()
             isFirstLoad = false
         }
+        getHomeScreenAllBanner()
     }
 
     override fun initControl() {
@@ -142,6 +142,15 @@ class StoreFragment : BaseFragment() {
             }
         }
     }
+
+    private fun getHomeScreenAllBanner(){
+        val map = HashMap<String,Any>()
+        map["type"] = "3"
+        map["category"] = subCategoryData?.categoryId.toString()
+        viewModel.getHomeScreenAllBanner(map)
+        isAllBannerObserver = true
+    }
+
 
     private fun getStoreList(search:String?=null){
         val map = HashMap<String,Any>()
@@ -166,6 +175,20 @@ class StoreFragment : BaseFragment() {
             }
         }
 
+        viewModel.getHomeScreenAllBannerResult.observe(viewLifecycleOwner) { response ->
+            if (isAllBannerObserver) {
+                response?.let {
+
+                    premiumStoreList.clear()
+                    premiumStoreList.addAll(response.data)
+                    premiumStoreViewPagerAdapter?.notifyDataSetChanged()
+                    checkBannerData()
+
+                }
+                isAllBannerObserver = false
+            }
+        }
+
 
         viewModel.storeListResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
@@ -175,6 +198,20 @@ class StoreFragment : BaseFragment() {
                 checkData()
                 storeAdapter?.notifyDataSetChanged()
                 isObserver = false
+            }
+        }
+    }
+
+    private fun checkBannerData() {
+        binding?.apply {
+            if (premiumStoreList.size != 0) {
+                tvPremium.isVisible = true
+                viewPager.isVisible = true
+                dotsIndicatorStore.isVisible = true
+            } else {
+                tvPremium.isVisible = false
+                viewPager.isVisible = false
+                dotsIndicatorStore.isVisible = false
             }
         }
     }

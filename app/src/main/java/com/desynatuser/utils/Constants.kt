@@ -94,5 +94,6 @@ object Constants {
     const val CHAT_WITH_SELLER = "/api/user/user-normal-chat-with-seller"
     const val HOME_SCREEN_BANNER = "/api/user/popUp-Home-screen-Banner"
     const val ACCEPT_REJECT_ORDER_REQUEST = "/api/user/custom-accept-reject-order-request"
+    const val HOME_SCREEN_ALL_BANNER = "/api/user/Home-screen-Banner-catgory-banner"
 
 }

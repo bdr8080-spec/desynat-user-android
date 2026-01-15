@@ -136,7 +136,7 @@ class OrderPaymentFragment : BaseFragment() {
                 if (!itemJson.isNullOrEmpty()) {
                     chatDetailData = Gson().fromJson(itemJson, ChatDetailResponse.Data.Record::class.java)
                     val quantity = chatDetailData?.quantity?.toInt()?:1
-                    totalAmount = chatDetailData?.totalAmount?:0.0 * quantity
+                    totalAmount = chatDetailData?.totalAmount?:0.0
                 }
                 if (giftCardData!=null) {
                     totalAmount -= giftCardData?.amount!!

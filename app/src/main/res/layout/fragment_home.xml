@@ -349,6 +349,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvBrowseSomePremium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Browse some Premium stores"
@@ -402,6 +403,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDealDiscounted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Browse some discounted deals"

@@ -56,6 +56,7 @@ import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.response.CommonResponse
+import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -829,6 +830,42 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
                 api.getHomeScreenBanner()
             },
             responseLiveData = getHomeScreenBannerLiveData
+        )
+    }
+
+    val getHomeScreenAllBannerLiveData = SingleLiveEvent<GetHomeScreenAllBannerResponse>()
+    suspend fun getHomeScreenAllBanner(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getHomeScreenAllBanner(map)
+            },
+            responseLiveData = getHomeScreenAllBannerLiveData
+        )
+    }
+
+
+    val getHomeScreenBottomBannerLiveData = SingleLiveEvent<GetHomeScreenAllBannerResponse>()
+    suspend fun getHomeScreenBottomBanner(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getHomeScreenBottomBanner(map)
+            },
+            responseLiveData = getHomeScreenBottomBannerLiveData
+        )
+    }
+
+
+
+    val getHomeScreenCategoryBannerLiveData = SingleLiveEvent<GetHomeScreenAllBannerResponse>()
+    suspend fun getHomeScreenCategoryBanner(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getHomeScreenCategoryBanner(map)
+            },
+            responseLiveData = getHomeScreenCategoryBannerLiveData
         )
     }
 

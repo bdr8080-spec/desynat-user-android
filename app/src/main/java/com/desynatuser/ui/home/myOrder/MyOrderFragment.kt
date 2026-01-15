@@ -61,9 +61,10 @@ class MyOrderFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-
-            orderType = arguments?.getInt("orderType", 1) ?: orderType
-
+            if (isFirstLoad) {
+                orderType = arguments?.getInt("orderType", 1) ?: 1
+                isFirstLoad = false
+            }
             toolbar.tvToolbar.text = "My Order"
 
             myOrderAdapter = MyOrderAdapter(requireActivity(),myOrderList,object :MyOrderAdapter.OrderClick{
@@ -210,6 +211,13 @@ class MyOrderFragment : BaseFragment() {
         window.attributes = params
 
         dialogBinding.apply {
+
+            if (orderType==2){
+                rbReturn.isVisible = false
+            }
+            else{
+                rbReturn.isVisible = true
+            }
 
             when (filter) {
                 "1" -> radioGroup.check(R.id.rbAll)

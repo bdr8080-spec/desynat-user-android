@@ -203,11 +203,12 @@ class LoginFragment : BaseFragment() {
                     Constants.isFromLoginSignup = true
                     SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                     SharedPreference.get(requireActivity()).saveUser(response.data)
-                    requireActivity().startActivity(
+                   /* requireActivity().startActivity(
                         Intent(requireActivity(),
                             HomeActivity::class.java)
                     )
-                    requireActivity().finish()
+                    requireActivity().finish()*/
+                    findNavController().navigate(R.id.action_loginFragment_to_BannerFragment)
                 }
                 isObserver = false
             }

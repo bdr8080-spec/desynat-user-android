@@ -296,6 +296,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:id="@+id/tvRequestId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -308,6 +309,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <View
+            android:visibility="gone"
             android:id="@+id/viewRequestId"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -325,7 +327,7 @@
             android:scaleType="centerCrop"
             android:clipToOutline="true"
             android:src="@drawable/toprated"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
             app:layout_constraintTop_toBottomOf="@+id/viewRequestId"

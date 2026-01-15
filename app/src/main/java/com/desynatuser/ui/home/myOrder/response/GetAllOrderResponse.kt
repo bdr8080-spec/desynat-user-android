@@ -40,8 +40,7 @@ data class GetAllOrderResponse(
         val quantity: Int,
         @SerializedName("r_e_approve")
         val rEApprove: String,
-        @SerializedName("return_image")
-        val returnImage: Any,
+
         @SerializedName("return_reason")
         val returnReason: Any,
         @SerializedName("return_type")
