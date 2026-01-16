@@ -103,11 +103,21 @@ class FullScreenBannerFragment : BaseFragment() {
                     imageList.addAll(it.data.map { banner -> banner.image })
                     homeFullScreenBannerAdapter?.notifyDataSetChanged()
 
-                    if (imageList.size > 1) {
-                        handler.postDelayed(slideRunnable, 3000)
+                    when {
+                        imageList.isEmpty() -> {
+                            navigateNextScreen()
+                        }
+
+                        imageList.size == 1 -> {
+                            handler.postDelayed(dismissRunnable, 10000)
+                        }
+
+                        else -> {
+                            handler.postDelayed(slideRunnable, 3000)
+                            handler.postDelayed(dismissRunnable, 10000)
+                        }
                     }
 
-                    handler.postDelayed(dismissRunnable, 10000)
                 }
                 isHomeBannerObserver = false
             }
@@ -144,6 +154,7 @@ class FullScreenBannerFragment : BaseFragment() {
     }
 
     private fun navigateNextScreen() {
+        stopTimers()
         requireActivity().startActivity(
             Intent(requireActivity(),
                 HomeActivity::class.java)

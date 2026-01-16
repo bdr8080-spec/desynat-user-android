@@ -40,6 +40,7 @@ class MyOrderFragment : BaseFragment() {
     private var myOrderList = ArrayList<GetAllOrderResponse.Data>()
     private var filter:String?=null // // 1 all 2 ongoing 3 delivered 4 cancelled 5 return
     private var search: Job? = null
+    private var filterApply = 0
     private var lastQuery: String? = null
     private var orderType = 1
 
@@ -162,8 +163,10 @@ class MyOrderFragment : BaseFragment() {
                     order.id.toString() == searchId
                 }?.order?.orderId ?: searchId
         }
-        if (filter!=null) {
-            map["filter"] = filter.toString()
+        if (filterApply==orderType){
+            if (filter!=null) {
+                map["filter"] = filter.toString()
+            }
         }
         viewModel.getAllOrder(map)
         if (loading) {
@@ -218,14 +221,15 @@ class MyOrderFragment : BaseFragment() {
             else{
                 rbReturn.isVisible = true
             }
+            if (filterApply==orderType) {
+                when (filter) {
+                    "1" -> radioGroup.check(R.id.rbAll)
+                    "2" -> radioGroup.check(R.id.rbOngoing)
+                    "3" -> radioGroup.check(R.id.rbDelivered)
+                    "4" -> radioGroup.check(R.id.rbCancelled)
+                    "5" -> radioGroup.check(R.id.rbReturn)
 
-            when (filter) {
-                "1" -> radioGroup.check(R.id.rbAll)
-                "2" -> radioGroup.check(R.id.rbOngoing)
-                "3" -> radioGroup.check(R.id.rbDelivered)
-                "4" -> radioGroup.check(R.id.rbCancelled)
-                "5" -> radioGroup.check(R.id.rbReturn)
-
+                }
             }
 
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -246,11 +250,13 @@ class MyOrderFragment : BaseFragment() {
 
             tvClear.setOnClickListener {
                 filter = null
+                filterApply = 0
                 getOrder()
                 dialog.dismiss()
             }
 
             tvApply.setOnClickListener{
+                filterApply = orderType
                 getOrder()
                 dialog.dismiss()
             }

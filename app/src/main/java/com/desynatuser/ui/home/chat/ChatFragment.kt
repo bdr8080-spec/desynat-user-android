@@ -309,11 +309,15 @@ class ChatFragment : BaseFragment() {
                     tvReject.isVisible = false
                     if (chatDetailData?.orderCreateStatus!=null){
                         btnPayNow.isVisible = false
+                        clCustomerRequest.isVisible = false
+                        clQuotationDetail.isVisible = true
+                        tvOrderPlaced.isVisible = true
                     }
                     else{
                         clCustomerRequest.isVisible = false
                         clQuotationDetail.isVisible = true
                         btnPayNow.isVisible = true
+                        tvOrderPlaced.isVisible = false
                     }
 
                 }

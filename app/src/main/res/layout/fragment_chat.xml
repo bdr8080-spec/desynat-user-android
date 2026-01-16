@@ -71,6 +71,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
                 app:layout_constraintStart_toStartOf="parent"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvOrderPlaced"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:textColor="#17854C"
+                android:textSize="@dimen/_10sdp"
+                android:text="Order Placed"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clProduct"
                 android:layout_width="match_parent"

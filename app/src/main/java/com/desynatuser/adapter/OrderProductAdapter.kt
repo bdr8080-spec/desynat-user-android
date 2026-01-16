@@ -203,10 +203,19 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 } else {
                     when (productData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                         "1" -> {
-                            btnCancelOrder.isVisible = true
-                            relRating.isVisible = false
-                            tvExchange.isVisible = false
-                            tvReturn.isVisible = false
+                            if (productData?.returnType == "1"||productData?.returnType=="2"){
+                                btnCancelOrder.isVisible = false
+                                relRating.isVisible = false
+                                tvExchange.isVisible = false
+                                tvReturn.isVisible = false
+                            }
+                            else{
+                                btnCancelOrder.isVisible = true
+                                relRating.isVisible = false
+                                tvExchange.isVisible = false
+                                tvReturn.isVisible = false
+                            }
+
                         }
 
                         "2" -> {

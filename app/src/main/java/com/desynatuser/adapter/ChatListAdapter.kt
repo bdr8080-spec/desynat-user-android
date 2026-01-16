@@ -95,7 +95,10 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
                   }
                   "5"->{
                       if (chatData?.orderCreateStatus!=null){
-                          tvStatus.isVisible = false
+                          tvStatus.text = "Order Placed"
+                          tvStatus.setTextColor(Color.parseColor("#16B364"))
+                          tvStatus.backgroundTintList =
+                              ColorStateList.valueOf(Color.parseColor("#1A16B364"))
                       }
                       else{
                           tvStatus.text = "Quotation Accepted"
