@@ -9,6 +9,7 @@ import com.desynatuser.base.BaseActivity
 import com.desynatuser.databinding.ActivityAuthBinding
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
+import com.desynatuser.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,8 +40,13 @@ class AuthActivity : BaseActivity() {
 
 
         navGraph.setStartDestination(
-            if (Constants.isLogout) R.id.login
-            else R.id.language
+            if (SharedPreference.get(this).accessToken.isNotEmpty()) {
+                R.id.banner
+            }
+            else {
+                if (Constants.isLogout) R.id.login
+                else R.id.language
+            }
         )
 
         controller.graph = navGraph

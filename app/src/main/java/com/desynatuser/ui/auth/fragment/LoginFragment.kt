@@ -112,7 +112,6 @@ class LoginFragment : BaseFragment() {
 
             tvGuest.setOnClickListener {
                 Constants.isGuest = true
-                Constants.isFromLoginSignup = true
                 Constants.Category = "Women"
                 requireActivity().startActivity(
                     Intent(requireActivity(),
@@ -200,7 +199,6 @@ class LoginFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     showToast(response.message)
-                    Constants.isFromLoginSignup = true
                     SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                     SharedPreference.get(requireActivity()).saveUser(response.data)
                    /* requireActivity().startActivity(

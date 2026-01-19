@@ -254,19 +254,32 @@
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
-                android:layout_marginBottom="@dimen/_15sdp" />
+                android:layout_marginBottom="@dimen/_3sdp" />
 
-            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/dotsIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:dotsColor="#1A000000"
-                app:dotsCornerRadius="5dp"
-                app:dotsSize="10dp"
-                app:dotsSpacing="3dp"
-                app:dotsWidthFactor="2.2"
-                app:selectedDotColor="@color/black"
-                android:layout_gravity="center_horizontal"/>
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingEnd="@dimen/_5sdp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+<!--                android:id="@+id/dotsIndicator"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:dotsColor="#1A000000"-->
+<!--                app:dotsCornerRadius="5dp"-->
+<!--                app:dotsSize="10dp"-->
+<!--                app:dotsSpacing="3dp"-->
+<!--                app:dotsWidthFactor="2.2"-->
+<!--                app:selectedDotColor="@color/black"-->
+<!--                android:layout_gravity="center_horizontal"/>-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -276,7 +289,7 @@
                 android:textSize="@dimen/_14sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_15sdp" />
+                android:layout_marginTop="@dimen/_8sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCategory"
@@ -365,20 +378,33 @@
                 android:layout_height="@dimen/_150sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp" />
+                android:layout_marginBottom="@dimen/_3sdp" />
 
-            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+<!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+<!--                android:id="@+id/dotsIndicatorPremium"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:dotsColor="#1A000000"-->
+<!--                app:dotsCornerRadius="5dp"-->
+<!--                app:dotsSize="10dp"-->
+<!--                app:dotsSpacing="3dp"-->
+<!--                app:dotsWidthFactor="2.2"-->
+<!--                app:selectedDotColor="@color/black"-->
+<!--                app:progressMode="true"-->
+<!--                android:layout_gravity="center_horizontal"/>-->
+
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/dotsIndicatorPremium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:dotsColor="#1A000000"
-                app:dotsCornerRadius="5dp"
-                app:dotsSize="10dp"
-                app:dotsSpacing="3dp"
-                app:dotsWidthFactor="2.2"
-                app:selectedDotColor="@color/black"
-                app:progressMode="true"
-                android:layout_gravity="center_horizontal"/>
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingEnd="@dimen/_5sdp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -388,7 +414,7 @@
                 android:textSize="@dimen/_14sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_15sdp" />
+                android:layout_marginTop="@dimen/_8sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTopRated"
@@ -419,20 +445,33 @@
                 android:layout_height="@dimen/_150sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp" />
+                android:layout_marginBottom="@dimen/_3sdp" />
 
-            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+<!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+<!--                android:id="@+id/dotsIndicatorDiscountedDeals"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:dotsColor="#1A000000"-->
+<!--                app:dotsCornerRadius="5dp"-->
+<!--                app:dotsSize="10dp"-->
+<!--                app:dotsSpacing="3dp"-->
+<!--                app:dotsWidthFactor="2.2"-->
+<!--                app:selectedDotColor="@color/black"-->
+<!--                app:progressMode="true"-->
+<!--                android:layout_gravity="center_horizontal"/>-->
+
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/dotsIndicatorDiscountedDeals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:dotsColor="#1A000000"
-                app:dotsCornerRadius="5dp"
-                app:dotsSize="10dp"
-                app:dotsSpacing="3dp"
-                app:dotsWidthFactor="2.2"
-                app:selectedDotColor="@color/black"
-                app:progressMode="true"
-                android:layout_gravity="center_horizontal"/>
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingEnd="@dimen/_5sdp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -442,7 +481,7 @@
                 android:textSize="@dimen/_14sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_15sdp" />
+                android:layout_marginTop="@dimen/_8sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvNewestProducts"

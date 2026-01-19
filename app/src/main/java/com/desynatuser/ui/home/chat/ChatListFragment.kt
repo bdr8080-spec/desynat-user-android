@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -186,6 +187,7 @@ class ChatListFragment : BaseFragment() {
             tvClear.setOnClickListener {
                 filter = ""
                 chatFilter = null
+                getChat()
                 dialog.dismiss()
             }
 
@@ -197,6 +199,7 @@ class ChatListFragment : BaseFragment() {
                     return@setOnClickListener
                 }
                 else{
+                    getChat()
                     dialog.dismiss()
                 }
 
@@ -209,9 +212,19 @@ class ChatListFragment : BaseFragment() {
 
     private fun getChat(){
         val map = HashMap<String, Any>()
+        if (lastQuery!=null){
+            map["search"] = lastQuery.toString()
+        }
+        if (chatFilter!=null){
+            map["filters"] = chatFilter.toString()
+        }
         viewModel.getAllChatList(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
+    }
+
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = chatList.isEmpty()
     }
 
 }

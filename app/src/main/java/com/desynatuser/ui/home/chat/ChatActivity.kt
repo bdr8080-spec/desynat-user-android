@@ -173,7 +173,7 @@ class ChatActivity : BaseActivity() {
                     showToast("Please enter message")
                 }
                 else{
-                    sendMessage(uniqueId = uniqueId, message = etMessage.text?.trim().toString(), type = 0)
+                    sendMessage(uniqueId = uniqueId, message = etMessage.text?.trim().toString(), type = "0")
                     etMessage.setText("")
                 }
             }
@@ -340,7 +340,7 @@ class ChatActivity : BaseActivity() {
     private val database =
         FirebaseDatabase.getInstance().reference
 
-    fun sendMessage(uniqueId: String, message: String, type: Int) {
+    fun sendMessage(uniqueId: String, message: String, type: String) {
         val ref = database.child("chats").child(uniqueId).push()
         val messageId = ref.key ?: return
 

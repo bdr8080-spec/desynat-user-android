@@ -172,15 +172,15 @@ class HomeFragment : BaseFragment() {
 
             homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(homeBannerList)
                 viewPager.adapter = homeWomenBannerViewPagerAdapter
-                dotsIndicator.attachTo(binding?.viewPager!!)
+            TabLayoutMediator(dotsIndicator, binding!!.viewPager) { _, _ -> }.attach()
 
                 discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(discountList)
                 viewPagerDiscountedDeals.adapter = discountedDealBannerViewPagerAdapter
-                dotsIndicatorDiscountedDeals.attachTo(binding?.viewPagerDiscountedDeals!!)
+            TabLayoutMediator(dotsIndicatorDiscountedDeals, binding!!.viewPagerDiscountedDeals) { _, _ -> }.attach()
 
                 premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(premiumList)
                 viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
-                dotsIndicatorPremium.attachTo(binding?.viewPagerPremium!!)
+            TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
 
                 bestSellingAdapter = BestSellingAdapter(listOf("","","","",""))
                 rvBestSelling.adapter = bestSellingAdapter
@@ -253,7 +253,6 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun showBannerDialog(list: ArrayList<GetHomeScreenPopUpBanner.Data>) {
-        Constants.isFromLoginSignup = false
         binding?.clMain?.isVisible = true
         val imageList = ArrayList<String>()
 
@@ -682,6 +681,7 @@ class HomeFragment : BaseFragment() {
             if (homeBannerList.size != 0) {
                 viewPager.isVisible = true
                 dotsIndicator.isVisible = true
+                autoScrollViewPager(viewPager, bannerHandler)
             } else {
                 homeBannerList.add(GetHomeScreenAllBannerResponse.Data())
                 homeWomenBannerViewPagerAdapter?.notifyDataSetChanged()
@@ -695,6 +695,7 @@ class HomeFragment : BaseFragment() {
                 viewPagerDiscountedDeals.isVisible = true
                 dotsIndicatorDiscountedDeals.isVisible = true
                 tvDealDiscounted.isVisible = true
+                autoScrollViewPager(viewPagerDiscountedDeals, discountHandler)
             } else {
                 viewPagerDiscountedDeals.isVisible = false
                 dotsIndicatorDiscountedDeals.isVisible = false
@@ -709,6 +710,7 @@ class HomeFragment : BaseFragment() {
                 tvBrowseSomePremium.isVisible = true
                 viewPagerPremium.isVisible = true
                 dotsIndicatorPremium.isVisible = true
+                autoScrollViewPager(viewPagerPremium, premiumHandler)
             } else {
                 tvBrowseSomePremium.isVisible = false
                 viewPagerPremium.isVisible = false
@@ -743,6 +745,47 @@ class HomeFragment : BaseFragment() {
         } else {
             MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
         }
+    }
+
+    private val bannerHandler = Handler(Looper.getMainLooper())
+    private val discountHandler = Handler(Looper.getMainLooper())
+    private val premiumHandler = Handler(Looper.getMainLooper())
+
+    private fun autoScrollViewPager(
+        viewPager: ViewPager2,
+        handler: Handler,
+        delay: Long = 3000L
+    ) {
+        val runnable = object : Runnable {
+            override fun run() {
+                val adapter = viewPager.adapter ?: return
+                if (adapter.itemCount <= 1) return
+
+                val nextItem =
+                    if (viewPager.currentItem == adapter.itemCount - 1) 0
+                    else viewPager.currentItem + 1
+
+                viewPager.setCurrentItem(nextItem, true)
+                handler.postDelayed(this, delay)
+            }
+        }
+
+        handler.postDelayed(runnable, delay)
+
+        viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                handler.removeCallbacks(runnable)
+                handler.postDelayed(runnable, delay)
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        bannerHandler.removeCallbacksAndMessages(null)
+        discountHandler.removeCallbacksAndMessages(null)
+        premiumHandler.removeCallbacksAndMessages(null)
     }
 
 }

@@ -3,6 +3,8 @@ package com.desynatuser.ui.home.fragment
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +20,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.desynatuser.R
 import com.desynatuser.adapter.PremiumStoreViewPagerAdapter
 import com.desynatuser.adapter.ProductImageAdapter
@@ -208,6 +211,7 @@ class StoreFragment : BaseFragment() {
                 tvPremium.isVisible = true
                 viewPager.isVisible = true
                 dotsIndicatorStore.isVisible = true
+                autoScrollViewPager(viewPager, bannerHandler)
             } else {
                 tvPremium.isVisible = false
                 viewPager.isVisible = false
@@ -304,5 +308,42 @@ class StoreFragment : BaseFragment() {
                 }
             }
         }
+
+    private val bannerHandler = Handler(Looper.getMainLooper())
+
+    private fun autoScrollViewPager(
+        viewPager: ViewPager2,
+        handler: Handler,
+        delay: Long = 3000L
+    ) {
+        val runnable = object : Runnable {
+            override fun run() {
+                val adapter = viewPager.adapter ?: return
+                if (adapter.itemCount <= 1) return
+
+                val nextItem =
+                    if (viewPager.currentItem == adapter.itemCount - 1) 0
+                    else viewPager.currentItem + 1
+
+                viewPager.setCurrentItem(nextItem, true)
+                handler.postDelayed(this, delay)
+            }
+        }
+
+        handler.postDelayed(runnable, delay)
+
+        viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                handler.removeCallbacks(runnable)
+                handler.postDelayed(runnable, delay)
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        bannerHandler.removeCallbacksAndMessages(null)
+    }
 
 }

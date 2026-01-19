@@ -174,7 +174,6 @@ class OtpVerificationFragment : BaseFragment() {
                 response?.let {
                     when(from){
                         "login" -> {
-                            Constants.isFromLoginSignup = true
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
                             showToast("OTP verified successfully")
@@ -185,7 +184,6 @@ class OtpVerificationFragment : BaseFragment() {
                             requireActivity().finish()
                         }
                         "signUp" -> {
-                            Constants.isFromLoginSignup = true
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
                             CommonMethod.showSuccessDialog(requireActivity(),"Thank you for sinning up with DESYNAT"){

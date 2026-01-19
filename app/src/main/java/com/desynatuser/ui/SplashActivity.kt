@@ -26,14 +26,16 @@ class SplashActivity : BaseActivity() {
 
     override fun initView() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if (SharedPreference.get(this).accessToken.isNotEmpty()) {
-                startActivity(Intent(this, HomeActivity::class.java))
-                finish()
-            }
-            else{
-                startActivity(Intent(this, AuthActivity::class.java))
-                finish()
-            }
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
+//            if (SharedPreference.get(this).accessToken.isNotEmpty()) {
+//                startActivity(Intent(this, HomeActivity::class.java))
+//                finish()
+//            }
+//            else{
+//                startActivity(Intent(this, AuthActivity::class.java))
+//                finish()
+//            }
 
         },500)
     }

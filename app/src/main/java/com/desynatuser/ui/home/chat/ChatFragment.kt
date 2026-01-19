@@ -188,7 +188,7 @@ class ChatFragment : BaseFragment() {
                     chatAdapter?.notifyItemInserted(chatList.size - 1)
                     rvChat.scrollToPosition(chatList.size - 1)
 
-                    if (message.by.toSafeString() != "user" && message.read.toSafeInt() == 0 && message.id.toSafeString() != null) {
+                    if (message.by.toSafeString() != "user" && message.read.toSafeInt() == 0 && message.id.toSafeString() != null &&message.id.toSafeString() != "") {
                         markMessageRead(uniqueId, message.id.toSafeString())
                     }
                 },
@@ -388,7 +388,7 @@ class ChatFragment : BaseFragment() {
                     sendMessage(
                         uniqueId = uniqueId,
                         message = textMessage,
-                        type = 0
+                        type = "0"
                     )
                     etMessage.setText("")
                 }
@@ -398,7 +398,7 @@ class ChatFragment : BaseFragment() {
                         sendMessage(
                             uniqueId = uniqueId,
                             message = image.imageUrl,
-                            type = 1
+                            type = "1"
                         )
                     }
                     uploadImageList.clear()
@@ -597,7 +597,7 @@ class ChatFragment : BaseFragment() {
     private val database =
         FirebaseDatabase.getInstance().reference
 
-    fun sendMessage(uniqueId: String, message: String, type: Int) {
+    fun sendMessage(uniqueId: String, message: String, type: String) {
         val ref = database.child("chats").child(uniqueId).push()
         val messageId = ref.key ?: return
 

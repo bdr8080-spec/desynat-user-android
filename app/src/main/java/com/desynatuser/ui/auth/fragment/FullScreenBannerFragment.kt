@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
 import com.desynatuser.adapter.HomeFullScreenBannerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
@@ -60,17 +59,6 @@ class FullScreenBannerFragment : BaseFragment() {
 
             TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
 
-            viewPager.registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
-
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-
-                    if (position == imageList.size - 1) {
-                        handler.postDelayed(dismissRunnable, 5000)
-                    }
-                }
-            })
         }
 
     }
@@ -107,14 +95,12 @@ class FullScreenBannerFragment : BaseFragment() {
                         imageList.isEmpty() -> {
                             navigateNextScreen()
                         }
-
                         imageList.size == 1 -> {
-                            handler.postDelayed(dismissRunnable, 10000)
+                            handler.postDelayed(dismissRunnable, 3000)
                         }
 
                         else -> {
                             handler.postDelayed(slideRunnable, 3000)
-                            handler.postDelayed(dismissRunnable, 10000)
                         }
                     }
 
@@ -130,9 +116,12 @@ class FullScreenBannerFragment : BaseFragment() {
         override fun run() {
             binding?.viewPager?.let { vp ->
                 val next = vp.currentItem + 1
+
                 if (next < imageList.size) {
                     vp.currentItem = next
-                    handler.postDelayed(this, 3000) // slide every 3 sec
+                    handler.postDelayed(this, 3000)
+                } else {
+                    navigateNextScreen()
                 }
             }
         }
