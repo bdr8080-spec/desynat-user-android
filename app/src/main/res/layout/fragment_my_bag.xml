@@ -271,7 +271,7 @@
                     android:id="@+id/tvShipping"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Shipping Fee"
+                    android:text="Delivery Fee"
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="@dimen/_11sdp"
                     android:textColor="#CC000000"

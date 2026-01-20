@@ -76,10 +76,10 @@ class BottomNavAdapter(var context:Context, var list: ArrayList<BottomNavItem>, 
 
         holder.itemView.setOnClickListener {
             bottomNavItemClick.onBottomNavItemClick(position)
-            val previousSelected = selected
-            selected = position
-            notifyItemChanged(previousSelected)
-            notifyItemChanged(selected)
+//            val previousSelected = selected
+//            selected = position
+//            notifyItemChanged(previousSelected)
+//            notifyItemChanged(selected)
         }
 
     }

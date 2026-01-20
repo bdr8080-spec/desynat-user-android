@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.bumptech.glide.Glide
 import com.desynatuser.databinding.ItemBannerBinding
 import com.desynatuser.databinding.ItemDealBannerBinding
 import com.desynatuser.databinding.ItemHomeBannerBinding
@@ -24,8 +25,8 @@ class PremiumStoreViewPagerAdapter(val context:Context,private val bannerList: L
         )
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.ivBanner.load(bannerList[position].uploadBanner)
-
+       // holder.binding.ivBanner.load(bannerList[position].uploadBanner)
+        Glide.with(context).load(bannerList[position].uploadBanner).into(holder.binding.ivBanner)
 
     }
 

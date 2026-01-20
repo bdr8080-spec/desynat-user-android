@@ -163,7 +163,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivWallet"
                     style="@style/drawer_image"
-                    android:src="@drawable/ic_wallet" />
+                    android:src="@drawable/icon_wallet" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvMyWallet"

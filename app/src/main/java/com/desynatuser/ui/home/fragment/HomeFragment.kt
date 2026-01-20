@@ -136,14 +136,6 @@ class HomeFragment : BaseFragment() {
 
     override fun initView() {
 
-       /* if (Constants.isFromLoginSignup){
-            binding?.clMain?.isVisible = false
-            viewModel.getHomeScreenBanner()
-            isHomeBannerObserver = true
-        }
-        else{
-            binding?.clMain?.isVisible = true
-        }*/
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
             if (!Constants.isGuest){
@@ -170,15 +162,15 @@ class HomeFragment : BaseFragment() {
                 viewPager.currentItem = 1
             }*/
 
-            homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(homeBannerList)
+            homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(requireActivity(),homeBannerList)
                 viewPager.adapter = homeWomenBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicator, binding!!.viewPager) { _, _ -> }.attach()
 
-                discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(discountList)
+                discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(requireActivity(),discountList)
                 viewPagerDiscountedDeals.adapter = discountedDealBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicatorDiscountedDeals, binding!!.viewPagerDiscountedDeals) { _, _ -> }.attach()
 
-                premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(premiumList)
+                premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(requireActivity(),premiumList)
                 viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
 
@@ -250,75 +242,6 @@ class HomeFragment : BaseFragment() {
         getHomeScreenBottomBanner()
         getHomeScreenCategoryBanner()
 
-    }
-
-    private fun showBannerDialog(list: ArrayList<GetHomeScreenPopUpBanner.Data>) {
-        binding?.clMain?.isVisible = true
-        val imageList = ArrayList<String>()
-
-        for (i in 0 until list.size){
-            imageList.add(list[i].image)
-        }
-
-        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
-        val dialogBinding = HomeBannerDialogBinding.inflate(LayoutInflater.from(context))
-        dialog.setContentView(dialogBinding.root)
-
-        dialog.window?.apply {
-            setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT
-            )
-            setBackgroundDrawableResource(android.R.color.transparent)
-            attributes = attributes.apply {
-                gravity = Gravity.CENTER
-            }
-        }
-
-        dialog.setCancelable(false)
-
-        val handler = Handler(Looper.getMainLooper())
-        val dismissRunnable = Runnable {
-            if (dialog.isShowing) {
-                dialog.dismiss()
-            }
-        }
-
-        dialogBinding.apply {
-
-            tvSkip.setOnClickListener {
-                handler.removeCallbacks(dismissRunnable)
-                dialog.dismiss()
-            }
-
-            val homeFullScreenBannerAdapter =
-                HomeFullScreenBannerAdapter(requireActivity(), imageList, object :
-                    HomeFullScreenBannerAdapter.OnClick {
-                    override fun onClick(position: Int) {}
-                })
-
-            viewPager.adapter = homeFullScreenBannerAdapter
-
-            TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
-
-            viewPager.registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
-
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-
-                    if (position == imageList.size - 1) {
-                        handler.postDelayed(dismissRunnable, 5000)
-                    }
-                }
-            })
-        }
-
-        dialog.setOnDismissListener {
-            handler.removeCallbacks(dismissRunnable)
-        }
-
-        dialog.show()
     }
 
     override fun initControl() {
@@ -400,16 +323,6 @@ class HomeFragment : BaseFragment() {
 
                 }
                 isObserver = false
-            }
-        }
-        viewModel.getHomeScreenBannerResult.observe(viewLifecycleOwner) { response ->
-            if (isHomeBannerObserver) {
-                response?.let {
-
-                    showBannerDialog(response.data)
-
-                }
-                isHomeBannerObserver = false
             }
         }
 

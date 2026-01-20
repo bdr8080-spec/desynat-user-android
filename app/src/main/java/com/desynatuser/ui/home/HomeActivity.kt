@@ -122,7 +122,9 @@ class HomeActivity : BaseActivity() {
                     bottomAdapter?.setSelectedItem(1)
                 }
                 R.id.myBag -> {
-                    bottomAdapter?.setSelectedItem(3)
+                    if (!Constants.isGuest) {
+                        bottomAdapter?.setSelectedItem(3)
+                    }
                 }
                 R.id.profile -> {
                     bottomAdapter?.setSelectedItem(4)
@@ -145,7 +147,7 @@ class HomeActivity : BaseActivity() {
                     0 -> controller.navigate(R.id.home)
                     1 -> controller.navigate(R.id.catalog)
                     //2 -> controller.navigate(R.id.catalog)
-                    3 -> controller.navigate(R.id.myBag)
+                    3 -> if (!Constants.isGuest){ controller.navigate(R.id.myBag)}
                     4 -> controller.navigate(R.id.profile)
                 }
 

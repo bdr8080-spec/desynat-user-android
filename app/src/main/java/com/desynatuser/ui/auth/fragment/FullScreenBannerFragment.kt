@@ -1,5 +1,6 @@
 package com.desynatuser.ui.auth.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -49,12 +50,14 @@ class FullScreenBannerFragment : BaseFragment() {
 
         binding?.apply {
 
-             homeFullScreenBannerAdapter =
-                HomeFullScreenBannerAdapter(requireActivity(), imageList, object :
-                    HomeFullScreenBannerAdapter.OnClick {
-                    override fun onClick(position: Int) {}
-                })
-
+            homeFullScreenBannerAdapter =
+                HomeFullScreenBannerAdapter(requireActivity(), imageList,
+                    object : HomeFullScreenBannerAdapter.OnClick {
+                        override fun onClick(position: Int) {}
+                    }
+                ) {
+                    startTimerForCurrentItem()
+                }
             viewPager.adapter = homeFullScreenBannerAdapter
 
             TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
@@ -151,5 +154,31 @@ class FullScreenBannerFragment : BaseFragment() {
         requireActivity().finish()
     }
 
+    private fun getGifDuration(context: Context, url: String, callback: (Long) -> Unit) {
+        Thread {
+            try {
+                val inputStream = java.net.URL(url).openStream()
+                val movie = android.graphics.Movie.decodeStream(inputStream)
+                val duration = if (movie.duration() == 0) 3000 else movie.duration()
+                requireActivity().runOnUiThread {
+                    callback(duration.toLong())
+                }
+            } catch (e: Exception) {
+                callback(3000)
+            }
+        }.start()
+    }
+
+    private fun startTimerForCurrentItem() {
+        stopTimers()
+
+        if (imageList.size == 1) {
+            handler.post {
+                navigateNextScreen()
+            }
+        } else {
+            handler.postDelayed(slideRunnable, 3000)
+        }
+    }
 
 }

@@ -133,6 +133,7 @@ class ChatListFragment : BaseFragment() {
                 chatList.clear()
                 chatList.addAll(response.data)
                 chatAdapter?.notifyDataSetChanged()
+                checkData()
                 ProgressDialogUtils.getInstance().hideProgress()
                 isObserver = false
             }

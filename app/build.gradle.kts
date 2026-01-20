@@ -118,4 +118,6 @@ dependencies {
     implementation ("com.google.firebase:firebase-database-ktx")
     implementation ("com.google.firebase:firebase-auth-ktx")
 
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
 }
