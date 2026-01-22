@@ -21,6 +21,7 @@ import com.desynatuser.adapter.BottomNavAdapter
 import com.desynatuser.base.BaseActivity
 import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.ActivityHomeBinding
+import com.desynatuser.ui.response.BottomNavItem
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -73,8 +74,6 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initView() {
-
-
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -262,8 +261,3 @@ data class PaymentResultEvent(
     val data: Intent?
 )
 
-data class BottomNavItem(
-    var name : String,
-    var image: Int,
-    var selectedImage: Int,
-)

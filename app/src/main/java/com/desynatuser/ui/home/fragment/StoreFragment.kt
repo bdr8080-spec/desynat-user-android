@@ -314,7 +314,7 @@ class StoreFragment : BaseFragment() {
     private fun autoScrollViewPager(
         viewPager: ViewPager2,
         handler: Handler,
-        delay: Long = 3000L
+        delay: Long = 4000L
     ) {
         val runnable = object : Runnable {
             override fun run() {

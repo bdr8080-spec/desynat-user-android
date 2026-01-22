@@ -21,7 +21,53 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatImageView
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/llTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="4"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:src="@drawable/selected_top_bar"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/selected_top_bar"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/unselected_top_bar"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/unselected_top_bar"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivOtp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_200sdp"

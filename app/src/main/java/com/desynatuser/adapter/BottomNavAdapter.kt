@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemBottomNavBinding
-import com.desynatuser.ui.home.BottomNavItem
+import com.desynatuser.ui.response.BottomNavItem
 
 class BottomNavAdapter(var context:Context, var list: ArrayList<BottomNavItem>, var bottomNavItemClick:BottomNavItemClick) : RecyclerView.Adapter<BottomNavAdapter.ViewHolder>() {
 

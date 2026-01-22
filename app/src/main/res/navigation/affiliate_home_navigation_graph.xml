@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/affiliate_home_navigation_graph"
+    app:startDestination="@id/affiliateHome">
+
+    <fragment
+        android:id="@+id/affiliateHome"
+        android:name="com.desynatuser.ui.affiliateUser.home.AffiliateHomeFragment"
+        android:label="Affiliate Home Fragment"
+        tools:layout="@layout/fragment_affiliate_home">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/affiliateProfile"
+        android:name="com.desynatuser.ui.affiliateUser.home.AffiliateProfileFragment"
+        android:label="Affiliate Profile Fragment"
+        tools:layout="@layout/fragment_affiliate_profile">
+
+    </fragment>
+
+
+</navigation>

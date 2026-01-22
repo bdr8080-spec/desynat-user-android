@@ -317,11 +317,17 @@ object CommonMethod {
         return outputFormat.format(date!!)
     }
 
-    fun isValidPassword(password: String): Boolean {
+    fun isStrongValidPassword(password: String): Boolean {
         // At least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character
         val passwordPattern =
             "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#\$%^&+=!.*_\\-]).{8,}\$"
         return password.matches(passwordPattern.toRegex())
+    }
+
+    fun isValidPassword(password: String): Boolean {
+        // letters + digits
+        val regex = Regex("^(?=.*[A-Za-z])(?=.*\\d).{8,}$")
+        return regex.matches(password)
     }
 
     fun showSuccessDialog(context: Context,description:String,button:Boolean=false,onDismiss: (() -> Unit)? = null) {

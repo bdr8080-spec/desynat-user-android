@@ -27,6 +27,7 @@ class FullScreenBannerFragment : BaseFragment() {
     private var homeFullScreenBannerAdapter:HomeFullScreenBannerAdapter?=null
     val imageList = ArrayList<String>()
     val handler = Handler(Looper.getMainLooper())
+    private var lastStartedPosition = -1
 
 
     override fun onCreateView(
@@ -99,11 +100,11 @@ class FullScreenBannerFragment : BaseFragment() {
                             navigateNextScreen()
                         }
                         imageList.size == 1 -> {
-                            handler.postDelayed(dismissRunnable, 3000)
+                          //  handler.postDelayed(dismissRunnable, 4000)
                         }
 
                         else -> {
-                            handler.postDelayed(slideRunnable, 3000)
+                          //  handler.postDelayed(slideRunnable, 4000)
                         }
                     }
 
@@ -122,7 +123,7 @@ class FullScreenBannerFragment : BaseFragment() {
 
                 if (next < imageList.size) {
                     vp.currentItem = next
-                    handler.postDelayed(this, 3000)
+                    handler.postDelayed(this, 4000)
                 } else {
                     navigateNextScreen()
                 }
@@ -159,25 +160,44 @@ class FullScreenBannerFragment : BaseFragment() {
             try {
                 val inputStream = java.net.URL(url).openStream()
                 val movie = android.graphics.Movie.decodeStream(inputStream)
-                val duration = if (movie.duration() == 0) 3000 else movie.duration()
+                val duration = if (movie.duration() == 0) 4000 else movie.duration()
                 requireActivity().runOnUiThread {
                     callback(duration.toLong())
                 }
             } catch (e: Exception) {
-                callback(3000)
+                callback(4000)
             }
         }.start()
     }
 
+//    private fun startTimerForCurrentItem() {
+//        stopTimers()
+//
+//        if (imageList.size == 1) {
+//            handler.post {
+//                navigateNextScreen()
+//            }
+//        } else {
+//            handler.postDelayed(slideRunnable, 4000)
+//        }
+//    }
+
     private fun startTimerForCurrentItem() {
+        val currentPosition = binding?.viewPager?.currentItem ?: return
+
+        // Prevent multiple timer starts for same page
+        if (currentPosition == lastStartedPosition) return
+        lastStartedPosition = currentPosition
+
+        stopTimers()
         stopTimers()
 
         if (imageList.size == 1) {
-            handler.post {
+            handler.postDelayed({
                 navigateNextScreen()
-            }
+            }, 4000)
         } else {
-            handler.postDelayed(slideRunnable, 3000)
+            handler.postDelayed(slideRunnable, 4000)
         }
     }
 
