@@ -40,7 +40,10 @@ class AuthActivity : BaseActivity() {
 
 
         navGraph.setStartDestination(
-            if (SharedPreference.get(this).accessToken.isNotEmpty()) {
+            if (SharedPreference.get(this).userType==2){
+                R.id.login
+            }
+            else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
                 R.id.banner
             }
             else {

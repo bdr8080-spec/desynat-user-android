@@ -55,6 +55,10 @@
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUp"/>
 
+        <action
+            android:id="@+id/action_loginFragment_to_affiliateSignUpFragment"
+            app:destination="@id/affiliateSignUp"/>
+
     </fragment>
 
     <fragment
@@ -72,9 +76,14 @@
     <action
         android:id="@+id/action_otpFragment_to_resetPasswordFragment"
         app:destination="@id/resetPassword"/>
+
     <action
         android:id="@+id/action_otpFragment_to_bannerFragment"
         app:destination="@id/banner"/>
+
+    <action
+        android:id="@+id/action_otpFragment_to_affiliateAddAddressFragment"
+        app:destination="@id/affiliateAddAddress"/>
 
     </fragment>
 
@@ -107,5 +116,48 @@
             app:destination="@id/otp"/>
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/affiliateSignUp"
+        android:name="com.desynatuser.ui.affiliateUser.auth.AffiliateSignUpFragment"
+        android:label="Affiliate SignUp Fragment"
+        tools:layout="@layout/fragment_affiliate_sign_up">
+
+        <action
+            android:id="@+id/action_affiliateSignUpFragment_to_OtpFragment"
+            app:destination="@id/otp"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/affiliateAddAddress"
+        android:name="com.desynatuser.ui.affiliateUser.auth.AffiliateAddAddressFragment"
+        android:label="Affiliate AddA ddress Fragment"
+        tools:layout="@layout/fragment_affiliate_add_address">
+
+        <action
+            android:id="@+id/action_affiliateAddAddressFragment_to_affiliateAddBankDetailFragment"
+            app:destination="@id/affiliateAddBankDetail"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/affiliateAddBankDetail"
+        android:name="com.desynatuser.ui.affiliateUser.auth.BankDetailFragment"
+        android:label="Affiliate Bank Detail Fragment"
+        tools:layout="@layout/fragment_bank_detail">
+
+        <action
+            android:id="@+id/action_affiliateAddBankDetailFragment_to_underReviewFragment"
+            app:destination="@id/underReview"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/underReview"
+        android:name="com.desynatuser.ui.affiliateUser.auth.UnderReviewFragment"
+        android:label="Under Review Fragment"
+        tools:layout="@layout/fragment_under_review"/>
 
 </navigation>

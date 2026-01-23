@@ -88,6 +88,18 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_giftCardFragment,bundle)
             }
 
+            rlAffiliate.setOnClickListener {
+                SharedPreference.get(requireActivity()).userType = 2
+                Constants.isGuest = false
+                Constants.isLogout = true
+                Constants.Category = "Women"
+                requireActivity().startActivity(
+                    Intent(requireActivity(),
+                        AuthActivity::class.java)
+                )
+                requireActivity().finish()
+            }
+
             relLogout.setOnClickListener {
                 if(Constants.isGuest){
                     Constants.isGuest = false

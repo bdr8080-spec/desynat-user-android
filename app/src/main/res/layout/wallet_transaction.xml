@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_15sdp"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/grey_stroke_cards">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Credit"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="#D72E04"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="+20KD"
+        android:gravity="end"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/tvType"
+        app:layout_constraintTop_toTopOf="@+id/tvType"
+        app:layout_constraintBottom_toBottomOf="@+id/tvType"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transaction Id"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="#CC000000"
+        app:layout_constraintTop_toBottomOf="@+id/tvType"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTransactionId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="43567893"
+        android:gravity="end"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/tvTransaction"
+        app:layout_constraintTop_toTopOf="@+id/tvTransaction"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTransaction"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Id"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="#CC000000"
+        app:layout_constraintTop_toBottomOf="@+id/tvTransaction"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvOrderId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="12567893"
+        android:gravity="end"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/tvOrder"
+        app:layout_constraintTop_toTopOf="@+id/tvOrder"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOrder"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCredited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Credited On"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="#CC000000"
+        app:layout_constraintTop_toBottomOf="@+id/tvOrder"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCreditedOn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="22/02/2025,10:00AM"
+        android:gravity="end"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/tvCredited"
+        app:layout_constraintTop_toTopOf="@+id/tvCredited"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCredited"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
-import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.CustomCountryPickerBinding
@@ -106,7 +104,12 @@ class EnterGiftCardDetailFragment : BaseFragment() {
 
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(etMobile)
+                CommonMethod.showUserCountryPicker(requireContext(),
+                    clMobile,
+                    countryList,true
+                ) { selectedCountry ->
+                    tvCountryPicker?.text = selectedCountry.dialCode
+                }
             }
 
             tv100.setOnClickListener {
@@ -270,34 +273,6 @@ class EnterGiftCardDetailFragment : BaseFragment() {
         return false
     }
 
-    private fun showCustomDropdown(anchor: View) {
-
-        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
-
-        val popupWindow = PopupWindow(
-            dropdownBinding.root,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 20f
-
-        popupWindow.showAsDropDown(anchor)
-
-        dropdownBinding.apply {
-
-            rvCountry.adapter = CountryPickerAdapter(requireActivity(), countryList, object :
-                CountryPickerAdapter.ClickOnItem {
-                override fun onClickItem(position: Int) {
-                    binding?.tvCountryPicker?.text = countryList[position].dialCode
-                    popupWindow.dismiss()
-                }
-
-            })
-        }
-    }
 
     private fun setCountry() {
         val data = SharedPreference.get(requireActivity()).getCountryList()

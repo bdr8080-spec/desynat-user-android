@@ -6,6 +6,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.desynatuser.network.ApiServices
+import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserAddressResponse
+import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserBankDetail
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetailRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -15,9 +22,7 @@ import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
-import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
-import com.desynatuser.ui.home.chat.response.GetChatResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
@@ -41,7 +46,6 @@ import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
-import com.desynatuser.ui.home.profile.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
@@ -60,7 +64,6 @@ import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.toMultipartPart
 import dagger.hilt.android.qualifiers.ApplicationContext
-import retrofit2.http.Body
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -866,6 +869,105 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
                 api.getHomeScreenCategoryBanner(map)
             },
             responseLiveData = getHomeScreenCategoryBannerLiveData
+        )
+    }
+
+
+    //Affiliate User
+
+    val createAffiliateUserLiveData = SingleLiveEvent<CreateAffiliateUserResponse>()
+    suspend fun createAffiliateUser(
+        request:CreateAffiliateUserRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.createAffiliateUser(request)
+            },
+            responseLiveData = createAffiliateUserLiveData
+        )
+    }
+
+    val addAddressAffiliateUserLiveData = SingleLiveEvent<AddAffiliateUserAddressResponse>()
+    suspend fun addAffiliateUserAddress(
+        request:AffiliateUserAddAddressRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.addAffiliateUserAddress(request)
+            },
+            responseLiveData = addAddressAffiliateUserLiveData
+        )
+    }
+
+    val bankDetailAffiliateUserLiveData = SingleLiveEvent<AddAffiliateUserBankDetail>()
+    suspend fun addAffiliateUserBandDetail(
+        request:AffiliateUserAddBankDetailRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.addAffiliateUserBandDetail(request)
+            },
+            responseLiveData = bankDetailAffiliateUserLiveData
+        )
+    }
+
+    val otpVerifyAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
+    suspend fun verifyAffiliateUserOtp(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.verifyAffiliateUserOtp(map)
+            },
+            responseLiveData = otpVerifyAffiliateUserLiveData
+        )
+    }
+
+    val resendOtpAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
+    suspend fun resendOtpAffiliateUser(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.resendOtpAffiliateUser(map)
+            },
+            responseLiveData = resendOtpAffiliateUserLiveData
+        )
+    }
+
+    val forgotPasswordAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
+    suspend fun forgotPasswordAffiliateUser(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.forgotPasswordAffiliateUser(map)
+            },
+            responseLiveData = forgotPasswordAffiliateUserLiveData
+        )
+    }
+
+    val createPasswordAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
+    suspend fun createAffiliateUserPassword(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.createAffiliateUserPassword(map)
+            },
+            responseLiveData = createPasswordAffiliateUserLiveData
+        )
+    }
+
+    val loginAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
+    suspend fun loginAffiliateUser(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.loginAffiliateUser(map)
+            },
+            responseLiveData = loginAffiliateUserLiveData
         )
     }
 

@@ -95,4 +95,17 @@ object Constants {
     const val ACCEPT_REJECT_ORDER_REQUEST = "/api/user/custom-accept-reject-order-request"
     const val HOME_SCREEN_ALL_BANNER = "/api/user/Home-screen-Banner-catgory-banner"
 
+    const val ADD_MONEY_IN_WALLET = "/api/user/Add-money-in-wallet"
+    const val COMPLETE_PAYMENT_ADD_MONEY_WALLET = "/api/user/complete-add-money-in-wallet"
+
+   //affiliate User
+    const val CREATE_AFFILIATE_USER = "/api/user/create-a-affilated-account"
+    const val VERIFY_OTP_AFFILIATE_USER = "/api/user/affilated-verify-otp"
+    const val ADD_ADDRESS_AFFILIATE_USER = "/api/user/affilated-add-address"
+    const val ADD_BANK_DETAIL_AFFILIATE_USER = "/api/user/affilated-add-Bank-details"
+    const val LOGIN_AFFILIATE_USER = "/api/affiliate/affiliated-login"
+    const val FORGOT_PASSWORD_AFFILIATE_USER = "/api/affiliate/forgot_password"
+    const val RESET_OTP_AFFILIATE_USER = "/api/affiliate/resend_otp"
+    const val CREATE_PASSWORD_AFFILIATE_USER = "/api/affiliate/create_password"
+
 }

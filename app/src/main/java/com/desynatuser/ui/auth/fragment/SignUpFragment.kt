@@ -12,18 +12,14 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
-import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
-import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentSignUpBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
@@ -119,7 +115,12 @@ class SignUpFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(etMobile)
+                CommonMethod.showUserCountryPicker(requireContext(),
+                    clMobile,
+                    countryList,true
+                ) { selectedCountry ->
+                    tvCountryPicker?.text = selectedCountry.dialCode
+                }
             }
 
             btnContinue.setOnClickListener {
@@ -334,35 +335,6 @@ class SignUpFragment : BaseFragment() {
         val data = SharedPreference.get(requireActivity()).getCountryList()
         countryList.clear()
         data?.let { countryList.addAll(it) }
-    }
-
-    private fun showCustomDropdown(anchor: View) {
-
-        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
-
-        val popupWindow = PopupWindow(
-            dropdownBinding.root,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 20f
-
-        popupWindow.showAsDropDown(anchor)
-
-        dropdownBinding.apply {
-
-            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :
-                CountryPickerAdapter.ClickOnItem{
-                override fun onClickItem(position: Int) {
-                    binding?.tvCountryPicker?.text = countryList[position].dialCode
-                    popupWindow.dismiss()
-                }
-
-            })
-        }
     }
 
 }

@@ -6,10 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentBankDetailBinding
+import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserBankDetail
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetailRequest
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,8 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class BankDetailFragment : BaseFragment() {
     private var binding: FragmentBankDetailBinding? = null
     private val viewModel: AuthViewModel by viewModels()
-    var isObserver = false
-
+    private var isObserver = false
+    private var userId = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +40,8 @@ class BankDetailFragment : BaseFragment() {
     }
 
     override fun initView() {
+        userId = arguments?.getString("userId").toString()
+
         binding?.apply {
             toolbar.tvToolbar.text = "Bank Details"
 
@@ -55,13 +62,39 @@ class BankDetailFragment : BaseFragment() {
 
             btnSubmit.setOnClickListener {
                 if (validation()){
-
+                    addAffiliateUserBandDetail()
                 }
             }
         }
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+
+        }
+
+        viewModel.addBankAffiliateUserResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    CommonMethod.showSuccessDialog(
+                        requireActivity(),
+                        response.message
+                    ) {
+                        findNavController().navigate(
+                            R.id.action_affiliateAddBankDetailFragment_to_underReviewFragment
+                        )
+                    }
+                }
+                isObserver = false
+            }
+        }
+
     }
 
     private fun validation(): Boolean {
@@ -100,6 +133,22 @@ class BankDetailFragment : BaseFragment() {
             }
         }
         return false
+    }
+
+    private fun addAffiliateUserBandDetail(){
+        binding?.apply {
+            val request = AffiliateUserAddBankDetailRequest(
+                accountHolderName = etAccountHolderName.text.toString().trim(),
+                accountNo = etAccountNumber.text.toString().trim(),
+                bankName = etBankName.text.toString(),
+                confirmAccountNo = etConfirmAccountNumber.text.toString().trim(),
+                iban = etIban.text.toString().trim(),
+                swift = etSwift.text.toString().trim()
+            )
+            viewModel.addAffiliateUserBandDetail(request)
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+            isObserver = true
+        }
     }
 
 }

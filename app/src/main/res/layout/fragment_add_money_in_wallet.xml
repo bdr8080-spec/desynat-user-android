@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".ui.home.myWallet.AddMoneyInWalletFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/common_toolbar"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAmount"
+        style="@style/edit_text_title"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Amount"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etAmount"
+        android:layout_width="match_parent"
+        style="@style/edit_text"
+        android:hint="Enter amount"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:inputType="numberDecimal"
+        android:background="@drawable/edit_back"
+        app:layout_constraintTop_toBottomOf="@+id/tvAmount"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="10 KD"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/black"
+        android:background="@drawable/button_stroke"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:paddingVertical="@dimen/_7sdp"
+        app:layout_constraintTop_toBottomOf="@+id/etAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv100"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv100"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="100 KD"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:background="@drawable/button_stroke"
+        app:layout_constraintTop_toTopOf="@+id/tv10"
+        app:layout_constraintBottom_toBottomOf="@+id/tv10"
+        app:layout_constraintStart_toEndOf="@+id/tv10"
+        app:layout_constraintEnd_toStartOf="@+id/tv500"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv500"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="500 KD"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/button_stroke"
+        app:layout_constraintTop_toTopOf="@+id/tv10"
+        app:layout_constraintBottom_toBottomOf="@+id/tv10"
+        app:layout_constraintStart_toEndOf="@+id/tv100"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btnContinue"
+        style="@style/button"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Continue"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

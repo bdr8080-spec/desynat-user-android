@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.desynatuser.R
 import com.desynatuser.adapter.SavedAddressAdapter
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.profile.response.GetAddressResponse
@@ -66,6 +67,10 @@ class SharedPreference(context: Context) {
         get() = preference["tutorial", false]!!
         set(value) = preference.set("tutorial", value)
 
+    var userType: Int
+        get() = preference["userType", 1]!!
+        set(value) = preference.set("userType", value)
+
     var accessToken: String
         get() = preference["accessToken", ""]!!
         set(value) = preference.set("accessToken", value)
@@ -92,6 +97,25 @@ class SharedPreference(context: Context) {
     fun clearUser() {
         preference.set("userData", "")
     }
+
+    fun saveAffiliateUser(user: AffiliateUserLoginResponse.Data) {
+        val json = Gson().toJson(user)
+        preference.set("affiliateUserData", json)
+    }
+
+    fun getAffiliateUser(): AffiliateUserLoginResponse.Data? {
+        val json = preference["affiliateUserData", ""] ?: return null
+        return try {
+            Gson().fromJson(json, AffiliateUserLoginResponse.Data::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun clearAffiliateUser() {
+        preference.set("affiliateUserData", "")
+    }
+
 
     fun saveCountryList(countryList: List<GetCountryResponse.Data>) {
         val json = Gson().toJson(countryList)

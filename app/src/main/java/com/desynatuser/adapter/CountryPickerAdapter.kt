@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.desynatuser.databinding.ItemCountryBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
 
-class CountryPickerAdapter(var context:Context, var countryList: ArrayList<GetCountryResponse.Data>, var onClick:ClickOnItem) : RecyclerView.Adapter<CountryPickerAdapter.ViewHolder>() {
+class CountryPickerAdapter(var context:Context, var countryList: ArrayList<GetCountryResponse.Data>,var isDial:Boolean=false, var onClick:ClickOnItem) : RecyclerView.Adapter<CountryPickerAdapter.ViewHolder>() {
 
     interface ClickOnItem{
         fun onClickItem(position: Int)
@@ -30,7 +29,12 @@ class CountryPickerAdapter(var context:Context, var countryList: ArrayList<GetCo
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
+            if (isDial){
                 tvCountry.text = "${countryList[position].flag1}  ${countryList[position].name} (${countryList[position].dialCode})"
+            }
+            else{
+                tvCountry.text = "${countryList[position].flag1}  ${countryList[position].name}"
+            }
 
             ivFlag.isVisible = false
         }

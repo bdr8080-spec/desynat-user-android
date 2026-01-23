@@ -37,10 +37,19 @@ class OnBoardingFragment : BaseFragment() {
     override fun initView() {
 
         bannerList.clear()
-        bannerList.add(BannerData(R.drawable.order_item,"Order Item","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
-        bannerList.add(BannerData(R.drawable.product_delivery,"Product Delivery","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
-        bannerList.add(BannerData(R.drawable.item_tracking,"Item Tracking","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
-        bannerAdapter = BannerViewPagerAdapter(bannerList)
+
+        if (SharedPreference.get(requireActivity()).userType==2){
+            bannerList.add(BannerData(R.drawable.order_item,"Earn Money","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
+            bannerList.add(BannerData(R.drawable.product_delivery,"Track Commission","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
+            bannerList.add(BannerData(R.drawable.item_tracking,"Share Product Link","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
+
+        }
+        else{
+            bannerList.add(BannerData(R.drawable.order_item,"Order Item","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
+            bannerList.add(BannerData(R.drawable.product_delivery,"Product Delivery","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
+            bannerList.add(BannerData(R.drawable.item_tracking,"Item Tracking","Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed."))
+        }
+       bannerAdapter = BannerViewPagerAdapter(bannerList)
         binding?.viewPager?.adapter = bannerAdapter
         binding?.dotsIndicator?.attachTo(binding?.viewPager!!)
 

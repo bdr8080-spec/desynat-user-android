@@ -1,5 +1,12 @@
 package com.desynatuser.network
 
+import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserAddressResponse
+import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserBankDetail
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetailRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -9,9 +16,7 @@ import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
-import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
-import com.desynatuser.ui.home.chat.response.GetChatResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
@@ -35,7 +40,6 @@ import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
-import com.desynatuser.ui.home.profile.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
@@ -360,5 +364,58 @@ interface ApiServices {
     suspend fun getHomeScreenCategoryBanner(
         @Body map: HashMap<String,Any>
     ): Response<GetHomeScreenAllBannerResponse>
+
+    @POST(Constants.ADD_MONEY_IN_WALLET)
+    suspend fun addMoneyInWallet(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
+    @POST(Constants.COMPLETE_PAYMENT_ADD_MONEY_WALLET)
+    suspend fun addMoneyInWalletPayment(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
+    //Affiliate User
+
+    @POST(Constants.CREATE_AFFILIATE_USER)
+    suspend fun createAffiliateUser(
+        @Body request: CreateAffiliateUserRequest
+    ): Response<CreateAffiliateUserResponse>
+
+    @POST(Constants.VERIFY_OTP_AFFILIATE_USER)
+    suspend fun verifyAffiliateUserOtp(
+        @Body map: HashMap<String,Any>
+    ): Response<AffiliateUserLoginResponse>
+
+    @POST(Constants.ADD_ADDRESS_AFFILIATE_USER)
+    suspend fun addAffiliateUserAddress(
+        @Body request: AffiliateUserAddAddressRequest
+    ): Response<AddAffiliateUserAddressResponse>
+
+    @POST(Constants.ADD_BANK_DETAIL_AFFILIATE_USER)
+    suspend fun addAffiliateUserBandDetail(
+        @Body request: AffiliateUserAddBankDetailRequest
+    ): Response<AddAffiliateUserBankDetail>
+
+    @POST(Constants.FORGOT_PASSWORD_AFFILIATE_USER)
+    suspend fun forgotPasswordAffiliateUser(
+        @Body map: HashMap<String,Any>
+    ): Response<AffiliateUserLoginResponse>
+
+    @POST(Constants.RESET_OTP_AFFILIATE_USER)
+    suspend fun resendOtpAffiliateUser(
+        @Body map: HashMap<String,Any>
+    ): Response<AffiliateUserLoginResponse>
+
+    @POST(Constants.CREATE_PASSWORD_AFFILIATE_USER)
+    suspend fun createAffiliateUserPassword(
+        @Body map: HashMap<String,Any>
+    ): Response<AffiliateUserLoginResponse>
+
+    @POST(Constants.LOGIN_AFFILIATE_USER)
+    suspend fun loginAffiliateUser(
+        @Body map: HashMap<String,Any>
+    ): Response<AffiliateUserLoginResponse>
+
 
 }

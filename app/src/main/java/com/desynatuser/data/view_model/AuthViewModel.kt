@@ -4,6 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.desynatuser.data.repo.MainRepository
+import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserAddressResponse
+import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserBankDetail
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetailRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -26,7 +33,6 @@ class AuthViewModel @Inject constructor(
         repository.progress.value = false
     }
 
-
     val registerResult: LiveData<RegisterAccountResponse>
         get() = repository.registerLiveData
 
@@ -35,7 +41,6 @@ class AuthViewModel @Inject constructor(
             repository.register(request)
         }
     }
-
 
     val uploadImageResult: LiveData<FileUploadResponse>
         get() = repository.responseUploadImage
@@ -56,6 +61,7 @@ class AuthViewModel @Inject constructor(
             repository.login(map)
         }
     }
+
  val loginEmailMobileResult: LiveData<LoginResponse>
         get() = repository.loginEmailMobileLiveData
 
@@ -74,7 +80,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
     val resendOtpResult: LiveData<LoginResponse>
         get() = repository.resendOtpLiveData
 
@@ -84,7 +89,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
     val forgotPasswordResult: LiveData<LoginResponse>
         get() = repository.forgotPasswordLiveData
 
@@ -93,8 +97,6 @@ class AuthViewModel @Inject constructor(
             repository.forgotPassword(map)
         }
     }
-
-
 
     val createPasswordResult: LiveData<LoginResponse>
         get() = repository.createPasswordLiveData
@@ -114,4 +116,76 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+
+    val createAffiliateUserResult: LiveData<CreateAffiliateUserResponse>
+        get() = repository.createAffiliateUserLiveData
+
+    fun createAffiliateUser(request: CreateAffiliateUserRequest) {
+        viewModelScope.launch {
+            repository.createAffiliateUser(request)
+        }
+    }
+
+    val addAddressAffiliateUserResult: LiveData<AddAffiliateUserAddressResponse>
+        get() = repository.addAddressAffiliateUserLiveData
+
+    fun addAffiliateUserAddress(request: AffiliateUserAddAddressRequest) {
+        viewModelScope.launch {
+            repository.addAffiliateUserAddress(request)
+        }
+    }
+
+    val addBankAffiliateUserResult: LiveData<AddAffiliateUserBankDetail>
+        get() = repository.bankDetailAffiliateUserLiveData
+
+    fun addAffiliateUserBandDetail(request: AffiliateUserAddBankDetailRequest) {
+        viewModelScope.launch {
+            repository.addAffiliateUserBandDetail(request)
+        }
+    }
+
+    val otpVerifyAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
+        get() = repository.otpVerifyAffiliateUserLiveData
+
+    fun verifyAffiliateUserOtp(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.verifyAffiliateUserOtp(map)
+        }
+    }
+
+    val resendOtpAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
+        get() = repository.resendOtpAffiliateUserLiveData
+
+    fun resendOtpAffiliateUser(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.resendOtpAffiliateUser(map)
+        }
+    }
+
+    val forgotPasswordAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
+        get() = repository.forgotPasswordAffiliateUserLiveData
+
+    fun forgotPasswordAffiliateUser(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.forgotPasswordAffiliateUser(map)
+        }
+    }
+
+    val createPasswordAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
+        get() = repository.createPasswordAffiliateUserLiveData
+
+    fun createAffiliateUserPassword(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.createAffiliateUserPassword(map)
+        }
+    }
+
+    val loginAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
+        get() = repository.loginAffiliateUserLiveData
+
+    fun loginAffiliateUser(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.loginAffiliateUser(map)
+        }
+    }
 }

@@ -8,24 +8,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
-import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
-import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentAddAddressBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.home.profile.response.AddAddressRequest
 import com.desynatuser.ui.home.profile.response.GetAddressResponse
-import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -146,7 +141,12 @@ class AddAddressFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(clMobile)
+                CommonMethod.showUserCountryPicker(requireContext(),
+                    clMobile,
+                    countryList,true
+                ) { selectedCountry ->
+                    tvCountryPicker?.text = selectedCountry.dialCode
+                }
             }
 
             etAddress.setOnClickListener {
@@ -312,35 +312,6 @@ class AddAddressFragment : BaseFragment() {
         }
     }
 
-    private fun showCustomDropdown(anchor: View) {
-
-        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
-
-        val popupWindow = PopupWindow(
-            dropdownBinding.root,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 20f
-
-        popupWindow.showAsDropDown(anchor)
-
-        dropdownBinding.apply {
-
-            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :
-                CountryPickerAdapter.ClickOnItem{
-                override fun onClickItem(position: Int) {
-                    binding?.tvCountryPicker?.text = countryList[position].dialCode
-                    popupWindow.dismiss()
-                }
-
-            })
-        }
-    }
-
     private fun validation(): Boolean {
         binding?.apply {
 
@@ -450,6 +421,5 @@ class AddAddressFragment : BaseFragment() {
             "postal" to postal
         )
     }
-
 
 }

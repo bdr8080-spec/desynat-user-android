@@ -22,6 +22,7 @@ class ResetPasswordFragment : BaseFragment() {
     private val viewModel: AuthViewModel by viewModels()
     var isObserver = false
     var userId = ""
+    var from = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +52,7 @@ class ResetPasswordFragment : BaseFragment() {
 
     override fun initControl() {
         userId = arguments?.getString("userId").toString()
+        from = arguments?.getString("from").toString()
 
         binding?.apply {
 
@@ -64,7 +66,12 @@ class ResetPasswordFragment : BaseFragment() {
                     map["id"] = userId
                     map["password"] = binding?.etPassword?.text.toString().trim()
                     map["confirm_password"] = binding?.etConfirmPassword?.text.toString().trim()
-                    viewModel.createPassword(map)
+                    if (from=="affiliateForgot"){
+                        viewModel.createAffiliateUserPassword(map)
+                    }
+                    else{
+                        viewModel.createPassword(map)
+                    }
                     ProgressDialogUtils.getInstance().showProgress(requireActivity())
                     isObserver = true
 
@@ -85,6 +92,21 @@ class ResetPasswordFragment : BaseFragment() {
         }
 
         viewModel.createPasswordResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    CommonMethod.showSuccessDialog(
+                        requireActivity(),
+                        getString(R.string.password_reset_successfully), false
+                    ) {
+                        findNavController().popBackStack(R.id.login, false)
+                    }
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.createPasswordAffiliateUserResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {

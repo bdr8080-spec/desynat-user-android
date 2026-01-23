@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
@@ -13,9 +14,9 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentOtpVerificationBinding
+import com.desynatuser.ui.affiliateUser.AffiliateHomeActivity
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
-import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -60,6 +61,11 @@ class OtpVerificationFragment : BaseFragment() {
 
         when(from){
             "signUp" -> screenType = 1
+            "affiliateSignUp" -> {
+                screenType = 1
+                binding?.llTab?.isVisible = true
+            }
+            "affiliateLogin" -> screenType = 1
             "login" -> screenType = 1
             "forgot" -> screenType = 2
         }
@@ -129,7 +135,12 @@ class OtpVerificationFragment : BaseFragment() {
         map["user_id"] = userId
         map["otp"] = binding?.pinView?.text?.trim().toString()
         map["type"] = screenType
-        viewModel.otpVerification(map)
+        if (from=="affiliateSignUp"||from=="affiliateLogin"){
+            viewModel.verifyAffiliateUserOtp(map)
+        }
+        else{
+            viewModel.otpVerification(map)
+        }
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -144,7 +155,12 @@ class OtpVerificationFragment : BaseFragment() {
             map["country_code"] = countryCode
         }
         map["type"] = type
-        viewModel.resendOtp(map)
+        if (from=="affiliateSignUp"||from=="affiliateLogin"){
+            viewModel.resendOtpAffiliateUser(map)
+        }
+        else {
+            viewModel.resendOtp(map)
+        }
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -166,6 +182,51 @@ class OtpVerificationFragment : BaseFragment() {
                 isObserver = false
             }
 
+        }
+
+        viewModel.otpVerifyAffiliateUserResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    when(from){
+                        "affiliateLogin" -> {
+                            SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                            SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                            showToast("OTP verified successfully")
+                            requireActivity().startActivity(
+                                Intent(requireActivity(),
+                                    AffiliateHomeActivity::class.java)
+                            )
+                            requireActivity().finish()
+                        }
+                        "affiliateSignUp" -> {
+                            SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                            SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                            val bundle = Bundle().apply {
+                                putString("userId", response.data.id)
+                            }
+                            findNavController().navigate(R.id.action_otpFragment_to_affiliateAddAddressFragment,bundle)
+                        }
+                        "affiliateForgot" -> {
+                            showToast("OTP verified successfully")
+                            val bundle = Bundle().apply {
+                                putString("userId", response.data.id)
+                                putString("from", from)
+                            }
+                            findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment,bundle)
+                        }
+                        "affiliateEdit" -> {
+                            showToast("OTP verified successfully")
+                            val bundle = Bundle().apply {
+                                putString("from", if (type==1)"email" else "mobile")
+                            }
+                            findNavController().navigate(R.id.action_otpFragment_to_changeMobileFragment,bundle)
+                        }
+                    }
+
+                }
+                isObserver = false
+            }
         }
 
         viewModel.otpVerifyResult.observe(viewLifecycleOwner) { response ->
@@ -248,6 +309,23 @@ class OtpVerificationFragment : BaseFragment() {
         }
 
         viewModel.resendOtpResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                if (type==0){
+                    showToast("OTP sent to mobile number successfully")
+                }
+                else{
+                    showToast("OTP sent to email address successfully")
+                }
+                response?.let {
+                    startTimer()
+
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.resendOtpAffiliateUserResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 if (type==0){

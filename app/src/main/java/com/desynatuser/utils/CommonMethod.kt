@@ -24,6 +24,8 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -31,10 +33,13 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.desynatuser.R
+import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.databinding.AlertDialogLayoutBinding
+import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.DeleteDialogLayoutBinding
 import com.desynatuser.databinding.SuccessDialogLayoutBinding
 import com.desynatuser.ui.auth.AuthActivity
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -544,5 +549,36 @@ object CommonMethod {
             }
         }
     }
+
+    fun showUserCountryPicker(
+        context: Context,
+        anchor: View,
+        countryList: ArrayList<GetCountryResponse.Data>,
+        isDial:Boolean = false,
+        onCountrySelected: (GetCountryResponse.Data) -> Unit
+    ) {
+        val binding = CustomCountryPickerBinding.inflate(LayoutInflater.from(context))
+
+        val popupWindow = PopupWindow(
+            binding.root,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.isOutsideTouchable = true
+        popupWindow.elevation = 20f
+        popupWindow.showAsDropDown(anchor)
+
+        binding.rvCountry.adapter = CountryPickerAdapter(context, countryList,isDial,
+            object : CountryPickerAdapter.ClickOnItem {
+                override fun onClickItem(position: Int) {
+                    onCountrySelected(countryList[position])
+                    popupWindow.dismiss()
+                }
+            }
+        )
+    }
+
 
 }

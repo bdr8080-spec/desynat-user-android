@@ -5,16 +5,12 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
-import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
-import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentForgotPasswordBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.utils.CommonMethod
@@ -61,7 +57,12 @@ class ForgotPasswordFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(clMobile)
+                CommonMethod.showUserCountryPicker(requireContext(),
+                    clMobile,
+                    countryList,true
+                ) { selectedCountry ->
+                    tvCountryPicker?.text = selectedCountry.dialCode
+                }
             }
 
             cbEmail.setOnCheckedChangeListener { _, isChecked ->
@@ -99,7 +100,12 @@ class ForgotPasswordFragment : BaseFragment() {
                         map["type"] = 1
                     }
 
-                    viewModel.forgotPassword(map)
+                    if (SharedPreference.get(requireActivity()).userType == 2){
+                        viewModel.forgotPasswordAffiliateUser(map)
+                    }
+                    else{
+                        viewModel.forgotPassword(map)
+                    }
                     ProgressDialogUtils.getInstance().showProgress(requireActivity())
                     isObserver = true
 
@@ -131,6 +137,27 @@ class ForgotPasswordFragment : BaseFragment() {
                             putString("email", binding?.etEmail?.text.toString().trim())
                         }
                         putString("from", "forgot")
+                        putString("userId", response.data.id)
+                    }
+                    findNavController().navigate(R.id.action_forgotFragment_to_otpFragment,bundle)
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.forgotPasswordAffiliateUserResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    val bundle = Bundle().apply {
+                        if (binding?.cbMobile?.isChecked == true) {
+                            putString("countryCode", binding?.tvCountryPicker?.text.toString())
+                            putString("mobileNumber", binding?.etMobile?.text.toString().trim())
+                        }
+                        else {
+                            putString("email", binding?.etEmail?.text.toString().trim())
+                        }
+                        putString("from", "affiliateForgot")
                         putString("userId", response.data.id)
                     }
                     findNavController().navigate(R.id.action_forgotFragment_to_otpFragment,bundle)
@@ -173,35 +200,6 @@ class ForgotPasswordFragment : BaseFragment() {
         countryList.clear()
         if (data != null) {
             countryList.addAll(data)
-        }
-    }
-
-    private fun showCustomDropdown(anchor: View) {
-
-        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
-
-        val popupWindow = PopupWindow(
-            dropdownBinding.root,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 20f
-
-        popupWindow.showAsDropDown(anchor)
-
-        dropdownBinding.apply {
-
-            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :
-                CountryPickerAdapter.ClickOnItem{
-                override fun onClickItem(position: Int) {
-                    binding?.tvCountryPicker?.text = countryList[position].dialCode
-                    popupWindow.dismiss()
-                }
-
-            })
         }
     }
 

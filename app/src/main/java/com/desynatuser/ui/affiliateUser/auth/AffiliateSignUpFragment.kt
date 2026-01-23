@@ -20,13 +20,12 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
-import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentAffiliateSignUpBinding
+import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.auth.response.GetCountryResponse
-import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.CustomTypefaceSpan
 import com.desynatuser.utils.ImagePicker
@@ -41,13 +40,15 @@ import java.io.File
 class AffiliateSignUpFragment : BaseFragment() {
     private var binding: FragmentAffiliateSignUpBinding? = null
     private val viewModel: AuthViewModel by viewModels()
-    var isObserver = false
-    var isImageObserver = false
+    private var isObserver = false
+    private var isImageObserver = false
     private var imageType = ""
     private lateinit var imagePicker: ImagePicker
     private var profileImage: File? = null
     private var profileImageUrl:String?=null
-    var countryList = ArrayList<GetCountryResponse.Data>()
+    private var docUrl1:String?=null
+    private var docUrl2:String?=null
+    private var countryList = ArrayList<GetCountryResponse.Data>()
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -133,7 +134,12 @@ class AffiliateSignUpFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(etMobile)
+                CommonMethod.showUserCountryPicker(requireContext(),
+                    clMobile,
+                    countryList,true
+                ) { selectedCountry ->
+                    tvCountryPicker?.text = selectedCountry.dialCode
+                }
             }
 
             btnContinue.setOnClickListener {
@@ -169,16 +175,19 @@ class AffiliateSignUpFragment : BaseFragment() {
 
     fun createAccount(){
         binding?.apply {
-            val request = RegisterRequest(
+            val request = CreateAffiliateUserRequest(
                 email = etEmail.text.toString().trim(),
                 mobile = etMobile.text.toString().trim(),
                 countryCode = tvCountryPicker.text.toString(),
                 fullName = etFullName.text.toString().trim(),
                 password = etPassword.text.toString().trim(),
                 confirmPassword = etConfirmPassword.text.toString().trim(),
-                profileImage = profileImageUrl
+                profileImage = profileImageUrl.toString(),
+                accept = 1,
+                document1 = docUrl1.toString(),
+                document2 = docUrl2.toString()
             )
-            viewModel.register(request)
+            viewModel.createAffiliateUser(request)
             ProgressDialogUtils.getInstance().showProgress(requireActivity())
             isObserver = true
         }
@@ -205,7 +214,7 @@ class AffiliateSignUpFragment : BaseFragment() {
             }
         }
 
-        viewModel.registerResult.observe(viewLifecycleOwner) { response ->
+        viewModel.createAffiliateUserResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
@@ -216,11 +225,11 @@ class AffiliateSignUpFragment : BaseFragment() {
                         val bundle = Bundle().apply {
                             putString("countryCode", binding?.tvCountryPicker?.text.toString())
                             putString("mobileNumber", binding?.etMobile?.text.toString().trim())
-                            putString("from", "signUp")
-                            putString("userId", response.data.id)
+                            putString("from", "affiliateSignUp")
+                            putString("userId", response.data.userId)
                         }
                         findNavController().navigate(
-                            R.id.action_signUpFragment_to_OtpFragment,
+                            R.id.action_affiliateSignUpFragment_to_OtpFragment,
                             bundle
                         )
                     }
@@ -355,35 +364,5 @@ class AffiliateSignUpFragment : BaseFragment() {
         countryList.clear()
         data?.let { countryList.addAll(it) }
     }
-
-    private fun showCustomDropdown(anchor: View) {
-
-        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
-
-        val popupWindow = PopupWindow(
-            dropdownBinding.root,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 20f
-
-        popupWindow.showAsDropDown(anchor)
-
-        dropdownBinding.apply {
-
-            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :
-                CountryPickerAdapter.ClickOnItem{
-                override fun onClickItem(position: Int) {
-                    binding?.tvCountryPicker?.text = countryList[position].dialCode
-                    popupWindow.dismiss()
-                }
-
-            })
-        }
-    }
-
 
 }

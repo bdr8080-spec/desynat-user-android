@@ -11,17 +11,14 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
-import com.desynatuser.adapter.CountryPickerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
-import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentLoginBinding
+import com.desynatuser.ui.affiliateUser.AffiliateHomeActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
@@ -62,13 +59,26 @@ class LoginFragment : BaseFragment() {
             CommonMethod.removeAllTextSpaces(etPassword)
             tvCreateNewAccount.text = CommonMethod.spannableText(requireActivity(),requireActivity().getString(
                 R.string.don_t_have_an_account_create_new),requireActivity().getString(R.string.signUp), onClick = {
-                findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+                if (SharedPreference.get(requireActivity()).userType==2){
+                    findNavController().navigate(R.id.action_loginFragment_to_affiliateSignUpFragment)
+                }
+                else{
+                    findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+                }
+
 
             })
             tvCreateNewAccount.movementMethod = LinkMovementMethod.getInstance()
             tvCreateNewAccount.highlightColor = Color.TRANSPARENT
 
             etPassword.togglePasswordVisibility(ivPasswordVisible)
+
+            if (SharedPreference.get(requireActivity()).userType==2){
+                tvGuest.text = "Switch to User"
+            }
+            else{
+                tvGuest.text = "Continue As a Guest"
+            }
         }
     }
 
@@ -79,9 +89,13 @@ class LoginFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                showCustomDropdown(clMobile)
+                CommonMethod.showUserCountryPicker(requireContext(),
+                    clMobile,
+                    countryList,true
+                ) { selectedCountry ->
+                    tvCountryPicker?.text = selectedCountry.dialCode
+                }
             }
-
 
             btnLogin.setOnClickListener {
                 if (validation()) {
@@ -111,13 +125,20 @@ class LoginFragment : BaseFragment() {
             }
 
             tvGuest.setOnClickListener {
-                Constants.isGuest = true
-                Constants.Category = "Women"
-                requireActivity().startActivity(
-                    Intent(requireActivity(),
-                        HomeActivity::class.java)
-                )
-                requireActivity().finish()
+                if (SharedPreference.get(requireActivity()).userType==2){
+                    SharedPreference.get(requireActivity()).userType = 1
+                    tvGuest.text = "Continue As a Guest"
+                }
+                else{
+                    Constants.isGuest = true
+                    Constants.Category = "Women"
+                    requireActivity().startActivity(
+                        Intent(requireActivity(),
+                            HomeActivity::class.java)
+                    )
+                    requireActivity().finish()
+                }
+
             }
 
             ivGoogle.setOnClickListener {
@@ -153,8 +174,6 @@ class LoginFragment : BaseFragment() {
 
                     override fun afterTextChanged(s: Editable?) {}
                 })
-
-
         }
     }
 
@@ -167,7 +186,13 @@ class LoginFragment : BaseFragment() {
         }
         map["type"] = type
         map["password"] = binding?.etPassword?.text?.trim().toString()
-        viewModel.login(map)
+        if (SharedPreference.get(requireActivity()).userType==2){
+            viewModel.loginAffiliateUser(map)
+        }
+        else{
+            viewModel.login(map)
+        }
+
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -211,6 +236,41 @@ class LoginFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.loginAffiliateUserResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
+                    SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                    when(response.data.adminVerify){
+                        "0"->{
+                            showToast(response.message)
+                        }
+                        "1"->{
+                            CommonMethod.showSuccessDialog(requireActivity(),response.message)
+                        }
+                        "2"->{
+                            showToast(response.message)
+                            SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                            requireActivity().startActivity(
+                                Intent(requireActivity(),
+                                    AffiliateHomeActivity::class.java)
+                            )
+                            requireActivity().finish()
+                        }
+                        "3"->{
+                            CommonMethod.showSuccessDialog(requireActivity(),response.message){
+
+                            }
+                        }
+                    }
+
+                }
+                isObserver = false
+            }
+        }
+
         viewModel.loginEmailMobileResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -280,34 +340,5 @@ class LoginFragment : BaseFragment() {
            // binding?.ccp?.setCustomMasterCountries(countryCodeString)
         }
     }
-
-    private fun showCustomDropdown(anchor: View) {
-
-        val dropdownBinding = CustomCountryPickerBinding.inflate(layoutInflater)
-
-        val popupWindow = PopupWindow(
-            dropdownBinding.root,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 20f
-
-        popupWindow.showAsDropDown(anchor)
-
-        dropdownBinding.apply {
-
-            rvCountry.adapter = CountryPickerAdapter(requireActivity(),countryList,object :CountryPickerAdapter.ClickOnItem{
-                override fun onClickItem(position: Int) {
-                    binding?.tvCountryPicker?.text = countryList[position].dialCode
-                    popupWindow.dismiss()
-                }
-
-            })
-        }
-    }
-
 
 }
