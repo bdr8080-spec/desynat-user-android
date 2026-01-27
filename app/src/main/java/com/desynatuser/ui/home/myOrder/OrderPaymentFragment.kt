@@ -183,7 +183,10 @@ class OrderPaymentFragment : BaseFragment() {
             }
 
             relGiftCard.setOnClickListener {
-                findNavController().navigate(R.id.action_orderPaymentFragment_to_applyGiftFragment)
+                val bundle = Bundle().apply {
+                    putString("from", "order")
+                }
+                findNavController().navigate(R.id.action_orderPaymentFragment_to_applyGiftFragment,bundle)
             }
 
             btnProceed.setOnClickListener {

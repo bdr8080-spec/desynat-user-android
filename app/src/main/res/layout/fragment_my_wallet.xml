@@ -71,18 +71,24 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivAddMoney"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:src="@drawable/ic_add_money_in_wallet"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvAvailableBalance"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivReedeemGiftCard"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:src="@drawable/ic_reedeem_gift_card_wallet"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivAddMoney"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -106,5 +112,9 @@
         android:layout_marginTop="@dimen/_15sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/wallet_transaction"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"/>
 
 </LinearLayout>

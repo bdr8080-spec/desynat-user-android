@@ -8,27 +8,32 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.WalletTransactionBinding
-import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
+import com.desynatuser.ui.home.myWallet.response.GetWalletHistoryResponse
+import com.desynatuser.utils.CommonMethod
 
-class WalletTransactionAdapter(var context:Context, var walletTransactionList: ArrayList<GetAllGiftCardResponse.Data>, var walletTransactionClick:WalletTransactionClick) : RecyclerView.Adapter<WalletTransactionAdapter.ViewHolder>() {
+class WalletTransactionAdapter(var context:Context, var walletTransactionList: ArrayList<GetWalletHistoryResponse.Data.History>, var walletTransactionClick:WalletTransactionClick) : RecyclerView.Adapter<WalletTransactionAdapter.ViewHolder>() {
 
-   var type = "1"
     inner class ViewHolder(val binding: WalletTransactionBinding) :
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
             val walletData = walletTransactionList[position]
-            when(type){
+            tvTransactionId.text = walletData?.transactionId
+            tvOrderId.text = walletData?.uniqueId
+            tvCreditedOn.text = CommonMethod.customizeChangeDateFormat(walletData?.updatedAt.toString(), outputFormat = "dd/MM/yyyy,hh:mma")
+            when(walletData?.type){
                 "1"->{
                     tvOrder.isVisible = false
                     tvOrderId.isVisible = false
                     tvType.text = "Credit"
                     tvType.setTextColor(Color.parseColor("#D72E04"))
+                    tvAmount.text = "+${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
                 }
                 "2"->{
                     tvOrder.isVisible = true
                     tvOrderId.isVisible = true
                     tvType.text = "Debit"
                     tvType.setTextColor(Color.parseColor("#17854C"))
+                    tvAmount.text = "-${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
                 }
                 "3"->{
                     tvOrder.isVisible = false
@@ -37,6 +42,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvCredited.text = "Redeemed On"
                     tvType.text = "Redeemed Gift Card"
                     tvType.setTextColor(Color.parseColor("#17854C"))
+                    tvAmount.text = "+${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
 
                 }
             }

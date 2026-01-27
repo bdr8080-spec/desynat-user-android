@@ -88,6 +88,10 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_giftCardFragment,bundle)
             }
 
+            rlWallet.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_myWalletFragment)
+            }
+
             rlAffiliate.setOnClickListener {
                 SharedPreference.get(requireActivity()).userType = 2
                 Constants.isGuest = false

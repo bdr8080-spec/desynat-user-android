@@ -33,6 +33,9 @@ import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.ui.home.myOrder.response.GetInvoiceResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
+import com.desynatuser.ui.home.myWallet.response.AddMoneyInWalletResponse
+import com.desynatuser.ui.home.myWallet.response.CompletePyamentWalletResponse
+import com.desynatuser.ui.home.myWallet.response.GetWalletHistoryResponse
 import com.desynatuser.ui.home.profile.response.AddAddressRequest
 import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.profile.response.ChangeMobileNumbeResponse
@@ -368,12 +371,15 @@ interface ApiServices {
     @POST(Constants.ADD_MONEY_IN_WALLET)
     suspend fun addMoneyInWallet(
         @Body map: HashMap<String,Any>
-    ): Response<CommonResponse>
+    ): Response<AddMoneyInWalletResponse>
 
     @POST(Constants.COMPLETE_PAYMENT_ADD_MONEY_WALLET)
     suspend fun addMoneyInWalletPayment(
         @Body map: HashMap<String,Any>
-    ): Response<CommonResponse>
+    ): Response<CompletePyamentWalletResponse>
+
+    @GET(Constants.WALLET_HISTORY)
+    suspend fun getWalletHistory(): Response<GetWalletHistoryResponse>
 
     //Affiliate User
 

@@ -14,7 +14,9 @@ import com.desynatuser.databinding.ActivityAffiliateHomeBinding
 import com.desynatuser.ui.response.BottomNavItem
 import com.desynatuser.utils.CommonMethod
 import com.myfatoorah.sdk.views.MFSDK
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AffiliateHomeActivity : BaseActivity() {
     private var binding: ActivityAffiliateHomeBinding? =null
     private lateinit var controller: NavController

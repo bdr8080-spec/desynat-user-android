@@ -39,6 +39,9 @@ import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.ui.home.myOrder.response.GetInvoiceResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
+import com.desynatuser.ui.home.myWallet.response.AddMoneyInWalletResponse
+import com.desynatuser.ui.home.myWallet.response.CompletePyamentWalletResponse
+import com.desynatuser.ui.home.myWallet.response.GetWalletHistoryResponse
 import com.desynatuser.ui.home.profile.response.AddAddressRequest
 import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.profile.response.ChangeMobileNumbeResponse
@@ -847,7 +850,6 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
         )
     }
 
-
     val getHomeScreenBottomBannerLiveData = SingleLiveEvent<GetHomeScreenAllBannerResponse>()
     suspend fun getHomeScreenBottomBanner(map: HashMap<String,Any>)
     {
@@ -858,8 +860,6 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
             responseLiveData = getHomeScreenBottomBannerLiveData
         )
     }
-
-
 
     val getHomeScreenCategoryBannerLiveData = SingleLiveEvent<GetHomeScreenAllBannerResponse>()
     suspend fun getHomeScreenCategoryBanner(map: HashMap<String,Any>)
@@ -872,6 +872,38 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
         )
     }
 
+    val addMoneyInWalletLiveData = SingleLiveEvent<AddMoneyInWalletResponse>()
+    suspend fun addMoneyInWallet(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.addMoneyInWallet(map)
+            },
+            responseLiveData = addMoneyInWalletLiveData
+        )
+    }
+
+    val addMoneyInWalletPaymentLiveData = SingleLiveEvent<CompletePyamentWalletResponse>()
+    suspend fun addMoneyInWalletPayment(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.addMoneyInWalletPayment(map)
+            },
+            responseLiveData = addMoneyInWalletPaymentLiveData
+        )
+    }
+
+    val getWalletHistoryLiveData = SingleLiveEvent<GetWalletHistoryResponse>()
+    suspend fun getWalletHistory()
+    {
+        handleApiCall(
+            api = {
+                api.getWalletHistory()
+            },
+            responseLiveData = getWalletHistoryLiveData
+        )
+    }
 
     //Affiliate User
 

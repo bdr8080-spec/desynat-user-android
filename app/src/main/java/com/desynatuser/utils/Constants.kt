@@ -97,6 +97,7 @@ object Constants {
 
     const val ADD_MONEY_IN_WALLET = "/api/user/Add-money-in-wallet"
     const val COMPLETE_PAYMENT_ADD_MONEY_WALLET = "/api/user/complete-add-money-in-wallet"
+    const val WALLET_HISTORY = "/api/user/wallet-history"
 
    //affiliate User
     const val CREATE_AFFILIATE_USER = "/api/user/create-a-affilated-account"

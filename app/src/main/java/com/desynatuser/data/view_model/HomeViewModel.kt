@@ -32,6 +32,9 @@ import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.ui.home.myOrder.response.GetInvoiceResponse
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
+import com.desynatuser.ui.home.myWallet.response.AddMoneyInWalletResponse
+import com.desynatuser.ui.home.myWallet.response.CompletePyamentWalletResponse
+import com.desynatuser.ui.home.myWallet.response.GetWalletHistoryResponse
 import com.desynatuser.ui.home.profile.response.AddAddressRequest
 import com.desynatuser.ui.home.profile.response.ApplyPromoCodeResponse
 import com.desynatuser.ui.home.profile.response.ChangeMobileNumbeResponse
@@ -637,13 +640,38 @@ val getHomeScreenBottomBannerResult: LiveData<GetHomeScreenAllBannerResponse>
         }
     }
 
-
 val getHomeScreenCategoryBannerResult: LiveData<GetHomeScreenAllBannerResponse>
         get() = repository.getHomeScreenCategoryBannerLiveData
 
     fun getHomeScreenCategoryBanner(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.getHomeScreenCategoryBanner(map)
+        }
+    }
+
+val addMoneyInWalletResult: LiveData<AddMoneyInWalletResponse>
+        get() = repository.addMoneyInWalletLiveData
+
+    fun addMoneyInWallet(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.addMoneyInWallet(map)
+        }
+    }
+
+val addMoneyInWalletPaymentResult: LiveData<CompletePyamentWalletResponse>
+        get() = repository.addMoneyInWalletPaymentLiveData
+
+    fun addMoneyInWalletPayment(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.addMoneyInWalletPayment(map)
+        }
+    }
+val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
+        get() = repository.getWalletHistoryLiveData
+
+    fun getWalletHistory() {
+        viewModelScope.launch {
+            repository.getWalletHistory()
         }
     }
 

@@ -10,6 +10,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentApplyGiftCardBinding
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
@@ -20,6 +21,7 @@ class ApplyGiftCardFragment : BaseFragment() {
     private var binding: FragmentApplyGiftCardBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var from = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +39,7 @@ class ApplyGiftCardFragment : BaseFragment() {
     }
 
     override fun initView() {
+        from = arguments?.getString("from").toString()
         binding?.apply {
             toolbar.tvToolbar.text = "Gift Card"
             }
@@ -69,14 +72,25 @@ class ApplyGiftCardFragment : BaseFragment() {
         viewModel.applyGiftCardResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                showToast("Gift card apply successfully")
-                val bundle = Bundle().apply {
-                    putString("giftCard", Gson().toJson(response.data))
-                    putString("giftCardNumber", binding?.etGiftCardNumber?.text?.trim().toString())
-                }
-                parentFragmentManager.setFragmentResult("gift_card_request", bundle)
 
-                findNavController().navigateUp()
+                when(from){
+                    "order"->{
+                        showToast("Gift card apply successfully")
+                        val bundle = Bundle().apply {
+                            putString("giftCard", Gson().toJson(response.data))
+                            putString("giftCardNumber", binding?.etGiftCardNumber?.text?.trim().toString())
+                        }
+                        parentFragmentManager.setFragmentResult("gift_card_request", bundle)
+
+                        findNavController().navigateUp()
+                    }
+                    "wallet"->{
+                        CommonMethod.showSuccessDialog(requireActivity(),"Gift Card Redeemed successfully!"){
+                            findNavController().popBackStack()
+                        }
+                    }
+                }
+
                 isObserver = false
             }
         }

@@ -55,7 +55,10 @@ class PaymentMethodFragment : BaseFragment() {
     private var binding: FragmentPaymentMethodBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var isPaymentObserver = false
     private var from = ""
+    private var amount = 0.0
+    private var paymentTransactionId:String?=null
     private var paymetMehod = ""
     private var walletBalance =0.0
     private var giftCardData : BuyGiftCardResponse.Data?=null
@@ -87,12 +90,21 @@ class PaymentMethodFragment : BaseFragment() {
         cardStyling()
         binding?.apply {
              from = arguments?.getString("from").toString()
+            when(from){
+                "gift"->{
+                    val itemGiftCardJson = arguments?.getString("giftCardData")
+                    if (!itemGiftCardJson.isNullOrEmpty()) {
+                        giftCardData = Gson().fromJson(itemGiftCardJson, BuyGiftCardResponse.Data::class.java)
+                    }
+
+                }
+                "wallet"->{
+                    amount = arguments?.getDouble("amount")?:0.0
+                    llWallet.isVisible = false
+                }
+            }
 
             toolbar.tvToolbar.text = "Payment Method"
-                val itemGiftCardJson = arguments?.getString("giftCardData")
-                if (!itemGiftCardJson.isNullOrEmpty()) {
-                    giftCardData = Gson().fromJson(itemGiftCardJson, BuyGiftCardResponse.Data::class.java)
-                }
 
         }
         getWalletBalance()
@@ -182,6 +194,28 @@ class PaymentMethodFragment : BaseFragment() {
                 }
             }
 
+            viewModel.addMoneyInWalletResult.observe(viewLifecycleOwner) { response ->
+                if (isObserver) {
+                   addMoneyInWalletPayment(response.data.uniqueId,paymentTransactionId)
+                    paymentTransactionId = null
+                    isObserver = false
+                }
+            }
+
+            viewModel.addMoneyInWalletPaymentResult.observe(viewLifecycleOwner) { response ->
+                if (isPaymentObserver) {
+                    ProgressDialogUtils.getInstance().hideProgress()
+                    CommonMethod.showSuccessDialog(requireActivity(),"Amount added successfully!"){
+
+                        findNavController().popBackStack(
+                            R.id.wallet,
+                            false
+                        )
+                    }
+                    isPaymentObserver = false
+                }
+            }
+
     }
 
     private fun buyGiftCardPayment(transactionId: String?=null) {
@@ -195,6 +229,29 @@ class PaymentMethodFragment : BaseFragment() {
         viewModel.buyGiftCardPayment(map)
         isObserver = true
     }
+
+    private fun addMoneyInWalletPayment(uniqueId:String,transactionId: String?=null) {
+        val map = HashMap<String,Any>()
+        map["unique_id"] = uniqueId
+        if (transactionId!=null){
+            map["transaction_id"] = transactionId
+        }
+        map["payment_method"] = paymetMehod//1 myfatoorah 2 wallet 3 Cod
+        map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
+        viewModel.addMoneyInWalletPayment(map)
+        isPaymentObserver = true
+    }
+
+    private fun addMoneyInWallet(transactionId: String?=null) {
+        paymentTransactionId = transactionId
+        val map = HashMap<String,Any>()
+        map["amount"] = amount
+        map["payment_method"] = paymetMehod//1 myfatoorah 2 wallet 3 Cod
+        map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
+        viewModel.addMoneyInWallet(map)
+        isObserver = true
+    }
+
 
     private fun getWalletBalance(){
         viewModel.getWalletBalance()
@@ -267,7 +324,14 @@ class PaymentMethodFragment : BaseFragment() {
                                 Log.d("executeEmbeddedPayment", "Response: " + Gson().toJson(result.response))
                                 val paymentData =  result.response
                                 paymentData.invoiceTransactions?.get(0)?.let {
-                                        buyGiftCardPayment(it.transactionId)
+                                    when (from){
+                                        "gift"->{
+                                            buyGiftCardPayment(it.transactionId)
+                                        }
+                                        "wallet"->{
+                                            addMoneyInWallet(it.transactionId)
+                                        }
+                                    }
                                 }
                             }
                             is MFResult.Fail -> {
@@ -386,8 +450,17 @@ class PaymentMethodFragment : BaseFragment() {
     }
 
     private fun executeRedirectPayment(paymentMethodId:Int) {
+        var paymentAmount = 0.0
+        when(from){
+            "gift"->{
+                paymentAmount = giftCardData?.amount?:0.0
+            }
+            "wallet"->{
+                paymentAmount = amount
+            }
+        }
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        val requestInitiate = MFInitiatePaymentRequest(0.100, MFCurrencyISO.KUWAIT_KWD)
+        val requestInitiate = MFInitiatePaymentRequest(paymentAmount, MFCurrencyISO.KUWAIT_KWD)
         MFSDK.initiatePayment(
             requestInitiate,
             MFAPILanguage.EN
@@ -402,7 +475,7 @@ class PaymentMethodFragment : BaseFragment() {
             }
         }
 
-        val request = MFExecutePaymentRequest(paymentMethodId, giftCardData?.amount?.toDouble()?:0.0).apply {
+        val request = MFExecutePaymentRequest(paymentMethodId, paymentAmount).apply {
             /* customerReference = subscriptionData?.id.toString()
              customerName = "${profileData?.firstName} ${profileData?.lastName}"
              mobileCountryCode = profileData?.countryCode
@@ -421,7 +494,16 @@ class PaymentMethodFragment : BaseFragment() {
                 is MFResult.Success -> {
                     Log.d("executeRedirectPayment", "Success: ${Gson().toJson(result.response)}")
                     val paymentData = result.response
-                    buyGiftCardPayment(paymentData.invoiceTransactions?.get(0)?.transactionId)
+
+                    when (from){
+                        "gift"->{
+                            buyGiftCardPayment(paymentData.invoiceTransactions?.get(0)?.transactionId)
+                        }
+                        "wallet"->{
+                            addMoneyInWallet(paymentData.invoiceTransactions?.get(0)?.transactionId)
+                        }
+                    }
+
                 }
                 is MFResult.Fail -> {
                     Log.d("executeRedirectPayment", "Fail: ${Gson().toJson(result.error)}")
@@ -478,7 +560,14 @@ class PaymentMethodFragment : BaseFragment() {
                         val paymentData = result.response
 
                         paymentData.invoiceTransactions?.get(0)?.let {
-                            buyGiftCardPayment(it.transactionId)
+                            when (from){
+                                "gift"->{
+                                    buyGiftCardPayment(it.transactionId)
+                                }
+                                "wallet"->{
+                                    addMoneyInWallet(it.transactionId)
+                                }
+                            }
                         }
                     }
 

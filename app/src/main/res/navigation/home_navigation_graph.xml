@@ -103,6 +103,9 @@
         android:id="@+id/action_profileFragment_to_myOrderFragment"
         app:destination="@id/myOrder"/>
 
+        <action
+        android:id="@+id/action_profileFragment_to_myWalletFragment"
+        app:destination="@id/wallet"/>
 
     </fragment>
 
@@ -388,6 +391,35 @@
          <action
             android:id="@+id/action_chatListFragment_to_chatFragment"
     app:destination="@id/chat"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/wallet"
+        android:name="com.desynatuser.ui.home.myWallet.MyWalletFragment"
+        android:label="My Wallet Fragment"
+        tools:layout="@layout/fragment_my_wallet">
+
+        <action
+            android:id="@+id/action_myWalletFragment_to_addMoneyInWalletFragment"
+            app:destination="@id/addMoneyInWallet"/>
+
+        <action
+            android:id="@+id/action_myWalletFragment_to_applyGiftFragment"
+            app:destination="@id/giftCardApply"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addMoneyInWallet"
+        android:name="com.desynatuser.ui.home.myWallet.AddMoneyInWalletFragment"
+        android:label="Add Money In Wallet Fragment"
+        tools:layout="@layout/fragment_add_money_in_wallet">
+
+        <action
+            android:id="@+id/action_addMoneyInWalletFragment_to_paymentFragment"
+            app:destination="@id/payment"/>
+
 
     </fragment>
 

@@ -12,8 +12,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -22,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
-import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentAffiliateSignUpBinding
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.auth.response.GetCountryResponse
@@ -44,7 +41,6 @@ class AffiliateSignUpFragment : BaseFragment() {
     private var isImageObserver = false
     private var imageType = ""
     private lateinit var imagePicker: ImagePicker
-    private var profileImage: File? = null
     private var profileImageUrl:String?=null
     private var docUrl1:String?=null
     private var docUrl2:String?=null
@@ -107,16 +103,16 @@ class AffiliateSignUpFragment : BaseFragment() {
                 uri?.let {
                     when(imageType){
                         "1"->{
-                            profileImage = CommonMethod.uriToFile(requireActivity(), it)
                             ivProfile.setImageURI(it)
+                            uploadFile(CommonMethod.uriToFile(requireActivity(), it))
                         }
                         "2"->{
-                            profileImage = CommonMethod.uriToFile(requireActivity(), it)
                             ivDoc1.setImageURI(it)
+                            uploadFile(CommonMethod.uriToFile(requireActivity(), it))
                         }
                         "3"->{
-                            profileImage = CommonMethod.uriToFile(requireActivity(), it)
                             ivDoc2.setImageURI(it)
+                            uploadFile(CommonMethod.uriToFile(requireActivity(), it))
                         }
                     }
 
@@ -144,16 +140,9 @@ class AffiliateSignUpFragment : BaseFragment() {
 
             btnContinue.setOnClickListener {
                 if (validation()) {
-                    if (profileImage!=null){
-                        profileImage?.let { it1 -> uploadFile(it1) }
-                    }
-                    else{
                         createAccount()
                     }
-
                 }
-
-            }
 
             ivDoc1.setOnClickListener {
                 imageType = "2"
@@ -207,8 +196,18 @@ class AffiliateSignUpFragment : BaseFragment() {
             if (isImageObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    profileImageUrl = response.data.url
-                    createAccount()
+                    when(imageType){
+                        "1"->{
+                            profileImageUrl = response.data.url
+                        }
+                        "2"->{
+                            docUrl1 = response.data.url
+                        }
+                        "3"->{
+                            docUrl2 = response.data.url
+                        }
+                    }
+
                 }
                 isImageObserver = false
             }
@@ -248,6 +247,10 @@ class AffiliateSignUpFragment : BaseFragment() {
             val confirmPassword = etConfirmPassword.text.toString().trim()
 
             return when {
+                profileImageUrl==null -> {
+                    showToast("Please upload profile image")
+                    false
+                }
                 fullName.isEmpty() -> {
                     showToast("Please enter your full name")
                     false
@@ -268,6 +271,16 @@ class AffiliateSignUpFragment : BaseFragment() {
                     false
                 }
 
+                docUrl1==null -> {
+                    showToast("Please upload document1")
+                    false
+                }
+
+                docUrl2==null -> {
+                    showToast("Please upload document2")
+                    false
+                }
+
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                     showToast("Please enter a valid email address")
                     false
@@ -278,11 +291,11 @@ class AffiliateSignUpFragment : BaseFragment() {
                     false
                 }
 
-                /* !CommonMethod.isValidPassword(password) -> {
-                     CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
- //                    showToast("Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
+                 !CommonMethod.isValidPassword(password) -> {
+                     CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include letters and digits")
+                     //   CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
                      false
-                 }*/
+                 }
 
                 confirmPassword.isEmpty() -> {
                     showToast("Please enter confirm password")
