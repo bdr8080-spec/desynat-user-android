@@ -380,8 +380,6 @@ val buyGiftCardResult: LiveData<BuyGiftCardResponse>
         }
     }
 
-
-
     val promoCodeListResult: LiveData<GetPromoCodeResponse>
         get() = repository.promoCodeLiveData
 
@@ -666,6 +664,16 @@ val addMoneyInWalletPaymentResult: LiveData<CompletePyamentWalletResponse>
             repository.addMoneyInWalletPayment(map)
         }
     }
+
+val redeemGiftCardInWalletResult: LiveData<CommonResponse>
+        get() = repository.redeemGiftCardInWalletLiveData
+
+    fun redeemGiftCardInWallet(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.redeemGiftCardInWallet(map)
+        }
+    }
+
 val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         get() = repository.getWalletHistoryLiveData
 

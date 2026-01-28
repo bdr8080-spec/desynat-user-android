@@ -378,6 +378,11 @@ interface ApiServices {
         @Body map: HashMap<String,Any>
     ): Response<CompletePyamentWalletResponse>
 
+    @POST(Constants.REDEEM_GIFT_CARD_IN_WALLET)
+    suspend fun redeemGiftCardInWallet(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
     @GET(Constants.WALLET_HISTORY)
     suspend fun getWalletHistory(): Response<GetWalletHistoryResponse>
 
@@ -420,6 +425,11 @@ interface ApiServices {
 
     @POST(Constants.LOGIN_AFFILIATE_USER)
     suspend fun loginAffiliateUser(
+        @Body map: HashMap<String,Any>
+    ): Response<AffiliateUserLoginResponse>
+
+   @POST(Constants.LOGIN_WITH_OTP_AFFILIATE_USER)
+    suspend fun loginWithOtpAffiliateUser(
         @Body map: HashMap<String,Any>
     ): Response<AffiliateUserLoginResponse>
 

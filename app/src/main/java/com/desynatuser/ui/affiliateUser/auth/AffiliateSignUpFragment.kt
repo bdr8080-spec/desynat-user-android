@@ -225,7 +225,7 @@ class AffiliateSignUpFragment : BaseFragment() {
                             putString("countryCode", binding?.tvCountryPicker?.text.toString())
                             putString("mobileNumber", binding?.etMobile?.text.toString().trim())
                             putString("from", "affiliateSignUp")
-                            putString("userId", response.data.userId)
+                            putString("userId", response.data.id)
                         }
                         findNavController().navigate(
                             R.id.action_affiliateSignUpFragment_to_OtpFragment,
@@ -298,7 +298,7 @@ class AffiliateSignUpFragment : BaseFragment() {
                  }
 
                 confirmPassword.isEmpty() -> {
-                    showToast("Please enter confirm password")
+                    showToast("Please re-enter password")
                     false
                 }
 

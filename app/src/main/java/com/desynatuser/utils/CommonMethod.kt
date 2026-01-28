@@ -431,12 +431,15 @@ object CommonMethod {
 
     }
 
-
     fun clearData(context: Context){
         SharedPreference.get(context).clearUser()
         SharedPreference.get(context).clearAddress()
         SharedPreference.get(context).accessToken = ""
         Constants.Category = "Women"
+    }
+
+    fun clearAffiliateData(context: Context){
+        SharedPreference.get(context).clearAffiliateUser()
     }
 
     fun shareProduct(context:Context,name: String, desc: String, imageUrl: String) {
@@ -561,7 +564,7 @@ object CommonMethod {
 
         val popupWindow = PopupWindow(
             binding.root,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             true
         )

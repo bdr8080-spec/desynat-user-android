@@ -98,13 +98,15 @@ object Constants {
     const val ADD_MONEY_IN_WALLET = "/api/user/Add-money-in-wallet"
     const val COMPLETE_PAYMENT_ADD_MONEY_WALLET = "/api/user/complete-add-money-in-wallet"
     const val WALLET_HISTORY = "/api/user/wallet-history"
+    const val REDEEM_GIFT_CARD_IN_WALLET = "/api/user/redeem-gift-card-in-wallet"
 
-   //affiliate User
+    //affiliate User
     const val CREATE_AFFILIATE_USER = "/api/user/create-a-affilated-account"
     const val VERIFY_OTP_AFFILIATE_USER = "/api/user/affilated-verify-otp"
-    const val ADD_ADDRESS_AFFILIATE_USER = "/api/user/affilated-add-address"
-    const val ADD_BANK_DETAIL_AFFILIATE_USER = "/api/user/affilated-add-Bank-details"
+    const val ADD_ADDRESS_AFFILIATE_USER = "/api/affiliate/affilated-add-address"
+    const val ADD_BANK_DETAIL_AFFILIATE_USER = "/api/affiliate/affilated-add-Bank-details"
     const val LOGIN_AFFILIATE_USER = "/api/affiliate/affiliated-login"
+    const val LOGIN_WITH_OTP_AFFILIATE_USER = "/api/affiliate/affiliate-login-with-otp"
     const val FORGOT_PASSWORD_AFFILIATE_USER = "/api/affiliate/forgot_password"
     const val RESET_OTP_AFFILIATE_USER = "/api/affiliate/resend_otp"
     const val CREATE_PASSWORD_AFFILIATE_USER = "/api/affiliate/create_password"

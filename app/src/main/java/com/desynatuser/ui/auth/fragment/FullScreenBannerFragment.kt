@@ -1,6 +1,5 @@
 package com.desynatuser.ui.auth.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -8,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.desynatuser.adapter.HomeFullScreenBannerAdapter
 import com.desynatuser.base.BaseFragment
@@ -46,8 +46,7 @@ class FullScreenBannerFragment : BaseFragment() {
     }
 
     override fun initView() {
-            viewModel.getHomeScreenBanner()
-            isHomeBannerObserver = true
+        getHomePopScreenBanner()
 
         binding?.apply {
 
@@ -62,9 +61,13 @@ class FullScreenBannerFragment : BaseFragment() {
             viewPager.adapter = homeFullScreenBannerAdapter
 
             TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
-
         }
+    }
 
+    private fun getHomePopScreenBanner() {
+        viewModel.getHomeScreenBanner()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isHomeBannerObserver = true
     }
 
     override fun initControl() {
@@ -81,16 +84,17 @@ class FullScreenBannerFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isHomeBannerObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                errorMessage?.let { showToast(it) }
+                errorMessage?.let { showToast(it)
+                    navigateNextScreen()
+                }
                 isHomeBannerObserver = false
             }
-
         }
 
         viewModel.getHomeScreenBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeBannerObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-
                     imageList.clear()
                     imageList.addAll(it.data.map { banner -> banner.image })
                     homeFullScreenBannerAdapter?.notifyDataSetChanged()
@@ -99,21 +103,14 @@ class FullScreenBannerFragment : BaseFragment() {
                         imageList.isEmpty() -> {
                             navigateNextScreen()
                         }
-                        imageList.size == 1 -> {
-                          //  handler.postDelayed(dismissRunnable, 4000)
-                        }
-
                         else -> {
-                          //  handler.postDelayed(slideRunnable, 4000)
+                            binding?.relWhite?.isVisible = false
                         }
                     }
-
                 }
                 isHomeBannerObserver = false
             }
         }
-
-
     }
 
     private val slideRunnable = object : Runnable {
@@ -155,37 +152,9 @@ class FullScreenBannerFragment : BaseFragment() {
         requireActivity().finish()
     }
 
-    private fun getGifDuration(context: Context, url: String, callback: (Long) -> Unit) {
-        Thread {
-            try {
-                val inputStream = java.net.URL(url).openStream()
-                val movie = android.graphics.Movie.decodeStream(inputStream)
-                val duration = if (movie.duration() == 0) 4000 else movie.duration()
-                requireActivity().runOnUiThread {
-                    callback(duration.toLong())
-                }
-            } catch (e: Exception) {
-                callback(4000)
-            }
-        }.start()
-    }
-
-//    private fun startTimerForCurrentItem() {
-//        stopTimers()
-//
-//        if (imageList.size == 1) {
-//            handler.post {
-//                navigateNextScreen()
-//            }
-//        } else {
-//            handler.postDelayed(slideRunnable, 4000)
-//        }
-//    }
-
     private fun startTimerForCurrentItem() {
         val currentPosition = binding?.viewPager?.currentItem ?: return
 
-        // Prevent multiple timer starts for same page
         if (currentPosition == lastStartedPosition) return
         lastStartedPosition = currentPosition
 
@@ -196,7 +165,7 @@ class FullScreenBannerFragment : BaseFragment() {
             handler.postDelayed({
                 navigateNextScreen()
             }, 4000)
-        } else {
+        } else  if (imageList.size > 1) {
             handler.postDelayed(slideRunnable, 4000)
         }
     }

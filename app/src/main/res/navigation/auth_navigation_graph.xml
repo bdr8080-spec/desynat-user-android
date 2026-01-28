@@ -59,6 +59,14 @@
             android:id="@+id/action_loginFragment_to_affiliateSignUpFragment"
             app:destination="@id/affiliateSignUp"/>
 
+        <action
+            android:id="@+id/action_loginFragment_to_affiliateAddAddressFragment"
+            app:destination="@id/affiliateAddAddress"/>
+
+        <action
+            android:id="@+id/action_loginFragment_to_affiliateAddBankDetailFragment"
+            app:destination="@id/affiliateAddBankDetail"/>
+
     </fragment>
 
     <fragment

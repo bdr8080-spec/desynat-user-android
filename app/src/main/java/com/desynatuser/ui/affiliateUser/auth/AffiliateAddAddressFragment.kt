@@ -105,7 +105,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
                 response?.let {
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        response.message
+                        "Address Save Successfully"
                     ) {
                         val bundle = Bundle().apply {
                             putString("userId", userId)
@@ -217,7 +217,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
             val finalState = if (state.isEmpty()) parsed["state"] else state
             val finalPostal = if (pincode.isEmpty()) parsed["postal"] else pincode
 
-            binding?.etCountry?.setText(countryField)
+            binding?.etChooseLocation?.setText(addressH)
             binding?.etAddressLine1?.setText(addressH)
             binding?.etAddressLine2?.setText(finalHouse + " "+finalStreet)
             binding?.etLocalityTown?.setText(finalCity)

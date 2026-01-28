@@ -894,6 +894,17 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
         )
     }
 
+    val redeemGiftCardInWalletLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun redeemGiftCardInWallet(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.redeemGiftCardInWallet(map)
+            },
+            responseLiveData = redeemGiftCardInWalletLiveData
+        )
+    }
+
     val getWalletHistoryLiveData = SingleLiveEvent<GetWalletHistoryResponse>()
     suspend fun getWalletHistory()
     {
@@ -1000,6 +1011,18 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
                 api.loginAffiliateUser(map)
             },
             responseLiveData = loginAffiliateUserLiveData
+        )
+    }
+
+val loginWithOtpAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
+    suspend fun loginWithOtpAffiliateUser(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.loginWithOtpAffiliateUser(map)
+            },
+            responseLiveData = loginWithOtpAffiliateUserLiveData
         )
     }
 

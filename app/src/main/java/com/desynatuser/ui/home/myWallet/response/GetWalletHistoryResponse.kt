@@ -39,7 +39,9 @@ data class GetWalletHistoryResponse(
             @SerializedName("updated_at")
             val updatedAt: String,
             @SerializedName("user_id")
-            val userId: String
+            val userId: String,
+            @SerializedName("giftCardNo")
+            val giftCardNo: String
         )
     }
 }

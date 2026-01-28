@@ -68,6 +68,7 @@ class OtpVerificationFragment : BaseFragment() {
             "affiliateLogin" -> screenType = 1
             "login" -> screenType = 1
             "forgot" -> screenType = 2
+            "affiliateForgot" -> screenType = 2
         }
         binding?.apply {
             toolbar.tvToolbar.text = "OTP Verification"
@@ -79,17 +80,13 @@ class OtpVerificationFragment : BaseFragment() {
                 type = 0
                   tvMobile.text = "${countryCode} ${mobileNumber}"
             }
-
-
         }
-
     }
 
     override fun initControl() {
         binding?.apply {
             toolbar.tvToolbar.setOnClickListener {
                 findNavController().popBackStack()
-
             }
 
             tvResendOtp.setOnClickListener {
@@ -111,15 +108,18 @@ class OtpVerificationFragment : BaseFragment() {
                             verifyUserOtp()
                         }
                         else{
-                            verifyOtp()
+                            if (from=="affiliateSignUp"||from=="affiliateLogin"||from=="affiliateForgot"){
+                                verifyAffiliateUserOtp()
+                            }
+                            else{
+                                verifyOtp()
+                            }
                         }
                     }
                 }
             }
         }
-
     }
-
 
     private fun verifyUserOtp(){
         val map = HashMap<String,Any>()
@@ -135,12 +135,17 @@ class OtpVerificationFragment : BaseFragment() {
         map["user_id"] = userId
         map["otp"] = binding?.pinView?.text?.trim().toString()
         map["type"] = screenType
-        if (from=="affiliateSignUp"||from=="affiliateLogin"){
-            viewModel.verifyAffiliateUserOtp(map)
-        }
-        else{
-            viewModel.otpVerification(map)
-        }
+        viewModel.otpVerification(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun verifyAffiliateUserOtp(){
+        val map = HashMap<String,Any>()
+        map["id"] = userId
+        map["otp"] = binding?.pinView?.text?.trim().toString()
+        map["type"] = "1"
+        viewModel.verifyAffiliateUserOtp(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -190,7 +195,7 @@ class OtpVerificationFragment : BaseFragment() {
                 response?.let {
                     when(from){
                         "affiliateLogin" -> {
-                            SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                           // SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                             showToast("OTP verified successfully")
                             requireActivity().startActivity(
@@ -200,7 +205,7 @@ class OtpVerificationFragment : BaseFragment() {
                             requireActivity().finish()
                         }
                         "affiliateSignUp" -> {
-                            SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                          //  SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                             val bundle = Bundle().apply {
                                 putString("userId", response.data.id)

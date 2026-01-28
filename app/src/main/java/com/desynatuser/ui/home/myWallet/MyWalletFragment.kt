@@ -62,12 +62,15 @@ class MyWalletFragment : BaseFragment() {
                 findNavController().popBackStack()
             }
 
-            ivAddMoney.setOnClickListener {
+            ivReedeemGiftCard.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("from", "wallet")
+                }
                 findNavController().navigate(
-                    R.id.action_myWalletFragment_to_applyGiftFragment)
+                    R.id.action_myWalletFragment_to_applyGiftFragment,bundle)
             }
 
-            ivReedeemGiftCard.setOnClickListener {
+            ivAddMoney.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("from", "wallet")
                 }

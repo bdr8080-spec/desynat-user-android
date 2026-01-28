@@ -67,8 +67,8 @@ class AffiliateHomeActivity : BaseActivity() {
         setBottomAdapter()
 
         val bottomNavDestinations = setOf(
-            R.id.home,
-            R.id.profile,
+            R.id.affiliateHome,
+            R.id.affiliateProfile,
         )
 
         controller.addOnDestinationChangedListener { _, destination, _ ->
@@ -82,10 +82,10 @@ class AffiliateHomeActivity : BaseActivity() {
             }
 
             when (destination.id) {
-                R.id.home -> {
+                R.id.affiliateHome -> {
                     bottomAdapter?.setSelectedItem(0)
                 }
-                R.id.profile -> {
+                R.id.affiliateProfile -> {
                     bottomAdapter?.setSelectedItem(4)
                 }
             }

@@ -188,4 +188,12 @@ class AuthViewModel @Inject constructor(
             repository.loginAffiliateUser(map)
         }
     }
+    val loginWithOtpAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
+        get() = repository.loginWithOtpAffiliateUserLiveData
+
+    fun loginWithOtpAffiliateUser(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.loginWithOtpAffiliateUser(map)
+        }
+    }
 }

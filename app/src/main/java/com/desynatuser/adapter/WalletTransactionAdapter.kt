@@ -17,8 +17,6 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
             val walletData = walletTransactionList[position]
-            tvTransactionId.text = walletData?.transactionId
-            tvOrderId.text = walletData?.uniqueId
             tvCreditedOn.text = CommonMethod.customizeChangeDateFormat(walletData?.updatedAt.toString(), outputFormat = "dd/MM/yyyy,hh:mma")
             when(walletData?.type){
                 "1"->{
@@ -26,6 +24,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvOrderId.isVisible = false
                     tvType.text = "Credit"
                     tvType.setTextColor(Color.parseColor("#D72E04"))
+                    tvTransactionId.text = walletData?.transactionId
                     tvAmount.text = "+${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
                 }
                 "2"->{
@@ -33,6 +32,8 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvOrderId.isVisible = true
                     tvType.text = "Debit"
                     tvType.setTextColor(Color.parseColor("#17854C"))
+                    tvTransactionId.text = walletData?.transactionId
+                    tvOrderId.text = walletData?.uniqueId
                     tvAmount.text = "-${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
                 }
                 "3"->{
@@ -42,6 +43,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvCredited.text = "Redeemed On"
                     tvType.text = "Redeemed Gift Card"
                     tvType.setTextColor(Color.parseColor("#17854C"))
+                    tvTransactionId.text = walletData?.giftCardNo
                     tvAmount.text = "+${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
 
                 }

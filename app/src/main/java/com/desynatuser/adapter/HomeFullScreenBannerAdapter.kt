@@ -6,10 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import coil.ImageLoader
-import coil.disk.DiskCache
-import coil.load
-import coil.memory.MemoryCache
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -42,13 +38,7 @@ class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayLis
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val productData = productList[position]
         holder.binding.apply {
-//            ivProduct.load(productData, imageLoader) {
-//                placeholder(R.color.white)
-//                error(R.color.white)
-//                crossfade(true)
-//            }
-
-
+//
             if (productData.endsWith(".gif", true)) {
                 Glide.with(context).asGif()
                     .load(productData)
@@ -116,10 +106,7 @@ class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayLis
                     .placeholder(R.color.white)
                     .into(holder.binding.ivProduct)
 
-
             }
-
-
 
             ivProduct.setOnClickListener {
                 click.onClick(position)
@@ -127,18 +114,4 @@ class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayLis
 
         }
     }
-    val imageLoader = ImageLoader.Builder(context)
-        .memoryCache {
-            MemoryCache.Builder(context)
-                .maxSizePercent(0.25)
-                .build()
-        }
-        .diskCache {
-            DiskCache.Builder()
-                .directory(context.cacheDir.resolve("image_cache"))
-                .maxSizeBytes(100L * 1024 * 1024)
-                .build()
-        }
-        .build()
-
 }

@@ -10,9 +10,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentBankDetailBinding
-import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserBankDetail
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetailRequest
-import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -84,7 +82,7 @@ class BankDetailFragment : BaseFragment() {
                 response?.let {
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        response.message
+                        "Details Submitted Successfully"
                     ) {
                         findNavController().navigate(
                             R.id.action_affiliateAddBankDetailFragment_to_underReviewFragment

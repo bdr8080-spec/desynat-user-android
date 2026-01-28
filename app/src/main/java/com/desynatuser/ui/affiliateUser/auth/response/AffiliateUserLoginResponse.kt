@@ -12,7 +12,7 @@ data class AffiliateUserLoginResponse(
     val status: String
 ) {
     data class Data(
-        @SerializedName("accessToken")
+        @SerializedName("affiliated_accessToken")
         val accessToken: String,
         @SerializedName("address_update_status")
         val addressUpdateStatus: String,

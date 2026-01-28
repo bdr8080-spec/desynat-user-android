@@ -116,7 +116,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="number"
-                android:maxLength="16"
+                android:maxLength="20"
                 android:background="@drawable/edit_back"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -134,7 +134,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="number"
-                android:maxLength="16"
+                android:maxLength="20"
                 android:background="@drawable/edit_back"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -168,6 +168,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="text"
+                android:maxLength="15"
                 android:background="@drawable/edit_back"/>
 
             <androidx.appcompat.widget.AppCompatTextView

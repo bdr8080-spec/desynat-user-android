@@ -72,25 +72,24 @@ class ApplyGiftCardFragment : BaseFragment() {
         viewModel.applyGiftCardResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-
-                when(from){
-                    "order"->{
-                        showToast("Gift card apply successfully")
-                        val bundle = Bundle().apply {
-                            putString("giftCard", Gson().toJson(response.data))
-                            putString("giftCardNumber", binding?.etGiftCardNumber?.text?.trim().toString())
-                        }
-                        parentFragmentManager.setFragmentResult("gift_card_request", bundle)
-
-                        findNavController().navigateUp()
-                    }
-                    "wallet"->{
-                        CommonMethod.showSuccessDialog(requireActivity(),"Gift Card Redeemed successfully!"){
-                            findNavController().popBackStack()
-                        }
-                    }
+                showToast("Gift card apply successfully")
+                val bundle = Bundle().apply {
+                    putString("giftCard", Gson().toJson(response.data))
+                    putString("giftCardNumber", binding?.etGiftCardNumber?.text?.trim().toString())
                 }
+                parentFragmentManager.setFragmentResult("gift_card_request", bundle)
 
+                findNavController().navigateUp()
+                isObserver = false
+            }
+        }
+
+        viewModel.redeemGiftCardInWalletResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                CommonMethod.showSuccessDialog(requireActivity(),"Gift Card Redeemed successfully!"){
+                    findNavController().popBackStack()
+                }
                 isObserver = false
             }
         }
@@ -120,7 +119,12 @@ class ApplyGiftCardFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["giftCardNo"] = binding?.etGiftCardNumber?.text?.trim().toString()
         map["giftCardPin"] = binding?.etPin?.text?.trim().toString()
-        viewModel.applyGiftCard(map)
+        if (from=="wallet"){
+            viewModel.redeemGiftCardInWallet(map)
+        }
+        else{
+            viewModel.applyGiftCard(map)
+        }
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }

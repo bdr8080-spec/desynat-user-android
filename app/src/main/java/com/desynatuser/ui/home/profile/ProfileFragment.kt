@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
@@ -43,7 +44,8 @@ class ProfileFragment : BaseFragment() {
         observe()
     }
 
-    override fun initView() {
+    override fun onResume() {
+        super.onResume()
         binding?.apply {
             if (Constants.isGuest) {
                 tvEmail.isVisible = false
@@ -52,13 +54,14 @@ class ProfileFragment : BaseFragment() {
                 user = SharedPreference.get(requireActivity()).getUser()
                 tvEmail.text = user?.email
                 tvName.text = user?.fullName
-                ivProfileImage.load(user?.profileImage) {
-                    crossfade(false)
-                    placeholder(R.drawable.ic_user)
-                    error(R.drawable.ic_user)
-                }
+                Glide.with(requireActivity()).load(user?.profileImage).placeholder(R.drawable.ic_user).into(ivProfileImage)
+
             }
         }
+    }
+
+    override fun initView() {
+
 
     }
 

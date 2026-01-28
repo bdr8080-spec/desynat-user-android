@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
@@ -234,11 +235,7 @@ class ProfileDetailFragment : BaseFragment() {
             etMobile.setText(user?.countryCode+" | "+user?.mobile)
             if (imageUri==null) {
                 profileImageUrl = user?.profileImage
-                ivProfileImage.load(user?.profileImage) {
-                    crossfade(false)
-                    placeholder(R.drawable.ic_user)
-                    error(R.drawable.ic_user)
-                }
+                Glide.with(requireActivity()).load(user?.profileImage).placeholder(R.drawable.ic_user).into(ivProfileImage)
             }
         }
     }
