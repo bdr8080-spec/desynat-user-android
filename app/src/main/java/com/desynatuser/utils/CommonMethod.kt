@@ -34,6 +34,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.desynatuser.R
 import com.desynatuser.adapter.CountryPickerAdapter
+import com.desynatuser.adapter.SelectedCountryPickerAdapter
 import com.desynatuser.databinding.AlertDialogLayoutBinding
 import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.DeleteDialogLayoutBinding
@@ -440,6 +441,7 @@ object CommonMethod {
 
     fun clearAffiliateData(context: Context){
         SharedPreference.get(context).clearAffiliateUser()
+        SharedPreference.get(context).affiliateAccessToken = ""
     }
 
     fun shareProduct(context:Context,name: String, desc: String, imageUrl: String) {
@@ -564,7 +566,7 @@ object CommonMethod {
 
         val popupWindow = PopupWindow(
             binding.root,
-            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             true
         )
@@ -575,6 +577,36 @@ object CommonMethod {
 
         binding.rvCountry.adapter = CountryPickerAdapter(context, countryList,isDial,
             object : CountryPickerAdapter.ClickOnItem {
+                override fun onClickItem(position: Int) {
+                    onCountrySelected(countryList[position])
+                    popupWindow.dismiss()
+                }
+            }
+        )
+    }
+
+    fun showSelectedCountryPicker(
+        context: Context,
+        anchor: View,
+        countryList: ArrayList<GetCountryResponse.Data>,
+        isDial:Boolean = false,
+        onCountrySelected: (GetCountryResponse.Data) -> Unit
+    ) {
+        val binding = CustomCountryPickerBinding.inflate(LayoutInflater.from(context))
+
+        val popupWindow = PopupWindow(
+            binding.root,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.isOutsideTouchable = true
+        popupWindow.elevation = 20f
+        popupWindow.showAsDropDown(anchor)
+
+        binding.rvCountry.adapter = SelectedCountryPickerAdapter(context, countryList,isDial,
+            object : SelectedCountryPickerAdapter.ClickOnItem {
                 override fun onClickItem(position: Int) {
                     onCountrySelected(countryList[position])
                     popupWindow.dismiss()

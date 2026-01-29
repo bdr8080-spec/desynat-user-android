@@ -41,7 +41,7 @@
         android:fontFamily="@font/poppins_medium"
         android:textSize="@dimen/_11sdp"
         android:textColor="@color/black"
-        android:background="@drawable/button_stroke"
+        android:background="@drawable/brown_price_stroke"
         android:layout_marginStart="@dimen/_15sdp"
         android:gravity="center"
         android:layout_marginTop="@dimen/_20sdp"

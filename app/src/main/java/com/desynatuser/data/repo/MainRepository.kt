@@ -221,6 +221,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
+    val getSelectedCountryLiveData = SingleLiveEvent<GetCountryResponse>()
+    suspend fun getSelectedCountry(
+    ) {
+        handleApiCall(
+            api = {
+                api.getSelectedCountry()
+            },
+            responseLiveData = getSelectedCountryLiveData
+        )
+    }
+
     val categoryLiveData = SingleLiveEvent<GetCategoryResponse>()
     suspend fun getCategory(
     ) {
@@ -253,6 +264,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
                 api.updateProfile(map)
             },
             responseLiveData = updateProfileLiveData
+        )
+    }
+
+    val getProfileLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun getProfile(
+    ) {
+        handleApiCall(
+            api = {
+                api.getProfile()
+            },
+            responseLiveData = getProfileLiveData
         )
     }
 

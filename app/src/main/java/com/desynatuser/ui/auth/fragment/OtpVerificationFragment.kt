@@ -193,19 +193,47 @@ class OtpVerificationFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
+                    SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.accessToken
                     when(from){
                         "affiliateLogin" -> {
-                           // SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
-                            SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
-                            showToast("OTP verified successfully")
-                            requireActivity().startActivity(
-                                Intent(requireActivity(),
-                                    AffiliateHomeActivity::class.java)
-                            )
-                            requireActivity().finish()
+                            when(response.data.adminVerify){
+                                "0"->{
+                                    when{
+                                        response.data.addressUpdateStatus=="0" ->{
+                                            findNavController().navigate(R.id.action_otpFragment_to_affiliateAddAddressFragment)
+                                        }
+                                        response.data.bankUpdateStatus=="0" ->{
+                                            findNavController().navigate(R.id.action_otpFragment_to_affiliateAddBankDetailFragment)
+                                        }
+                                    }
+                                }
+                                "1"->{
+                                    CommonMethod.showSuccessDialog(requireActivity(),"Your profile is under review"){
+                                    }
+                                }
+                                "2"->{
+                                    SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                                    showToast("OTP verified successfully")
+                                    requireActivity().startActivity(
+                                        Intent(requireActivity(),
+                                            AffiliateHomeActivity::class.java)
+                                    )
+                                    requireActivity().finish()
+                                }
+                                "3"->{
+                                    CommonMethod.showSuccessDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason})."){
+
+                                    }
+                                }
+                                "4"->{
+                                    CommonMethod.showSuccessDialog(requireActivity(),"Document Rejected(${response.data.rejectReason} ). Please Reupload it"){
+                                        findNavController().navigate(R.id.action_otpFragment_to_affiliateSignUpFragment)
+                                    }
+                                }
+                            }
+
                         }
                         "affiliateSignUp" -> {
-                          //  SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                             val bundle = Bundle().apply {
                                 putString("userId", response.data.id)

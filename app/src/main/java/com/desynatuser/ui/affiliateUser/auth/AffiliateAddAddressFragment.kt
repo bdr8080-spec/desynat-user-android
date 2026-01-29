@@ -16,6 +16,7 @@ import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentAffiliateAddAddressBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
@@ -32,8 +33,8 @@ class AffiliateAddAddressFragment : BaseFragment() {
     private var selectedCountryId = ""
     private var latitude:Double = 0.0
     private var longitude:Double = 0.0
+    var address:String=""
     var countryList = ArrayList<GetCountryResponse.Data>()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +56,12 @@ class AffiliateAddAddressFragment : BaseFragment() {
             toolbar.tvToolbar.text = "Address"
         }
 
-        setCountry()
+        if (SharedPreference.get(requireActivity()).getSelectedCountryList()==null){
+            getSelectedCountry()
+        }
+        else{
+            setCountry()
+        }
     }
 
     override fun initControl() {
@@ -66,7 +72,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
             }
 
             etCountry.setOnClickListener {
-                CommonMethod.showUserCountryPicker(requireContext(),
+                CommonMethod.showSelectedCountryPicker(requireContext(),
                     it,
                     countryList,
                     false
@@ -78,6 +84,10 @@ class AffiliateAddAddressFragment : BaseFragment() {
 
             etChooseLocation.setOnClickListener {
                 val intent = Intent(requireActivity(), UpdateLocationActivity::class.java)
+                intent.putExtra("savedLat", latitude)
+                intent.putExtra("savedLng", longitude)
+                intent.putExtra("savedAddress", address)
+                Log.e("send", "initControl: $address $latitude $longitude" )
                 locationResultLauncher.launch(intent)
             }
 
@@ -95,6 +105,17 @@ class AffiliateAddAddressFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getSelectedCountryResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
+                    setCountry()
+                }
                 isObserver = false
             }
         }
@@ -159,7 +180,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
                     showToast("Please enter address line 2")
                     false
                 }
-                etPinCode.text.toString().isEmpty() -> {
+             /*   etPinCode.text.toString().isEmpty() -> {
                     showToast("Please enter pin code")
                     false
                 }
@@ -174,7 +195,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
                 etCity.text.toString().isEmpty() -> {
                     showToast("Please enter city")
                     false
-                }
+                }*/
 
                 else -> true
             }
@@ -183,7 +204,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
     }
 
     private fun setCountry() {
-        val data = SharedPreference.get(requireActivity()).getCountryList()
+        val data = SharedPreference.get(requireActivity()).getSelectedCountryList()
         countryList.clear()
         if (data != null) {
             countryList.addAll(data)
@@ -206,7 +227,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
 
             latitude = data?.getDoubleExtra("lat", 0.0)?:0.0
             longitude = data?.getDoubleExtra("lng", 0.0)?:0.0
-
+            address = addressH
             Log.e("send", "getnew: $latitude $longitude" )
 
             val parsed = parseAddress(addressH)
@@ -256,6 +277,13 @@ class AffiliateAddAddressFragment : BaseFragment() {
             "state" to state,
             "postal" to postal
         )
+    }
+
+
+    private fun getSelectedCountry() {
+        viewModel.getSelectedCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }

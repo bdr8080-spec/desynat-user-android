@@ -131,6 +131,9 @@ interface ApiServices {
     @GET(Constants.GET_COUNTRY)
     suspend fun getCountry(): Response<GetCountryResponse>
 
+    @GET(Constants.GET_SELECTED_COUNTRY)
+    suspend fun getSelectedCountry(): Response<GetCountryResponse>
+
     @GET(Constants.GET_CATEGORY)
     suspend fun getCategory(): Response<GetCategoryResponse>
 
@@ -143,6 +146,10 @@ interface ApiServices {
     @POST(Constants.UPDATE_PROFILE)
     suspend fun updateProfile(
         @Body body: HashMap<String, String>
+    ): Response<LoginResponse>
+
+    @GET(Constants.VIEW_PROFILE)
+    suspend fun getProfile(
     ): Response<LoginResponse>
 
     @POST(Constants.CHANGE_NUMBER)

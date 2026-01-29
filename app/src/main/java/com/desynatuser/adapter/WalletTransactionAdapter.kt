@@ -23,7 +23,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvOrder.isVisible = false
                     tvOrderId.isVisible = false
                     tvType.text = "Credit"
-                    tvType.setTextColor(Color.parseColor("#D72E04"))
+                    tvType.setTextColor(Color.parseColor("#17854C"))
                     tvTransactionId.text = walletData?.transactionId
                     tvAmount.text = "+${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
                 }
@@ -31,7 +31,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvOrder.isVisible = true
                     tvOrderId.isVisible = true
                     tvType.text = "Debit"
-                    tvType.setTextColor(Color.parseColor("#17854C"))
+                    tvType.setTextColor(Color.parseColor("#D72E04"))
                     tvTransactionId.text = walletData?.transactionId
                     tvOrderId.text = walletData?.uniqueId
                     tvAmount.text = "-${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"

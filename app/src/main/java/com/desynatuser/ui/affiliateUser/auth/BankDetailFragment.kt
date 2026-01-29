@@ -11,8 +11,10 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentBankDetailBinding
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetailRequest
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 

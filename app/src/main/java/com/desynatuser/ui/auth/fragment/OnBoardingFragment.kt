@@ -1,6 +1,5 @@
 package com.desynatuser.ui.auth.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -92,14 +91,40 @@ class OnBoardingFragment : BaseFragment() {
             if (current < bannerList.size - 1) {
                 binding?.viewPager?.currentItem = current + 1
             } else {
-                SharedPreference.get(requireActivity()).isTutorial = true
-                findNavController().navigate(
-                    R.id.action_onBoardingFragment_to_LoginFragment,
-                    null,
-                    NavOptions.Builder()
-                        .setPopUpTo(findNavController().graph.startDestinationId, true)
-                        .build()
-                )
+                if (SharedPreference.get(requireActivity()).userType==2){
+                    if (SharedPreference.get(requireActivity())
+                            .getUser()?.affiliatedUserdetails?.adminVerify != null
+                    ) {
+                        findNavController().navigate(
+                            R.id.action_onBoardingFragment_to_LoginFragment,
+                            null,
+                            NavOptions.Builder()
+                                .setPopUpTo(findNavController().graph.startDestinationId, true)
+                                .build()
+                        )
+                    }
+                    else{
+                        findNavController().navigate(
+                            R.id.action_onBoardingFragment_to_affiliateSignUpFragment,
+                            null,
+                            NavOptions.Builder()
+                                .setPopUpTo(findNavController().graph.startDestinationId, true)
+                                .build()
+                        )
+                    }
+
+
+                }
+                else {
+                    SharedPreference.get(requireActivity()).isTutorial = true
+                    findNavController().navigate(
+                        R.id.action_onBoardingFragment_to_LoginFragment,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(findNavController().graph.startDestinationId, true)
+                            .build()
+                    )
+                }
             }
         }
 
@@ -111,14 +136,41 @@ class OnBoardingFragment : BaseFragment() {
         }
 
         binding?.tvSkip?.setOnClickListener {
-            SharedPreference.get(requireActivity()).isTutorial = true
-            findNavController().navigate(
-                R.id.action_onBoardingFragment_to_LoginFragment,
-                null,
-                NavOptions.Builder()
-                    .setPopUpTo(findNavController().graph.startDestinationId, true)
-                    .build()
-            )
+            if (SharedPreference.get(requireActivity()).userType==2){
+                if (SharedPreference.get(requireActivity())
+                        .getUser()?.affiliatedUserdetails?.adminVerify != null
+                ) {
+                    findNavController().navigate(
+                        R.id.action_onBoardingFragment_to_LoginFragment,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(findNavController().graph.startDestinationId, true)
+                            .build()
+                    )
+                }
+                else{
+                    findNavController().navigate(
+                        R.id.action_onBoardingFragment_to_affiliateSignUpFragment,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(findNavController().graph.startDestinationId, true)
+                            .build()
+                    )
+                }
+            }
+
+            else{
+                SharedPreference.get(requireActivity()).isTutorial = true
+                findNavController().navigate(
+                    R.id.action_onBoardingFragment_to_LoginFragment,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(findNavController().graph.startDestinationId, true)
+                        .build()
+                )
+
+            }
+
         }
 
     }

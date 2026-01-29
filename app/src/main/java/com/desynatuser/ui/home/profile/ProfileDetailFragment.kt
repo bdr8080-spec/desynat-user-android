@@ -215,7 +215,7 @@ class ProfileDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    SharedPreference.get(requireActivity()).saveUser(response.data)
+                  //  SharedPreference.get(requireActivity()).saveUser(response.data)
                     CommonMethod.showSuccessDialog(requireActivity(),"Profile updated successfully!"){
                         findNavController().popBackStack()
                     }

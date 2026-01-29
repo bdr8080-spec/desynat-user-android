@@ -149,6 +149,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    val getProfiledResult: LiveData<LoginResponse>
+        get() = repository.getProfileLiveData
+
+    fun getProfile() {
+        viewModelScope.launch {
+            repository.getProfile()
+        }
+    }
+
     val changeNumberResult: LiveData<ChangeMobileNumbeResponse>
         get() = repository.changeNumberLiveData
 

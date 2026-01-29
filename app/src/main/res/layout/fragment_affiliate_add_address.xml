@@ -162,12 +162,14 @@
             android:background="@drawable/edit_back"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:text="Locality Town"/>
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:visibility="gone"
             android:id="@+id/etLocalityTown"
             android:layout_width="match_parent"
             style="@style/edit_text"
@@ -183,6 +185,7 @@
             android:layout_marginHorizontal="@dimen/_15sdp">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
                 android:id="@+id/tvState"
                 android:layout_width="0dp"
                 style="@style/edit_text_title"
@@ -194,6 +197,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/tvCity"/>
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:visibility="gone"
                 android:id="@+id/etState"
                 android:layout_width="0dp"
                 style="@style/edit_text"
@@ -206,16 +210,18 @@
                 app:layout_constraintEnd_toEndOf="@+id/tvState"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
                 android:id="@+id/tvCity"
                 android:layout_width="0dp"
                 style="@style/edit_text_title"
-                android:text="State"
+                android:text="City"
                 android:layout_marginStart="@dimen/_7sdp"
                 app:layout_constraintTop_toTopOf="@+id/tvState"
                 app:layout_constraintStart_toEndOf="@+id/tvState"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:visibility="gone"
                 android:id="@+id/etCity"
                 android:layout_width="0dp"
                 style="@style/edit_text"

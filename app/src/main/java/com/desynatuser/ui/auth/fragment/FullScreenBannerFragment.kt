@@ -21,22 +21,26 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FullScreenBannerFragment : BaseFragment() {
+
     private var binding: FragmentFullScreenBannerBinding? = null
     private val viewModel: HomeViewModel by viewModels()
+
     private var isHomeBannerObserver = false
-    private var homeFullScreenBannerAdapter:HomeFullScreenBannerAdapter?=null
-    val imageList = ArrayList<String>()
-    val handler = Handler(Looper.getMainLooper())
+    private var homeFullScreenBannerAdapter: HomeFullScreenBannerAdapter? = null
+
+    private val imageList = ArrayList<String>()
+    private val handler = Handler(Looper.getMainLooper())
+
     private var lastStartedPosition = -1
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-     binding = FragmentFullScreenBannerBinding.inflate(layoutInflater, container, false)
-     return binding?.root
- }
+    ): View {
+        binding = FragmentFullScreenBannerBinding.inflate(inflater, container, false)
+        return binding!!.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,18 +53,26 @@ class FullScreenBannerFragment : BaseFragment() {
         getHomePopScreenBanner()
 
         binding?.apply {
-
             homeFullScreenBannerAdapter =
-                HomeFullScreenBannerAdapter(requireActivity(), imageList,
+                HomeFullScreenBannerAdapter(
+                    requireActivity(),
+                    imageList,
                     object : HomeFullScreenBannerAdapter.OnClick {
                         override fun onClick(position: Int) {}
                     }
                 ) {
                     startTimerForCurrentItem()
                 }
-            viewPager.adapter = homeFullScreenBannerAdapter
 
+            viewPager.adapter = homeFullScreenBannerAdapter
             TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
+        }
+    }
+
+    override fun initControl() {
+        binding?.tvSkip?.setOnClickListener {
+            stopTimers()
+            navigateNextScreen()
         }
     }
 
@@ -70,21 +82,13 @@ class FullScreenBannerFragment : BaseFragment() {
         isHomeBannerObserver = true
     }
 
-    override fun initControl() {
-        binding?.apply {
-            tvSkip.setOnClickListener {
-                stopTimers()
-                navigateNextScreen()
-            }
-        }
-    }
-
     override fun observe() {
 
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isHomeBannerObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                errorMessage?.let { showToast(it)
+                errorMessage?.let {
+                    showToast(it)
                     navigateNextScreen()
                 }
                 isHomeBannerObserver = false
@@ -94,18 +98,16 @@ class FullScreenBannerFragment : BaseFragment() {
         viewModel.getHomeScreenBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeBannerObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+
                 response?.let {
                     imageList.clear()
                     imageList.addAll(it.data.map { banner -> banner.image })
                     homeFullScreenBannerAdapter?.notifyDataSetChanged()
 
-                    when {
-                        imageList.isEmpty() -> {
-                            navigateNextScreen()
-                        }
-                        else -> {
-                            binding?.relWhite?.isVisible = false
-                        }
+                    if (imageList.isEmpty()) {
+                        navigateNextScreen()
+                    } else {
+                        binding?.relWhite?.isVisible = false
                     }
                 }
                 isHomeBannerObserver = false
@@ -115,9 +117,10 @@ class FullScreenBannerFragment : BaseFragment() {
 
     private val slideRunnable = object : Runnable {
         override fun run() {
+            if (!isAdded) return
+
             binding?.viewPager?.let { vp ->
                 val next = vp.currentItem + 1
-
                 if (next < imageList.size) {
                     vp.currentItem = next
                     handler.postDelayed(this, 4000)
@@ -128,30 +131,6 @@ class FullScreenBannerFragment : BaseFragment() {
         }
     }
 
-    private val dismissRunnable = Runnable {
-        navigateNextScreen()
-    }
-
-    private fun stopTimers() {
-        handler.removeCallbacks(slideRunnable)
-        handler.removeCallbacks(dismissRunnable)
-    }
-
-    override fun onDestroyView() {
-        stopTimers()
-        super.onDestroyView()
-        binding = null
-    }
-
-    private fun navigateNextScreen() {
-        stopTimers()
-        requireActivity().startActivity(
-            Intent(requireActivity(),
-                HomeActivity::class.java)
-        )
-        requireActivity().finish()
-    }
-
     private fun startTimerForCurrentItem() {
         val currentPosition = binding?.viewPager?.currentItem ?: return
 
@@ -159,15 +138,40 @@ class FullScreenBannerFragment : BaseFragment() {
         lastStartedPosition = currentPosition
 
         stopTimers()
-        stopTimers()
 
         if (imageList.size == 1) {
             handler.postDelayed({
                 navigateNextScreen()
             }, 4000)
-        } else  if (imageList.size > 1) {
+        } else if (imageList.size > 1) {
             handler.postDelayed(slideRunnable, 4000)
         }
     }
 
+    private fun stopTimers() {
+        handler.removeCallbacks(slideRunnable)
+        handler.removeCallbacksAndMessages(null)
+    }
+
+    private fun navigateNextScreen() {
+        if (!isAdded) return
+
+        stopTimers()
+
+        activity?.let {
+            it.startActivity(Intent(it, HomeActivity::class.java))
+            it.finish()
+        }
+    }
+
+    override fun onStop() {
+        stopTimers()
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        stopTimers()
+        binding = null
+        super.onDestroyView()
+    }
 }

@@ -9,6 +9,7 @@ import com.desynatuser.base.BaseActivity
 import com.desynatuser.databinding.ActivitySplashBinding
 import com.desynatuser.ui.affiliateUser.AffiliateHomeActivity
 import com.desynatuser.ui.auth.AuthActivity
+import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.SharedPreference
 
 class SplashActivity : BaseActivity() {
@@ -27,12 +28,13 @@ class SplashActivity : BaseActivity() {
     override fun initView() {
         Handler(Looper.getMainLooper()).postDelayed({
             if (SharedPreference.get(this).userType==2){
-            if (SharedPreference.get(this).accessToken.isNotEmpty()&&SharedPreference.get(this).getAffiliateUser()?.adminVerify=="2") {
+            if (SharedPreference.get(this).affiliateAccessToken.isNotEmpty()&&SharedPreference.get(this).getAffiliateUser()?.adminVerify=="2") {
                 startActivity(Intent(this, AffiliateHomeActivity::class.java))
                 finish()
             }
             else{
-                startActivity(Intent(this, AuthActivity::class.java))
+                SharedPreference.get(this).userType=1
+                startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             }
             }

@@ -96,11 +96,12 @@ class PaymentMethodFragment : BaseFragment() {
                     if (!itemGiftCardJson.isNullOrEmpty()) {
                         giftCardData = Gson().fromJson(itemGiftCardJson, BuyGiftCardResponse.Data::class.java)
                     }
-
+                    btnProceed.text = "Proceed"
                 }
                 "wallet"->{
                     amount = arguments?.getDouble("amount")?:0.0
                     llWallet.isVisible = false
+                    btnProceed.text = "Confirm & Add Money"
                 }
             }
 

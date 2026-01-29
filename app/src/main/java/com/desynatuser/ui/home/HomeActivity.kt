@@ -74,7 +74,6 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initView() {
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (Constants.location==""){
@@ -85,6 +84,11 @@ class HomeActivity : BaseActivity() {
         controller = navHostFragment.navController
         val navGraph = controller.navInflater.inflate(R.navigation.home_navigation_graph)
         controller.graph = navGraph
+
+        val openScreen = intent.getStringExtra("open_screen")
+        if (openScreen == "profile") {
+            controller.navigate(R.id.profile)
+        }
 
         bottonNavItemList.clear()
         bottonNavItemList.add(BottomNavItem("Home",R.drawable.ic_home,R.drawable.ic_selected_home))

@@ -43,7 +43,12 @@ class ForgotPasswordFragment : BaseFragment() {
     }
 
     override fun initView() {
-        setCountry()
+        if (SharedPreference.get(requireActivity()).userType==2){
+            setSelectedCountry()
+        }
+        else{
+            setCountry()
+        }
         binding?.apply {
             CommonMethod.removeAllTextSpaces(etEmail)
             toolbar.tvToolbar.text = "Forgot Password"
@@ -57,11 +62,23 @@ class ForgotPasswordFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                CommonMethod.showUserCountryPicker(requireContext(),
-                    clMobile,
-                    countryList,true
-                ) { selectedCountry ->
-                    tvCountryPicker?.text = selectedCountry.dialCode
+                if (SharedPreference.get(requireActivity()).userType==2){
+                    CommonMethod.showSelectedCountryPicker(
+                        requireContext(),
+                        clMobile,
+                        countryList, true
+                    ) { selectedCountry ->
+                        tvCountryPicker?.text = selectedCountry.dialCode
+                    }
+                }
+                else {
+                    CommonMethod.showUserCountryPicker(
+                        requireContext(),
+                        clMobile,
+                        countryList, true
+                    ) { selectedCountry ->
+                        tvCountryPicker?.text = selectedCountry.dialCode
+                    }
                 }
             }
 
@@ -197,6 +214,14 @@ class ForgotPasswordFragment : BaseFragment() {
 
     private fun setCountry() {
         val data = SharedPreference.get(requireActivity()).getCountryList()
+        countryList.clear()
+        if (data != null) {
+            countryList.addAll(data)
+        }
+    }
+
+    private fun setSelectedCountry() {
+        val data = SharedPreference.get(requireActivity()).getSelectedCountryList()
         countryList.clear()
         if (data != null) {
             countryList.addAll(data)

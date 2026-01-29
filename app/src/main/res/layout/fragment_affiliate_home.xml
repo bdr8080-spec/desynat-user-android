@@ -62,11 +62,10 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:src="@drawable/ic_notification"
+            android:src="@drawable/ic_bell"
             android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -227,7 +226,7 @@
                             android:fontFamily="@font/poppins_regular"
                             android:text="Total Revenue Generated"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_12sdp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 

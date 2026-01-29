@@ -75,6 +75,10 @@ class SharedPreference(context: Context) {
         get() = preference["accessToken", ""]!!
         set(value) = preference.set("accessToken", value)
 
+    var affiliateAccessToken: String
+        get() = preference["affiliateAccessToken", ""]!!
+        set(value) = preference.set("affiliateAccessToken", value)
+
     var deviceToken: String
         get() = preference["deviceToken", ""]!!
         set(value) = preference.set("deviceToken", value)
@@ -124,6 +128,21 @@ class SharedPreference(context: Context) {
 
     fun getCountryList(): List<GetCountryResponse.Data>? {
         val json = preference["countryList", ""] ?: return null
+        return try {
+            val type = object : TypeToken<List<GetCountryResponse.Data>>() {}.type
+            Gson().fromJson(json, type)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun saveSelectedCountryList(countryList: List<GetCountryResponse.Data>) {
+        val json = Gson().toJson(countryList)
+        preference.set("selectedCountryList", json)
+    }
+
+    fun getSelectedCountryList(): List<GetCountryResponse.Data>? {
+        val json = preference["selectedCountryList", ""] ?: return null
         return try {
             val type = object : TypeToken<List<GetCountryResponse.Data>>() {}.type
             Gson().fromJson(json, type)

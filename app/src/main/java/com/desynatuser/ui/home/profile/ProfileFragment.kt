@@ -14,6 +14,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentProfileBinding
+import com.desynatuser.ui.affiliateUser.AffiliateHomeActivity
 import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
@@ -46,23 +47,10 @@ class ProfileFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        binding?.apply {
-            if (Constants.isGuest) {
-                tvEmail.isVisible = false
-                ivEdit.isVisible = false
-            } else {
-                user = SharedPreference.get(requireActivity()).getUser()
-                tvEmail.text = user?.email
-                tvName.text = user?.fullName
-                Glide.with(requireActivity()).load(user?.profileImage).placeholder(R.drawable.ic_user).into(ivProfileImage)
-
-            }
-        }
     }
 
     override fun initView() {
-
-
+        getProfile()
     }
 
     override fun initControl() {
@@ -97,6 +85,7 @@ class ProfileFragment : BaseFragment() {
 
             rlAffiliate.setOnClickListener {
                 SharedPreference.get(requireActivity()).userType = 2
+                CommonMethod.clearAffiliateData(requireActivity())
                 Constants.isGuest = false
                 Constants.isLogout = true
                 Constants.Category = "Women"
@@ -105,6 +94,7 @@ class ProfileFragment : BaseFragment() {
                         AuthActivity::class.java)
                 )
                 requireActivity().finish()
+
             }
 
             relLogout.setOnClickListener {
@@ -151,6 +141,17 @@ class ProfileFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.getProfiledResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveUser(response.data)
+                    setProfileData()
+                }
+                isObserver = false
+            }
+        }
     }
 
    private fun logout(){
@@ -160,5 +161,26 @@ class ProfileFragment : BaseFragment() {
 
     }
 
+   private fun getProfile(){
+        viewModel.getProfile()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+
+    }
+
+    fun setProfileData(){
+        binding?.apply {
+            if (Constants.isGuest) {
+                tvEmail.isVisible = false
+                ivEdit.isVisible = false
+            } else {
+                user = SharedPreference.get(requireActivity()).getUser()
+                tvEmail.text = user?.email
+                tvName.text = user?.fullName
+                Glide.with(requireActivity()).load(user?.profileImage).placeholder(R.drawable.ic_user).into(ivProfileImage)
+
+            }
+        }
+    }
 
 }

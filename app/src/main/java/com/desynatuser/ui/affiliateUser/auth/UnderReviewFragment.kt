@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
@@ -31,6 +33,12 @@ class UnderReviewFragment : BaseFragment() {
         initView()
         initControl()
         observe()
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner
+        ) {
+            navigateToLogin()
+        }
     }
 
     override fun initView() {
@@ -43,16 +51,26 @@ class UnderReviewFragment : BaseFragment() {
         binding?.apply {
 
             toolbar.tvToolbar.setOnClickListener {
-                findNavController().popBackStack(R.id.login, false)
+                navigateToLogin()
             }
 
             btnLogout.setOnClickListener {
-                findNavController().popBackStack(R.id.login, false)
+                navigateToLogin()
             }
         }
     }
 
     override fun observe() {
+    }
+
+    private fun navigateToLogin() {
+        findNavController().navigate(
+            R.id.login,
+            null,
+            NavOptions.Builder()
+                .setPopUpTo(R.id.login, false)
+                .build()
+        )
     }
 
 }

@@ -27,6 +27,7 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,11 +54,22 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initView() {
-        if (SharedPreference.get(requireActivity()).getCountryList()==null){
-            getCountry()
+
+
+        if (SharedPreference.get(requireActivity()).userType==2){
+            if (SharedPreference.get(requireActivity()).getSelectedCountryList()==null){
+                getSelectedCountry()
+            }
+            else{
+                setSelectedCountry()
+            }
         }
-        else{
-            setCountry()
+        else {
+            if (SharedPreference.get(requireActivity()).getCountryList() == null) {
+                getCountry()
+            } else {
+                setCountry()
+            }
         }
 
         binding?.apply {
@@ -95,11 +107,23 @@ class LoginFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                CommonMethod.showUserCountryPicker(requireContext(),
-                    clMobile,
-                    countryList,true
-                ) { selectedCountry ->
-                    tvCountryPicker?.text = selectedCountry.dialCode
+                if (SharedPreference.get(requireActivity()).userType==2){
+                    CommonMethod.showSelectedCountryPicker(
+                        requireContext(),
+                        clMobile,
+                        countryList, true
+                    ) { selectedCountry ->
+                        tvCountryPicker?.text = selectedCountry.dialCode
+                    }
+                }
+                else {
+                    CommonMethod.showUserCountryPicker(
+                        requireContext(),
+                        clMobile,
+                        countryList, true
+                    ) { selectedCountry ->
+                        tvCountryPicker?.text = selectedCountry.dialCode
+                    }
                 }
             }
 
@@ -134,12 +158,19 @@ class LoginFragment : BaseFragment() {
 
             tvGuest.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).userType==2){
-                    clearInputField()
                     SharedPreference.get(requireActivity()).userType = 1
                     tvGuest.text = "Continue As a Guest"
+                    clearInputField()
+                    val intent = Intent(requireActivity(), HomeActivity::class.java).apply {
+                        putExtra("open_screen", "profile")
+                    }
+                    requireActivity().startActivity(intent)
+                    requireActivity().finish()
                 }
                 else{
                     Constants.isGuest = true
+                    CommonMethod.clearData(requireActivity())
+                    CommonMethod.clearAffiliateData(requireActivity())
                     Constants.Category = "Women"
                     requireActivity().startActivity(
                         Intent(requireActivity(),
@@ -260,6 +291,9 @@ class LoginFragment : BaseFragment() {
                     clearInputField()
                     SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                     SharedPreference.get(requireActivity()).saveUser(response.data)
+                  /*  if (response.data.affiliatedAccessToken!="null"&&response.data.affiliatedAccessToken!=""&&response.data.affiliatedAccessToken!=null){
+                        SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.affiliatedAccessToken
+                    }*/
                    /* requireActivity().startActivity(
                         Intent(requireActivity(),
                             HomeActivity::class.java)
@@ -276,9 +310,9 @@ class LoginFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
 
-                  //  SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                     when(response.data.adminVerify){
                         "0"->{
+                            SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.accessToken
                             when{
                                 response.data.addressUpdateStatus=="0" ->{
                                     clearInputField()
@@ -291,10 +325,12 @@ class LoginFragment : BaseFragment() {
                             }
                         }
                         "1"->{
-                            CommonMethod.showSuccessDialog(requireActivity(),"Your profile is under review"){
+                            SharedPreference.get(requireActivity()).affiliateAccessToken = ""
+                                CommonMethod.showSuccessDialog(requireActivity(),"Your profile is under review"){
                             }
                         }
                         "2"->{
+                            SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.accessToken
                             showToast(response.message)
                             clearInputField()
                             SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
@@ -305,13 +341,20 @@ class LoginFragment : BaseFragment() {
                             requireActivity().finish()
                         }
                         "3"->{
+                            SharedPreference.get(requireActivity()).affiliateAccessToken = ""
                             clearInputField()
-                            CommonMethod.showSuccessDialog(requireActivity(),response.message){
-                                findNavController().navigate(R.id.action_loginFragment_to_affiliateAddAddressFragment)
+                            CommonMethod.showSuccessDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason})."){
+
                             }
                         }
                         "4"->{
-                            CommonMethod.showSuccessDialog(requireActivity(),response.message){
+                            SharedPreference.get(requireActivity()).affiliateAccessToken = ""
+                            CommonMethod.showSuccessDialog(requireActivity(),"Document Rejected (${response.data.rejectReason}). Please Reupload it"){
+                                val bundle = Bundle().apply {
+                                    putString("signUpData", Gson().toJson(response.data))
+                                    putString("password",binding?.etPassword?.text?.toString())
+                                }
+                                findNavController().navigate(R.id.action_loginFragment_to_affiliateSignUpFragment,bundle)
                                 clearInputField()
                             }
                         }
@@ -338,6 +381,7 @@ class LoginFragment : BaseFragment() {
                         putString("userId", response.data.id)
                     }
                     findNavController().navigate(R.id.action_loginFragment_to_OtpFragment,bundle)
+                    clearInputField()
                 }
                 isObserver = false
             }
@@ -347,53 +391,23 @@ class LoginFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    when(response.data.adminVerify){
-                        "0"->{
-                            when{
-                                response.data.addressUpdateStatus=="0" ->{
-                                    clearInputField()
-                                    findNavController().navigate(R.id.action_loginFragment_to_affiliateAddAddressFragment)
-                                }
-                                response.data.bankUpdateStatus=="0" ->{
-                                    clearInputField()
-                                    findNavController().navigate(R.id.action_loginFragment_to_affiliateAddBankDetailFragment)
-                                }
-                            }
+                    val bundle = Bundle().apply {
+                        if (type==0){
+                            putString("mobileNumber", binding?.etEmailMobile?.text.toString().trim())
+                            putString("countryCode", binding?.tvCountryPicker?.text.toString().trim())
                         }
-                        "1"->{
-                            CommonMethod.showSuccessDialog(requireActivity(),"Your profile is under review"){
-                            }
+                        else{
+                            putString("email", binding?.etEmailMobile?.text.toString().trim())
                         }
-                        "2"->{
-                            val bundle = Bundle().apply {
-                                if (type==0){
-                                    putString("mobileNumber", binding?.etEmailMobile?.text.toString().trim())
-                                    putString("countryCode", binding?.tvCountryPicker?.text.toString().trim())
-                                }
-                                else{
-                                    putString("email", binding?.etEmailMobile?.text.toString().trim())
-                                }
-                                putString("from", "affiliateLogin")
-                                putString("userId", response.data.id)
-                            }
-                            findNavController().navigate(R.id.action_loginFragment_to_OtpFragment,bundle)
-                        }
-                        "3"->{
-                            clearInputField()
-                            CommonMethod.showSuccessDialog(requireActivity(),response.message){
-                                findNavController().navigate(R.id.action_loginFragment_to_affiliateAddAddressFragment)
-                            }
-                        }
-                        "4"->{
-                            CommonMethod.showSuccessDialog(requireActivity(),response.message){
-                                clearInputField()
-                            }
-                        }
+                        putString("from", "affiliateLogin")
+                        putString("userId", response.data.id)
                     }
+                    findNavController().navigate(R.id.action_loginFragment_to_OtpFragment,bundle)
+                }
+
                 }
                 isObserver = false
             }
-        }
 
         viewModel.countryResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
@@ -401,6 +415,16 @@ class LoginFragment : BaseFragment() {
                 response?.let {
                     SharedPreference.get(requireActivity()).saveCountryList(response.data)
                     setCountry()
+                }
+                isObserver = false
+            }
+        }
+        viewModel.getSelectedCountryResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
+                    setSelectedCountry()
                 }
                 isObserver = false
             }
@@ -434,6 +458,12 @@ class LoginFragment : BaseFragment() {
         isObserver = true
     }
 
+    private fun getSelectedCountry() {
+        viewModel.getSelectedCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
     private fun setCountry() {
        val data = SharedPreference.get(requireActivity()).getCountryList()
         if (!data.isNullOrEmpty()) {
@@ -442,6 +472,17 @@ class LoginFragment : BaseFragment() {
             val countryCodes = data.map { it.isoCode }
             val countryCodeString = countryCodes.joinToString(",")
            // binding?.ccp?.setCustomMasterCountries(countryCodeString)
+        }
+    }
+
+    private fun setSelectedCountry() {
+        val data = SharedPreference.get(requireActivity()).getSelectedCountryList()
+        if (!data.isNullOrEmpty()) {
+            countryList.clear()
+            data?.let { countryList.addAll(it) }
+            val countryCodes = data.map { it.isoCode }
+            val countryCodeString = countryCodes.joinToString(",")
+            // binding?.ccp?.setCustomMasterCountries(countryCodeString)
         }
     }
 

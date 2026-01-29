@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseActivity
 import com.desynatuser.databinding.ActivityAuthBinding
@@ -38,18 +39,25 @@ class AuthActivity : BaseActivity() {
 
         val navGraph = controller.navInflater.inflate(R.navigation.auth_navigation_graph)
 
+        val destination = if (SharedPreference.get(this).userType==2){
+                if (SharedPreference.get(this).getUser()?.affiliatedUserdetails?.adminVerify!=null){
+                    R.id.login
+                }
+                else {
+                    R.id.onBoarding
+                }
+
+        }
+        else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
+            R.id.banner
+        }
+        else {
+            if (Constants.isLogout) R.id.login
+            else R.id.language
+        }
 
         navGraph.setStartDestination(
-            if (SharedPreference.get(this).userType==2){
-                R.id.login
-            }
-            else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
-                R.id.banner
-            }
-            else {
-                if (Constants.isLogout) R.id.login
-                else R.id.language
-            }
+            destination
         )
 
         controller.graph = navGraph

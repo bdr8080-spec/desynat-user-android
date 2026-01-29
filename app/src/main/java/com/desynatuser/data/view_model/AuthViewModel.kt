@@ -117,6 +117,16 @@ class AuthViewModel @Inject constructor(
     }
 
 
+    val getSelectedCountryResult: LiveData<GetCountryResponse>
+        get() = repository.getSelectedCountryLiveData
+
+    fun getSelectedCountry() {
+        viewModelScope.launch {
+            repository.getSelectedCountry()
+        }
+    }
+
+
     val createAffiliateUserResult: LiveData<CreateAffiliateUserResponse>
         get() = repository.createAffiliateUserLiveData
 

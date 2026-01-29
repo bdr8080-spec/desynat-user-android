@@ -31,6 +31,10 @@
             android:id="@+id/action_onBoardingFragment_to_LoginFragment"
             app:destination="@id/login"/>
 
+        <action
+            android:id="@+id/action_onBoardingFragment_to_affiliateSignUpFragment"
+            app:destination="@id/affiliateSignUp"/>
+
     </fragment>
 
     <fragment
@@ -92,6 +96,14 @@
     <action
         android:id="@+id/action_otpFragment_to_affiliateAddAddressFragment"
         app:destination="@id/affiliateAddAddress"/>
+
+    <action
+        android:id="@+id/action_otpFragment_to_affiliateAddBankDetailFragment"
+        app:destination="@id/affiliateAddBankDetail"/>
+
+    <action
+        android:id="@+id/action_otpFragment_to_affiliateSignUpFragment"
+        app:destination="@id/affiliateSignUp"/>
 
     </fragment>
 

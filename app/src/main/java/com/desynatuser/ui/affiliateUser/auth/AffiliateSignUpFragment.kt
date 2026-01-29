@@ -12,17 +12,22 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentAffiliateSignUpBinding
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.CustomTypefaceSpan
 import com.desynatuser.utils.ImagePicker
@@ -30,6 +35,7 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -45,6 +51,8 @@ class AffiliateSignUpFragment : BaseFragment() {
     private var docUrl1:String?=null
     private var docUrl2:String?=null
     private var countryList = ArrayList<GetCountryResponse.Data>()
+
+    private var affiliateUserData : AffiliateUserLoginResponse.Data?=null
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -73,10 +81,35 @@ class AffiliateSignUpFragment : BaseFragment() {
         initView()
         initControl()
         observe()
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner
+        ) {
+            findNavController().navigate(
+                R.id.login,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.login, false)
+                    .build()
+            )
+        }
+
     }
 
     override fun initView() {
-        setCountry()
+
+        val itemSignUpDataJson = arguments?.getString("signUpData")
+        if (!itemSignUpDataJson.isNullOrEmpty()) {
+            affiliateUserData = Gson().fromJson(itemSignUpDataJson, AffiliateUserLoginResponse.Data::class.java)
+            setData()
+        }
+
+        if (SharedPreference.get(requireActivity()).getSelectedCountryList()==null){
+            getSelectedCountry()
+        }
+        else{
+            setCountry()
+        }
         binding?.apply {
             CommonMethod.removeSpace(etFullName)
             CommonMethod.removeAllTextSpaces(etEmail)
@@ -84,7 +117,13 @@ class AffiliateSignUpFragment : BaseFragment() {
             CommonMethod.removeAllTextSpaces(etPassword)
             tvAlreadyAccount.text = CommonMethod.spannableText(requireActivity(),requireActivity().getString(
                 R.string.already_have_an_account_sign_in),requireActivity().getString(R.string.sign_in), onClick = {
-                findNavController().popBackStack()
+                findNavController().navigate(
+                    R.id.login,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(R.id.login, inclusive = false)
+                        .build()
+                )
 
             })
             tvAlreadyAccount.movementMethod = LinkMovementMethod.getInstance()
@@ -121,6 +160,25 @@ class AffiliateSignUpFragment : BaseFragment() {
         }
     }
 
+    private fun setData() {
+        binding?.apply {
+            val password = arguments?.getString("password")
+            etEmail.setText(affiliateUserData?.email)
+            etFullName.setText(affiliateUserData?.fullName)
+            etMobile.setText(affiliateUserData?.mobile)
+            etPassword.setText(password)
+            etConfirmPassword.setText(password)
+            tvCountryPicker.text = affiliateUserData?.countryCode
+            Glide.with(requireActivity()).load(affiliateUserData?.profileImage).placeholder(R.drawable.ic_placeholder_gallery).into(ivProfile)
+            Glide.with(requireActivity()).load(affiliateUserData?.document1).placeholder(R.drawable.doc1).into(ivDoc1)
+            Glide.with(requireActivity()).load(affiliateUserData?.document2).placeholder(R.drawable.doc2).into(ivDoc2)
+            cbTermsPolicy.isChecked = true
+            docUrl1 = affiliateUserData?.document1
+            docUrl2 = affiliateUserData?.document2
+            profileImageUrl = affiliateUserData?.profileImage
+        }
+    }
+
     override fun initControl() {
         binding?.apply {
 
@@ -130,7 +188,7 @@ class AffiliateSignUpFragment : BaseFragment() {
             }
 
             tvCountryPicker.setOnClickListener {
-                CommonMethod.showUserCountryPicker(requireContext(),
+                CommonMethod.showSelectedCountryPicker(requireContext(),
                     clMobile,
                     countryList,true
                 ) { selectedCountry ->
@@ -190,6 +248,17 @@ class AffiliateSignUpFragment : BaseFragment() {
                 isObserver = false
             }
 
+        }
+
+        viewModel.getSelectedCountryResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
+                    setCountry()
+                }
+                isObserver = false
+            }
         }
 
         viewModel.uploadImageResult.observe(viewLifecycleOwner) { response ->
@@ -373,9 +442,15 @@ class AffiliateSignUpFragment : BaseFragment() {
     }
 
     private fun setCountry() {
-        val data = SharedPreference.get(requireActivity()).getCountryList()
+        val data = SharedPreference.get(requireActivity()).getSelectedCountryList()
         countryList.clear()
         data?.let { countryList.addAll(it) }
+    }
+
+    private fun getSelectedCountry() {
+        viewModel.getSelectedCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }
