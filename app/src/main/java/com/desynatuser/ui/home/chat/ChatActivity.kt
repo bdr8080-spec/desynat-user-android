@@ -348,6 +348,7 @@ class ChatActivity : BaseActivity() {
             id = messageId,
             by = "user",
             message = message,
+            messageAr = message,
             type = type,
             unique_id = uniqueId,
             times = Instant.now().toString(),

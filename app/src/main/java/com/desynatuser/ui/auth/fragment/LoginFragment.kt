@@ -233,6 +233,7 @@ class LoginFragment : BaseFragment() {
         }
         map["type"] = type
         map["password"] = binding?.etPassword?.text?.trim().toString()
+        map["lang"] = SharedPreference.get(requireActivity()).language
         if (SharedPreference.get(requireActivity()).userType==2){
             viewModel.loginAffiliateUser(map)
         }
@@ -258,6 +259,7 @@ class LoginFragment : BaseFragment() {
             }
 
             map["type"] = type
+            map["lang"] = SharedPreference.get(requireActivity()).language
             viewModel.loginWithOtpAffiliateUser(map)
         }
         else{
@@ -266,6 +268,7 @@ class LoginFragment : BaseFragment() {
             }
             map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
             map["type"] = type
+            map["lang"] = SharedPreference.get(requireActivity()).language
             viewModel.loginViaEmailOrMobile(map)
         }
 

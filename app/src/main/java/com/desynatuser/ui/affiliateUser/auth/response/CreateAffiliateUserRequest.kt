@@ -23,5 +23,7 @@ data class CreateAffiliateUserRequest(
     @SerializedName("password")
     val password: String,
     @SerializedName("profile_image")
-    val profileImage: String
+    val profileImage: String,
+    @SerializedName("lang")
+    val lang: String
 )

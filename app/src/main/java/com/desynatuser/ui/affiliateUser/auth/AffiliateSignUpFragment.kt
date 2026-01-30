@@ -241,7 +241,8 @@ class AffiliateSignUpFragment : BaseFragment() {
                 profileImage = profileImageUrl.toString(),
                 accept = 1,
                 document1 = docUrl1.toString(),
-                document2 = docUrl2.toString()
+                document2 = docUrl2.toString(),
+                lang = SharedPreference.get(requireActivity()).language
             )
             if (affiliateUserData!=null){
                 viewModel.reVerifyDocument(request)

@@ -17,5 +17,7 @@ data class RegisterRequest(
     @SerializedName("password")
     val password: String ,
     @SerializedName("profile_image")
-    val profileImage: String?=null
+    val profileImage: String?=null ,
+    @SerializedName("lang")
+    val lang: String
 )

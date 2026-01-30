@@ -60,6 +60,8 @@ import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.Constants
+import com.desynatuser.utils.translation.TranslateRequest
+import com.desynatuser.utils.translation.TranslateResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -310,6 +312,12 @@ interface ApiServices {
         @Query("key") apiKey: String,
         @Body request: VisionRequestBody
     ): Response<VisionResponse>
+
+    @POST("https://translation.googleapis.com/language/translate/v2")
+    suspend fun googleTranslator(
+        @Query("key") apiKey: String,
+        @Body request: TranslateRequest
+    ): Response<TranslateResponse>
 
     @POST(Constants.CREATE_CUSTOM_ORDER)
     suspend fun createCustomOrder(
