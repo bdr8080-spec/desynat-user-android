@@ -326,11 +326,12 @@ class LoginFragment : BaseFragment() {
                         }
                         "1"->{
                             SharedPreference.get(requireActivity()).affiliateAccessToken = ""
-                                CommonMethod.showSuccessDialog(requireActivity(),"Your profile is under review"){
+                                CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is under review", time = 2000){
                             }
                         }
                         "2"->{
                             SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.accessToken
+                            SharedPreference.get(requireActivity()).isAffiliateTutorial = true
                             showToast(response.message)
                             clearInputField()
                             SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
@@ -343,16 +344,15 @@ class LoginFragment : BaseFragment() {
                         "3"->{
                             SharedPreference.get(requireActivity()).affiliateAccessToken = ""
                             clearInputField()
-                            CommonMethod.showSuccessDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason})."){
+                            CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason}).", time = 3000){
 
                             }
                         }
                         "4"->{
-                            SharedPreference.get(requireActivity()).affiliateAccessToken = ""
-                            CommonMethod.showSuccessDialog(requireActivity(),"Document Rejected (${response.data.rejectReason}). Please Reupload it"){
+                            SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.accessToken
+                            CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Document Rejected. Please Reupload it (${response.data.rejectReason})", time = 3000){
                                 val bundle = Bundle().apply {
                                     putString("signUpData", Gson().toJson(response.data))
-                                    putString("password",binding?.etPassword?.text?.toString())
                                 }
                                 findNavController().navigate(R.id.action_loginFragment_to_affiliateSignUpFragment,bundle)
                                 clearInputField()

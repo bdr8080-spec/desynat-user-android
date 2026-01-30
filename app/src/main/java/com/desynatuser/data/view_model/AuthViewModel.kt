@@ -16,6 +16,7 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.response.CommonResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -187,6 +188,15 @@ class AuthViewModel @Inject constructor(
     fun createAffiliateUserPassword(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.createAffiliateUserPassword(map)
+        }
+    }
+
+    val reVerifyDocumentResult: LiveData<AffiliateUserLoginResponse>
+        get() = repository.reVerifyDocumentLiveData
+
+    fun reVerifyDocument(request: CreateAffiliateUserRequest) {
+        viewModelScope.launch {
+            repository.reVerifyDocument(request)
         }
     }
 

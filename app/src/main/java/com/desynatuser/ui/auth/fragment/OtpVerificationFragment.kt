@@ -20,6 +20,7 @@ import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -109,6 +110,7 @@ class OtpVerificationFragment : BaseFragment() {
                         }
                         else{
                             if (from=="affiliateSignUp"||from=="affiliateLogin"||from=="affiliateForgot"){
+                                SharedPreference.get(requireActivity()).affiliateAccessToken = ""
                                 verifyAffiliateUserOtp()
                             }
                             else{
@@ -208,10 +210,11 @@ class OtpVerificationFragment : BaseFragment() {
                                     }
                                 }
                                 "1"->{
-                                    CommonMethod.showSuccessDialog(requireActivity(),"Your profile is under review"){
+                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is under review", time = 2000){
                                     }
                                 }
                                 "2"->{
+                                    SharedPreference.get(requireActivity()).isAffiliateTutorial = true
                                     SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                                     showToast("OTP verified successfully")
                                     requireActivity().startActivity(
@@ -221,13 +224,17 @@ class OtpVerificationFragment : BaseFragment() {
                                     requireActivity().finish()
                                 }
                                 "3"->{
-                                    CommonMethod.showSuccessDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason})."){
+                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason}).", time = 3000){
 
                                     }
                                 }
                                 "4"->{
-                                    CommonMethod.showSuccessDialog(requireActivity(),"Document Rejected(${response.data.rejectReason} ). Please Reupload it"){
-                                        findNavController().navigate(R.id.action_otpFragment_to_affiliateSignUpFragment)
+                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Document Rejected. Please Reupload it (${response.data.rejectReason})", time = 3000){
+                                        val bundle = Bundle().apply {
+                                            putString("signUpData", Gson().toJson(response.data))
+                                           // putString("password",binding?.etPassword?.text?.toString())
+                                        }
+                                        findNavController().navigate(R.id.action_otpFragment_to_affiliateSignUpFragment,bundle)
                                     }
                                 }
                             }
@@ -235,6 +242,8 @@ class OtpVerificationFragment : BaseFragment() {
                         }
                         "affiliateSignUp" -> {
                             SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                            SharedPreference.get(requireActivity()).isAffiliateTutorial = true
+
                             val bundle = Bundle().apply {
                                 putString("userId", response.data.id)
                             }

@@ -1024,6 +1024,18 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
         )
     }
 
+    val reVerifyDocumentLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
+    suspend fun reVerifyDocument(
+        request: CreateAffiliateUserRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.reVerifyDocument(request)
+            },
+            responseLiveData = reVerifyDocumentLiveData
+        )
+    }
+
     val loginAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginResponse>()
     suspend fun loginAffiliateUser(
         map: HashMap<String,Any>

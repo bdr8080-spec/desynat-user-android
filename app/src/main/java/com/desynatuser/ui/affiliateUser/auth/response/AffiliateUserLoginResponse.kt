@@ -52,6 +52,8 @@ data class AffiliateUserLoginResponse(
         val otpVerify: String,
         @SerializedName("password")
         val password: String,
+        @SerializedName("password_old")
+        val passwordOld: String,
         @SerializedName("profile_image")
         val profileImage: String,
         @SerializedName("reject_reason")

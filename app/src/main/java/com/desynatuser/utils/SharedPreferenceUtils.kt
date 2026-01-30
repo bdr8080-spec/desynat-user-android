@@ -67,6 +67,10 @@ class SharedPreference(context: Context) {
         get() = preference["tutorial", false]!!
         set(value) = preference.set("tutorial", value)
 
+    var isAffiliateTutorial: Boolean
+        get() = preference["affiliateTutorial", false]!!
+        set(value) = preference.set("affiliateTutorial", value)
+
     var userType: Int
         get() = preference["userType", 1]!!
         set(value) = preference.set("userType", value)

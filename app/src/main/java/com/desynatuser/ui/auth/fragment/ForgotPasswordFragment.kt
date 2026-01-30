@@ -131,7 +131,6 @@ class ForgotPasswordFragment : BaseFragment() {
         }
     }
 
-
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {

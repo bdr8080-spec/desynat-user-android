@@ -32,6 +32,8 @@ data class GetWalletHistoryResponse(
             val paymentStatus: String,
             @SerializedName("transaction_id")
             val transactionId: String,
+            @SerializedName("order_id")
+            val orderId: String,
             @SerializedName("type")
             val type: String,
             @SerializedName("unique_id")

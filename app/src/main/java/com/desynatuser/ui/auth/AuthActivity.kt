@@ -43,10 +43,12 @@ class AuthActivity : BaseActivity() {
                 if (SharedPreference.get(this).getUser()?.affiliatedUserdetails?.adminVerify!=null){
                     R.id.login
                 }
-                else {
-                    R.id.onBoarding
+                else if(SharedPreference.get(this).isAffiliateTutorial==false) {
+                        R.id.onBoarding
+                    }
+                else{
+                    R.id.login
                 }
-
         }
         else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
             R.id.banner

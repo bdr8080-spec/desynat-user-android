@@ -430,6 +430,11 @@ interface ApiServices {
         @Body map: HashMap<String,Any>
     ): Response<AffiliateUserLoginResponse>
 
+    @POST(Constants.RE_VERIFY_DOCUMENT_AFFILIATE_USER)
+    suspend fun reVerifyDocument(
+        @Body request: CreateAffiliateUserRequest
+    ): Response<AffiliateUserLoginResponse>
+
     @POST(Constants.LOGIN_AFFILIATE_USER)
     suspend fun loginAffiliateUser(
         @Body map: HashMap<String,Any>

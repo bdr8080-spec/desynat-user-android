@@ -33,7 +33,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvType.text = "Debit"
                     tvType.setTextColor(Color.parseColor("#D72E04"))
                     tvTransactionId.text = walletData?.transactionId
-                    tvOrderId.text = walletData?.uniqueId
+                    tvOrderId.text = walletData?.orderId
                     tvAmount.text = "-${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
                 }
                 "3"->{

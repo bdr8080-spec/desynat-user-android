@@ -36,6 +36,7 @@ import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -97,7 +98,6 @@ class AffiliateSignUpFragment : BaseFragment() {
     }
 
     override fun initView() {
-
         val itemSignUpDataJson = arguments?.getString("signUpData")
         if (!itemSignUpDataJson.isNullOrEmpty()) {
             affiliateUserData = Gson().fromJson(itemSignUpDataJson, AffiliateUserLoginResponse.Data::class.java)
@@ -162,12 +162,21 @@ class AffiliateSignUpFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
-            val password = arguments?.getString("password")
+            etEmail.isClickable = false
+            etEmail.isFocusable = false
+            etEmail.isEnabled = false
+
+            etMobile.isClickable = false
+            etMobile.isFocusable = false
+            etMobile.isEnabled = false
+
+            tvMobile.isClickable = false
+
             etEmail.setText(affiliateUserData?.email)
             etFullName.setText(affiliateUserData?.fullName)
             etMobile.setText(affiliateUserData?.mobile)
-            etPassword.setText(password)
-            etConfirmPassword.setText(password)
+            etPassword.setText(affiliateUserData?.passwordOld)
+            etConfirmPassword.setText(affiliateUserData?.passwordOld)
             tvCountryPicker.text = affiliateUserData?.countryCode
             Glide.with(requireActivity()).load(affiliateUserData?.profileImage).placeholder(R.drawable.ic_placeholder_gallery).into(ivProfile)
             Glide.with(requireActivity()).load(affiliateUserData?.document1).placeholder(R.drawable.doc1).into(ivDoc1)
@@ -198,7 +207,7 @@ class AffiliateSignUpFragment : BaseFragment() {
 
             btnContinue.setOnClickListener {
                 if (validation()) {
-                        createAccount()
+                    createAccount()
                     }
                 }
 
@@ -234,7 +243,12 @@ class AffiliateSignUpFragment : BaseFragment() {
                 document1 = docUrl1.toString(),
                 document2 = docUrl2.toString()
             )
-            viewModel.createAffiliateUser(request)
+            if (affiliateUserData!=null){
+                viewModel.reVerifyDocument(request)
+            }
+            else {
+                viewModel.createAffiliateUser(request)
+            }
             ProgressDialogUtils.getInstance().showProgress(requireActivity())
             isObserver = true
         }
@@ -256,6 +270,20 @@ class AffiliateSignUpFragment : BaseFragment() {
                 response?.let {
                     SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
                     setCountry()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.reVerifyDocumentResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                  CommonMethod.showSuccessDialog(requireActivity(),"Document submitted successfully"){
+                      findNavController().navigate(
+                          R.id.action_affiliateSignUpFragment_to_underReviewFragment
+                      )
+                  }
                 }
                 isObserver = false
             }

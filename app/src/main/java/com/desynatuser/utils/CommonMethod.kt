@@ -370,6 +370,40 @@ object CommonMethod {
         }
     }
 
+    fun showSuccessWithTimeDialog(context: Context,description:String,button:Boolean=false,time:Long=1000,onDismiss: (() -> Unit)? = null) {
+        val dialog = Dialog(context, R.style.CustomDialog)
+        val dialogBinding = SuccessDialogLayoutBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
+
+        val window: Window = dialog.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+
+        dialogBinding.tvDescription.text=description
+        dialogBinding.tvOkay.isVisible = button
+
+        dialogBinding.tvOkay.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            onDismiss?.invoke()
+        }
+
+        dialog.show()
+        if(button==false){
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (dialog.isShowing) {
+                    dialog.dismiss()
+                }
+            }, time)
+        }
+    }
+
     fun deleteAlertDialog(
         context: Context,
         description: String,
