@@ -58,6 +58,7 @@ class ChatFragment : BaseFragment() {
     private var binding: FragmentChatBinding? = null
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
+    private var isCartObserver = false
     private var isImageObserver = false
     private var isCustomObserver = false
     private var isAddressObserver = false
@@ -447,14 +448,16 @@ class ChatFragment : BaseFragment() {
             }
 
             btnPayNow.setOnClickListener {
-                val bundle = Bundle().apply {
+             /*   val bundle = Bundle().apply {
                     putString("from", "chat")
                     putString("chatData", Gson().toJson(chatDetailData))
                 }
                 findNavController().navigate(
                     R.id.action_chatFragment_to_orderPaymentFragment,
                     bundle
-                )
+                )*/
+                findNavController().navigate(
+                    R.id.action_chatFragment_to_myBagFragment)
             }
 
             tvAccept.setOnClickListener {
@@ -743,12 +746,11 @@ class ChatFragment : BaseFragment() {
 
         viewModel.acceptRejectQuotationResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
-                ProgressDialogUtils.getInstance().hideProgress()
-
-                chatDetailData?.action = response.data.action
-                setQuotationData()
 
                 if (response.data.action == "4") {
+                    chatDetailData?.action = response.data.action
+                    setQuotationData()
+                    ProgressDialogUtils.getInstance().hideProgress()
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
                         "Quotation rejected Successfully"
@@ -756,16 +758,25 @@ class ChatFragment : BaseFragment() {
 
                     }
                 } else {
-                    CommonMethod.showSuccessDialog(
-                        requireActivity(),
-                        "Quotation accepted Successfully"
-                    ) {
+                    addToCartCustomOrder()
 
-                    }
                 }
 
             }
             isObserver = false
+        }
+
+        viewModel.addToCartCustomOrderResult.observe(viewLifecycleOwner) { response ->
+            if (isCartObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                CommonMethod.showSuccessDialog(
+                    requireActivity(),
+                    "Quotation accepted Successfully"
+                ) {
+                       findNavController().navigate(R.id.action_chatFragment_to_myBagFragment)
+                }
+                isCartObserver = false
+            }
         }
 
         viewModel.addressResult.observe(viewLifecycleOwner) { response ->
@@ -845,6 +856,14 @@ class ChatFragment : BaseFragment() {
         viewModel.getAddress()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isAddressObserver = true
+    }
+
+    private fun addToCartCustomOrder() {
+        val map = HashMap<String, Any>()
+        map["unique_id"] = uniqueId
+        viewModel.addToCartCustomOrder(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isCartObserver = true
     }
 
     private fun getChat(isLoading: Boolean = true) {

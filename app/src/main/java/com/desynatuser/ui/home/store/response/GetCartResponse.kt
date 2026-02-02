@@ -10,7 +10,8 @@ data class GetCartResponse(
     val message: String,
     @SerializedName("status")
     val status: String
-) {
+)
+{
     data class Data(
         @SerializedName("cart_data")
         val cartData: List<CartData>,
@@ -25,7 +26,9 @@ data class GetCartResponse(
         @SerializedName("total_amount")
         val totalAmount: Double,
         @SerializedName("total_mrp")
-        val totalMrp: Double
+        val totalMrp: Double,
+        @SerializedName("user_address")
+        val userAddress: UserAddress
     ) {
         data class CartData(
             @SerializedName("amount")
@@ -36,6 +39,8 @@ data class GetCartResponse(
             val createdAt: String,
             @SerializedName("id")
             val id: String,
+            @SerializedName("order_type")
+            val orderType: String,
             @SerializedName("product")
             val product: Product,
             @SerializedName("product_id")
@@ -43,15 +48,23 @@ data class GetCartResponse(
             @SerializedName("product_variants")
             val productVariants: ProductVariants,
             @SerializedName("quantity")
-            var quantity: Int,
+            val quantity: Int,
+            @SerializedName("shipping_fees")
+            val shippingFees: Double,
+            @SerializedName("tax")
+            val tax: Double,
+            @SerializedName("unique_id")
+            val uniqueId: String,
             @SerializedName("updated_at")
             val updatedAt: String,
             @SerializedName("user_id")
-            val userId: Int,
+            val userId: String,
             @SerializedName("variants_id")
             val variantsId: String
         ) {
             data class Product(
+                @SerializedName("affiliated_commission")
+                val affiliatedCommission: String,
                 @SerializedName("affiliated_product")
                 val affiliatedProduct: String,
                 @SerializedName("brand_id")
@@ -71,7 +84,7 @@ data class GetCartResponse(
                 @SerializedName("exchangable_days")
                 val exchangableDays: String,
                 @SerializedName("id")
-                val id: Int,
+                val id: String,
                 @SerializedName("max_card_quantity")
                 val maxCardQuantity: String,
                 @SerializedName("min_card_quantity")
@@ -100,6 +113,8 @@ data class GetCartResponse(
                 val sellerDetails: SellerDetails,
                 @SerializedName("seller_id")
                 val sellerId: String,
+                @SerializedName("store")
+                val store: Store,
                 @SerializedName("store_id")
                 val storeId: String,
                 @SerializedName("subcategory_id")
@@ -114,6 +129,8 @@ data class GetCartResponse(
                     val acceptTerms: String,
                     @SerializedName("admin_verify")
                     val adminVerify: String,
+                    @SerializedName("affilate_commission")
+                    val affilateCommission: String,
                     @SerializedName("bank_information")
                     val bankInformation: String,
                     @SerializedName("country_code")
@@ -123,7 +140,7 @@ data class GetCartResponse(
                     @SerializedName("device_token")
                     val deviceToken: String,
                     @SerializedName("device_type")
-                    val deviceType: String,
+                    val deviceType: Any,
                     @SerializedName("email")
                     val email: String,
                     @SerializedName("first_name")
@@ -133,7 +150,7 @@ data class GetCartResponse(
                     @SerializedName("is_block")
                     val isBlock: Int,
                     @SerializedName("lang")
-                    val lang: Any,
+                    val lang: String,
                     @SerializedName("last_name")
                     val lastName: String,
                     @SerializedName("mobile")
@@ -147,9 +164,46 @@ data class GetCartResponse(
                     @SerializedName("profile_pic")
                     val profilePic: String,
                     @SerializedName("reject_reason")
-                    val rejectReason: String,
+                    val rejectReason: Any,
                     @SerializedName("store_information")
                     val storeInformation: String,
+                    @SerializedName("updated_at")
+                    val updatedAt: String
+                )
+
+                data class Store(
+                    @SerializedName("address_line1")
+                    val addressLine1: String,
+                    @SerializedName("address_line2")
+                    val addressLine2: String,
+                    @SerializedName("bio")
+                    val bio: String,
+                    @SerializedName("country")
+                    val country: String,
+                    @SerializedName("country_code")
+                    val countryCode: String,
+                    @SerializedName("created_at")
+                    val createdAt: String,
+                    @SerializedName("id")
+                    val id: String,
+                    @SerializedName("let")
+                    val let: String,
+                    @SerializedName("long")
+                    val long: String,
+                    @SerializedName("seller_id")
+                    val sellerId: String,
+                    @SerializedName("store_address")
+                    val storeAddress: String,
+                    @SerializedName("Store_Availability")
+                    val storeAvailability: String,
+                    @SerializedName("store_image")
+                    val storeImage: String,
+                    @SerializedName("store_mail_id")
+                    val storeMailId: String,
+                    @SerializedName("store_name")
+                    val storeName: String,
+                    @SerializedName("store_phone")
+                    val storePhone: String,
                     @SerializedName("updated_at")
                     val updatedAt: String
                 )
@@ -159,7 +213,7 @@ data class GetCartResponse(
                 @SerializedName("actual_price")
                 val actualPrice: String,
                 @SerializedName("bust")
-                val bust: Any,
+                val bust: String,
                 @SerializedName("color")
                 val color: Color,
                 @SerializedName("color_id")
@@ -173,15 +227,17 @@ data class GetCartResponse(
                 @SerializedName("final_price")
                 val finalPrice: String,
                 @SerializedName("hip")
-                val hip: Any,
+                val hip: String,
                 @SerializedName("id")
-                val id: Int,
+                val id: String,
                 @SerializedName("length")
-                val length: Any,
+                val length: String,
+                @SerializedName("parent_child")
+                val parentChild: String,
                 @SerializedName("product_id")
-                val productId: Int,
+                val productId: String,
                 @SerializedName("shoulder")
-                val shoulder: Any,
+                val shoulder: String,
                 @SerializedName("size")
                 val size: Size,
                 @SerializedName("size_id")
@@ -191,7 +247,7 @@ data class GetCartResponse(
                 @SerializedName("sku_threshold_value")
                 val skuThresholdValue: String,
                 @SerializedName("sleeve_length")
-                val sleeveLength: Any,
+                val sleeveLength: String,
                 @SerializedName("status")
                 val status: String,
                 @SerializedName("total_stock")
@@ -201,7 +257,7 @@ data class GetCartResponse(
                 @SerializedName("variant_image")
                 val variantImage: List<String>,
                 @SerializedName("waist")
-                val waist: Any
+                val waist: String
             ) {
                 data class Color(
                     @SerializedName("created_at")
@@ -209,7 +265,7 @@ data class GetCartResponse(
                     @SerializedName("hex_code")
                     val hexCode: String,
                     @SerializedName("id")
-                    val id: Int,
+                    val id: String,
                     @SerializedName("name")
                     val name: String,
                     @SerializedName("updated_at")
@@ -220,7 +276,7 @@ data class GetCartResponse(
                     @SerializedName("created_at")
                     val createdAt: String,
                     @SerializedName("id")
-                    val id: Int,
+                    val id: String,
                     @SerializedName("name")
                     val name: String,
                     @SerializedName("updated_at")
@@ -228,5 +284,48 @@ data class GetCartResponse(
                 )
             }
         }
+
+        data class UserAddress(
+            @SerializedName("address")
+            val address: String,
+            @SerializedName("city")
+            val city: String,
+            @SerializedName("country_code")
+            val countryCode: String,
+            @SerializedName("country_name")
+            val countryName: String,
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("house_no")
+            val houseNo: String,
+            @SerializedName("id")
+            val id: String,
+            @SerializedName("landmark")
+            val landmark: String,
+            @SerializedName("latitude")
+            val latitude: String,
+            @SerializedName("longitude")
+            val longitude: String,
+            @SerializedName("mobile")
+            val mobile: String,
+            @SerializedName("name")
+            val name: String,
+            @SerializedName("postal_code")
+            val postalCode: String,
+            @SerializedName("save_address_as")
+            val saveAddressAs: String,
+            @SerializedName("set_as_default")
+            val setAsDefault: String,
+            @SerializedName("state")
+            val state: String,
+            @SerializedName("status")
+            val status: String,
+            @SerializedName("street_no")
+            val streetNo: String,
+            @SerializedName("updated_at")
+            val updatedAt: String,
+            @SerializedName("user_id")
+            val userId: String
+        )
     }
 }

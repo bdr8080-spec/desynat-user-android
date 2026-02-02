@@ -1,61 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/_15sdp"
     tools:context=".ui.auth.fragment.LanguageFragment">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:visibility="gone"
+        android:id="@+id/tvToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_back"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="@dimen/_15sdp"
+        android:text="Change Language"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13sdp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSelectLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Select language"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13sdp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Choose the language and continue to get the experience the app in your preferred language."
+        android:textColor="#80000000"
+        android:textSize="@dimen/_10sdp" />
+
+    <RelativeLayout
+        android:id="@+id/relEnglish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/edit_back">
+
+        <CheckBox
+            android:id="@+id/cbEnglish"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:button="@drawable/selector_radio_icon"
+            android:checked="false"
+            android:drawableTint="@null"
             android:fontFamily="@font/poppins_medium"
-            android:text="Select language"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:paddingVertical="@dimen/_12sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:text="@string/english"
             android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp"
-            android:layout_gravity="center_horizontal"/>
+            android:textSize="@dimen/_12sdp"
+            app:buttonTint="@null" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Choose the language and continue to get the experience the app in your preferred language."
-            android:textColor="#80000000"
-            android:textSize="@dimen/_10sdp"/>
-
-        <RelativeLayout
-            android:id="@+id/relEnglish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/edit_back">
-
-            <CheckBox
-                android:id="@+id/cbEnglish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/english"
-                android:textColor="@color/black"
-                android:paddingVertical="@dimen/_12sdp"
-                android:button="@drawable/selector_radio_icon"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:paddingStart="@dimen/_8sdp"
-                android:checked="false"
-                app:buttonTint="@null"
-                android:drawableTint="@null"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_12sdp"/>
-
-        </RelativeLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relArabic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/edit_back">
 
@@ -63,25 +82,26 @@
             android:id="@+id/cbArabic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/arabic"
-            android:textColor="@color/black"
-            android:paddingVertical="@dimen/_12sdp"
-            android:button="@drawable/selector_radio_icon"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:paddingStart="@dimen/_8sdp"
+            android:button="@drawable/selector_radio_icon"
             android:checked="false"
-            app:buttonTint="@null"
             android:drawableTint="@null"
             android:fontFamily="@font/poppins_medium"
-            android:textSize="@dimen/_12sdp"/>
+            android:paddingVertical="@dimen/_12sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:text="@string/arabic"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            app:buttonTint="@null" />
 
     </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btnContinue"
-            style="@style/button"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:text="@string/continue_text"/>
+        android:id="@+id/btnContinue"
+        style="@style/button"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:text="@string/continue_text" />
 
 </LinearLayout>

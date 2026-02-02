@@ -358,8 +358,6 @@ class ProductDetailFragment : BaseFragment() {
         }
     }
 
-
-
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
@@ -377,15 +375,17 @@ class ProductDetailFragment : BaseFragment() {
                 cartList.clear()
                 if (myBagList.isNotEmpty()){
                     for(i in 0 until myBagList.size) {
-                        cartList.add(
-                            AddToCartListResponse.Data(
-                                amount = myBagList[i].amount,
-                                variantsId = myBagList[i].variantsId,
-                                id = myBagList[i].id,
-                                quantity = myBagList[i].quantity,
-                                productId = myBagList[i].productId
+                        if (myBagList[i].orderType=="1") {
+                            cartList.add(
+                                AddToCartListResponse.Data(
+                                    amount = myBagList[i].amount,
+                                    variantsId = myBagList[i].variantsId,
+                                    id = myBagList[i].id,
+                                    quantity = myBagList[i].quantity,
+                                    productId = myBagList[i].productId
+                                )
                             )
-                        )
+                        }
                     }
                     setData()
                 }

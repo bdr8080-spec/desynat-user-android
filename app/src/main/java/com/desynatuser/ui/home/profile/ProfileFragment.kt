@@ -83,6 +83,17 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_myWalletFragment)
             }
 
+            rlLanguage.setOnClickListener {
+//                val bundle = Bundle().apply {
+//                    putString("from", "profile")
+//                }
+//                findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
+            }
+
+            relAbout.setOnClickListener {
+
+            }
+
             rlAffiliate.setOnClickListener {
                 SharedPreference.get(requireActivity()).userType = 2
                 CommonMethod.clearAffiliateData(requireActivity())

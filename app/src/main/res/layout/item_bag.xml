@@ -290,12 +290,29 @@
         app:layout_constraintTop_toTopOf="@+id/tvSeller"
         app:layout_constraintBottom_toBottomOf="@+id/tvSeller"/>
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvCustomDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_light"
+        android:maxLines="1"
+        android:text="Custom Detail"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSeller" />
+
     <View
         android:id="@+id/viewBottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#1A000000"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/tvSeller"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomDetail"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

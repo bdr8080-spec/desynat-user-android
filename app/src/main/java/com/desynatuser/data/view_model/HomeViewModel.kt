@@ -692,5 +692,14 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
+    val addToCartCustomOrderResult: LiveData<CommonResponse>
+        get() = repository.addToCartCustomOrderLiveData
+
+    fun addToCartCustomOrder(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.addToCartCustomOrder(map)
+        }
+    }
+
 
 }

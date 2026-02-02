@@ -401,6 +401,11 @@ interface ApiServices {
     @GET(Constants.WALLET_HISTORY)
     suspend fun getWalletHistory(): Response<GetWalletHistoryResponse>
 
+    @POST(Constants.CUSTOM_ORDER_ADD_TO_CART)
+    suspend fun addToCartCustomOrder(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
     //Affiliate User
 
     @POST(Constants.CREATE_AFFILIATE_USER)

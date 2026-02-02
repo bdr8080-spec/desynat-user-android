@@ -107,7 +107,17 @@
         android:id="@+id/action_profileFragment_to_myWalletFragment"
         app:destination="@id/wallet"/>
 
+        <action
+            android:id="@+id/action_profileFragment_to_languageFragment"
+            app:destination="@id/language"/>
+
     </fragment>
+
+    <fragment
+        android:id="@+id/language"
+        android:name="com.desynatuser.ui.auth.fragment.LanguageFragment"
+        android:label="Language Fragment"
+        tools:layout="@layout/fragment_language"/>
 
     <fragment
         android:id="@+id/profileDetails"
@@ -379,6 +389,10 @@
         <action
             android:id="@+id/action_chatFragment_to_orderPaymentFragment"
             app:destination="@id/orderPayment"/>
+
+        <action
+            android:id="@+id/action_chatFragment_to_myBagFragment"
+            app:destination="@id/myBag"/>
 
     </fragment>
 

@@ -3,21 +3,25 @@ package com.desynatuser.ui.auth.fragment
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.databinding.FragmentLanguageBinding
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LanguageFragment : BaseFragment() {
     private var binding: FragmentLanguageBinding?=null
+    private var from =""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +38,7 @@ class LanguageFragment : BaseFragment() {
     }
 
     override fun initView() {
+        from = arguments?.getString("from").toString()
         requestPermissions()
         binding?.apply {
             Constants.language = SharedPreference.get(requireActivity()).language
@@ -44,6 +49,19 @@ class LanguageFragment : BaseFragment() {
             else if(Constants.language=="ar"){
                 cbEnglish.isChecked = false
                 cbArabic.isChecked = true
+            }
+
+            if (from=="profile"){
+                btnContinue.text = "Save"
+                tvToolbar.isVisible = true
+                tvSelectLanguage.isVisible = false
+                tvInfo.isVisible = false
+            }
+            else{
+                btnContinue.text = "Continue"
+                tvToolbar.isVisible = false
+                tvSelectLanguage.isVisible = true
+                tvInfo.isVisible = true
             }
         }
     }
@@ -79,12 +97,19 @@ class LanguageFragment : BaseFragment() {
                     showToast("Please select language")
                 }
                 else{
-                    SharedPreference.get(requireActivity()).language = Constants.language
-                    if (SharedPreference.get(requireActivity()).isTutorial){
-                        findNavController().navigate(R.id.action_languageFragment_to_loginFragment)
+                    if (from=="profile"){
+                        CommonMethod.showSuccessDialog(requireActivity(),"Language changed successfully"){
+                            findNavController().popBackStack()
+                        }
                     }
                     else{
-                        findNavController().navigate(R.id.action_languageFragment_to_onBoardingFragment)
+                        SharedPreference.get(requireActivity()).language = Constants.language
+                        if (SharedPreference.get(requireActivity()).isTutorial){
+                            findNavController().navigate(R.id.action_languageFragment_to_loginFragment)
+                        }
+                        else{
+                            findNavController().navigate(R.id.action_languageFragment_to_onBoardingFragment)
+                        }
                     }
                 }
             }

@@ -938,6 +938,17 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
         )
     }
 
+    val addToCartCustomOrderLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun addToCartCustomOrder(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.addToCartCustomOrder(map)
+            },
+            responseLiveData = addToCartCustomOrderLiveData
+        )
+    }
+
     //Affiliate User
 
     val createAffiliateUserLiveData = SingleLiveEvent<CreateAffiliateUserResponse>()

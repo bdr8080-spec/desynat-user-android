@@ -23,6 +23,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/llOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_back"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp">
+                android:layout_marginTop="@dimen/_5sdp">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etSearch"

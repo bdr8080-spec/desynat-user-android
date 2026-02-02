@@ -36,6 +36,17 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
 
         holder.binding.apply {
 
+            if (cartList[position].orderType=="2"){
+                ivPlus.setAlpha(0.1f)
+                ivMinus.setAlpha(0.1f)
+                tvCustomDetail.isVisible = true
+            }
+            else{
+                ivPlus.setAlpha(1f)
+                ivMinus.setAlpha(1f)
+                tvCustomDetail.isVisible = false
+            }
+
             if (position==cartList.size-1){
                 holder.binding.viewBottom.isVisible = false
             }
@@ -97,11 +108,19 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             tvDiscount.text = "$discountValue$discountType"
 
             ivMinus.setOnClickListener {
-                foodBagClick.onFoodBagClick(position,"decrement")
+                if (cartList[position].orderType=="1") {
+                    foodBagClick.onFoodBagClick(position, "decrement")
+                }
             }
 
             ivPlus.setOnClickListener {
-                foodBagClick.onFoodBagClick(position,"increment")
+                if (cartList[position].orderType=="1") {
+                    foodBagClick.onFoodBagClick(position, "increment")
+                }
+            }
+
+            tvCustomDetail.setOnClickListener {
+                foodBagClick.onFoodBagClick(position, "custom")
             }
 
         }

@@ -55,6 +55,41 @@
 
             </RelativeLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvCustomOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Custom Orders"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relCart" />
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/relCustomCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:background="@drawable/card_background"
+                app:layout_constraintTop_toBottomOf="@+id/tvCustomOrder">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCustomMyBag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_bag"
+                    tools:itemCount="2"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/relPromoCode"
                 android:layout_width="match_parent"
@@ -62,7 +97,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:background="@drawable/card_background"
-                app:layout_constraintTop_toBottomOf="@+id/relCart">
+                app:layout_constraintTop_toBottomOf="@+id/relCustomCart">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivPromo"
