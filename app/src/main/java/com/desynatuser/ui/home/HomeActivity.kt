@@ -128,6 +128,9 @@ class HomeActivity : BaseActivity() {
                     if (!Constants.isGuest) {
                         bottomAdapter?.setSelectedItem(3)
                     }
+                    else{
+                        CommonMethod.showLoginAlert(this)
+                    }
                 }
                 R.id.profile -> {
                     bottomAdapter?.setSelectedItem(4)
@@ -150,7 +153,9 @@ class HomeActivity : BaseActivity() {
                     0 -> controller.navigate(R.id.home)
                     1 -> controller.navigate(R.id.catalog)
                     //2 -> controller.navigate(R.id.catalog)
-                    3 -> if (!Constants.isGuest){ controller.navigate(R.id.myBag)}
+                    3 -> if (!Constants.isGuest){ controller.navigate(R.id.myBag)} else{
+                        CommonMethod.showLoginAlert(this@HomeActivity)
+                    }
                     4 -> controller.navigate(R.id.profile)
                 }
 

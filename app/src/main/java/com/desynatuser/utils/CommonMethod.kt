@@ -1,5 +1,6 @@
 package com.desynatuser.utils
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.DownloadManager
@@ -38,6 +39,7 @@ import com.desynatuser.adapter.SelectedCountryPickerAdapter
 import com.desynatuser.databinding.AlertDialogLayoutBinding
 import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.DeleteDialogLayoutBinding
+import com.desynatuser.databinding.LoginAlertDialogLayoutBinding
 import com.desynatuser.databinding.SuccessDialogLayoutBinding
 import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
@@ -465,6 +467,57 @@ object CommonMethod {
         dialog.show()
 
     }
+
+    fun loginAlertDialog(
+        context: Context,
+        onResult: (action: String) -> Unit
+    ) {
+        val dialog = Dialog(context, R.style.CustomDialog)
+        val dialogBinding = LoginAlertDialogLayoutBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
+
+        val window: Window = dialog.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+
+        dialogBinding.btnLogin.setOnClickListener {
+            onResult("yes")
+            dialog.dismiss()
+        }
+        dialogBinding.btnCancel.setOnClickListener {
+            onResult("no")
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    fun showLoginAlert(context: Context){
+        loginAlertDialog(context){
+                action ->
+            when (action) {
+                "yes" -> {
+                    Constants.isGuest = false
+                    Constants.isLogout = true
+                    Constants.Category = "Women"
+                    context.startActivity(
+                        Intent(context,
+                            AuthActivity::class.java)
+                    )
+                    (context as? Activity)?.finish()
+                }
+
+                "no" -> {
+
+                }
+            }
+        }
+    }
+
 
     fun clearData(context: Context){
         SharedPreference.get(context).clearUser()

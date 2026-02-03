@@ -59,6 +59,7 @@ class ChatFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
     private var isCartObserver = false
+    private var isAccept = false
     private var isImageObserver = false
     private var isCustomObserver = false
     private var isAddressObserver = false
@@ -320,12 +321,21 @@ class ChatFragment : BaseFragment() {
                     ivSendReq.isVisible = false
                     tvAccept.isVisible = false
                     tvReject.isVisible = false
-                    if (chatDetailData?.orderCreateStatus != null) {
+                    if (chatDetailData?.productBuyStatus == "1") {
                         btnPayNow.isVisible = false
                         clCustomerRequest.isVisible = false
                         clQuotationDetail.isVisible = true
                         tvOrderPlaced.isVisible = true
-                    } else {
+                    }
+                    else if(chatDetailData?.addToCartStatus != "1") {
+                        btnPayNow.text = "Add to Cart"
+                        btnPayNow.isVisible = true
+                        clCustomerRequest.isVisible = false
+                        clQuotationDetail.isVisible = true
+                        tvOrderPlaced.isVisible = false
+                    }
+                    else {
+                        btnPayNow.text = "Buy Now"
                         clCustomerRequest.isVisible = false
                         clQuotationDetail.isVisible = true
                         btnPayNow.isVisible = true
@@ -456,8 +466,14 @@ class ChatFragment : BaseFragment() {
                     R.id.action_chatFragment_to_orderPaymentFragment,
                     bundle
                 )*/
-                findNavController().navigate(
-                    R.id.action_chatFragment_to_myBagFragment)
+                if(chatDetailData?.addToCartStatus != "1") {
+                   addToCartCustomOrder()
+                }
+                else{
+                    findNavController().navigate(
+                        R.id.action_chatFragment_to_myBagFragment)
+                }
+
             }
 
             tvAccept.setOnClickListener {
@@ -758,6 +774,7 @@ class ChatFragment : BaseFragment() {
 
                     }
                 } else {
+                    isAccept = true
                     addToCartCustomOrder()
 
                 }
@@ -769,12 +786,19 @@ class ChatFragment : BaseFragment() {
         viewModel.addToCartCustomOrderResult.observe(viewLifecycleOwner) { response ->
             if (isCartObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(
-                    requireActivity(),
-                    "Quotation accepted Successfully"
-                ) {
-                       findNavController().navigate(R.id.action_chatFragment_to_myBagFragment)
+                if (isAccept){
+                    CommonMethod.showSuccessDialog(
+                        requireActivity(),
+                        "Quotation accepted Successfully"
+                    ) {
+                        findNavController().navigate(R.id.action_chatFragment_to_myBagFragment)
+                    }
                 }
+                else{
+                    findNavController().navigate(R.id.action_chatFragment_to_myBagFragment)
+                }
+
+                isAccept = false
                 isCartObserver = false
             }
         }

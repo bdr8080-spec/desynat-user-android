@@ -293,7 +293,7 @@
     <TextView
         android:visibility="gone"
         android:id="@+id/tvCustomDetail"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/poppins_light"
@@ -302,8 +302,25 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
+        android:drawablePadding="@dimen/_10sdp"
         android:drawableEnd="@drawable/ic_arrow_forward"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSeller" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_light"
+        android:maxLines="1"
+        android:text="Remove"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:drawablePadding="@dimen/_10sdp"
+        android:drawableEnd="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeller" />
 

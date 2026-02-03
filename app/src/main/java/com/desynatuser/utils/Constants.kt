@@ -114,5 +114,6 @@ object Constants {
     const val CREATE_PASSWORD_AFFILIATE_USER = "/api/affiliate/create_password"
     const val RE_VERIFY_DOCUMENT_AFFILIATE_USER = "/api/affiliate/upload-Reverify-document"
     const val CUSTOM_ORDER_ADD_TO_CART = "/api/user/custom-order-add-to-card"
+    const val REMOVE_CUSTOM_ORDER_FROM_CART = "/api/user/remove-custom-product-add-to-card"
 
 }

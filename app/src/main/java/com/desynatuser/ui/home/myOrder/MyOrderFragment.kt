@@ -98,7 +98,9 @@ class MyOrderFragment : BaseFragment() {
                 }
             })
 
-            if (orderType==2) {
+            getOrder()
+
+         /*   if (orderType==2) {
                 orderType = 2
                 getOrder()
                 tvOrder.background = null
@@ -117,7 +119,7 @@ class MyOrderFragment : BaseFragment() {
                 tvCustomOrder.background = null
                 rvOrder.isVisible = true
             }
-
+*/
         }
     }
 
@@ -156,7 +158,7 @@ class MyOrderFragment : BaseFragment() {
 
     private fun getOrder(loading:Boolean = true){
         val map = HashMap<String,Any>()
-        map["order_type"] = orderType.toString()
+        //map["order_type"] = orderType.toString()
         lastQuery?.let { searchId ->
             map["search"] =
                 myOrderList.firstOrNull { order ->

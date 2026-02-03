@@ -35,6 +35,7 @@ import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.Product
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -305,55 +306,80 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnAddToBag.setOnClickListener {
-                if (selectedSizePos==-1){
-                    showToast("Please select size")
+                if (!Constants.isGuest) {
+                    if (selectedSizePos == -1) {
+                        showToast("Please select size")
+                    } else {
+                        addToBag()
+                    }
                 }
-                else {
-                    addToBag()
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
                 }
             }
 
             ivMinus.setOnClickListener {
-                addCartQuantity("decrement")
+                if (!Constants.isGuest) {
+                    addCartQuantity("decrement")
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             ivPlus.setOnClickListener {
-                addCartQuantity("increment")
+                if (!Constants.isGuest) {
+                    addCartQuantity("increment")
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             ivLike.setOnClickListener {
-                addToWishList()
+                if (!Constants.isGuest) {
+                    addToWishList()
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             btnBuyNow.setOnClickListener {
-                if (selectedSizePos==-1){
-                    showToast("Please select size")
-                }
-                else {
-                    if (cartId!=null){
-                        findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
-                    }
-                    else{
-                        fromBtn = "buy"
-                        addToBag()
-                    }
+                if (!Constants.isGuest) {
+                    if (selectedSizePos == -1) {
+                        showToast("Please select size")
+                    } else {
+                        if (cartId != null) {
+                            findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
+                        } else {
+                            fromBtn = "buy"
+                            addToBag()
+                        }
 
+                    }
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
                 }
             }
 
             btnCustomOrder.setOnClickListener {
-//                val bundle = Bundle().apply {
-//                    putString("from", "productDetail")
-//                    putString("sellerName", storeData?.sellerInformation?.firstName+" "+storeData?.sellerInformation?.lastName)
-//                    putString("productInfo",Gson().toJson(productInfo?.getOrNull(selectedPos)))
-//                    putString("productVariant",Gson().toJson(productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)))
-//                }
-//                findNavController().navigate(R.id.action_productDetailFragment_to_chatFragment,bundle)
+                if (!Constants.isGuest) {
                 createCustomOrder()
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             relCartItem.setOnClickListener {
-                findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
+                if (!Constants.isGuest) {
+                    findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
         }
     }

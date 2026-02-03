@@ -40,11 +40,13 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
                 ivPlus.setAlpha(0.1f)
                 ivMinus.setAlpha(0.1f)
                 tvCustomDetail.isVisible = true
+                tvRemove.isVisible = true
             }
             else{
                 ivPlus.setAlpha(1f)
                 ivMinus.setAlpha(1f)
                 tvCustomDetail.isVisible = false
+                tvRemove.isVisible = false
             }
 
             if (position==cartList.size-1){
@@ -121,6 +123,10 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
 
             tvCustomDetail.setOnClickListener {
                 foodBagClick.onFoodBagClick(position, "custom")
+            }
+
+            tvRemove.setOnClickListener {
+                foodBagClick.onFoodBagClick(position, "remove")
             }
 
         }

@@ -505,7 +505,7 @@
                 android:visibility="gone"
                 android:id="@+id/btnPayNow"
                 style="@style/button"
-                android:text="Pay Now"
+                android:text="Buy Now"
                 android:padding="@dimen/_6sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"

@@ -110,7 +110,10 @@ class MyBagFragment : BaseFragment() {
                 override fun onFoodBagClick(position: Int, type: String) {
                     when(type){
                         "custom"->{
-                           // customDetailDialog(myBagList[position].checkStock)
+                            customDetailDialog(myBagList[position]?.chatroomData?.customDetails?:"")
+                        }
+                        "remove"->{
+                            removeFromCartCustomOrder(myBagList[position].id)
                         }
                         else ->{
                             selectedPos = position
@@ -205,6 +208,14 @@ class MyBagFragment : BaseFragment() {
         isObserver = true
     }
 
+    private fun removeFromCartCustomOrder(id: String) {
+        val map = HashMap<String, Any>()
+        map["id"] = id
+        viewModel.removeFromCartCustomOrder(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
     private fun viewCartDetail() {
         viewModel.viewCartDetail()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -224,14 +235,12 @@ class MyBagFragment : BaseFragment() {
             if (isCartObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 cartData = response.data
-                // setData()
                 myBagList.clear()
                 response?.data?.cartData?.let { myBagList.addAll(it) }
                 myBagAdapter?.notifyDataSetChanged()
                 Log.e("amount", "promoCode: ${promoCode}")
                 if (promoCode != null) {
                     Log.e("amount", "promoCode apply: ${cartData}")
-
                     applyPromoOnUpdatedCart()
                 } else {
                     Log.e("amount", "setData apply: ${cartData}")
@@ -250,44 +259,13 @@ class MyBagFragment : BaseFragment() {
         viewModel.cartQuantityResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 viewCartDetail()
-                /* ProgressDialogUtils.getInstance().hideProgress()
-                 if (myBagList[selectedPos].quantity==1){
-                     if (actionType=="increment"){
-                         myBagList[selectedPos].quantity = response.data.quantity
-                         myBagAdapter?.notifyItemChanged(selectedPos)
-                     }
-                     else {
-                         myBagList.removeAt(selectedPos)
-                         myBagAdapter?.notifyItemRemoved(selectedPos)
-                         if (myBagList.size != 0) {
-                             myBagAdapter?.notifyItemRangeChanged(
-                                 selectedPos,
-                                 myBagList.size - selectedPos
-                             )
-                         }
-                     }
-                 }
-                 else{
-                     if (response.data.quantity!=0){
-                         myBagList[selectedPos].quantity = response.data.quantity
-                         myBagAdapter?.notifyItemChanged(selectedPos)
-                     }
-                     else{
-                         myBagList.removeAt(selectedPos)
-                         myBagAdapter?.notifyItemRemoved(selectedPos)
+                isObserver = false
+            }
+        }
 
-                         if (myBagList.size!=0) {
-                             myBagAdapter?.notifyItemRangeChanged(
-                                 selectedPos,
-                                 myBagList.size - selectedPos
-                             )
-                         }
-                     }
-                 }
-                 Constants.cartItem = myBagList.size
-                 (requireActivity() as HomeActivity).updateAdapterCount()
-                 checkData()
-                 selectedPos = -1*/
+        viewModel.removeFromCartCustomOrderResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                viewCartDetail()
                 isObserver = false
             }
         }
@@ -317,18 +295,6 @@ class MyBagFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
-//            tvTotalMRP.text = "${CommonMethod.formatPrice(cartData?.totalMrp?:0.0)} KD"
-//            tvDiscountOnMRP.text = "${CommonMethod.formatPrice(cartData?.discountOnMrp?:0.0)} KD"
-//            tvCouponDiscountValue.text = "${CommonMethod.formatPrice(cartData?.discountCoupon?:0.0)} KD"
-//            tvTotalAmountValue.text = "${CommonMethod.formatPrice(cartData?.totalAmount?:0.0)} KD"
-//            tvShippingFee.text = "${CommonMethod.formatPrice(cartData?.shippingFees?:0.0)} KD"
-//            tvTaxValue.text = "${CommonMethod.formatPrice(cartData?.tax?:0.0)} KD"
-//
-//            tvDiscountedPrice.text = "${CommonMethod.formatPrice(cartData?.totalAmount?:0.0)} KD"
-//            tvPrice.text = "${CommonMethod.formatPrice(cartData?.totalMrp?:0.0)} KD"
-//            tvSavePrice.text = "You will save ${CommonMethod.formatPrice(cartData?.totalMrp?:0.0)} KD on this"
-//
-
             cartData?.let {
                 updateBillingDetails(
                     totalMrp = it.totalMrp,

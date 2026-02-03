@@ -44,6 +44,8 @@ data class GetSingleOrderSummaryResponse(
         val isPicked: String,
         @SerializedName("not_delivered_reason")
         val notDeliveredReason: String,
+        @SerializedName("order_type")
+        val orderType: String,
         @SerializedName("order")
         val order: Order,
         @SerializedName("order_id")

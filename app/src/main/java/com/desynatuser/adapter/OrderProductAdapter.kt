@@ -40,7 +40,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
 
         holder.binding.apply {
 
-            if (productData?.order?.orderType=="2"){
+            if (productData?.orderType=="2"){
                 clCustomOrder.isVisible = true
                 clOrder.isVisible = false
 

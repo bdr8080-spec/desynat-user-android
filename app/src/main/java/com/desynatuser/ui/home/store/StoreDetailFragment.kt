@@ -51,6 +51,7 @@ import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -271,7 +272,12 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             ivChat.setOnClickListener {
-                chatWithSeller()
+                if (!Constants.isGuest) {
+                    chatWithSeller()
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
         }
     }

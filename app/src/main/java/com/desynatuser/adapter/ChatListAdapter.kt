@@ -94,7 +94,7 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
                           ColorStateList.valueOf(Color.parseColor("#1AD53B36"))
                   }
                   "5"->{
-                      if (chatData?.orderCreateStatus!=null){
+                      if (chatData?.productBuyStatus=="1"){
                           tvStatus.text = "Order Placed"
                           tvStatus.setTextColor(Color.parseColor("#16B364"))
                           tvStatus.backgroundTintList =

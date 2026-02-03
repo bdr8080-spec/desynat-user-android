@@ -406,6 +406,11 @@ interface ApiServices {
         @Body map: HashMap<String,Any>
     ): Response<CommonResponse>
 
+    @POST(Constants.REMOVE_CUSTOM_ORDER_FROM_CART)
+    suspend fun removeFromCartCustomOrder(
+        @Body map: HashMap<String,Any>
+    ): Response<CommonResponse>
+
     //Affiliate User
 
     @POST(Constants.CREATE_AFFILIATE_USER)

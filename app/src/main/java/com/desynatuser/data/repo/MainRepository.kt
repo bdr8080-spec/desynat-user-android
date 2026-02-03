@@ -949,6 +949,17 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
         )
     }
 
+    val removeFromCartCustomOrderLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun removeFromCartCustomOrder(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.removeFromCartCustomOrder(map)
+            },
+            responseLiveData = removeFromCartCustomOrderLiveData
+        )
+    }
+
     //Affiliate User
 
     val createAffiliateUserLiveData = SingleLiveEvent<CreateAffiliateUserResponse>()

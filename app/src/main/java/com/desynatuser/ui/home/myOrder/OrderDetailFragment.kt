@@ -242,7 +242,7 @@ class OrderDetailFragment : BaseFragment() {
 
             tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.order?.totalMrp?:0.0)} KD"
 
-            if (orderData?.order?.orderType=="2"){
+            if (orderData?.orderType=="2"){
                 clCustomBillingDetail.isVisible = true
                 clBillingData.isVisible = false
             }
@@ -659,7 +659,7 @@ class OrderDetailFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["order_id"] = getOrderData?.orderId.toString()
         map["orderdetails_id"] = getOrderData?.id.toString()
-        map["order_type"] = getOrderData?.order?.orderType.toString()
+        map["order_type"] = getOrderData?.orderType.toString()
         viewModel.getOrderDetailInfo(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true

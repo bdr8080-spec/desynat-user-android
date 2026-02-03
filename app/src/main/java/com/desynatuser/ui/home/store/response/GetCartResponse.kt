@@ -60,8 +60,48 @@ data class GetCartResponse(
             @SerializedName("user_id")
             val userId: String,
             @SerializedName("variants_id")
-            val variantsId: String
+            val variantsId: String,
+            @SerializedName("chatroom_data")
+            val chatroomData: ChatroomData
         ) {
+            data class ChatroomData(
+                @SerializedName("action")
+                val action: String,
+                @SerializedName("created_at")
+                val createdAt: String,
+                @SerializedName("custom_details")
+                val customDetails: String,
+                @SerializedName("delivery_address")
+                val deliveryAddress: String,
+                @SerializedName("id")
+                val id: String,
+                @SerializedName("price")
+                val price: String,
+                @SerializedName("product_id")
+                val productId: String,
+                @SerializedName("product_request")
+                val productRequest: String,
+                @SerializedName("quantity")
+                val quantity: String,
+                @SerializedName("seller_id")
+                val sellerId: Int,
+                @SerializedName("shipping")
+                val shipping: String,
+                @SerializedName("tax")
+                val tax: String,
+                @SerializedName("total_amount")
+                val totalAmount: String,
+                @SerializedName("type")
+                val type: String,
+                @SerializedName("unique_id")
+                val uniqueId: String,
+                @SerializedName("updated_at")
+                val updatedAt: String,
+                @SerializedName("user_id")
+                val userId: Int,
+                @SerializedName("variation_id")
+                val variationId: String
+            )
             data class Product(
                 @SerializedName("affiliated_commission")
                 val affiliatedCommission: String,

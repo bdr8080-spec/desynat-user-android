@@ -57,6 +57,7 @@ import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
@@ -144,23 +145,6 @@ class HomeFragment : BaseFragment() {
             if (Constants.location!=""){
                 tvLocation.text = Constants.location
             }
-          /*  adapter = ViewPagerAdapter(this@HomeFragment)
-            viewPager.adapter = adapter
-            viewPager.isUserInputEnabled = false
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                when (position) {
-                    0 -> {tab.text = "Men"
-                    Constants.Category = "Men"}
-                    1 -> {tab.text = "Women"
-                        Constants.Category = "Women"}
-                    2 ->{ tab.text = "Kids"
-                        Constants.Category = "Kids"}
-                }
-            }.attach()
-
-            viewPager.post {
-                viewPager.currentItem = 1
-            }*/
 
             homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(requireActivity(),homeBannerList)
                 viewPager.adapter = homeWomenBannerViewPagerAdapter
@@ -264,11 +248,19 @@ class HomeFragment : BaseFragment() {
             }
 
             ivChat.setOnClickListener{
-                findNavController().navigate(R.id.action_homeFragment_to_chatListFragment)
+                if (!Constants.isGuest) {
+                    findNavController().navigate(R.id.action_homeFragment_to_chatListFragment)
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             ivWishlist.setOnClickListener{
-                findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
+                if (!Constants.isGuest) {
+                    findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             tvWomen.setOnClickListener {

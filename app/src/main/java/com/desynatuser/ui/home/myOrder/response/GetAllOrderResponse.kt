@@ -18,6 +18,8 @@ data class GetAllOrderResponse(
         val createdAt: String,
         @SerializedName("r_e_type")
         val r_e_type: String,
+        @SerializedName("order_type")
+        val orderType: String,
         @SerializedName("p_orderdetails_id")
         val p_orderdetails_id: String,
         @SerializedName("delivery_status")

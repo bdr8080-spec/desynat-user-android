@@ -50,7 +50,9 @@ class ProfileFragment : BaseFragment() {
     }
 
     override fun initView() {
-        getProfile()
+        if (!Constants.isGuest) {
+            getProfile()
+        }
     }
 
     override fun initControl() {
@@ -58,29 +60,56 @@ class ProfileFragment : BaseFragment() {
         binding?.apply {
 
             ivEdit.setOnClickListener{
-                findNavController().navigate(R.id.action_profileFragment_to_profileDetailsFragment)
+                if (!Constants.isGuest) {
+                    findNavController().navigate(R.id.action_profileFragment_to_profileDetailsFragment)
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             tvMyOrder.setOnClickListener{
-                findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
+                if (!Constants.isGuest) {
+                    findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             tvSaveAddress.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("from", "profile")
+                if (!Constants.isGuest) {
+                    val bundle = Bundle().apply {
+                        putString("from", "profile")
+                    }
+                    findNavController().navigate(
+                        R.id.action_profileFragment_to_savedAddressFragment,
+                        bundle
+                    )
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
                 }
-                findNavController().navigate(R.id.action_profileFragment_to_savedAddressFragment,bundle)
             }
 
             tvGiftCard.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("from", "profile")
+                if (!Constants.isGuest) {
+                    val bundle = Bundle().apply {
+                        putString("from", "profile")
+                    }
+                    findNavController().navigate(
+                        R.id.action_profileFragment_to_giftCardFragment,
+                        bundle
+                    )
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
                 }
-                findNavController().navigate(R.id.action_profileFragment_to_giftCardFragment,bundle)
             }
 
             rlWallet.setOnClickListener {
-                findNavController().navigate(R.id.action_profileFragment_to_myWalletFragment)
+                if (!Constants.isGuest) {
+                    findNavController().navigate(R.id.action_profileFragment_to_myWalletFragment)
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             rlLanguage.setOnClickListener {
@@ -95,17 +124,22 @@ class ProfileFragment : BaseFragment() {
             }
 
             rlAffiliate.setOnClickListener {
-                SharedPreference.get(requireActivity()).userType = 2
-                CommonMethod.clearAffiliateData(requireActivity())
-                Constants.isGuest = false
-                Constants.isLogout = true
-                Constants.Category = "Women"
-                requireActivity().startActivity(
-                    Intent(requireActivity(),
-                        AuthActivity::class.java)
-                )
-                requireActivity().finish()
-
+                if (!Constants.isGuest) {
+                    SharedPreference.get(requireActivity()).userType = 2
+                    CommonMethod.clearAffiliateData(requireActivity())
+                    Constants.isGuest = false
+                    Constants.isLogout = true
+                    Constants.Category = "Women"
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            AuthActivity::class.java
+                        )
+                    )
+                    requireActivity().finish()
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             relLogout.setOnClickListener {

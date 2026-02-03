@@ -702,4 +702,14 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
     }
 
 
+    val removeFromCartCustomOrderResult: LiveData<CommonResponse>
+        get() = repository.removeFromCartCustomOrderLiveData
+
+    fun removeFromCartCustomOrder(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.removeFromCartCustomOrder(map)
+        }
+    }
+
+
 }

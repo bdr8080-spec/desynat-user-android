@@ -16,6 +16,10 @@ data class GetChatListResponse(
         val action: String,
         @SerializedName("order_create_status")
         val orderCreateStatus: OrderCreateStatus,
+        @SerializedName("addtocardStatus")
+        val addToCartStatus: String,
+        @SerializedName("product_buy_status")
+        val productBuyStatus: String,
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("custom_details")
