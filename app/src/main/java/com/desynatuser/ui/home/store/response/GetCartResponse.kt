@@ -76,7 +76,7 @@ data class GetCartResponse(
                 @SerializedName("id")
                 val id: String,
                 @SerializedName("price")
-                val price: String,
+                val price: String?,
                 @SerializedName("product_id")
                 val productId: String,
                 @SerializedName("product_request")

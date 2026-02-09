@@ -77,7 +77,40 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_order_product"
-                tools:itemCount="2"
+                tools:itemCount="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relOtherProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:background="@drawable/card_background"
+            app:layout_constraintTop_toBottomOf="@+id/relProduct">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAllOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Other Item"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:layout_marginStart="@dimen/_10sdp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOtherProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvAllOrder"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_order_product"
+                tools:itemCount="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         </RelativeLayout>
@@ -93,7 +126,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relProduct" />
+            app:layout_constraintTop_toBottomOf="@+id/relOtherProduct" />
 
         <LinearLayout
             android:id="@+id/llBilling"
@@ -167,30 +200,31 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:visibility="gone"
-                android:id="@+id/tvCouponDiscount"
+                android:id="@+id/tvCustomItem"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Coupon Discount (FIR20)"
+                android:text="Custom Items Price"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="@dimen/_10sdp"
                 android:textColor="#CC000000"
                 android:layout_marginTop="@dimen/_5sdp"
-                app:layout_constraintEnd_toStartOf="@+id/tvCouponDiscountValue"
                 app:layout_constraintTop_toBottomOf="@+id/tvDiscountOnMrp"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvShippingFee"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:visibility="gone"
-                android:id="@+id/tvCouponDiscountValue"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvCustomItemPrice"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="39 KD"
+                android:text="20 KD"
                 android:gravity="end"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="@dimen/_10sdp"
-                android:textColor="#D72E04"
-                app:layout_constraintTop_toTopOf="@+id/tvCouponDiscount"
-                app:layout_constraintBottom_toBottomOf="@+id/tvCouponDiscount"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/tvCustomItem"
+                app:layout_constraintTop_toTopOf="@+id/tvCustomItem"
+                app:layout_constraintBottom_toBottomOf="@+id/tvCustomItem"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -202,7 +236,7 @@
                 android:textSize="@dimen/_10sdp"
                 android:textColor="#CC000000"
                 android:layout_marginTop="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/tvCouponDiscount"
+                app:layout_constraintTop_toBottomOf="@+id/tvCustomItem"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tvShippingFee"/>
 
@@ -329,7 +363,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="Item Price"
+                    android:text="Custom Items Price"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
@@ -440,7 +474,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSavePrice"

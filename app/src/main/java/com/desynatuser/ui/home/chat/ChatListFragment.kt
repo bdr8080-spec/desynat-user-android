@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +40,7 @@ class ChatListFragment : BaseFragment() {
     private var search: Job? = null
     private var lastQuery: String? = null
     var chatFilter:String? = null
+    private var isFromSwipe = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +73,14 @@ class ChatListFragment : BaseFragment() {
             })
             rvChat.adapter = chatAdapter
 
+            swipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(requireActivity(), R.color.brown)
+            )
+            swipeRefreshLayout.setOnRefreshListener {
+                isFromSwipe = true
+                getChat(false)
+            }
+
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?,
@@ -95,7 +105,7 @@ class ChatListFragment : BaseFragment() {
                     search?.cancel()
                     search = lifecycleScope.launch {
                         delay(600)
-                        getChat()
+                        getChat(isLoading = false)
 
                     }
                 }
@@ -124,17 +134,22 @@ class ChatListFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
                 isObserver = false
+                isFromSwipe = false
+                binding?.swipeRefreshLayout?.isRefreshing = false
             }
         }
 
         viewModel.getAllChatListResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
-                chatList
+                ProgressDialogUtils.getInstance().hideProgress()
+                if (isFromSwipe){
+                    binding?.swipeRefreshLayout?.isRefreshing = false
+                    isFromSwipe = false
+                }
                 chatList.clear()
                 chatList.addAll(response.data)
                 chatAdapter?.notifyDataSetChanged()
                 checkData()
-                ProgressDialogUtils.getInstance().hideProgress()
                 isObserver = false
             }
         }
@@ -211,7 +226,7 @@ class ChatListFragment : BaseFragment() {
         dialog.show()
     }
 
-    private fun getChat(){
+    private fun getChat(isLoading: Boolean=true){
         val map = HashMap<String, Any>()
         if (lastQuery!=null){
             map["search"] = lastQuery.toString()
@@ -220,7 +235,10 @@ class ChatListFragment : BaseFragment() {
             map["filters"] = chatFilter.toString()
         }
         viewModel.getAllChatList(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        if (isLoading){
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+
+        }
         isObserver = true
     }
 

@@ -74,6 +74,7 @@ class OrderPaymentFragment : BaseFragment() {
     private var selectedAddress : GetAddressResponse.Data?=null
     private var promoCode : ApplyPromoCodeResponse.Data?=null
     var totalAmount = 0.0
+    var customPrice = 0.0
     private var orderPlacedResponse: PlaceOrderResponse.Data?=null
 
     private lateinit var selectedRadio: AppCompatImageView
@@ -146,9 +147,12 @@ class OrderPaymentFragment : BaseFragment() {
             else{
                 relGiftCard.isVisible = true
 
+                customPrice = arguments?.getDouble("customPrice")?:0.0
                 val itemAddressJson = arguments?.getString("address")
                 val itemCartJson = arguments?.getString("cart")
                 val itemPromoJson = arguments?.getString("promo")
+                Log.e("totalAmount", "customPrice: $customPrice" )
+
                 if (!itemAddressJson.isNullOrEmpty()) {
                     selectedAddress = Gson().fromJson(itemAddressJson, GetAddressResponse.Data::class.java)
                 }
@@ -162,10 +166,9 @@ class OrderPaymentFragment : BaseFragment() {
                     if (promoCode?.finalAmount?:0.0!=0.0) {
                         totalAmount = promoCode?.finalAmount?:0.0
                     }
-                    Log.e("totalAmount", "itemPromoJson: $totalAmount" )
                 }
                 if (giftCardData!=null) {
-                    totalAmount -= giftCardData?.amount!!
+                    totalAmount -= giftCardData?.amount?:0.0
                     Log.e("totalAmount", "giftCardData: $totalAmount" )
                 }
             }
@@ -190,6 +193,7 @@ class OrderPaymentFragment : BaseFragment() {
             }
 
             btnProceed.setOnClickListener {
+                totalAmount = totalAmount+customPrice
                 when (selectedMethod) {
                     "KNET" -> {
                         paymetMehod = "1"
@@ -329,6 +333,8 @@ class OrderPaymentFragment : BaseFragment() {
             , promocodeValue = if (promoCode!=null) promoCode?.applyDiscountValue.toString() else null,
             shippingFees = cartData?.shippingFees.toString(),
             tax =cartData?.tax.toString() , totalMrp = cartData?.totalMrp.toString(), totalAmount = totalAmount.toString())
+        Log.e("amount", "request: ${request}")
+
         viewModel.placeOrder(request)
         isObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -688,7 +694,6 @@ class OrderPaymentFragment : BaseFragment() {
         EventBus.getDefault().unregister(this)
 
     }
-
 
         private fun executeRedirectPayment(paymentMethodId:Int) {
             ProgressDialogUtils.getInstance().showProgress(requireActivity())

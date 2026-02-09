@@ -9,12 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.desynatuser.adapter.HomeFullScreenBannerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentFullScreenBannerBinding
 import com.desynatuser.ui.home.HomeActivity
-import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +32,9 @@ class FullScreenBannerFragment : BaseFragment() {
     private val handler = Handler(Looper.getMainLooper())
 
     private var lastStartedPosition = -1
+    private var loadedPositions = HashSet<Int>()
+    private var hasNavigated = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,22 +54,16 @@ class FullScreenBannerFragment : BaseFragment() {
 
     override fun initView() {
         getHomePopScreenBanner()
-
-        binding?.apply {
-            homeFullScreenBannerAdapter =
-                HomeFullScreenBannerAdapter(
-                    requireActivity(),
-                    imageList,
-                    object : HomeFullScreenBannerAdapter.OnClick {
-                        override fun onClick(position: Int) {}
+        binding?.viewPager?.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    stopTimers()
+                    if (loadedPositions.contains(position)) {
+                        startTimerForCurrentItem()
                     }
-                ) {
-                    startTimerForCurrentItem()
                 }
-
-            viewPager.adapter = homeFullScreenBannerAdapter
-            TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
-        }
+            }
+        )
     }
 
     override fun initControl() {
@@ -78,7 +75,7 @@ class FullScreenBannerFragment : BaseFragment() {
 
     private fun getHomePopScreenBanner() {
         viewModel.getHomeScreenBanner()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.pBarCustom?.isVisible = true
         isHomeBannerObserver = true
     }
 
@@ -86,7 +83,7 @@ class FullScreenBannerFragment : BaseFragment() {
 
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isHomeBannerObserver) {
-                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.pBarCustom?.isVisible = false
                 errorMessage?.let {
                     showToast(it)
                     navigateNextScreen()
@@ -97,33 +94,32 @@ class FullScreenBannerFragment : BaseFragment() {
 
         viewModel.getHomeScreenBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeBannerObserver) {
-                ProgressDialogUtils.getInstance().hideProgress()
+                val banners = response?.data.orEmpty()
 
-                response?.let {
-                    imageList.clear()
-                    imageList.addAll(it.data.map { banner -> banner.image })
-                    homeFullScreenBannerAdapter?.notifyDataSetChanged()
-
-                    if (imageList.isEmpty()) {
-                        navigateNextScreen()
-                    } else {
-                        binding?.relWhite?.isVisible = false
-                    }
+                if (banners.isEmpty()) {
+                    navigateNextScreen()
+                    return@observe
                 }
+                binding?.pBarCustom?.isVisible = false
+                binding?.relWhite?.isVisible = false
+                imageList.clear()
+                imageList.addAll(banners.map { it.image })
+
+                binding?.tvSkip?.isVisible = true
+                setAdapter()
                 isHomeBannerObserver = false
             }
-        }
+            }
     }
 
     private val slideRunnable = object : Runnable {
         override fun run() {
-            if (!isAdded) return
+            if (!isAdded || hasNavigated) return
 
             binding?.viewPager?.let { vp ->
                 val next = vp.currentItem + 1
                 if (next < imageList.size) {
                     vp.currentItem = next
-                    handler.postDelayed(this, 4000)
                 } else {
                     navigateNextScreen()
                 }
@@ -149,17 +145,18 @@ class FullScreenBannerFragment : BaseFragment() {
     }
 
     private fun stopTimers() {
-        handler.removeCallbacks(slideRunnable)
         handler.removeCallbacksAndMessages(null)
+        lastStartedPosition = -1
     }
-
     private fun navigateNextScreen() {
-        if (!isAdded) return
+        if (!isAdded || hasNavigated) return
 
+        hasNavigated = true
         stopTimers()
 
         activity?.let {
             it.startActivity(Intent(it, HomeActivity::class.java))
+            it.overridePendingTransition(0, 0)
             it.finish()
         }
     }
@@ -173,5 +170,28 @@ class FullScreenBannerFragment : BaseFragment() {
         stopTimers()
         binding = null
         super.onDestroyView()
+    }
+
+    private fun setAdapter(){
+        binding?.apply {
+            homeFullScreenBannerAdapter =
+                HomeFullScreenBannerAdapter(
+                    requireActivity(),
+                    imageList,
+                    object : HomeFullScreenBannerAdapter.OnClick {
+                        override fun onClick(position: Int) {}
+                    }
+                ) {position ->
+                    loadedPositions.add(position)
+                    val currentPos = binding?.viewPager?.currentItem ?: return@HomeFullScreenBannerAdapter
+
+                    if (position == currentPos) {
+                        startTimerForCurrentItem()
+                    }
+                }
+
+            viewPager.adapter = homeFullScreenBannerAdapter
+            TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
+        }
     }
 }

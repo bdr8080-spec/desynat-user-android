@@ -54,10 +54,11 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 tvCustomTitle.text = productData?.productDetails?.productNameEn
                 tvCustomDetail.text = productData?.chatroomRecordtable?.customDetails
                 tvTotalQuantityValue.text = productData?.chatroomRecordtable?.quantity
-                tvAddressValue.text = productData?.order?.deliveryDetails?.address
+              //  tvAddressValue.text = productData?.order?.deliveryDetails?.address
 
-                tvPerItemPriceValue.text = "${
-                    CommonMethod.formatPrice(productData?.amount?:0.0)} KD"
+              //  tvPerItemPriceValue.text = "${CommonMethod.formatPrice(productData?.amount?.toDoubleOrNull()?:0.0)} KD"
+            //    tvPerItemPriceValue.text = "(${CommonMethod.formatPrice(productData?.chatroomRecordtable?.price?.toDoubleOrNull()?:0.0)} KD X ${productData?.chatroomRecordtable?.quantity} = ${CommonMethod.formatPrice(productData?.chatroomRecordtable?.totalAmount?.toDoubleOrNull()?:0.0) } KD)"
+                tvPerItemPriceValue.text = "${CommonMethod.formatPrice(productData?.chatroomRecordtable?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
 
                 ivCustomStore.load(productData?.variationDetails?.variantImage?.get(0)) {
                     crossfade(true)
@@ -73,7 +74,6 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                         )
                     )
                 }
-                tvCustomQuantity.text = productData?.quantity.toString()
 
                 if (productData?.paymentStatus == "2" || productData?.paymentStatus == "3") {
                     btnCustomCancelOrder.isVisible = false
@@ -93,7 +93,6 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                             btnCustomCancelOrder.isVisible = false
                             relCustomRating.isVisible = false
                         }
-
 
                         "2.1" -> {
                             btnCustomCancelOrder.isVisible = false
@@ -150,9 +149,8 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 }
                 tvTitle.text = productData?.productDetails?.productNameEn
 
-                tvPrice.text = "${productData?.variationDetails?.actualPrice} KD"
-                tvDiscountPrice.text = "${productData?.variationDetails?.finalPrice} KD"
-
+                tvPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
+                tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
 
                 val returnDays = productData?.productDetails?.returnDays
                 val exchangeDays = productData?.productDetails?.exchangableDays

@@ -51,12 +51,14 @@
             android:gravity="start"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
             android:text="Delivering Address"
             android:textSize="@dimen/_13sdp" />
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/relDeliveryAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -284,6 +284,7 @@
                     app:layout_constraintTop_toTopOf="@id/tvTotalQuantity" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -296,6 +297,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvTotalQuantity" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvAddressValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -375,6 +377,7 @@
                     app:layout_constraintTop_toTopOf="@id/tvPerItemPrice" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvShippingFees"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -387,6 +390,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvPerItemPrice" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvShippingFeesValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -401,6 +405,7 @@
                     app:layout_constraintTop_toTopOf="@id/tvShippingFees" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvTax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -413,6 +418,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvShippingFees" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
                     android:id="@+id/tvTaxValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -429,7 +435,7 @@
                 <View
                     android:id="@+id/viewTax"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
+                    android:layout_height="0.8dp"
                     android:background="#1A000000"
                     android:layout_marginTop="@dimen/_5sdp"
                     app:layout_constraintTop_toBottomOf="@+id/tvTaxValue"/>

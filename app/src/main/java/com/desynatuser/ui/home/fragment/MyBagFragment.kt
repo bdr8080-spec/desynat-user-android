@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.adapter.MyBagAdapter
+import com.desynatuser.adapter.MyCustomBagAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.CustomDetailDialogBinding
@@ -38,12 +40,16 @@ class MyBagFragment : BaseFragment() {
     var isCartObserver = false
     var isAddressObserver = false
     private var myBagAdapter: MyBagAdapter? = null
+    private var myCustomBagAdapter: MyCustomBagAdapter? = null
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
+    private var myCartList = ArrayList<GetCartResponse.Data.CartData>()
+    private var myCustomBagList = ArrayList<GetCartResponse.Data.CartData>()
     private var cartData: GetCartResponse.Data? = null
     private var selectedAddress: GetAddressResponse.Data? = null
     private var promoCode: ApplyPromoCodeResponse.Data? = null
     var selectedPos = -1
     var actionType = ""
+    var customPrice = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +64,11 @@ class MyBagFragment : BaseFragment() {
         initView()
         initControl()
         observe()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewCartDetail()
     }
 
     override fun initView() {
@@ -98,7 +109,7 @@ class MyBagFragment : BaseFragment() {
                         shippingFees = cartData?.shippingFees ?: 0.0,
                         tax = cartData?.tax ?: 0.0,
                         couponDiscount = promo.applyDiscountValue ?: 0.0,
-                        finalAmount = promo.finalAmount ?: 0.0
+                        totalAmount = promo.finalAmount ?: 0.0
                     )
                 }
 
@@ -127,13 +138,39 @@ class MyBagFragment : BaseFragment() {
             })
 
             rvMyBag.adapter = myBagAdapter
+
+            myCustomBagAdapter = MyCustomBagAdapter(requireActivity(), myCustomBagList, object :
+                MyCustomBagAdapter.FoodBagClick {
+                override fun onFoodBagClick(position: Int, type: String) {
+                    when(type){
+                        "custom"->{
+                            customDetailDialog(myCustomBagList[position]?.chatroomData?.customDetails?:"")
+                        }
+                        "remove"->{
+                            removeFromCartCustomOrder(myCustomBagList[position].id)
+                        }
+                        else ->{
+                            selectedPos = position
+                            addCartQuantity(type)
+                        }
+                    }
+
+
+                }
+
+            })
+
+            rvCustomMyBag.adapter = myCustomBagAdapter
+
         }
-        if (cartData==null) {
-            viewCartDetail()
-        }
-        else{
-            checkData()
-        }
+
+
+//        if (cartData==null) {
+//            viewCartDetail()
+//        }
+//        else{
+//            checkData()
+//        }
     }
 
     override fun initControl() {
@@ -148,6 +185,7 @@ class MyBagFragment : BaseFragment() {
                         putString("cart", Gson().toJson(cartData))
                         putString("address", Gson().toJson(selectedAddress))
                         putString("promo", Gson().toJson(promoCode))
+                        putDouble("customPrice", customPrice)
                     }
                     findNavController().navigate(
                         R.id.action_myBagFragment_to_orderPaymentFragment,
@@ -236,8 +274,20 @@ class MyBagFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 cartData = response.data
                 myBagList.clear()
-                response?.data?.cartData?.let { myBagList.addAll(it) }
+                myCartList.clear()
+                myCustomBagList.clear()
+                response?.data?.cartData?.let { myCartList.addAll(it) }
+                for (i in 0 until myCartList.size){
+                    if (myCartList[i]?.orderType=="2"){
+                        myCartList?.let { myCustomBagList.add(myCartList[i]) }
+                    }
+                    else{
+                        myCartList?.let { myBagList.add(myCartList[i]) }
+                    }
+                }
+
                 myBagAdapter?.notifyDataSetChanged()
+                myCustomBagAdapter?.notifyDataSetChanged()
                 Log.e("amount", "promoCode: ${promoCode}")
                 if (promoCode != null) {
                     Log.e("amount", "promoCode apply: ${cartData}")
@@ -249,7 +299,7 @@ class MyBagFragment : BaseFragment() {
                 }
 
 
-                Constants.cartItem = myBagList.size
+                Constants.cartItem = myCartList.size
                 (requireActivity() as HomeActivity).updateAdapterCount()
                 checkData()
                 isCartObserver = false
@@ -302,30 +352,50 @@ class MyBagFragment : BaseFragment() {
                     shippingFees = it.shippingFees,
                     tax = it.tax,
                     couponDiscount = it.discountCoupon,
-                    finalAmount = it.totalAmount
+                    totalAmount = it.totalAmount
                 )
             }
         }
     }
 
     private fun checkData() {
-        if (myBagList.isEmpty()) {
-            binding?.tvNoDataFound?.isVisible = true
-            binding?.nsBag?.isVisible = false
-            binding?.clPlaceOrder?.isVisible = false
-        } else {
-            binding?.tvNoDataFound?.isVisible = false
-            binding?.nsBag?.isVisible = true
-            binding?.clPlaceOrder?.isVisible = true
-            if (binding?.tvAddress?.text?.isEmpty() == true) {
-                if (SharedPreference.get(requireActivity()).getDefaultAddress() != null) {
-                    selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
-                    binding?.tvAddress?.text = selectedAddress?.address
-                } else {
-                    getAddress()
+        binding?.apply {
+
+            if (myCartList.isEmpty()) {
+                tvNoDataFound.isVisible = true
+               nsBag.isVisible = false
+                clPlaceOrder.isVisible = false
+            } else {
+                tvNoDataFound.isVisible = false
+                nsBag.isVisible = true
+                clPlaceOrder.isVisible = true
+                if (tvAddress.text.isEmpty() == true) {
+                    if (SharedPreference.get(requireActivity()).getDefaultAddress() != null) {
+                        selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
+                        tvAddress.text = selectedAddress?.address
+                    } else {
+                        getAddress()
+                    }
                 }
             }
+
+            if (myCustomBagList.size!=0){
+               relCustomCart.isVisible = true
+                tvCustomOrder.isVisible = true
+            }
+            else{
+                relCustomCart.isVisible = false
+                tvCustomOrder.isVisible = false
+            }
+
+            if (myBagList.size!=0){
+                rvMyBag.isVisible = true
+            }
+            else{
+                rvMyBag.isVisible = false
+            }
         }
+
 
     }
 
@@ -341,15 +411,54 @@ class MyBagFragment : BaseFragment() {
         shippingFees: Double,
         tax: Double,
         couponDiscount: Double = 0.0,
-        finalAmount: Double
+        totalAmount: Double
     ) {
 
-        Log.e("amount", "updateBillingDetails: ${finalAmount}")
+        Log.e("amount", "updateBillingDetails: ${totalAmount}")
         binding?.apply {
+            customPrice = calculateCustomOrderTotal()
+            val finalAmount = totalAmount+customPrice
+            Log.e("amount", "customPrice: ${customPrice}")
 
-            // Main values
-            tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
-            tvDiscountOnMRP.text = "${CommonMethod.formatPrice(discountOnMrp)} KD"
+            if (customPrice!=0.0){
+                tvCustomPrice.isVisible = true
+                tvCustomPriceValue.isVisible = true
+                tvCustomPriceValue.text = "${CommonMethod.formatPrice(customPrice)} KD"
+            }
+            else{
+                tvCustomPrice.isVisible = false
+                tvCustomPriceValue.isVisible = false
+            }
+
+
+            if (CommonMethod.formatPrice(totalMrp)!="0"){
+                tvTotalMRP.isVisible = true
+                tvMrp.isVisible = true
+                tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
+
+            }
+            else{
+                tvTotalMRP.isVisible = false
+                tvMrp.isVisible = false
+                if (myCartList.size==1){
+                    tvCustomPrice.text = "Item Price (${CommonMethod.formatPrice(myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} KD X ${myCartList[0]?.chatroomData?.quantity})"
+                }
+                else{
+                    tvCustomPrice.text = "Custom Items Price"
+                }
+
+            }
+
+            if (CommonMethod.formatPrice(discountOnMrp)!="0"){
+                tvDiscountOnMrp.isVisible = true
+                tvDiscountOnMRP.isVisible = true
+                tvDiscountOnMRP.text = "${CommonMethod.formatPrice(discountOnMrp)} KD"
+            }
+            else{
+                tvDiscountOnMrp.isVisible = false
+                tvDiscountOnMRP.isVisible = false
+            }
+
             tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
             tvTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
 
@@ -361,24 +470,34 @@ class MyBagFragment : BaseFragment() {
             tvDiscountedPrice.text = "${CommonMethod.formatPrice(finalAmount)} KD"
 
             // Show summary text
-            tvPrice.text = "${CommonMethod.formatPrice(totalMrp)} KD"
-            tvSavePrice.text = "You will save ${
-                CommonMethod.formatPrice(discountOnMrp + couponDiscount)
-            } KD on this"
+            tvPrice.text = "${CommonMethod.formatPrice(finalAmount+discountOnMrp+couponDiscount)} KD"
+            if (CommonMethod.formatPrice(discountOnMrp + couponDiscount)!="0"){
+                tvSavePrice.text = "You will save ${
+                    CommonMethod.formatPrice(discountOnMrp + couponDiscount)
+                } KD on this"
+                tvSavePrice.isVisible = true
+            }
+            else{
+                tvSavePrice.isInvisible = true
+            }
+
         }
     }
 
     private fun applyPromoOnUpdatedCart() {
         promoCode?.let { promo ->
-            val amo = (cartData?.totalAmount ?: 0.0) - (promo.applyDiscountValue ?: 0.0)
-            Log.e("amount", "totalAmount: calculate ${amo}")
+
+            val baseAmount = cartData?.totalAmount ?: 0.0
+
+            val finalAmount = baseAmount - (promo.applyDiscountValue ?: 0.0)
+
             updateBillingDetails(
                 totalMrp = cartData?.totalMrp ?: 0.0,
                 discountOnMrp = cartData?.discountOnMrp ?: 0.0,
                 shippingFees = cartData?.shippingFees ?: 0.0,
                 tax = cartData?.tax ?: 0.0,
                 couponDiscount = promo.applyDiscountValue ?: 0.0,
-                finalAmount = (cartData?.totalAmount ?: 0.0) - (promo.applyDiscountValue ?: 0.0)
+                totalAmount = finalAmount
             )
 
             Log.e("amount", "totalAmount: applyPromoOnUpdatedCart ${cartData?.totalAmount}")
@@ -428,5 +547,18 @@ class MyBagFragment : BaseFragment() {
         }
         dialog?.show()
     }
+
+    private fun calculateCustomOrderTotal(): Double {
+        var customTotal = 0.0
+
+        myCartList.forEach { item ->
+            if (item.orderType == "2") {
+                val chatData = item.chatroomData
+                customTotal += chatData?.totalAmount?.toDoubleOrNull() ?: 0.0
+            }
+        }
+        return customTotal
+    }
+
 
 }

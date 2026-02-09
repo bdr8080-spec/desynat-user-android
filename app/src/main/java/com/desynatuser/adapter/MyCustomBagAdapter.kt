@@ -10,6 +10,7 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemCustomBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.utils.CommonMethod
 
 class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<GetCartResponse.Data.CartData>, var foodBagClick:FoodBagClick) : RecyclerView.Adapter<MyCustomBagAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemCustomBagBinding) :
@@ -44,9 +45,8 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
             tvTitle.text = cartData.product.productNameEn
 
             tvPrice.text = "${cartData?.productVariants?.actualPrice} KD"
-            tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
-
-
+         //   tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
+            tvDiscountPrice.text = "${CommonMethod.formatPrice(cartData?.chatroomData?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
             val returnDays = cartData?.product?.returnDays
             val exchangeDays = cartData?.product?.exchangableDays
 
@@ -84,9 +84,12 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
             tvDiscount.text = "$discountValue$discountType"
 
             tvCustomDetail.setOnClickListener {
-
+                foodBagClick.onFoodBagClick(position, "custom")
             }
 
+            ivDelete.setOnClickListener {
+                foodBagClick.onFoodBagClick(position, "remove")
+            }
         }
 
     }

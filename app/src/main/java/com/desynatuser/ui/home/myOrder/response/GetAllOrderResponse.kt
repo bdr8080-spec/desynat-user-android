@@ -13,7 +13,7 @@ data class GetAllOrderResponse(
 ) {
     data class Data(
         @SerializedName("amount")
-        val amount: Double,
+        val amount: String?,
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("r_e_type")
@@ -159,7 +159,7 @@ data class GetAllOrderResponse(
             @SerializedName("delivery_status")
             val deliveryStatus: String,
             @SerializedName("discount_mrp")
-            val discountMrp: Double,
+            val discountMrp: String?,
             @SerializedName("giftcard_amount")
             val giftcardAmount: Any,
             @SerializedName("giftcard_id")
@@ -181,15 +181,15 @@ data class GetAllOrderResponse(
             @SerializedName("promocode_value")
             val promocodeValue: String,
             @SerializedName("shipping_fees")
-            val shippingFees: Double,
+            val shippingFees: String?,
             @SerializedName("tax")
-            val tax: Double,
+            val tax: String?,
             @SerializedName("total_amount")
-            val totalAmount: Double,
+            val totalAmount: String?,
             @SerializedName("discount_coupon")
-            val discountCoupon: Double,
+            val discountCoupon: String?,
             @SerializedName("total_mrp")
-            val totalMrp: Double,
+            val totalMrp: String?,
             @SerializedName("transaction_id")
             val transactionId: String,
             @SerializedName("updated_at")
@@ -197,7 +197,7 @@ data class GetAllOrderResponse(
             @SerializedName("user_id")
             val userId: String,
             @SerializedName("wallet_amount")
-            val walletAmount: Double
+            val walletAmount: String?
         ) {
             data class DeliveryDetails(
                 @SerializedName("address")

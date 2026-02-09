@@ -6,10 +6,31 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Ongoing"
+        android:textColor="#FF5F1B"
+        android:layout_marginStart="1dp"
+        android:textSize="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_6sdp"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:layout_marginBottom="-10dp"
+        android:elevation="@dimen/_1sdp"
+        android:background="@drawable/order_status_bg"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="visible"
         android:id="@+id/clOrder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvStatus">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivStore"
@@ -327,7 +348,6 @@
             android:scaleType="centerCrop"
             android:clipToOutline="true"
             android:src="@drawable/toprated"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
             app:layout_constraintTop_toBottomOf="@+id/viewRequestId"
@@ -403,43 +423,14 @@
             app:layout_constraintStart_toEndOf="@+id/tvCustomCustomColor"/>
 
         <TextView
-            android:id="@+id/tvCustomQnt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_light"
-            android:text="Qnt: "
-            android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:drawableStart="@drawable/ic_cart_dot"
-            android:drawablePadding="@dimen/_3sdp"
-            app:layout_constraintStart_toEndOf="@+id/ivCustomColor"
-            app:layout_constraintTop_toTopOf="@+id/tvCustomSize"
-            app:layout_constraintBottom_toBottomOf="@+id/tvCustomSize"/>
-
-        <TextView
-            android:id="@+id/tvCustomQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_light"
-            android:text="1"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp"
-            app:layout_constraintStart_toEndOf="@+id/tvCustomQnt"
-            app:layout_constraintTop_toTopOf="@+id/tvCustomSize"
-            app:layout_constraintBottom_toBottomOf="@+id/tvCustomSize"/>
-
-        <TextView
             android:id="@+id/tvPerItemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:fontFamily="@font/poppins_semi_bold"
+            android:fontFamily="@font/poppins_regular"
             android:maxLines="1"
             android:layout_marginTop="@dimen/_1sdp"
-            android:text="Per Item Price"
+            android:text="Item Amount"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="@+id/tvCustomTitle"
@@ -450,10 +441,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_semi_bold"
             android:maxLines="1"
             android:text="KD 239"
-            android:textColor="#99000000"
+            android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_5sdp"
             app:layout_constraintStart_toEndOf="@+id/tvPerItemPrice"
@@ -464,6 +455,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:background="#1A000000"
             app:layout_constraintTop_toBottomOf="@+id/ivCustomStore"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -495,6 +487,7 @@
             app:layout_constraintTop_toTopOf="@id/tvTotalQuantity" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -508,6 +501,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvTotalQuantity" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:id="@+id/tvAddressValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

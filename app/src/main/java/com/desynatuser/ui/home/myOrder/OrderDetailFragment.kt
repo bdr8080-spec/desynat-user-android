@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.adapter.OrderProductAdapter
+import com.desynatuser.adapter.OtherOrderProductAdapter
 import com.desynatuser.adapter.ProductReviewAdapter
 import com.desynatuser.adapter.ReasonAdapter
 import com.desynatuser.adapter.ReasonSizeAdapter
@@ -43,6 +44,7 @@ import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+import kotlin.text.toDoubleOrNull
 
 @AndroidEntryPoint
 class OrderDetailFragment : BaseFragment() {
@@ -56,7 +58,9 @@ class OrderDetailFragment : BaseFragment() {
     private var getOrderData : GetAllOrderResponse.Data?=null
     private var orderData : GetSingleOrderSummaryResponse.Data?=null
     private var orderProductAdapter: OrderProductAdapter?=null
+    private var otherOrderProductAdapter: OtherOrderProductAdapter?=null
     private var productList = ArrayList<GetSingleOrderSummaryResponse.Data>()
+    private var otherProductList = ArrayList<GetSingleOrderSummaryResponse.Data.AllOtherOrderVarient>()
     private var orderId = ""
 
     private var sizeList = ArrayList<GetSizeListResponse.Data>()
@@ -215,6 +219,10 @@ class OrderDetailFragment : BaseFragment() {
 
             productList.clear()
             orderData?.let { productList.add(it) }
+
+            otherProductList.clear()
+            orderData?.allOtherOrderVarient?.let { otherProductList.addAll(it) }
+
             orderProductAdapter = OrderProductAdapter(requireActivity(),productList,orderData?.deliveryStatus.toString(),object :OrderProductAdapter.ClickOnItem{
                 override fun onClickOnItem(position: Int, type: Int) {
                     when(type){
@@ -236,47 +244,122 @@ class OrderDetailFragment : BaseFragment() {
             })
             rvProduct.adapter = orderProductAdapter
 
+            if (otherProductList.isNotEmpty()){
+                relOtherProduct.isVisible = true
+            }
+            else{
+                relOtherProduct.isVisible = false
+            }
+
+            otherOrderProductAdapter = OtherOrderProductAdapter(requireActivity(),otherProductList,object :OtherOrderProductAdapter.ClickOnItem{
+                override fun onClickOnItem(position: Int, type: Int) {
+                    when(type){
+                        1->{
+                            cancelOrderDialog(productList[position].id)
+                        }
+                        2->{
+                            exchangeOrderDialog(productList[position].id)
+                        }
+                        3->{
+                            returnOrderDialog(productList[position].id)
+                        }
+                        4->{
+                            rateProductDialog(productList[position].id)
+                        }
+                    }
+                }
+
+            })
+            rvOtherProduct.adapter = otherOrderProductAdapter
+
             toolbar.tvToolbar.text = "#${getOrderData?.id}"
 
             tvPlacedDate.text = "Placed On "+CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mma")
 
-            tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.order?.totalMrp?:0.0)} KD"
+            tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.order?.totalMrp?.toDoubleOrNull()?:0.0)} KD"
 
-            if (orderData?.orderType=="2"){
+            val mainCustomPrice =
+                if (orderData?.orderType == "2") {
+                    val price = orderData?.amount?.toDoubleOrNull() ?: 0.0
+                    val qty = orderData?.quantity ?: 1
+                    price * qty
+                } else {
+                    0.0
+                }
+
+            val customOtherItems = otherProductList.filter { it.orderType == "2" }
+            val otherCustomPrice = customOtherItems.sumOf {
+                val price = it.amount?.toDoubleOrNull() ?: 0.0
+                val qty = it.quantity ?: 1
+                price * qty
+            }
+
+            val totalCustomPrice = mainCustomPrice + otherCustomPrice
+
+            val mainIsCustom = orderData?.orderType == "2"
+            val hasOtherProducts = otherProductList.isNotEmpty()
+            val isOtherCustom = customOtherItems.isNotEmpty()
+            val isOtherNormal = otherProductList.any { it.orderType == "1" }
+
+            if (mainIsCustom && !hasOtherProducts) {
                 clCustomBillingDetail.isVisible = true
                 clBillingData.isVisible = false
             }
-            else{
-                clBillingData.isVisible = true
-                clCustomBillingDetail.isVisible = false
+            else if (mainIsCustom && isOtherCustom && !isOtherNormal) {
+                clCustomBillingDetail.isVisible = true
+                clBillingData.isVisible = false
             }
-            if (orderData?.order?.discountMrp==0.0){
+            else if (mainIsCustom && isOtherNormal) {
+                clCustomBillingDetail.isVisible = false
+                clBillingData.isVisible = true
+                tvCustomItem.isVisible = true
+                tvCustomItemPrice.isVisible = true
+                tvCustomItemPrice.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
+            }
+            else {
+                clCustomBillingDetail.isVisible = false
+                clBillingData.isVisible = true
+
+                if (isOtherCustom||mainIsCustom) {
+                    tvCustomItem.isVisible = true
+                    tvCustomItemPrice.isVisible = true
+                    tvCustomItemPrice.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
+                } else {
+                    tvCustomItem.isVisible = false
+                    tvCustomItemPrice.isVisible = false
+                }
+            }
+
+            if (orderData?.order?.discountMrp?.toDoubleOrNull()==0.0){
                 tvDiscountOnMrp.isVisible = false
                 tvDiscountOnMRP.isVisible = false
             }
             else{
                 tvDiscountOnMrp.isVisible = true
                 tvDiscountOnMRP.isVisible = true
-                tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?:0.0)} KD"
+                tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?.toDoubleOrNull()?:0.0)} KD"
             }
 
-            tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?:0.0)} KD"
-            tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?:0.0)} KD"
+            tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)} KD"
+            tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?.toDoubleOrNull()?:0.0)} KD"
 
 
-            val itemPrice = orderData?.amount ?: 0.0
-            val quantity = orderData?.quantity ?: 1
-            val tax = orderData?.order?.tax ?: 0.0
-            val shippingFees = orderData?.order?.shippingFees ?: 0.0
+            val itemPrice = orderData?.amount?.toDoubleOrNull() ?: 0.0
+            val quantity = orderData?.quantity?: 1
+            val tax = orderData?.order?.tax?.toDoubleOrNull() ?: 0.0
+            val shippingFees = orderData?.order?.shippingFees?.toDoubleOrNull() ?: 0.0
 
             val subTotal = itemPrice * quantity
-            val totalAmount = subTotal + tax + shippingFees
+            val totalAmount = totalCustomPrice + tax + shippingFees
 
-            tvPerItemPrice.text =
-                "Item Price (${CommonMethod.formatPrice(itemPrice)} X $quantity)"
+            if (otherProductList.size!=0){
+                tvPerItemPrice.text = "Custom Items Price"
+            }
+            else{
+                tvPerItemPrice.text = "Item Price (${CommonMethod.formatPrice(itemPrice)} KD X $quantity)"
+            }
 
-            tvPerItemPriceValue.text =
-                "${CommonMethod.formatPrice(subTotal)} KD"
+            tvPerItemPriceValue.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
 
             tvShippingFeesValue.text =
                 "${CommonMethod.formatPrice(shippingFees)} KD"
@@ -292,7 +375,7 @@ class OrderDetailFragment : BaseFragment() {
                 tvPromoCode.isVisible = true
                 tvPromoCodeValue.isVisible = true
                 tvPromoCode.text = "Coupon Discount (${orderData?.order?.promocodeDetails?.nameEnglish})"
-                tvPromoCodeValue.text = "${CommonMethod.formatPrice(orderData?.order?.promocodeValue?:0.0)} KD"
+                tvPromoCodeValue.text = "${CommonMethod.formatPrice(orderData?.order?.promocodeValue?.toDoubleOrNull()?:0.0)} KD"
 
             }
             else{
@@ -302,26 +385,16 @@ class OrderDetailFragment : BaseFragment() {
 
             tvDeliveryAddress.text = orderData?.order?.deliveryDetails?.address+" "+orderData?.order?.deliveryDetails?.state
 
-            if (orderData?.order?.discountCoupon!=0.0) {
-                tvCouponDiscount.isVisible = true
-                tvCouponDiscountValue.isVisible = true
-            }
-            else{
-                tvCouponDiscount.isVisible = false
-                tvCouponDiscountValue.isVisible = false
-            }
-            tvCouponDiscountValue.text = "${CommonMethod.formatPrice(orderData?.order?.discountCoupon?:0.0)} KD"
-
-            tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"
-            var savedAmount = CommonMethod.formatPrice((orderData?.order?.discountMrp ?: 0.0) + (orderData?.order?.discountCoupon ?: 0.0))
+            tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
+            var savedAmount = CommonMethod.formatPrice((orderData?.order?.discountMrp?.toDoubleOrNull() ?: 0.0) + (orderData?.order?.discountCoupon?.toDoubleOrNull() ?: 0.0))
             if (savedAmount!="0"){
-                tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.order?.discountMrp ?: 0.0) + (orderData?.order?.discountCoupon ?: 0.0))} KD on this"
+                tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.order?.discountMrp?.toDoubleOrNull() ?: 0.0) + (orderData?.order?.discountCoupon?.toDoubleOrNull() ?: 0.0))} KD on this"
             }
             else{
                 tvSavePrice.isVisible = false
             }
 
-            tvAmount.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?:0.0)} KD"
+            tvAmount.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
 
             tvTransaction.text = "Transaction Id: ${orderData?.order?.transactionId}"
             when(orderData?.order?.paymentMethod){
@@ -659,7 +732,7 @@ class OrderDetailFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["order_id"] = getOrderData?.orderId.toString()
         map["orderdetails_id"] = getOrderData?.id.toString()
-        map["order_type"] = getOrderData?.orderType.toString()
+      //  map["order_type"] = getOrderData?.orderType.toString()
         viewModel.getOrderDetailInfo(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true

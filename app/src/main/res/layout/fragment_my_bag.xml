@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_bag"
+                    tools:listitem="@layout/item_custom_bag"
                     tools:itemCount="2"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
@@ -285,7 +285,7 @@
                     android:textColor="#CC000000"
                     android:layout_marginTop="@dimen/_5sdp"
                     app:layout_constraintEnd_toStartOf="@+id/tvCouponDiscountValue"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDiscountOnMrp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCustomPrice"
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -300,6 +300,35 @@
                     android:textColor="#D72E04"
                     app:layout_constraintTop_toTopOf="@+id/tvCouponDiscount"
                     app:layout_constraintBottom_toBottomOf="@+id/tvCouponDiscount"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
+                    android:id="@+id/tvCustomPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Custom Items Price"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="@dimen/_11sdp"
+                    android:textColor="#CC000000"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDiscountOnMrp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvCustomPriceValue"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
+                    android:id="@+id/tvCustomPriceValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="39 KD"
+                    android:gravity="end"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="@dimen/_11sdp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/tvCustomPrice"
+                    app:layout_constraintTop_toTopOf="@+id/tvCustomPrice"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvCustomPrice"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -428,6 +457,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             app:layout_constraintEnd_toStartOf="@+id/btnPlaceOrder">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -471,22 +501,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btnPlaceOrder"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_15sdp"
            android:src="@drawable/img_placde_order_btn"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/clPrice"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.appcompat.widget.AppCompatTextView
         android:visibility="gone"

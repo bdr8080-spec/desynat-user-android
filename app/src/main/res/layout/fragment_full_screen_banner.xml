@@ -28,6 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:id="@+id/tvSkip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,4 +51,17 @@
         android:layout_height="match_parent"
         android:background="@color/white"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/pBarCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/brown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

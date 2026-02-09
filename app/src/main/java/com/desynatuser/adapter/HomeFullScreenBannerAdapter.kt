@@ -15,7 +15,7 @@ import com.bumptech.glide.request.target.Target
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemFullScreenImageBinding
 
-class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayList<String>, var click:OnClick, var onImageLoaded: () -> Unit) : RecyclerView.Adapter<HomeFullScreenBannerAdapter.ViewHolder>() {
+class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayList<String>, var click:OnClick, var onImageLoaded: (position: Int) -> Unit) : RecyclerView.Adapter<HomeFullScreenBannerAdapter.ViewHolder>() {
 
     interface OnClick{
         fun onClick(position: Int)
@@ -55,7 +55,7 @@ class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayLis
                             resource.registerAnimationCallback(
                                 object : Animatable2Compat.AnimationCallback() {
                                     override fun onAnimationEnd(drawable: Drawable?) {
-                                        onImageLoaded()
+                                        onImageLoaded(position)
                                     }
                                 }
                             )
@@ -70,7 +70,7 @@ class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayLis
                             target: Target<GifDrawable>,
                             isFirstResource: Boolean
                         ): Boolean {
-                            onImageLoaded()
+                            onImageLoaded(position)
                             return false
                         }
                     })
@@ -89,7 +89,7 @@ class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayLis
                             dataSource: DataSource,
                             isFirstResource: Boolean
                         ): Boolean {
-                            onImageLoaded()
+                            onImageLoaded(position)
                             return false
                         }
 
@@ -99,7 +99,7 @@ class HomeFullScreenBannerAdapter(var context:Context, var productList: ArrayLis
                             target: Target<Drawable>,
                             isFirstResource: Boolean
                         ): Boolean {
-                            onImageLoaded()
+                            onImageLoaded(position)
                             return false
                         }
                     })

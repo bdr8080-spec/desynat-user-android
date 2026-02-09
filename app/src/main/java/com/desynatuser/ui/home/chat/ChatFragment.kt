@@ -102,8 +102,6 @@ class ChatFragment : BaseFragment() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             imagePicker.onPermissionResult(granted)
         }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -158,7 +156,6 @@ class ChatFragment : BaseFragment() {
                 }
             }
 
-
             chatAdapter = ChatAdapter(requireActivity(), chatList, object : ChatAdapter.ChatClick {
                 override fun onChatClick(position: Int) {
                     chatList[position].message.toSafeString()?.let { imagePreviewDialog(it) }
@@ -166,21 +163,6 @@ class ChatFragment : BaseFragment() {
 
             })
             rvChat.adapter = chatAdapter
-
-            /*  listenMessages(uniqueId = uniqueId) { message ->
-                if (!isFirstMessageLoaded) {
-                    pbLoader.isVisible = false
-                    isFirstMessageLoaded = true
-                }
-
-                chatList.add(message)
-                chatAdapter?.notifyItemInserted(chatList.size - 1)
-                rvChat?.scrollToPosition(chatList.size - 1)
-
-                if (message.by != "user" && message.read == 0 && message.id != null) {
-                    markMessageRead(uniqueId, message.id!!)
-                }
-            }*/
 
             listenMessages(
                 uniqueId = uniqueId,
@@ -335,7 +317,7 @@ class ChatFragment : BaseFragment() {
                         tvOrderPlaced.isVisible = false
                     }
                     else {
-                        btnPayNow.text = "Buy Now"
+                        btnPayNow.text = "Go to Cart"
                         clCustomerRequest.isVisible = false
                         clQuotationDetail.isVisible = true
                         btnPayNow.isVisible = true
@@ -346,19 +328,17 @@ class ChatFragment : BaseFragment() {
 
             }
             tvTotalQuantityValue.text = chatDetailData?.quantity.toString()
-            if (chatDetailData?.deliveryDetails?.address != "null" && chatDetailData?.deliveryDetails?.address != null && chatDetailData?.deliveryDetails?.address != "") {
+           /* if (chatDetailData?.deliveryDetails?.address != "null" && chatDetailData?.deliveryDetails?.address != null && chatDetailData?.deliveryDetails?.address != "") {
                 tvAddressValue.text = chatDetailData?.deliveryDetails?.address.toString()
             } else {
                 tvAddressValue.text = selectedAddress?.address.toString()
-            }
+            }*/
 
-            Log.e("deliveryDetails", "observe: ${chatDetailData?.deliveryDetails?.address}")
             tvCustomDetail.text = chatDetailData?.customDetails.toString()
             tvRequestId.text = "Request Id #${chatDetailData?.id}"
 
 
-            tvPerItemPrice.text =
-                "Item Price (${CommonMethod.formatPrice(chatDetailData?.price ?: 0.0)} X ${chatDetailData?.quantity})"
+            tvPerItemPrice.text = "Item Price (${CommonMethod.formatPrice(chatDetailData?.price ?: 0.0)} KD X ${chatDetailData?.quantity})"
             val itemPrice = chatDetailData?.price ?: 0.0
             val quantity = chatDetailData?.quantity?.toIntOrNull() ?: 1
             val subTotal = itemPrice * quantity
@@ -535,7 +515,15 @@ class ChatFragment : BaseFragment() {
         dialogBinding.apply {
 
             tvTotalQuantityValue.text = chatDetailData?.quantity.toString()
-            tvAddressValue.text = chatDetailData?.deliveryDetails?.address.toString()
+            if (chatDetailData?.orderCreateStatus?.order?.deliveryDetails!=null){
+                tvAddress.isVisible = true
+                tvAddressValue.isVisible = true
+                tvAddressValue.text = chatDetailData?.orderCreateStatus?.order?.deliveryDetails?.address.toString()
+            }
+            else{
+                tvAddress.isVisible = false
+                tvAddressValue.isVisible = false
+            }
             tvCustomDetail.text = chatDetailData?.customDetails.toString()
 
             tvToolbar.setOnClickListener {
@@ -571,7 +559,7 @@ class ChatFragment : BaseFragment() {
 
         addCustomRequestDialogBinding?.apply {
 
-            if (selectedAddress == null) {
+           /* if (selectedAddress == null) {
                 if (SharedPreference.get(requireActivity()).getDefaultAddress() != null) {
                     selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
                     tvAddress.text = selectedAddress?.address
@@ -580,7 +568,7 @@ class ChatFragment : BaseFragment() {
                 }
             } else {
                 addCustomRequestDialogBinding?.tvAddress?.text = selectedAddress?.address
-            }
+            }*/
 
             if (selectedQuantity != null) {
                 etAddQuantity.setText(selectedQuantity)
@@ -595,7 +583,7 @@ class ChatFragment : BaseFragment() {
                 addCustomRequestDialog?.dismiss()
             }
 
-            tvChange.setOnClickListener {
+           /* tvChange.setOnClickListener {
                 if (etAddQuantity.text?.trim().toString().isNotEmpty()) {
                     selectedQuantity = etAddQuantity.text.toString()
                 }
@@ -610,14 +598,16 @@ class ChatFragment : BaseFragment() {
                     bundle
                 )
                 addCustomRequestDialog?.dismiss()
-            }
+            }*/
 
             btnSendRequest.setOnClickListener {
                 if (etAddQuantity.text?.trim()?.isEmpty() == true) {
                     showToast("Please enter quantity")
-                } else if (tvAddress.text?.trim()?.isEmpty() == true) {
+                }
+              /*  else if (tvAddress.text?.trim()?.isEmpty() == true) {
                     showToast("Please add delivery address")
-                } else if (etCustomDetails.text?.trim()?.isEmpty() == true) {
+                }*/
+                else if (etCustomDetails.text?.trim()?.isEmpty() == true) {
                     showToast("Please enter custom detail")
                 } else {
                     sendCustomOrderRequest()
@@ -828,12 +818,10 @@ class ChatFragment : BaseFragment() {
             if (isCustomObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 chatDetailData?.action = response.data.action
-                chatDetailData?.deliveryAddress = response.data.deliveryAddress
-                chatDetailData?.deliveryDetails?.address = selectedAddress?.address.toString()
+            //    chatDetailData?.deliveryAddress = response.data.deliveryAddress
+              //  chatDetailData?.deliveryDetails?.address = selectedAddress?.address.toString()
                 chatDetailData?.customDetails = response.data.customDetails
                 chatDetailData?.quantity = response.data.quantity
-                Log.e("deliveryDetails", "observe: ${selectedAddress?.address.toString()}")
-                Log.e("deliveryDetails", "observe: ${chatDetailData?.deliveryDetails?.address}")
                 setQuotationData()
                 CommonMethod.showSuccessDialog(requireActivity(), "Request Sent successfully!") {
 
@@ -861,7 +849,7 @@ class ChatFragment : BaseFragment() {
         map["quantity"] = addCustomRequestDialogBinding?.etAddQuantity?.text?.trim().toString()
         map["custom_details"] =
             addCustomRequestDialogBinding?.etCustomDetails?.text?.trim().toString()
-        map["delivery_address"] = selectedAddress?.id.toString()
+        //map["delivery_address"] = selectedAddress?.id.toString()
         viewModel.sendCustomOrderRequest(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isCustomObserver = true

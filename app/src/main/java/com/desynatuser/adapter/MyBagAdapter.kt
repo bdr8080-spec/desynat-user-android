@@ -1,6 +1,7 @@
 package com.desynatuser.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,13 +41,13 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
                 ivPlus.setAlpha(0.1f)
                 ivMinus.setAlpha(0.1f)
                 tvCustomDetail.isVisible = true
-                tvRemove.isVisible = true
+                ivDelete.isVisible = true
             }
             else{
                 ivPlus.setAlpha(1f)
                 ivMinus.setAlpha(1f)
                 tvCustomDetail.isVisible = false
-                tvRemove.isVisible = false
+                ivDelete.isVisible = false
             }
 
             if (position==cartList.size-1){
@@ -78,18 +79,15 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
                     "No Return & No Exchange"
             }
 
-            tvReturnPolicy.text = finalText
-
-            /*
-
-                        if (cartData?.product?.returnDays!=null) {
-                            tvReturnPolicy.text = "${cartData?.product?.returnDays} days return available"
-                            tvReturnPolicy.isVisible = true
-                        }
-                        else{
-                            tvReturnPolicy.isVisible = false
-                        }
-            */
+            if (cartData?.orderType=="2"){
+                tvReturnPolicy.isVisible = false
+                tvReturnPolicy.setTextColor(Color.parseColor("#000000"))
+                tvReturnPolicy.text = "Per Item Price ${CommonMethod.formatPrice(cartData.chatroomData.price?.toDoubleOrNull()?:0.0)} KD"
+            }
+            else{
+                tvReturnPolicy.setTextColor(Color.parseColor("#17854C"))
+                tvReturnPolicy.text = finalText
+            }
 
             ivStore.load(cartData?.productVariants?.variantImage?.get(0)) {
                 crossfade(true)
@@ -125,7 +123,7 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
                 foodBagClick.onFoodBagClick(position, "custom")
             }
 
-            tvRemove.setOnClickListener {
+            ivDelete.setOnClickListener {
                 foodBagClick.onFoodBagClick(position, "remove")
             }
 

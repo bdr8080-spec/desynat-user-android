@@ -40,7 +40,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
             tvOrderId.text = "Order ID: #${orderData?.id}"
             tvTitle.text = orderData?.productDetails?.productNameEn
 
-            tvPrice.text = "${CommonMethod.formatPrice(orderData?.amount?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatPrice(orderData?.amount?.toDoubleOrNull()?:0.0)} KD"
 
             ivProduct.load(orderData?.variationDetails?.variantImage?.get(0)) {
                 crossfade(true)
@@ -63,7 +63,6 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                 btn.text = "Cancelled  Date : ${CommonMethod.customizeChangeDateFormat(orderData?.updatedAt.toString(), outputFormat = "dd MMM yy")}"
             }
             else {
-
                 when (orderData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                     "0" -> {
                         tvStatus.text = "Confirmed"

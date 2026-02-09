@@ -1,12 +1,9 @@
 package com.desynatuser.ui.home.myOrder
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
@@ -81,8 +78,8 @@ class OrderPlacedFragment : BaseFragment() {
                 tvAddress1.text = selectedAddress?.address
             }
             else{
-                tvAddress.text = chatDataDetail?.deliveryDetails?.name
-                tvAddress1.text = chatDataDetail?.deliveryDetails?.address
+                tvAddress.text = chatDataDetail?.orderCreateStatus?.order?.deliveryDetails?.name
+                tvAddress1.text = chatDataDetail?.orderCreateStatus?.order?.deliveryDetails?.address
             }
 
         /*    lottieView.addAnimatorListener(object : AnimatorListenerAdapter() {
