@@ -480,7 +480,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:text="You will save 100 KD on this"
+            android:text="You will save 0 KD on this"
             android:textColor="#17854C"
             android:textSize="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"

@@ -111,8 +111,8 @@ class ChatListFragment : BaseFragment() {
                 }
             })
         }
+        getChat(chatList.isEmpty())
 
-        getChat()
     }
 
     override fun initControl() {
@@ -132,6 +132,8 @@ class ChatListFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.swipeRefreshLayout?.isRefreshing = false
+                isFromSwipe = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
                 isFromSwipe = false

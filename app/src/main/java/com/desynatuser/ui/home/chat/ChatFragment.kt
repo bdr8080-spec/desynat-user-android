@@ -310,14 +310,14 @@ class ChatFragment : BaseFragment() {
                         tvOrderPlaced.isVisible = true
                     }
                     else if(chatDetailData?.addToCartStatus != "1") {
-                        btnPayNow.text = "Add to Cart"
+                        btnPayNow.text = "Add to Bag"
                         btnPayNow.isVisible = true
                         clCustomerRequest.isVisible = false
                         clQuotationDetail.isVisible = true
                         tvOrderPlaced.isVisible = false
                     }
                     else {
-                        btnPayNow.text = "Go to Cart"
+                        btnPayNow.text = "Go to Bag"
                         clCustomerRequest.isVisible = false
                         clQuotationDetail.isVisible = true
                         btnPayNow.isVisible = true
