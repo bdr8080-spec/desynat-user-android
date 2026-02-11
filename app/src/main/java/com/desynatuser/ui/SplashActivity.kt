@@ -52,7 +52,7 @@ class SplashActivity : BaseActivity() {
 //                finish()
 //            }
 
-        },500)
+        },1000)
     }
 
     override fun initControl() {
