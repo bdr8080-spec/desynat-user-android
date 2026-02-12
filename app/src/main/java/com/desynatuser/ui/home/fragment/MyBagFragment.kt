@@ -131,10 +131,7 @@ class MyBagFragment : BaseFragment() {
                             addCartQuantity(type)
                         }
                     }
-
-
                 }
-
             })
 
             rvMyBag.adapter = myBagAdapter
@@ -154,16 +151,11 @@ class MyBagFragment : BaseFragment() {
                             addCartQuantity(type)
                         }
                     }
-
-
                 }
-
             })
 
             rvCustomMyBag.adapter = myCustomBagAdapter
-
         }
-
 
 //        if (cartData==null) {
 //            viewCartDetail()
@@ -395,8 +387,6 @@ class MyBagFragment : BaseFragment() {
                 rvMyBag.isVisible = false
             }
         }
-
-
     }
 
     private fun getAddress() {
@@ -435,7 +425,6 @@ class MyBagFragment : BaseFragment() {
                 tvTotalMRP.isVisible = true
                 tvMrp.isVisible = true
                 tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
-
             }
             else{
                 tvTotalMRP.isVisible = false
@@ -446,7 +435,6 @@ class MyBagFragment : BaseFragment() {
                 else{
                     tvCustomPrice.text = "Custom Items Price"
                 }
-
             }
 
             if (CommonMethod.formatPrice(discountOnMrp)!="0"){
@@ -459,7 +447,12 @@ class MyBagFragment : BaseFragment() {
                 tvDiscountOnMRP.isVisible = false
             }
 
-            tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
+            if (CommonMethod.formatPrice(shippingFees)=="0"){
+                tvShippingFee.text = "Free Delivery"
+            }
+            else{
+                tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
+            }
             tvTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
 
             // Coupon discount (if any)

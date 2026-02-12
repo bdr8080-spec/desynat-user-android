@@ -270,7 +270,8 @@ object CommonMethod {
         return if (price % 1.0 == 0.0) {
             price.toInt().toString()
         } else {
-            price.toString()
+            String.format("%.2f", price)
+          //  price.toString()
         }
     }
 

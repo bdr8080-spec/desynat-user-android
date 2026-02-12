@@ -340,7 +340,12 @@ class OrderDetailFragment : BaseFragment() {
                 tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?.toDoubleOrNull()?:0.0)} KD"
             }
 
-            tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)} KD"
+            if (CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)=="0"){
+                tvShippingFee.text = "Free Delivery"
+            }
+            else{
+                tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)} KD"
+            }
             tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?.toDoubleOrNull()?:0.0)} KD"
 
 
@@ -361,8 +366,13 @@ class OrderDetailFragment : BaseFragment() {
 
             tvPerItemPriceValue.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
 
-            tvShippingFeesValue.text =
-                "${CommonMethod.formatPrice(shippingFees)} KD"
+            if (CommonMethod.formatPrice(shippingFees)=="0"){
+                tvShippingFeesValue.text = "Free Delivery"
+            }
+            else{
+                tvShippingFeesValue.text =
+                    "${CommonMethod.formatPrice(shippingFees)} KD"
+            }
 
             tvCustomTaxValue.text =
                 "${CommonMethod.formatPrice(tax)} KD"

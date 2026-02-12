@@ -46,7 +46,7 @@
         android:singleLine="true"
         android:text="3pcs Set (by Abaya)"
         android:textColor="@color/black"
-        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_2sdp"
         android:textSize="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="@+id/ivStore"

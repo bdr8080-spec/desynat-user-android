@@ -1,7 +1,6 @@
 package com.desynatuser.adapter
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -55,7 +54,6 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 tvCustomDetail.text = productData?.chatroomRecordtable?.customDetails
                 tvTotalQuantityValue.text = productData?.chatroomRecordtable?.quantity
               //  tvAddressValue.text = productData?.order?.deliveryDetails?.address
-
               //  tvPerItemPriceValue.text = "${CommonMethod.formatPrice(productData?.amount?.toDoubleOrNull()?:0.0)} KD"
             //    tvPerItemPriceValue.text = "(${CommonMethod.formatPrice(productData?.chatroomRecordtable?.price?.toDoubleOrNull()?:0.0)} KD X ${productData?.chatroomRecordtable?.quantity} = ${CommonMethod.formatPrice(productData?.chatroomRecordtable?.totalAmount?.toDoubleOrNull()?:0.0) } KD)"
                 tvPerItemPriceValue.text = "${CommonMethod.formatPrice(productData?.chatroomRecordtable?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
@@ -68,17 +66,13 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
 
                 tvCustomSizeValue.text = productData?.variationDetails?.size?.name.toString()
                 productData?.variationDetails?.color?.hexCode?.let {
-                    ivCustomColor.setColorFilter(
-                        Color.parseColor(
-                            it
-                        )
-                    )
+                    ivCustomColor.setColorFilter(Color.parseColor(it))
                 }
 
                 if (productData?.paymentStatus == "2" || productData?.paymentStatus == "3") {
                     btnCustomCancelOrder.isVisible = false
                 } else {
-                    when (productData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+                    when (productData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return 7 picked
                         "1" -> {
                             relCustomRating.isVisible = false
 
@@ -183,11 +177,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
 
                 tvSizeValue.text = productData?.variationDetails?.size?.name.toString()
                 productData?.variationDetails?.color?.hexCode?.let {
-                    ivColor.setColorFilter(
-                        Color.parseColor(
-                            it
-                        )
-                    )
+                    ivColor.setColorFilter(Color.parseColor(it))
                 }
                 tvQuantity.text = productData?.quantity.toString()
 
@@ -199,7 +189,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 if (productData?.paymentStatus == "2" || productData?.paymentStatus == "3") {
                     btnCancelOrder.isVisible = false
                 } else {
-                    when (productData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
+                    when (productData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return 7 picked
                         "1" -> {
                             if (productData?.returnType == "1"||productData?.returnType=="2"){
                                 btnCancelOrder.isVisible = false
@@ -213,7 +203,6 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                                 tvExchange.isVisible = false
                                 tvReturn.isVisible = false
                             }
-
                         }
 
                         "2" -> {
@@ -245,8 +234,8 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                                 } else {
                                     relRating.isVisible = true
                                 }
-                            } else {
-
+                            }
+                            else {
                                 when (productData?.returnType) {
                                     "1" -> {
                                         btnCancelOrder.isVisible = false
@@ -286,8 +275,6 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                                             relRating.isVisible = true
                                         }
                                     }
-
-
                                 }
                             }
                         }
@@ -352,17 +339,13 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
             relCustomRating.setOnClickListener {
                 clickOnItem.onClickOnItem(position,4)
             }
-
         }
-
     }
 
     fun canCancelOrder(orderDate: String): Boolean {
         val orderInstant = Instant.parse(orderDate)
         val currentInstant = Instant.now()
-
         val hoursDiff = Duration.between(orderInstant, currentInstant).toHours()
-
         return hoursDiff < 3
     }
 

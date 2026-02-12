@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/_15sdp"
+    android:background="@drawable/bottom_sheet"
+    android:backgroundTint="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:background="@drawable/bottom_sheet"
+        android:backgroundTint="#FFF7EA"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Affiliate link"
+        android:textColor="@color/black"
+        android:drawableEnd="@drawable/close_icon"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/etFullName"
+        android:layout_width="match_parent"
+        style="@style/edit_text"
+        android:text="https://www.desynat.com"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/stroke_cards10"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tvFullName"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/tvCopyLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_copy_link"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btnAdd"
+        style="@style/button"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:text="Add to added products"
+        android:padding="@dimen/_8sdp"
+        android:textSize="@dimen/_11sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+</LinearLayout>
