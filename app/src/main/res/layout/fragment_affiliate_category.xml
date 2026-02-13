@@ -68,6 +68,9 @@
                     android:layout_margin="1dp"
                     android:drawablePadding="@dimen/_5sdp"
                     android:hint="Search"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:clickable="true"
                     android:textSize="@dimen/_11sdp"
                     android:layout_centerVertical="true"
                     android:drawableStart="@drawable/ic_search"
@@ -125,5 +128,21 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:visibility="gone"
+        android:id="@+id/tvNoDataFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_13sdp"
+        android:text="No sub category found"
+        android:layout_marginTop="@dimen/_30sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

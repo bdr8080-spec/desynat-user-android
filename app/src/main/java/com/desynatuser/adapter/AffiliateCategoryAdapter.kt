@@ -7,22 +7,22 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemCategoriesBinding
+import com.desynatuser.databinding.ItemAffiliateCategoriesBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 
 class AffiliateCategoryAdapter(var context: Context, private val categoryList: List<GetCategoryResponse.Data>, var categoryClick:CategoryClick) :
     RecyclerView.Adapter<AffiliateCategoryAdapter.ViewHolder>() {
-        var selectedPos = -1
+        var selectedPos = 0
         interface CategoryClick{
             fun onCategoryClick(position: Int)
         }
 
-    inner class ViewHolder(val binding: ItemCategoriesBinding) :
+    inner class ViewHolder(val binding: ItemAffiliateCategoriesBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
         return ViewHolder(
-            ItemCategoriesBinding.inflate(
+            ItemAffiliateCategoriesBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false)
         )
     }
@@ -45,7 +45,9 @@ class AffiliateCategoryAdapter(var context: Context, private val categoryList: L
         }
 
         holder.itemView.setOnClickListener {
+            selectedPos = position
             categoryClick.onCategoryClick(position)
+            notifyDataSetChanged()
         }
 
     }

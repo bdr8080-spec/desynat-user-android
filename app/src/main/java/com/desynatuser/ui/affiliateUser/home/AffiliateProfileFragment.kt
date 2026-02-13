@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
@@ -59,7 +60,7 @@ class AffiliateProfileFragment : BaseFragment() {
         binding?.apply {
 
             ivEdit.setOnClickListener{
-
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_affiliateProfileDetailFragment)
             }
 
             relLogout.setOnClickListener {

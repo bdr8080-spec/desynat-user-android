@@ -15,7 +15,7 @@
             android:id="@+id/action_homeFragment_to_searchProductListFragment"
             app:destination="@id/searchProductList"/>
 
- <action
+        <action
             android:id="@+id/action_homeFragment_to_chatListFragment"
             app:destination="@id/chatList"/>
 

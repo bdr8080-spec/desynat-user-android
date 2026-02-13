@@ -11,7 +11,7 @@
         android:layout_height="@dimen/_55sdp"
         android:scaleType="centerCrop"
         android:clipToOutline="true"
-        android:src="@drawable/newest"
+        android:src="@drawable/ic_placeholder"
         android:layout_marginStart="@dimen/_10sdp"
         app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
         app:layout_constraintTop_toTopOf="parent"

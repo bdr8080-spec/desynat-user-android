@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_back"
-                android:layout_marginHorizontal="@dimen/_10sdp">
+                android:layout_marginHorizontal="@dimen/_15sdp">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etSearch"

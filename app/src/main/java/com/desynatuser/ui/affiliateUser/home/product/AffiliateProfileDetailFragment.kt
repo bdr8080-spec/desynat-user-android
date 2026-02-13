@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
-import com.desynatuser.data.view_model.AuthViewModel
+import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateProfileDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
@@ -17,7 +17,7 @@ import kotlin.getValue
 @AndroidEntryPoint
 class AffiliateProfileDetailFragment : BaseFragment() {
     private var binding: FragmentAffiliateProfileDetailBinding? = null
-    private val viewModel: AuthViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
 
     override fun onCreateView(

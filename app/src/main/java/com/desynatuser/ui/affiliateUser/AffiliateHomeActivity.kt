@@ -60,7 +60,7 @@ class AffiliateHomeActivity : BaseActivity() {
         bottonNavItemList.clear()
         bottonNavItemList.add(BottomNavItem("Home",R.drawable.ic_home,R.drawable.ic_selected_home))
         bottonNavItemList.add(BottomNavItem("Products",R.drawable.products_ic,R.drawable.ic_selected_products))
-        bottonNavItemList.add(BottomNavItem("Affiliate",R.drawable.icon_affiliate,R.drawable.icon_affiliate))
+        bottonNavItemList.add(BottomNavItem("Category",R.drawable.icon_affiliate,R.drawable.icon_affiliate))
         bottonNavItemList.add(BottomNavItem("Payments",R.drawable.payments_ic,R.drawable.ic_selected_payment))
         bottonNavItemList.add(BottomNavItem("Profile",R.drawable.ic_profile,R.drawable.ic_selected_profile))
 
@@ -69,6 +69,8 @@ class AffiliateHomeActivity : BaseActivity() {
         val bottomNavDestinations = setOf(
             R.id.affiliateHome,
             R.id.affiliateProfile,
+            R.id.affiliateCategory,
+            R.id.affiliateMyProduct,
         )
 
         controller.addOnDestinationChangedListener { _, destination, _ ->
@@ -84,6 +86,12 @@ class AffiliateHomeActivity : BaseActivity() {
             when (destination.id) {
                 R.id.affiliateHome -> {
                     bottomAdapter?.setSelectedItem(0)
+                }
+                R.id.affiliateMyProduct -> {
+                    bottomAdapter?.setSelectedItem(1)
+                }
+                R.id.affiliateCategory -> {
+                    bottomAdapter?.setSelectedItem(2)
                 }
                 R.id.affiliateProfile -> {
                     bottomAdapter?.setSelectedItem(4)
@@ -104,6 +112,8 @@ class AffiliateHomeActivity : BaseActivity() {
             override fun onBottomNavItemClick(position: Int) {
                 when(position) {
                     0 -> controller.navigate(R.id.affiliateHome)
+                    1 -> controller.navigate(R.id.affiliateMyProduct)
+                    2 -> controller.navigate(R.id.affiliateCategory)
                     4 -> controller.navigate(R.id.affiliateProfile)
                 }
 

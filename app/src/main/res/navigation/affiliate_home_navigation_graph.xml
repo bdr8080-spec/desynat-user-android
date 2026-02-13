@@ -19,7 +19,75 @@
         android:label="Affiliate Profile Fragment"
         tools:layout="@layout/fragment_affiliate_profile">
 
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_affiliateProfileDetailFragment"
+            app:destination="@id/affiliateProfileDetail"/>
+
     </fragment>
 
+    <fragment
+        android:id="@+id/affiliateProfileDetail"
+        android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateProfileDetailFragment"
+        android:label="Affiliate Profile Detail Fragment"
+        tools:layout="@layout/fragment_affiliate_profile_detail">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/affiliateCategory"
+        android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateCategoryFragment"
+        android:label="Affiliate Category Fragment"
+        tools:layout="@layout/fragment_affiliate_category">
+
+        <action
+            android:id="@+id/action_affiliateCategoryFragment_to_affiliateAllProductFragment"
+            app:destination="@id/affiliateAllProduct"/>
+
+        <action
+            android:id="@+id/action_affiliateCategoryFragment_to_searchProductFragment"
+            app:destination="@id/searchAffiliateProduct"/>
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchAffiliateProduct"
+        android:name="com.desynatuser.ui.affiliateUser.home.product.SearchAffiliateProductFragment"
+        android:label="Search Affiliate Product Fragment"
+        tools:layout="@layout/fragment_search_affiliate_product">
+
+        <action
+            android:id="@+id/action_searchProductFragment_to_affiliateAllProductFragment"
+            app:destination="@id/affiliateAllProduct"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/affiliateAllProduct"
+        android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateAllProductFragment"
+        android:label="Affiliate All Product Fragment"
+        tools:layout="@layout/fragment_affiliate_all_product">
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/affiliateMyProduct"
+        android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateMyProductFragment"
+        android:label="Affiliate My Product Fragment"
+        tools:layout="@layout/fragment_affiliate_my_product">
+
+        <action
+            android:id="@+id/action_affiliateMyProductFragment_to_affiliateItemPerformanceFragment"
+            app:destination="@id/affiliateItemPerformance"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/affiliateItemPerformance"
+        android:name="com.desynatuser.ui.affiliateUser.home.product.ItemPerformanceFragment"
+        android:label="Item Performance Fragment"
+        tools:layout="@layout/fragment_item_performance"/>
 
 </navigation>
