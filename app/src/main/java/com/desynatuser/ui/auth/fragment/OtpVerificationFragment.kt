@@ -215,7 +215,7 @@ class OtpVerificationFragment : BaseFragment() {
                                 }
                                 "2"->{
                                     SharedPreference.get(requireActivity()).isAffiliateTutorial = true
-                                    SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                                 //   SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                                     showToast("OTP verified successfully")
                                     requireActivity().startActivity(
                                         Intent(requireActivity(),
@@ -241,7 +241,7 @@ class OtpVerificationFragment : BaseFragment() {
 
                         }
                         "affiliateSignUp" -> {
-                            SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                         //   SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                             SharedPreference.get(requireActivity()).isAffiliateTutorial = true
 
                             val bundle = Bundle().apply {

@@ -7,16 +7,15 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemSubCategoryBinding
 import com.desynatuser.databinding.ItemSubCategoryTabBinding
-import com.desynatuser.databinding.ItemTabBinding
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 
-class AffiliateSubCategoryMyProductAdapter(var context: Context, private val subCategoryList: List<GetSubCategoryResponse.Data>, var subCategoryClick:SubCategoryClick) :
+class AffiliateSubCategoryMyProductAdapter(var context: Context, private var subCategoryList: List<GetSubCategoryResponse.Data>, var subCategoryClick:SubCategoryClick) :
     RecyclerView.Adapter<AffiliateSubCategoryMyProductAdapter.ViewHolder>() {
+        var selected = -1
 
         interface SubCategoryClick{
-            fun onSubCategoryClick(position: Int)
+            fun onSubCategoryClick(position: Int,type: Int)
         }
 
     inner class ViewHolder(val binding: ItemSubCategoryTabBinding) :
@@ -31,29 +30,40 @@ class AffiliateSubCategoryMyProductAdapter(var context: Context, private val sub
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
             if (position==0){
-                ivAll.isVisible = false
-                tvName.isVisible = false
+                ivAll.isVisible = true
+                view.isVisible = true
+                tvName.isVisible = true
                 ivSubCategory.isVisible = true
             }
             else{
                 ivAll.isVisible = false
+                view.isVisible = false
                 tvName.isVisible = true
                 ivSubCategory.isVisible = true
-                tvName.text = subCategoryList[position].nameEnglish
-                ivSubCategory.load(subCategoryList[position].image) {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_placeholder)
-                    error(R.drawable.ic_placeholder)
-                }
             }
 
-        }
+            tvName.text = subCategoryList[position].nameEnglish
+            ivSubCategory.load(subCategoryList[position].image) {
+                crossfade(true)
+                placeholder(R.drawable.ic_placeholder)
+                error(R.drawable.ic_placeholder)
+            }
 
-        holder.itemView.setOnClickListener {
-            subCategoryClick.onSubCategoryClick(position)
+            relSelection.isVisible = selected==position
+
+            ivAll.setOnClickListener {
+                subCategoryClick.onSubCategoryClick(position,1)
+            }
+
+            ivSubCategory.setOnClickListener {
+                selected = position
+                notifyDataSetChanged()
+                subCategoryClick.onSubCategoryClick(position,2)
+            }
         }
 
     }
 
     override fun getItemCount(): Int = subCategoryList.size
+
 }

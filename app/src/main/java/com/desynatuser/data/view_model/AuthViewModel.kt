@@ -117,7 +117,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
     val getSelectedCountryResult: LiveData<GetCountryResponse>
         get() = repository.getSelectedCountryLiveData
 
@@ -126,7 +125,6 @@ class AuthViewModel @Inject constructor(
             repository.getSelectedCountry()
         }
     }
-
 
     val createAffiliateUserResult: LiveData<CreateAffiliateUserResponse>
         get() = repository.createAffiliateUserLiveData
@@ -152,6 +150,15 @@ class AuthViewModel @Inject constructor(
     fun addAffiliateUserBandDetail(request: AffiliateUserAddBankDetailRequest) {
         viewModelScope.launch {
             repository.addAffiliateUserBandDetail(request)
+        }
+    }
+
+    val updateAffiliateUserBankResult: LiveData<CommonResponse>
+        get() = repository.updateAffiliateUserBankLiveData
+
+    fun updateAffiliateUserBank(request: AffiliateUserAddBankDetailRequest) {
+        viewModelScope.launch {
+            repository.updateAffiliateUserBank(request)
         }
     }
 

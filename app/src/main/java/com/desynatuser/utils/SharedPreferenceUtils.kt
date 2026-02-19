@@ -4,8 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.desynatuser.R
-import com.desynatuser.adapter.SavedAddressAdapter
-import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.profile.response.GetAddressResponse
@@ -106,15 +105,15 @@ class SharedPreference(context: Context) {
         preference.set("userData", "")
     }
 
-    fun saveAffiliateUser(user: AffiliateUserLoginResponse.Data) {
+    fun saveAffiliateUser(user: GetAffiliateUserProfileResponse.Data) {
         val json = Gson().toJson(user)
         preference.set("affiliateUserData", json)
     }
 
-    fun getAffiliateUser(): AffiliateUserLoginResponse.Data? {
+    fun getAffiliateUser(): GetAffiliateUserProfileResponse.Data? {
         val json = preference["affiliateUserData", ""] ?: return null
         return try {
-            Gson().fromJson(json, AffiliateUserLoginResponse.Data::class.java)
+            Gson().fromJson(json, GetAffiliateUserProfileResponse.Data::class.java)
         } catch (e: Exception) {
             null
         }

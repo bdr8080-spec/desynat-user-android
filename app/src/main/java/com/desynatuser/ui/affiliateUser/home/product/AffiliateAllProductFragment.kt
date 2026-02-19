@@ -14,6 +14,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,8 +24,13 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateAllProductBinding
 import com.desynatuser.databinding.GetProductLinkDialogBinding
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
+import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -37,9 +43,12 @@ class AffiliateAllProductFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
     private var affiliateProductAdapter: AffiliateProductAdapter?=null
-    private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
+    private var productList = ArrayList<GetAffiliateAllProductResponse.Data.Data>()
     private var search: Job? = null
     private var lastQuery: String? = null
+    private var categoryData : GetCategoryResponse.Data?=null
+    private var subCategoryData : GetSubCategoryResponse.Data?=null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,12 +68,27 @@ class AffiliateAllProductFragment : BaseFragment() {
         binding?.apply {
             toolbar.tvToolbar.text = "All Products"
 
+            val itemSubCategoryDataJson = arguments?.getString("subCategoryData")
+            if (!itemSubCategoryDataJson.isNullOrEmpty()) {
+                subCategoryData = Gson().fromJson(itemSubCategoryDataJson, GetSubCategoryResponse.Data::class.java)
+            }
+
+            val itemCategoryDataJson = arguments?.getString("categoryData")
+            if (!itemCategoryDataJson.isNullOrEmpty()) {
+                categoryData = Gson().fromJson(itemCategoryDataJson, GetCategoryResponse.Data::class.java)
+            }
+
             affiliateProductAdapter = AffiliateProductAdapter(requireActivity(),productList,object :
                 AffiliateProductAdapter.ProductClick{
                 override fun onProductClick(position: Int, type: Int) {
-                    getLinkDialog()
+                    when(type){
+                        1->{
+                        }
+                        2->{
+                            getLinkDialog()
+                        }
+                    }
                 }
-
             })
             rvProduct.adapter = affiliateProductAdapter
 
@@ -81,13 +105,14 @@ class AffiliateAllProductFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver){
-
+                            getAffiliateAllProduct()
                         }
                     }
-
                 }
             })
         }
+
+        getAffiliateAllProduct()
     }
 
     override fun initControl() {
@@ -100,10 +125,31 @@ class AffiliateAllProductFragment : BaseFragment() {
                 openSpeechDialog()
             }
         }
-
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getAffiliateAllProductResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    productList.clear()
+                    response?.data?.data?.let { list ->
+                        productList.addAll(list)
+                    }
+                    binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+                    affiliateProductAdapter?.notifyDataSetChanged()
+                }
+                isObserver = false
+            }
+        }
     }
 
     private fun getLinkDialog() {
@@ -117,20 +163,19 @@ class AffiliateAllProductFragment : BaseFragment() {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog?.setCancelable(false)
+        dialog?.setCancelable(true)
 
         val params: WindowManager.LayoutParams = window.attributes
         params.gravity = Gravity.CENTER
         window.attributes = params
 
         dialogBinding.apply {
-
             tvToolbar.setOnClickListener {
                 dialog?.dismiss()
             }
 
             tvCopyLink.setOnClickListener {
-
+                CommonMethod.copyText(requireActivity(),tvLink.text.toString())
             }
 
             btnAdd.setOnClickListener {
@@ -168,12 +213,20 @@ class AffiliateAllProductFragment : BaseFragment() {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
             putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
         }
-
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
             showToast("Speech recognition not supported")
         }
+    }
+
+    private fun getAffiliateAllProduct(){
+        val map = HashMap<String, Any>()
+        map["category_id"] = categoryData?.id.toString()
+        map["subcategory_id"] = subCategoryData?.id.toString()
+        viewModel.getAffiliateAllProduct(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
 
 }

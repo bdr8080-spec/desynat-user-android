@@ -20,6 +20,7 @@ class ChangePasswordFragment : BaseFragment() {
     private var binding: FragmentChangePasswordBinding?=null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    var from = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +39,8 @@ class ChangePasswordFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
 
+            from = arguments?.getString("from","").toString()
+
             toolbar.tvToolbar.text = "Change Password"
             CommonMethod.removeAllTextSpaces(etPassword)
             CommonMethod.removeAllTextSpaces(etConfirmPassword)
@@ -47,7 +50,6 @@ class ChangePasswordFragment : BaseFragment() {
             etPassword.togglePasswordVisibility(ivPasswordVisible)
             etConfirmPassword.togglePasswordVisibility(ivConfirmPasswordVisible)
         }
-
     }
 
     override fun initControl() {
@@ -64,14 +66,17 @@ class ChangePasswordFragment : BaseFragment() {
                         map["old_password"] = binding?.etOldPassword?.text.toString().trim()
                         map["new_password"] = binding?.etPassword?.text.toString().trim()
                         map["confirm_password"] = binding?.etConfirmPassword?.text.toString().trim()
-                        viewModel.changePassword(map)
+                        if (from=="affiliate"){
+                            viewModel.updateAffiliateUserPassword(map)
+                        }
+                        else{
+                            viewModel.changePassword(map)
+                        }
                         ProgressDialogUtils.getInstance().showProgress(requireActivity())
                         isObserver = true
-
                     }
                 }
             }
-
     }
 
     override fun observe() {
@@ -81,7 +86,6 @@ class ChangePasswordFragment : BaseFragment() {
                 errorMessage?.let { showToast(it) }
                 isObserver = false
             }
-
         }
 
         viewModel.changePasswordResult.observe(viewLifecycleOwner) { response ->
@@ -91,7 +95,18 @@ class ChangePasswordFragment : BaseFragment() {
                     CommonMethod.showSuccessDialog(requireActivity(),"Password changed successfully!"){
                         findNavController().popBackStack()
                     }
+                }
+                isObserver = false
+            }
+        }
 
+        viewModel.updateAffiliateUserPasswordResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    CommonMethod.showSuccessDialog(requireActivity(),"Password changed successfully!"){
+                        findNavController().popBackStack()
+                    }
                 }
                 isObserver = false
             }
@@ -121,5 +136,4 @@ class ChangePasswordFragment : BaseFragment() {
         }
         return true
     }
-
 }

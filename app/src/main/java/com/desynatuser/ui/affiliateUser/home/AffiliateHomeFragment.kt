@@ -8,18 +8,20 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
-import com.desynatuser.data.view_model.AuthViewModel
+import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateHomeBinding
-import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
+import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AffiliateHomeFragment : BaseFragment() {
     private var binding: FragmentAffiliateHomeBinding? = null
-    private val viewModel: AuthViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
-    var profileData : AffiliateUserLoginResponse.Data?=null
+    var profileData : GetAffiliateUserProfileResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +39,18 @@ class AffiliateHomeFragment : BaseFragment() {
     }
 
     override fun initView() {
-        profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
+
+        if (SharedPreference.get(requireActivity()).getAffiliateUser()==null){
+            getAffiliateUserProfile()
+        }
+        else{
+            profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
+            setData()
+        }
+
+    }
+
+    private fun setData(){
         binding?.apply {
             tvName.text = "Hi ${profileData?.fullName}"
             Glide.with(requireActivity()).load(profileData?.profileImage).placeholder(R.drawable.ic_user).into(ivProfile)
@@ -48,6 +61,30 @@ class AffiliateHomeFragment : BaseFragment() {
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getAffiliateProfileResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                profileData = response.data
+                SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                setData()
+                isObserver = false
+            }
+        }
+
+    }
+
+    private fun getAffiliateUserProfile(){
+        viewModel.getAffiliateProfile()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }

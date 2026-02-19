@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context=".ui.affiliateUser.home.product.AffiliateProfileDetailFragment">
+    tools:context=".ui.affiliateUser.home.profile.AffiliateProfileDetailFragment">
 
     <include
         android:id="@+id/toolbar"
@@ -421,7 +421,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/tvAddNewAddress"
+                    android:id="@+id/tvAddNewBank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"

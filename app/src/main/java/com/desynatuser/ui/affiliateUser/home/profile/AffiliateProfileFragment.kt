@@ -1,4 +1,4 @@
-package com.desynatuser.ui.affiliateUser.home
+package com.desynatuser.ui.affiliateUser.home.profile
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentAffiliateProfileBinding
-import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
@@ -24,7 +24,7 @@ class AffiliateProfileFragment : BaseFragment() {
     private var binding: FragmentAffiliateProfileBinding? = null
     private val viewModel: AuthViewModel by viewModels()
     var isObserver = false
-    var profileData : AffiliateUserLoginResponse.Data?=null
+    var profileData : GetAffiliateUserProfileResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,8 +67,10 @@ class AffiliateProfileFragment : BaseFragment() {
                 Constants.isLogout = true
                 CommonMethod.clearAffiliateData(requireActivity())
                 requireActivity().startActivity(
-                    Intent(requireActivity(),
-                        AuthActivity::class.java)
+                    Intent(
+                        requireActivity(),
+                        AuthActivity::class.java
+                    )
                 )
                 requireActivity().finish()
             }

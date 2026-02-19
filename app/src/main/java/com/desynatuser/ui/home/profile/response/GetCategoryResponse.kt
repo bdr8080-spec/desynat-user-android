@@ -13,20 +13,20 @@ data class GetCategoryResponse(
 ) {
     data class Data(
         @SerializedName("color_code")
-        val colorCode: String,
+        val colorCode: String?=null,
         @SerializedName("created_at")
-        val createdAt: String,
+        val createdAt: String?=null,
         @SerializedName("description")
-        val description: String,
+        val description: String?=null,
         @SerializedName("id")
         val id: Int,
         @SerializedName("image")
-        val image: String,
+        val image: String?=null,
         @SerializedName("name")
-        val name: String,
+        val name: String?=null,
         @SerializedName("status")
-        val status: Int,
+        val status: String?=null,
         @SerializedName("updated_at")
-        val updatedAt: String
+        val updatedAt: String?=null
     )
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,7 +12,18 @@
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_all"/>
+        android:src="@drawable/ic_all"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@+id/ivAll"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivSubCategory"
@@ -21,11 +32,14 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_placeholder"
         android:background="#F5F5F5"
-        app:shapeAppearanceOverlay="@style/rounded_corner4sdp"/>
+        app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvName"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="Puma"
@@ -34,6 +48,20 @@
         android:textAlignment="center"
         android:layout_marginTop="@dimen/_5sdp"
         android:textColor="@color/black"
-        android:textSize="@dimen/_10sdp"/>
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/ivSubCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/relSelection"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/selected_sub_category_stroke"
+        app:layout_constraintTop_toTopOf="@+id/ivSubCategory"
+        app:layout_constraintStart_toStartOf="@+id/ivSubCategory"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSubCategory"
+        app:layout_constraintEnd_toEndOf="@+id/ivSubCategory" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

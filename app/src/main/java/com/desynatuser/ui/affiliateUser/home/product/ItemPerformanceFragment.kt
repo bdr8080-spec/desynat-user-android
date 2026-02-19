@@ -6,9 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentItemPerformanceBinding
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
+import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
@@ -17,6 +25,8 @@ class ItemPerformanceFragment : BaseFragment() {
     private var binding: FragmentItemPerformanceBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
+    private var productData :GetAffiliateAllProductResponse.Data.Data?=null
+    private var productDetailData : GetAffiliateProductDetailResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +44,11 @@ class ItemPerformanceFragment : BaseFragment() {
     }
 
     override fun initView() {
+        val itemProductDataJson = arguments?.getString("productData")
+        if (!itemProductDataJson.isNullOrEmpty()) {
+            productData = Gson().fromJson(itemProductDataJson, GetAffiliateAllProductResponse.Data.Data::class.java)
+            getAffiliateProductDetail()
+        }
         binding?.apply {
             toolbar.tvToolbar.text = "Item Performance"
         }
@@ -46,12 +61,55 @@ class ItemPerformanceFragment : BaseFragment() {
             }
 
             ivCopy.setOnClickListener {
-
+                CommonMethod.copyText(requireActivity(),tvLink.text.toString())
             }
         }
+    }
 
+    private fun getAffiliateProductDetail(){
+        val map = HashMap<String, Any>()
+        map["id"] = productData?.id.toString()
+        viewModel.getAffiliateProductDetail(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getAffiliateProductDetailResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    productDetailData = response.data
+                    setData()
+                }
+                isObserver = false
+            }
+        }
+    }
+
+    private fun setData() {
+        binding?.apply {
+            Glide.with(requireActivity()).load(productDetailData?.productVariants?.get(0)?.variantImage?.get(0)).placeholder(
+                R.drawable.ic_placeholder).into(ivStore)
+            tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
+
+            tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
+            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+
+            val variant = productData?.productVariants?.getOrNull(0)
+            val discountValue = variant?.discountValue ?: 0
+            val discountType = if (variant?.discountType == "1")"% off" else " KD off"
+            tvDiscount.text = "$discountValue$discountType"
+            tvCommission.text = "${productData?.productVariants?.get(0)?.discountValue}% Commission"
+            //tvLink.text = "Link- off ${productData?.}"
+        }
     }
 }

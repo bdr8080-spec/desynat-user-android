@@ -7,6 +7,11 @@ import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetail
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
+import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -73,6 +78,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ApiServices {
 
@@ -122,11 +128,11 @@ interface ApiServices {
         @Body body: HashMap<String, Any>
     ): Response<CommonResponse>
 
- @GET(Constants.DASHBOARD)
+    @GET(Constants.DASHBOARD)
     suspend fun getDashBoard(
     ): Response<LoginResponse>
 
- @GET(Constants.LOGOUT)
+    @GET(Constants.LOGOUT)
     suspend fun logout(
     ): Response<CommonResponse>
 
@@ -141,8 +147,8 @@ interface ApiServices {
 
     @GET(Constants.GET_SUB_CATEGORY)
     suspend fun getSubCategory(
-        @Query ("category_id") categoryId: String,
-        @Query ("search") search: String?=null
+        @Query("category_id") categoryId: String,
+        @Query("search") search: String? = null
     ): Response<GetSubCategoryResponse>
 
     @POST(Constants.UPDATE_PROFILE)
@@ -172,22 +178,22 @@ interface ApiServices {
 
     @POST(Constants.SINGLE_STORE)
     suspend fun getSingleStoreInfo(
-        @Body map:HashMap<String,Any>,
+        @Body map: HashMap<String, Any>,
     ): Response<GetSingleStoreResponse>
 
     @POST(Constants.GET_PRODUCT_DETAIL)
     suspend fun getProductDetailInfo(
-        @Body map:HashMap<String,Any>,
+        @Body map: HashMap<String, Any>,
     ): Response<GetProductDetailResponse>
 
     @POST(Constants.ADD_TO_CART)
     suspend fun addToCart(
-        @Body map:HashMap<String,Any>,
+        @Body map: HashMap<String, Any>,
     ): Response<AddToCartResponse>
 
     @POST(Constants.ADD_TO_CART_QUANTITY)
     suspend fun addCartQuantity(
-        @Body map:HashMap<String,Any>,
+        @Body map: HashMap<String, Any>,
     ): Response<CartQunatityIncrementDecrementResponse>
 
     @GET(Constants.VIEW_CART_DETAIL)
@@ -195,7 +201,7 @@ interface ApiServices {
 
     @POST(Constants.ADD_TO_WISHLIST)
     suspend fun addToWishlist(
-        @Body map:HashMap<String,Any>,
+        @Body map: HashMap<String, Any>,
     ): Response<CommonResponse>
 
     @GET(Constants.GET_ADDRESS)
@@ -213,12 +219,12 @@ interface ApiServices {
 
     @POST(Constants.DEFAULt_ADDRESS)
     suspend fun setDefaultAddress(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     @DELETE("${Constants.DELETE_ADDRESS}/{id}")
     suspend fun deleteAddress(
-        @Path ("id") id: String
+        @Path("id") id: String
     ): Response<CommonResponse>
 
     @GET(Constants.GET_STORE_SORT_LIST)
@@ -241,7 +247,7 @@ interface ApiServices {
 
 
     @POST(Constants.GIFT_CARD_LIST)
-    suspend fun getGiftCardList(@Body map: HashMap<String,Any>): Response<GetAllGiftCardResponse>
+    suspend fun getGiftCardList(@Body map: HashMap<String, Any>): Response<GetAllGiftCardResponse>
 
     @GET(Constants.GIFT_CARD_OCCASION)
     suspend fun getGiftCardOccasion(): Response<GetGiftCardOccasionTypeResponse>
@@ -253,41 +259,41 @@ interface ApiServices {
 
     @POST(Constants.BUY_GIFT_CARD_PAYMENT)
     suspend fun buyGiftCardPayment(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     @POST(Constants.APPLY_GIFT_CARD)
-    suspend fun applyGiftCard(@Body map: HashMap<String,Any>): Response<ApplyGiftCardResponse>
+    suspend fun applyGiftCard(@Body map: HashMap<String, Any>): Response<ApplyGiftCardResponse>
 
     @POST(Constants.PROMO_CODE_LIST)
-    suspend fun getPromoCode(@Body map: HashMap<String,Any>): Response<GetPromoCodeResponse>
+    suspend fun getPromoCode(@Body map: HashMap<String, Any>): Response<GetPromoCodeResponse>
 
     @POST(Constants.APPLY_PROMO_CODE)
-    suspend fun applyPromoCode(@Body map: HashMap<String,Any>): Response<ApplyPromoCodeResponse>
+    suspend fun applyPromoCode(@Body map: HashMap<String, Any>): Response<ApplyPromoCodeResponse>
 
     @POST(Constants.PLACE_ORDER)
     suspend fun placeOrder(@Body request: PlaceOrderRequest): Response<PlaceOrderResponse>
 
     @POST(Constants.COMPLETE_ORDER_PAYMENT)
-    suspend fun orderPayment(@Body map: HashMap<String,Any>): Response<CommonResponse>
+    suspend fun orderPayment(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
     @POST(Constants.GET_ALL_ORDER)
-    suspend fun getAllOrder(@Body map: HashMap<String,Any>): Response<GetAllOrderResponse>
+    suspend fun getAllOrder(@Body map: HashMap<String, Any>): Response<GetAllOrderResponse>
 
     @POST(Constants.GET_ORDER_SUMMARY)
-    suspend fun getSingleOrder(@Body map: HashMap<String,Any>): Response<GetSingleOrderSummaryResponse>
+    suspend fun getSingleOrder(@Body map: HashMap<String, Any>): Response<GetSingleOrderSummaryResponse>
 
     @POST(Constants.GET_REASON)
-    suspend fun getReasonList(@Body map: HashMap<String,Any>): Response<GetReasonListResponse>
+    suspend fun getReasonList(@Body map: HashMap<String, Any>): Response<GetReasonListResponse>
 
     @POST(Constants.CANCEL_ORDER)
-    suspend fun cancelOrder(@Body map: HashMap<String,Any>): Response<CommonResponse>
+    suspend fun cancelOrder(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
     @POST(Constants.RETURN_EXCHANGE_ORDER)
-    suspend fun returnExchangeOrder(@Body map: HashMap<String,Any>): Response<CommonResponse>
+    suspend fun returnExchangeOrder(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
     @POST(Constants.ORDER_RATING)
-    suspend fun orderRating(@Body map: HashMap<String,Any>): Response<CommonResponse>
+    suspend fun orderRating(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
     @GET(Constants.RECENT_SEARCH_LIST)
     suspend fun getRecentSearchList(): Response<GetRecentSearchListResponse>
@@ -295,17 +301,17 @@ interface ApiServices {
     @GET(Constants.LATEST_SEARCH_LIST)
     suspend fun getLatestSearchList(): Response<GetRecentSearchListResponse>
 
- @GET(Constants.RECOMMENDED_SEARCH_LIST)
+    @GET(Constants.RECOMMENDED_SEARCH_LIST)
     suspend fun getRecommendedSearchList(): Response<GetRecommendedResponse>
 
     @POST(Constants.HOME_PAGE_SEARCH)
-    suspend fun homePageSearch(@Body map: HashMap<String,Any>): Response<GetHomeSearchResponse>
+    suspend fun homePageSearch(@Body map: HashMap<String, Any>): Response<GetHomeSearchResponse>
 
     @GET(Constants.WALLET_BALANCE)
     suspend fun getWalletBalance(): Response<WalletBalanceResponse>
 
     @POST("${Constants.INVOICE}")
-    suspend fun getInvoice( @Query("order_id") orderId: String): Response<GetInvoiceResponse>
+    suspend fun getInvoice(@Query("order_id") orderId: String): Response<GetInvoiceResponse>
 
     @POST("https://vision.googleapis.com/v1/images:annotate")
     suspend fun detectImage(
@@ -321,47 +327,47 @@ interface ApiServices {
 
     @POST(Constants.CREATE_CUSTOM_ORDER)
     suspend fun createCustomOrder(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CreateCustomOrderResponse>
 
     @POST(Constants.SEND_CUSTOM_ORDER_REQUEST)
     suspend fun sendCustomOrderRequest(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CreateCustomOrderResponse>
 
     @POST(Constants.APPLY_CUSTOM_ORDER_GIFT_CARD)
     suspend fun applyCustomOrderGiftCard(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AcceptCustomOrderResponse>
 
     @POST(Constants.CUSTOM_ORDER_COMPLETE_PAYMENT)
     suspend fun customOrderPayment(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     @POST(Constants.USER_ALL_CHAT)
     suspend fun getAllChatList(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<GetChatListResponse>
 
     @POST(Constants.USER_SINGLE_CHAT)
     suspend fun chatDetail(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<ChatDetailResponse>
 
     @POST(Constants.SEND_MESSAGE)
     suspend fun sendMessage(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     @POST(Constants.CHAT_WITH_SELLER)
     suspend fun chatWithSeller(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<NormalChatResponse>
 
     @POST(Constants.ACCEPT_REJECT_ORDER_REQUEST)
     suspend fun acceptRejectQuotation(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AcceptRejectQuotationRequestResponse>
 
     @POST(Constants.HOME_SCREEN_BANNER)
@@ -370,32 +376,32 @@ interface ApiServices {
 
     @POST(Constants.HOME_SCREEN_ALL_BANNER)
     suspend fun getHomeScreenAllBanner(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<GetHomeScreenAllBannerResponse>
 
     @POST(Constants.HOME_SCREEN_ALL_BANNER)
     suspend fun getHomeScreenBottomBanner(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<GetHomeScreenAllBannerResponse>
 
     @POST(Constants.HOME_SCREEN_ALL_BANNER)
     suspend fun getHomeScreenCategoryBanner(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<GetHomeScreenAllBannerResponse>
 
     @POST(Constants.ADD_MONEY_IN_WALLET)
     suspend fun addMoneyInWallet(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AddMoneyInWalletResponse>
 
     @POST(Constants.COMPLETE_PAYMENT_ADD_MONEY_WALLET)
     suspend fun addMoneyInWalletPayment(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CompletePyamentWalletResponse>
 
     @POST(Constants.REDEEM_GIFT_CARD_IN_WALLET)
     suspend fun redeemGiftCardInWallet(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     @GET(Constants.WALLET_HISTORY)
@@ -403,12 +409,12 @@ interface ApiServices {
 
     @POST(Constants.CUSTOM_ORDER_ADD_TO_CART)
     suspend fun addToCartCustomOrder(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     @POST(Constants.REMOVE_CUSTOM_ORDER_FROM_CART)
     suspend fun removeFromCartCustomOrder(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     //Affiliate User
@@ -420,7 +426,7 @@ interface ApiServices {
 
     @POST(Constants.VERIFY_OTP_AFFILIATE_USER)
     suspend fun verifyAffiliateUserOtp(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AffiliateUserLoginResponse>
 
     @POST(Constants.ADD_ADDRESS_AFFILIATE_USER)
@@ -435,17 +441,17 @@ interface ApiServices {
 
     @POST(Constants.FORGOT_PASSWORD_AFFILIATE_USER)
     suspend fun forgotPasswordAffiliateUser(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AffiliateUserLoginResponse>
 
     @POST(Constants.RESET_OTP_AFFILIATE_USER)
     suspend fun resendOtpAffiliateUser(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AffiliateUserLoginResponse>
 
     @POST(Constants.CREATE_PASSWORD_AFFILIATE_USER)
     suspend fun createAffiliateUserPassword(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AffiliateUserLoginResponse>
 
     @POST(Constants.RE_VERIFY_DOCUMENT_AFFILIATE_USER)
@@ -455,13 +461,46 @@ interface ApiServices {
 
     @POST(Constants.LOGIN_AFFILIATE_USER)
     suspend fun loginAffiliateUser(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AffiliateUserLoginResponse>
 
-   @POST(Constants.LOGIN_WITH_OTP_AFFILIATE_USER)
+    @POST(Constants.LOGIN_WITH_OTP_AFFILIATE_USER)
     suspend fun loginWithOtpAffiliateUser(
-        @Body map: HashMap<String,Any>
+        @Body map: HashMap<String, Any>
     ): Response<AffiliateUserLoginResponse>
 
+    @GET(Constants.GET_AFFILIATE_PROFILE)
+    suspend fun getAffiliateProfile(): Response<GetAffiliateUserProfileResponse>
+
+    @POST(Constants.UPDATE_AFFILIATE_PROFILE)
+    suspend fun updateAffiliateUserProfile(
+        @Body request : UpdateAffiliateProfileRequest
+    ): Response<UpdateAffiliateProfileResponse>
+
+
+    @POST(Constants.UPDATE_AFFILIATE_ADDRESS)
+    suspend fun updateAffiliateUserAddress(
+        @Body request: AffiliateUserAddAddressRequest
+    ): Response<CommonResponse>
+
+
+    @POST(Constants.UPDATE_AFFILIATE_BANK)
+    suspend fun updateAffiliateUserBank(
+        @Body request: AffiliateUserAddBankDetailRequest
+    ): Response<CommonResponse>
+
+    @POST(Constants.UPDATE_AFFILIATE_PASSWORD)
+    suspend fun updateAffiliateUserPassword(
+        @Body map: HashMap<String, Any>
+    ): Response<CommonResponse>
+
+    @GET(Constants.GET_AFFILIATE_ALL_PRODUCT)
+    suspend fun getAffiliateAllProduct(@QueryMap map: HashMap<String,Any>): Response<GetAffiliateAllProductResponse>
+
+ @GET(Constants.GET_AFFILIATE_PRODUCT_DETAIL)
+    suspend fun getAffiliateProductDetail(@QueryMap map: HashMap<String,Any>): Response<GetAffiliateProductDetailResponse>
+
+    @GET(Constants.GET_AFFILIATE_MY_PRODUCT)
+    suspend fun getAffiliateMyProduct(@QueryMap map: HashMap<String,Any>): Response<GetAffiliateAllProductResponse>
 
 }

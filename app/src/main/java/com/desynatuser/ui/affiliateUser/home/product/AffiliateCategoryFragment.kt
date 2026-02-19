@@ -58,7 +58,6 @@ class AffiliateCategoryFragment :  BaseFragment() {
                     selectedCategory = categoryList[position]
                     getAllSubCategory()
                 }
-
             })
             rvCategory.adapter = affiliateCategoryAdapter
 
@@ -69,8 +68,9 @@ class AffiliateCategoryFragment :  BaseFragment() {
                         1->{
                             val bundle = Bundle().apply {
                                 putString("subCategoryData", Gson().toJson(subCategoryList[position]))
+                                putString("categoryData", Gson().toJson(selectedCategory))
                             }
-                            findNavController().navigate(R.id.action_affiliateCategoryFragment_to_affiliateAllProductFragment)
+                            findNavController().navigate(R.id.action_affiliateCategoryFragment_to_affiliateAllProductFragment,bundle)
                         }
                         2->{
                             if(position==-1) {
@@ -105,7 +105,6 @@ class AffiliateCategoryFragment :  BaseFragment() {
             relSearch.setOnClickListener {
                 findNavController().navigate(R.id.action_affiliateCategoryFragment_to_searchProductFragment)
             }
-
         }
     }
 
@@ -129,6 +128,7 @@ class AffiliateCategoryFragment :  BaseFragment() {
                 isObserver = false
             }
         }
+
         viewModel.subCategoryResult.observe(viewLifecycleOwner) { response ->
         if (isSubCategoryObserver) {
             ProgressDialogUtils.getInstance().hideProgress()

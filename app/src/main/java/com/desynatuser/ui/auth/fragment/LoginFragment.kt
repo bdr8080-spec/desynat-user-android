@@ -337,7 +337,7 @@ class LoginFragment : BaseFragment() {
                             SharedPreference.get(requireActivity()).isAffiliateTutorial = true
                             showToast(response.message)
                             clearInputField()
-                            SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                           // SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                             requireActivity().startActivity(
                                 Intent(requireActivity(),
                                     AffiliateHomeActivity::class.java)

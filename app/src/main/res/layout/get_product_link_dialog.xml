@@ -31,11 +31,10 @@
         android:text="Affiliate link"
         android:textColor="@color/black"
         android:drawableEnd="@drawable/close_icon"
-        android:textSize="@dimen/_13sdp"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:textSize="@dimen/_13sdp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/etFullName"
+        android:id="@+id/tvLink"
         android:layout_width="match_parent"
         style="@style/edit_text"
         android:text="https://www.desynat.com"
@@ -43,8 +42,7 @@
         android:padding="@dimen/_8sdp"
         android:textSize="@dimen/_11sdp"
         android:background="@drawable/button_stroke"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/tvFullName"/>
+        android:layout_marginHorizontal="@dimen/_10sdp"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/tvCopyLink"

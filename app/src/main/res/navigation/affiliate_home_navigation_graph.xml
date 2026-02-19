@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/affiliateProfile"
-        android:name="com.desynatuser.ui.affiliateUser.home.AffiliateProfileFragment"
+        android:name="com.desynatuser.ui.affiliateUser.home.profile.AffiliateProfileFragment"
         android:label="Affiliate Profile Fragment"
         tools:layout="@layout/fragment_affiliate_profile">
 
@@ -27,9 +27,17 @@
 
     <fragment
         android:id="@+id/affiliateProfileDetail"
-        android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateProfileDetailFragment"
+        android:name="com.desynatuser.ui.affiliateUser.home.profile.AffiliateProfileDetailFragment"
         android:label="Affiliate Profile Detail Fragment"
         tools:layout="@layout/fragment_affiliate_profile_detail">
+
+        <action
+            android:id="@+id/action_affiliateProfileDetailFragment_to_affiliateAddBankDetailFragment"
+            app:destination="@id/affiliateAddBankDetail"/>
+
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_changePasswordFragment"
+            app:destination="@id/changePassword"/>
 
     </fragment>
 
@@ -46,7 +54,6 @@
         <action
             android:id="@+id/action_affiliateCategoryFragment_to_searchProductFragment"
             app:destination="@id/searchAffiliateProduct"/>
-
 
     </fragment>
 
@@ -67,6 +74,10 @@
         android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateAllProductFragment"
         android:label="Affiliate All Product Fragment"
         tools:layout="@layout/fragment_affiliate_all_product">
+
+        <action
+            android:id="@+id/action_searchProductFragment_to_affiliateAllProductFragment"
+            app:destination="@id/affiliateAllProduct"/>
 
     </fragment>
 
@@ -89,5 +100,20 @@
         android:name="com.desynatuser.ui.affiliateUser.home.product.ItemPerformanceFragment"
         android:label="Item Performance Fragment"
         tools:layout="@layout/fragment_item_performance"/>
+
+    <fragment
+        android:id="@+id/changePassword"
+        android:name="com.desynatuser.ui.home.profile.ChangePasswordFragment"
+        android:label="Change Password Fragment"
+        tools:layout="@layout/fragment_change_password"/>
+
+    <fragment
+        android:id="@+id/affiliateAddBankDetail"
+        android:name="com.desynatuser.ui.affiliateUser.auth.BankDetailFragment"
+        android:label="Affiliate Bank Detail Fragment"
+        tools:layout="@layout/fragment_bank_detail">
+
+    </fragment>
+
 
 </navigation>

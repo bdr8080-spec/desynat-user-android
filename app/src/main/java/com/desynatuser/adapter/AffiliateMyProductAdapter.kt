@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemAffiliateProductBinding
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.utils.CommonMethod
 
-class AffiliateMyProductAdapter(var context:Context, private var productList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>, var productClick:ProductClick) : RecyclerView.Adapter<AffiliateMyProductAdapter.ViewHolder>() {
+class AffiliateMyProductAdapter(var context:Context, private var productList: ArrayList<GetAffiliateAllProductResponse.Data.Data>, var productClick:ProductClick) : RecyclerView.Adapter<AffiliateMyProductAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemAffiliateProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -33,15 +33,10 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
         val productData = productList[position]
 
         holder.binding.apply {
-//            if (storeName!=""){
-//                tvTitle.text = productData.productNameEn+" (By ${storeName})"
-//            }
-//            else{
-//                tvTitle.text = productData.productNameEn
-//            }
+            tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
 
-            tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?:0.0)} KD"
-            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
+            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
 
             val variant = productData?.productVariants?.getOrNull(0)
             val discountValue = variant?.discountValue ?: 0

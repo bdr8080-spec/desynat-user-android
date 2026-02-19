@@ -4,18 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.desynatuser.data.repo.MainRepository
+import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
+import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
-import com.desynatuser.ui.auth.response.RegisterAccountResponse
-import com.desynatuser.ui.auth.response.RegisterRequest
 import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
-import com.desynatuser.ui.home.chat.response.CustomOrderRequestResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
-import com.desynatuser.ui.home.chat.response.GetChatResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
@@ -42,7 +44,6 @@ import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
-import com.desynatuser.ui.home.profile.response.UpdateAddressResponse
 import com.desynatuser.ui.home.store.response.AddToCartResponse
 import com.desynatuser.ui.home.store.response.CartQunatityIncrementDecrementResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
@@ -137,6 +138,15 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             repository.uploadImage(image)
+        }
+    }
+
+    val getSelectedCountryResult: LiveData<GetCountryResponse>
+        get() = repository.getSelectedCountryLiveData
+
+    fun getSelectedCountry() {
+        viewModelScope.launch {
+            repository.getSelectedCountry()
         }
     }
 
@@ -701,7 +711,6 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
-
     val removeFromCartCustomOrderResult: LiveData<CommonResponse>
         get() = repository.removeFromCartCustomOrderLiveData
 
@@ -711,5 +720,67 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
+    val getAffiliateProfileResult: LiveData<GetAffiliateUserProfileResponse>
+        get() = repository.getAffiliateProfileLiveData
+
+    fun getAffiliateProfile() {
+        viewModelScope.launch {
+            repository.getAffiliateProfile()
+        }
+    }
+
+    val updateAffiliateUserProfileResult: LiveData<UpdateAffiliateProfileResponse>
+        get() = repository.updateAffiliateUserProfileLiveData
+
+    fun updateAffiliateUserProfile(request: UpdateAffiliateProfileRequest) {
+        viewModelScope.launch {
+            repository.updateAffiliateUserProfile(request)
+        }
+    }
+
+    val updateAffiliateUserAddressResult: LiveData<CommonResponse>
+        get() = repository.updateAffiliateUserAddressLiveData
+
+    fun updateAffiliateUserAddress(request : AffiliateUserAddAddressRequest) {
+        viewModelScope.launch {
+            repository.updateAffiliateUserAddress(request)
+        }
+    }
+
+    val updateAffiliateUserPasswordResult: LiveData<CommonResponse>
+        get() = repository.updateAffiliateUserPasswordLiveData
+
+    fun updateAffiliateUserPassword(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.updateAffiliateUserPassword(map)
+        }
+    }
+
+    val getAffiliateAllProductResult: LiveData<GetAffiliateAllProductResponse>
+        get() = repository.getAffiliateAllProductLiveData
+
+    fun getAffiliateAllProduct(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateAllProduct(map)
+        }
+    }
+
+    val getAffiliateProductDetailResult: LiveData<GetAffiliateProductDetailResponse>
+        get() = repository.getAffiliateProductDetailLiveData
+
+    fun getAffiliateProductDetail(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateProductDetail(map)
+        }
+    }
+
+    val getAffiliateMyProductResult: LiveData<GetAffiliateAllProductResponse>
+        get() = repository.getAffiliateMyProductLiveData
+
+    fun getAffiliateMyProduct(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateMyProduct(map)
+        }
+    }
 
 }

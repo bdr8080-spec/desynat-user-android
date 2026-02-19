@@ -130,7 +130,10 @@ class ProfileDetailFragment : BaseFragment() {
             }
 
             tvChangePassword.setOnClickListener {
-                findNavController().navigate(R.id.action_profileDetailsFragment_to_changePasswordFragment)
+                val bundle = Bundle().apply {
+                    putString("from","user")
+                }
+                findNavController().navigate(R.id.action_profileDetailsFragment_to_changePasswordFragment,bundle)
             }
 
             btnSaveChange.setOnClickListener {

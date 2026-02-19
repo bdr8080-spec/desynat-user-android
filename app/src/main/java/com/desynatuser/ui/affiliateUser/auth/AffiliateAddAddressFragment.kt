@@ -97,7 +97,6 @@ class AffiliateAddAddressFragment : BaseFragment() {
                 }
             }
         }
-
     }
 
     override fun observe() {
@@ -130,6 +129,8 @@ class AffiliateAddAddressFragment : BaseFragment() {
                     ) {
                         val bundle = Bundle().apply {
                             putString("userId", userId)
+                            putString("from", "auth")
+                            putString("type", "add")
                         }
                         findNavController().navigate(
                             R.id.action_affiliateAddAddressFragment_to_affiliateAddBankDetailFragment,bundle

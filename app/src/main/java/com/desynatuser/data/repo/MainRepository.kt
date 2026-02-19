@@ -13,6 +13,11 @@ import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetail
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
+import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -1079,6 +1084,99 @@ val loginWithOtpAffiliateUserLiveData = SingleLiveEvent<AffiliateUserLoginRespon
                 api.loginWithOtpAffiliateUser(map)
             },
             responseLiveData = loginWithOtpAffiliateUserLiveData
+        )
+    }
+
+val getAffiliateProfileLiveData = SingleLiveEvent<GetAffiliateUserProfileResponse>()
+    suspend fun getAffiliateProfile(
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateProfile()
+            },
+            responseLiveData = getAffiliateProfileLiveData
+        )
+    }
+
+    val updateAffiliateUserProfileLiveData = SingleLiveEvent<UpdateAffiliateProfileResponse>()
+    suspend fun updateAffiliateUserProfile(
+       request: UpdateAffiliateProfileRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.updateAffiliateUserProfile(request)
+            },
+            responseLiveData = updateAffiliateUserProfileLiveData
+        )
+    }
+
+    val updateAffiliateUserAddressLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun updateAffiliateUserAddress(
+        request : AffiliateUserAddAddressRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.updateAffiliateUserAddress(request)
+            },
+            responseLiveData = updateAffiliateUserAddressLiveData
+        )
+    }
+
+    val updateAffiliateUserBankLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun updateAffiliateUserBank(
+        request: AffiliateUserAddBankDetailRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.updateAffiliateUserBank(request)
+            },
+            responseLiveData = updateAffiliateUserBankLiveData
+        )
+    }
+
+    val updateAffiliateUserPasswordLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun updateAffiliateUserPassword(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.updateAffiliateUserPassword(map)
+            },
+            responseLiveData = updateAffiliateUserPasswordLiveData
+        )
+    }
+
+    val getAffiliateAllProductLiveData = SingleLiveEvent<GetAffiliateAllProductResponse>()
+    suspend fun getAffiliateAllProduct(map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateAllProduct(map)
+            },
+            responseLiveData = getAffiliateAllProductLiveData
+        )
+    }
+
+ val getAffiliateProductDetailLiveData = SingleLiveEvent<GetAffiliateProductDetailResponse>()
+    suspend fun getAffiliateProductDetail(map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateProductDetail(map)
+            },
+            responseLiveData = getAffiliateProductDetailLiveData
+        )
+    }
+
+
+    val getAffiliateMyProductLiveData = SingleLiveEvent<GetAffiliateAllProductResponse>()
+    suspend fun getAffiliateMyProduct(map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateMyProduct(map)
+            },
+            responseLiveData = getAffiliateMyProductLiveData
         )
     }
 

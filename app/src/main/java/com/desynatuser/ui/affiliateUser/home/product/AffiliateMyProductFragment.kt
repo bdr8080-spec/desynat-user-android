@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,10 +21,12 @@ import com.desynatuser.adapter.AffiliateSubCategoryMyProductAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateMyProductBinding
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -38,11 +41,16 @@ class AffiliateMyProductFragment : BaseFragment() {
     private var affiliateMyProductAdapter: AffiliateMyProductAdapter?=null
     private var affiliateCategoryMyProductAdapter: AffiliateCategoryMyProductAdapter?=null
     private var affiliateSubCategoryMyProductAdapter: AffiliateSubCategoryMyProductAdapter?=null
-    private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
+    private var productList = ArrayList<GetAffiliateAllProductResponse.Data.Data>()
     private var categoryList = ArrayList<GetCategoryResponse.Data>()
     private var subCategoryList = ArrayList<GetSubCategoryResponse.Data>()
     private var search: Job? = null
     private var lastQuery: String? = null
+    private var isCategoryObserver = false
+    private var isSubCategoryObserver = false
+    private var selectedCategory : GetCategoryResponse.Data?=null
+    private var selectedSubCategory : GetSubCategoryResponse.Data?=null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +73,10 @@ class AffiliateMyProductFragment : BaseFragment() {
                 AffiliateMyProductAdapter(requireActivity(), productList, object :
                     AffiliateMyProductAdapter.ProductClick {
                     override fun onProductClick(position: Int, type: Int) {
-                        findNavController().navigate(R.id.action_affiliateMyProductFragment_to_affiliateItemPerformanceFragment)
+                        val bundle = Bundle().apply {
+                            putString("productData", Gson().toJson(productList[position]))
+                        }
+                        findNavController().navigate(R.id.action_affiliateMyProductFragment_to_affiliateItemPerformanceFragment,bundle)
                     }
 
                 })
@@ -74,8 +85,16 @@ class AffiliateMyProductFragment : BaseFragment() {
             affiliateSubCategoryMyProductAdapter =
                 AffiliateSubCategoryMyProductAdapter(requireActivity(), subCategoryList, object :
                     AffiliateSubCategoryMyProductAdapter.SubCategoryClick {
-                    override fun onSubCategoryClick(position: Int) {
-
+                    override fun onSubCategoryClick(position: Int,type: Int) {
+                        when(type){
+                            1->{
+                                selectedSubCategory = null
+                            }
+                            2->{
+                                selectedSubCategory = subCategoryList[position]
+                            }
+                        }
+                        getMyProduct()
                     }
 
                 })
@@ -85,6 +104,18 @@ class AffiliateMyProductFragment : BaseFragment() {
                 AffiliateCategoryMyProductAdapter(requireActivity(), categoryList, object :
                     AffiliateCategoryMyProductAdapter.CategoryClick {
                     override fun onCategoryClick(position: Int) {
+                        if (position==0){
+                            selectedCategory = null
+                            selectedSubCategory = null
+                            subCategoryList.clear()
+                            affiliateSubCategoryMyProductAdapter?.notifyDataSetChanged()
+                            getMyProduct()
+                        }
+                        else {
+                            selectedCategory = categoryList[position]
+                            getAllSubCategory(false)
+                            getMyProduct()
+                        }
                     }
 
                     })
@@ -103,13 +134,16 @@ class AffiliateMyProductFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver){
-
+                            getMyProduct()
                         }
                     }
 
                 }
             })
         }
+
+        getAllCategory()
+        getMyProduct()
     }
 
     override fun initControl() {
@@ -118,10 +152,52 @@ class AffiliateMyProductFragment : BaseFragment() {
                 openSpeechDialog()
             }
         }
-
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getAffiliateMyProductResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    productList.clear()
+                    response?.data?.data?.let { list ->
+                        productList.addAll(list)
+                    }
+                    binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+                    affiliateMyProductAdapter?.notifyDataSetChanged()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.categoryResult.observe(viewLifecycleOwner) { response ->
+            if (isCategoryObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                categoryList.clear()
+                categoryList.add(GetCategoryResponse.Data(name = "All", id = 0))
+                categoryList.addAll(response.data)
+                affiliateCategoryMyProductAdapter?.notifyDataSetChanged()
+                isCategoryObserver = false
+            }
+        }
+
+        viewModel.subCategoryResult.observe(viewLifecycleOwner) { response ->
+            if (isSubCategoryObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                subCategoryList.clear()
+                subCategoryList.addAll(response.data)
+                affiliateSubCategoryMyProductAdapter?.notifyDataSetChanged()
+                isSubCategoryObserver = false
+            }
+        }
     }
 
     private val speechLauncher =
@@ -158,6 +234,33 @@ class AffiliateMyProductFragment : BaseFragment() {
         } catch (e: Exception) {
             showToast("Speech recognition not supported")
         }
+    }
+
+    private fun getMyProduct(){
+        val map = HashMap<String, Any>()
+        if (selectedCategory!=null){
+            map["category_id"] = selectedCategory?.id.toString()
+
+        }
+        if (selectedSubCategory!=null){
+            map["subcategory_id"] = selectedSubCategory?.id.toString()
+        }
+        viewModel.getAffiliateMyProduct(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun getAllCategory(){
+        viewModel.getCategory()
+        isCategoryObserver = true
+    }
+
+    private fun getAllSubCategory(loading:Boolean=true,search:String?=null){
+        viewModel.getSubCategory(selectedCategory?.id.toString(),search)
+        if (loading){
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        }
+        isSubCategoryObserver = true
     }
 
 }
