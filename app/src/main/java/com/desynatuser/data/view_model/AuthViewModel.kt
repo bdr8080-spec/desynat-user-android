@@ -47,35 +47,35 @@ class AuthViewModel @Inject constructor(
         get() = repository.responseUploadImage
 
     fun uploadImage(
-        image: File?=null
+        image: File? = null
     ) {
         viewModelScope.launch {
             repository.uploadImage(image)
         }
     }
 
- val loginResult: LiveData<LoginResponse>
+    val loginResult: LiveData<LoginResponse>
         get() = repository.loginLiveData
 
-    fun login(map: HashMap<String,Any>) {
+    fun login(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.login(map)
         }
     }
 
- val loginEmailMobileResult: LiveData<LoginResponse>
+    val loginEmailMobileResult: LiveData<LoginResponse>
         get() = repository.loginEmailMobileLiveData
 
-    fun loginViaEmailOrMobile(map: HashMap<String,Any>) {
+    fun loginViaEmailOrMobile(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.loginViaEmailOrMobile(map)
         }
     }
 
- val otpVerifyResult: LiveData<LoginResponse>
+    val otpVerifyResult: LiveData<LoginResponse>
         get() = repository.otpVerifyLiveData
 
-    fun otpVerification(map: HashMap<String,Any>) {
+    fun otpVerification(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.otpVerification(map)
         }
@@ -84,7 +84,7 @@ class AuthViewModel @Inject constructor(
     val resendOtpResult: LiveData<LoginResponse>
         get() = repository.resendOtpLiveData
 
-    fun resendOtp(map: HashMap<String,Any>) {
+    fun resendOtp(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.resendOtp(map)
         }
@@ -93,7 +93,7 @@ class AuthViewModel @Inject constructor(
     val forgotPasswordResult: LiveData<LoginResponse>
         get() = repository.forgotPasswordLiveData
 
-    fun forgotPassword(map: HashMap<String,Any>) {
+    fun forgotPassword(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.forgotPassword(map)
         }
@@ -102,7 +102,7 @@ class AuthViewModel @Inject constructor(
     val createPasswordResult: LiveData<LoginResponse>
         get() = repository.createPasswordLiveData
 
-    fun createPassword(map: HashMap<String,Any>) {
+    fun createPassword(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.createPassword(map)
         }
@@ -147,9 +147,9 @@ class AuthViewModel @Inject constructor(
     val addBankAffiliateUserResult: LiveData<AddAffiliateUserBankDetail>
         get() = repository.bankDetailAffiliateUserLiveData
 
-    fun addAffiliateUserBandDetail(request: AffiliateUserAddBankDetailRequest) {
+    fun addAffiliateUserBankDetail(request: AffiliateUserAddBankDetailRequest) {
         viewModelScope.launch {
-            repository.addAffiliateUserBandDetail(request)
+            repository.addAffiliateUserBankDetail(request)
         }
     }
 
@@ -162,10 +162,19 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    val addAffiliateUserBankResult: LiveData<CommonResponse>
+        get() = repository.addAffiliateUserBankLiveData
+
+    fun addAffiliateUserBank(request: AffiliateUserAddBankDetailRequest) {
+        viewModelScope.launch {
+            repository.addAffiliateUserBank(request)
+        }
+    }
+
     val otpVerifyAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
         get() = repository.otpVerifyAffiliateUserLiveData
 
-    fun verifyAffiliateUserOtp(map: HashMap<String,Any>) {
+    fun verifyAffiliateUserOtp(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.verifyAffiliateUserOtp(map)
         }
@@ -174,7 +183,7 @@ class AuthViewModel @Inject constructor(
     val resendOtpAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
         get() = repository.resendOtpAffiliateUserLiveData
 
-    fun resendOtpAffiliateUser(map: HashMap<String,Any>) {
+    fun resendOtpAffiliateUser(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.resendOtpAffiliateUser(map)
         }
@@ -183,7 +192,7 @@ class AuthViewModel @Inject constructor(
     val forgotPasswordAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
         get() = repository.forgotPasswordAffiliateUserLiveData
 
-    fun forgotPasswordAffiliateUser(map: HashMap<String,Any>) {
+    fun forgotPasswordAffiliateUser(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.forgotPasswordAffiliateUser(map)
         }
@@ -192,7 +201,7 @@ class AuthViewModel @Inject constructor(
     val createPasswordAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
         get() = repository.createPasswordAffiliateUserLiveData
 
-    fun createAffiliateUserPassword(map: HashMap<String,Any>) {
+    fun createAffiliateUserPassword(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.createAffiliateUserPassword(map)
         }
@@ -210,15 +219,16 @@ class AuthViewModel @Inject constructor(
     val loginAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
         get() = repository.loginAffiliateUserLiveData
 
-    fun loginAffiliateUser(map: HashMap<String,Any>) {
+    fun loginAffiliateUser(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.loginAffiliateUser(map)
         }
     }
+
     val loginWithOtpAffiliateUserResult: LiveData<AffiliateUserLoginResponse>
         get() = repository.loginWithOtpAffiliateUserLiveData
 
-    fun loginWithOtpAffiliateUser(map: HashMap<String,Any>) {
+    fun loginWithOtpAffiliateUser(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.loginWithOtpAffiliateUser(map)
         }

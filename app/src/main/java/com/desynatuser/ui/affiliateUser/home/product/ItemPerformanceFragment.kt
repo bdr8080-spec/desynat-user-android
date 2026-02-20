@@ -11,7 +11,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentItemPerformanceBinding
-import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
@@ -25,7 +25,7 @@ class ItemPerformanceFragment : BaseFragment() {
     private var binding: FragmentItemPerformanceBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
-    private var productData :GetAffiliateAllProductResponse.Data.Data?=null
+    private var productData :GetAffiliateMyProductResponse.Data.Data?=null
     private var productDetailData : GetAffiliateProductDetailResponse.Data?=null
 
     override fun onCreateView(
@@ -46,7 +46,7 @@ class ItemPerformanceFragment : BaseFragment() {
     override fun initView() {
         val itemProductDataJson = arguments?.getString("productData")
         if (!itemProductDataJson.isNullOrEmpty()) {
-            productData = Gson().fromJson(itemProductDataJson, GetAffiliateAllProductResponse.Data.Data::class.java)
+            productData = Gson().fromJson(itemProductDataJson, GetAffiliateMyProductResponse.Data.Data::class.java)
             getAffiliateProductDetail()
         }
         binding?.apply {
@@ -99,16 +99,16 @@ class ItemPerformanceFragment : BaseFragment() {
         binding?.apply {
             Glide.with(requireActivity()).load(productDetailData?.productVariants?.get(0)?.variantImage?.get(0)).placeholder(
                 R.drawable.ic_placeholder).into(ivStore)
-            tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
+            tvTitle.text = productData?.product?.productNameEn+" (By ${productData?.product?.store?.storeName})"
 
-            tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
-            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatPrice(productData?.product?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
+            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.product?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
 
-            val variant = productData?.productVariants?.getOrNull(0)
+            val variant = productData?.product?.productVariants?.getOrNull(0)
             val discountValue = variant?.discountValue ?: 0
             val discountType = if (variant?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
-            tvCommission.text = "${productData?.productVariants?.get(0)?.discountValue}% Commission"
+            tvCommission.text = "${productData?.product?.productVariants?.get(0)?.discountValue}% Commission"
             //tvLink.text = "Link- off ${productData?.}"
         }
     }

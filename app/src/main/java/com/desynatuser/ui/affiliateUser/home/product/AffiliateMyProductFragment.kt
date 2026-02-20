@@ -21,7 +21,7 @@ import com.desynatuser.adapter.AffiliateSubCategoryMyProductAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateMyProductBinding
-import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.utils.ProgressDialogUtils
@@ -41,7 +41,7 @@ class AffiliateMyProductFragment : BaseFragment() {
     private var affiliateMyProductAdapter: AffiliateMyProductAdapter?=null
     private var affiliateCategoryMyProductAdapter: AffiliateCategoryMyProductAdapter?=null
     private var affiliateSubCategoryMyProductAdapter: AffiliateSubCategoryMyProductAdapter?=null
-    private var productList = ArrayList<GetAffiliateAllProductResponse.Data.Data>()
+    private var productList = ArrayList<GetAffiliateMyProductResponse.Data.Data>()
     private var categoryList = ArrayList<GetCategoryResponse.Data>()
     private var subCategoryList = ArrayList<GetSubCategoryResponse.Data>()
     private var search: Job? = null

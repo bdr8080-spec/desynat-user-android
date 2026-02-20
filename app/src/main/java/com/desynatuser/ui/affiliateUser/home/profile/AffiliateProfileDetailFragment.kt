@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.desynatuser.R
+import com.desynatuser.adapter.BankAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateProfileDetailBinding
@@ -26,6 +27,7 @@ import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -34,14 +36,19 @@ class AffiliateProfileDetailFragment : BaseFragment() {
     private var binding: FragmentAffiliateProfileDetailBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
+    private var isProfileObserver = false
     private var isImageObserver = false
-    var profileData : GetAffiliateUserProfileResponse.Data?=null
-
+    private var profileData : GetAffiliateUserProfileResponse.Data?=null
+    private var bankList = ArrayList<GetAffiliateUserProfileResponse.Data.BankDetails>()
+    private var bankAdapter: BankAdapter?=null
+    private var tabType = 0
+    private var updatedType = 0
+    private var selectedPos = -1
     private var selectedCountryId = ""
     private var latitude:Double = 0.0
     private var longitude:Double = 0.0
-    var address:String=""
-    var countryList = ArrayList<GetCountryResponse.Data>()
+    private var address:String=""
+    private var countryList = ArrayList<GetCountryResponse.Data>()
     private lateinit var imagePicker: ImagePicker
     private var profileImageUrl:String?=null
     private var docUrl1:String?=null
@@ -111,9 +118,85 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                             uploadFile(CommonMethod.uriToFile(requireActivity(), it))
                         }
                     }
-
                 }
             }
+
+            when(tabType){
+                0->{
+                    tvPersonalInfo.setTextColor(requireActivity().getColor(R.color.white))
+                    tvAddress.setTextColor(requireActivity().getColor(R.color.black))
+                    tvBank.setTextColor(requireActivity().getColor(R.color.black))
+                    tvPersonalInfo.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.selected_left_tab))
+                    tvAddress.background = null
+                    tvBank.background = null
+                    clPersonalInfo.isVisible = true
+                    llAddress.isVisible = false
+                    llBank.isVisible = false
+                    btnSaveChange.isVisible = true
+                }
+                1->{
+                    tvPersonalInfo.setTextColor(requireActivity().getColor(R.color.black))
+                    tvAddress.setTextColor(requireActivity().getColor(R.color.white))
+                    tvBank.setTextColor(requireActivity().getColor(R.color.black))
+                    tvAddress.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.selected_mid_tab))
+                    tvPersonalInfo.background = null
+                    tvBank.background = null
+                    clPersonalInfo.isVisible = false
+                    llAddress.isVisible = true
+                    llBank.isVisible = false
+                    btnSaveChange.isVisible = true
+                }
+                2->{
+                    tvPersonalInfo.setTextColor(requireActivity().getColor(R.color.black))
+                    tvAddress.setTextColor(requireActivity().getColor(R.color.black))
+                    tvBank.setTextColor(requireActivity().getColor(R.color.white))
+                    tvBank.setBackgroundDrawable(requireActivity().getDrawable(R.drawable.selected_right_tab))
+                    tvAddress.background = null
+                    tvPersonalInfo.background = null
+                    llBank.isVisible = true
+                    clPersonalInfo.isVisible = false
+                    llAddress.isVisible = false
+                    btnSaveChange.isVisible = false
+                }
+            }
+
+            bankAdapter = BankAdapter(requireActivity(),bankList,object : BankAdapter.OnClick{
+                override fun onClick(position: Int,type: Int) {
+                    when(type){
+                        1->{
+                            val bundle = Bundle().apply {
+                                putString("userId", profileData?.userId.toString())
+                                putString("from", "profile")
+                                putString("type", "edit")
+                                putString("bankData", Gson().toJson(bankList[position]))
+                            }
+                            findNavController().navigate(
+                                R.id.action_affiliateProfileDetailFragment_to_affiliateAddBankDetailFragment,bundle
+                            )
+                        }
+                        2->{
+                            CommonMethod.deleteAlertDialog(
+                                requireActivity(),
+                                "Are you sure you want to delete the bank detail?"
+                            ) { action ->
+                                when (action) {
+                                    CommonMethod.DialogAction.DELETE -> {
+                                        selectedPos = position
+                                        deleteBank()
+                                    }
+
+                                    CommonMethod.DialogAction.DISCARD -> {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            })
+
+            rvBank.adapter = bankAdapter
         }
     }
 
@@ -175,7 +258,14 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
 
             btnSaveChange.setOnClickListener {
-                updateAffiliateProfile()
+                when(tabType){
+                    0->{
+                        updateAffiliateProfile()
+                    }
+                    1->{
+                        updateAffiliateAddress()
+                    }
+                }
             }
 
             ivDoc1.setOnClickListener {
@@ -208,7 +298,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                 locationResultLauncher.launch(intent)
             }
 
-            tvAddNewBank.setOnClickListener {
+            clAddAnotherAccount.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("userId", profileData?.userId.toString())
                     putString("from", "profile")
@@ -267,11 +357,61 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    CommonMethod.showSuccessDialog(requireActivity(),"Profile updated successfully!"){
-                        findNavController().popBackStack()
-                    }
+                    updatedType = 1
+                    getAffiliateUserProfile()
                 }
                 isObserver = false
+            }
+        }
+
+        viewModel.deleteBankResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    updatedType = 3
+                    getAffiliateUserProfile()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.updateAffiliateUserAddressResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    updatedType = 2
+                    getAffiliateUserProfile()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.getAffiliateProfileResult.observe(viewLifecycleOwner) { response ->
+            if (isProfileObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
+                    when(updatedType){
+                        1->{
+                            CommonMethod.showSuccessDialog(requireActivity(),"Profile updated successfully!"){
+                                findNavController().popBackStack()
+                            }
+                        }
+                        2->{
+                            CommonMethod.showSuccessDialog(requireActivity(),"Address updated successfully!"){
+                                findNavController().popBackStack()
+                            }
+                        }
+                        3->{
+                            CommonMethod.showSuccessDialog(requireActivity(),"Bank details deleted successfully!"){
+                                findNavController().popBackStack()
+                            }
+                        }
+                    }
+
+                }
+                updatedType = 0
+                isProfileObserver = false
             }
         }
     }
@@ -285,10 +425,10 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                 profileImageUrl = profileData?.profileImage
                 docUrl1 = profileData?.document1
                 docUrl2 = profileData?.document2
-                Glide.with(requireActivity()).load(profileData?.profileImage).placeholder(R.drawable.ic_user).into(ivProfileImage)
-                Glide.with(requireActivity()).load(profileData?.document1).placeholder(R.drawable.doc1).into(ivDoc1)
-                Glide.with(requireActivity()).load(profileData?.document2).placeholder(R.drawable.doc2).into(ivDoc2)
-            }
+                 }
+            Glide.with(requireActivity()).load(profileImageUrl).placeholder(R.drawable.ic_user).into(ivProfileImage)
+            Glide.with(requireActivity()).load(docUrl1).placeholder(R.drawable.doc1).into(ivDoc1)
+            Glide.with(requireActivity()).load(docUrl2).placeholder(R.drawable.doc2).into(ivDoc2)
 
             etCountry.setText(profileData?.countryDetails?.name)
             etChooseLocation.setText(profileData?.addressDetails?.locations)
@@ -296,6 +436,9 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             etAddressLine2.setText(profileData?.addressDetails?.address2)
             etPinCode.setText(profileData?.addressDetails?.pincode)
 
+            bankList.clear()
+            profileData?.bankDetails?.let { bankList.addAll(it) }
+            bankAdapter?.notifyDataSetChanged()
         }
     }
     fun uploadFile(image:File){
@@ -340,8 +483,19 @@ class AffiliateProfileDetailFragment : BaseFragment() {
         }
     }
 
+    private fun getAffiliateUserProfile(){
+        viewModel.getAffiliateProfile()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isProfileObserver = true
+    }
+
     private fun getSelectedCountry() {
         viewModel.getSelectedCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+    private fun deleteBank() {
+        viewModel.deleteBank(bankList[selectedPos].id.toString())
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }

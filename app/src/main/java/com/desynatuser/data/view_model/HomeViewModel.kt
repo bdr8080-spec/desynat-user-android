@@ -7,6 +7,7 @@ import com.desynatuser.data.repo.MainRepository
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
@@ -756,6 +757,15 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
+    val deleteBankResult: LiveData<CommonResponse>
+        get() = repository.deleteBankLiveData
+
+    fun deleteBank(id: String) {
+        viewModelScope.launch {
+            repository.deleteBank(id)
+        }
+    }
+
     val getAffiliateAllProductResult: LiveData<GetAffiliateAllProductResponse>
         get() = repository.getAffiliateAllProductLiveData
 
@@ -774,7 +784,25 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
-    val getAffiliateMyProductResult: LiveData<GetAffiliateAllProductResponse>
+    val addAffiliateProductResult: LiveData<CommonResponse>
+        get() = repository.addAffiliateProductLiveData
+
+    fun addAffiliateProduct(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.addAffiliateProduct(map)
+        }
+    }
+
+    val getAffiliateProductLinkResult: LiveData<CommonResponse>
+        get() = repository.getAffiliateProductLinkLiveData
+
+    fun getAffiliateProductLink(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateProductLink(map)
+        }
+    }
+
+    val getAffiliateMyProductResult: LiveData<GetAffiliateMyProductResponse>
         get() = repository.getAffiliateMyProductLiveData
 
     fun getAffiliateMyProduct(map: HashMap<String,Any>) {

@@ -9,12 +9,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/_15sdp"
-            android:paddingEnd="@dimen/_6sdp"
-            android:paddingVertical="@dimen/_12sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_20sdp"
             android:src="@drawable/ic_radio_unselected"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ivDelete"
-            app:layout_constraintBottom_toBottomOf="@+id/ivDelete"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvAccountNumber"
@@ -27,35 +27,38 @@
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toEndOf="@+id/ivRadio"
             app:layout_constraintEnd_toStartOf="@+id/ivEdit"
-            app:layout_constraintTop_toTopOf="@+id/ivDelete"
-            app:layout_constraintBottom_toBottomOf="@+id/ivDelete"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivEdit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit"
-        android:paddingVertical="@dimen/_12sdp"
+        android:layout_height="0dp"
+        android:src="@drawable/icon_edit"
         android:paddingStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_6sdp"
         app:layout_constraintEnd_toStartOf="@+id/ivDelete"
-        app:layout_constraintTop_toTopOf="@+id/ivDelete"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivDelete"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_delete"
-        android:paddingVertical="@dimen/_12sdp"
+        android:layout_height="0dp"
+        android:src="@drawable/delete_icon"
         android:paddingEnd="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     
     <View
-        android:layout_width="match_parent"
+        android:id="@+id/view"
+        android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:background="#33000000"
-        android:layout_marginTop="@dimen/_12sdp"
-        app:layout_constraintTop_toBottomOf="@+id/tvAccountNumber"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@+id/ivRadio"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

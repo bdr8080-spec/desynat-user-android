@@ -101,6 +101,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:drawableEnd="@drawable/ic_current"
             android:drawableTint="#808080"
+            android:drawablePadding="@dimen/_5sdp"
             android:inputType="text"
             android:editable="false"
             android:focusable="false"

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/_15sdp"
+    android:layout_marginBottom="@dimen/_15sdp"
+    android:paddingBottom="@dimen/_10sdp"
+    android:background="@drawable/card_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivStore"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
+        android:src="@drawable/newest"
+        app:shapeAppearanceOverlay="@style/half_rounded_corner_10sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:singleLine="true"
+        android:text="Levis Shirt (By Abaya)"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="@+id/ivStore"
+        app:layout_constraintEnd_toEndOf="@+id/ivStore"
+        app:layout_constraintTop_toBottomOf="@+id/ivStore" />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/rating"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:progressBackgroundTint="#C7C7C7"
+        android:progressTint="#FFA41B"
+        android:stepSize="0.5"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"/>
+
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="(123K)"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintStart_toEndOf="@+id/rating"
+        app:layout_constraintTop_toTopOf="@+id/rating"
+        app:layout_constraintBottom_toBottomOf="@+id/rating"/>
+
+    <TextView
+        android:id="@+id/tvDiscountPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="KD 239"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/rating" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="KD 239"
+        android:textColor="#99000000"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="#99000000"
+        app:layout_constraintStart_toStartOf="@+id/tvPrice"
+        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
+
+    <TextView
+        android:id="@+id/tvDiscount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="20% off"
+        android:textColor="#E70000"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
+
+    <TextView
+        android:id="@+id/tvCommission"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:text="5% Commission"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrice"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvGetLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get Link"
+        android:background="@drawable/ic_get_link"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textSize="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_medium"
+        app:layout_constraintTop_toBottomOf="@+id/tvCommission"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

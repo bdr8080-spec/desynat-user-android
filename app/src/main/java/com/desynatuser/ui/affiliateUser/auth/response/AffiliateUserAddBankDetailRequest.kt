@@ -15,5 +15,7 @@ data class AffiliateUserAddBankDetailRequest(
     @SerializedName("iban")
     val iban: String,
     @SerializedName("swift")
-    val swift: String
+    val swift: String,
+    @SerializedName("bank_details_id")
+    val bankDetailsId: String?=null
 )

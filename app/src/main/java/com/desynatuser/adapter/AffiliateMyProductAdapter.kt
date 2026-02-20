@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemAffiliateProductBinding
-import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
+import com.desynatuser.databinding.ItemAffiliateMyProductBinding
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.utils.CommonMethod
 
-class AffiliateMyProductAdapter(var context:Context, private var productList: ArrayList<GetAffiliateAllProductResponse.Data.Data>, var productClick:ProductClick) : RecyclerView.Adapter<AffiliateMyProductAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: ItemAffiliateProductBinding) :
+class AffiliateMyProductAdapter(var context:Context, private var productList: ArrayList<GetAffiliateMyProductResponse.Data.Data>, var productClick:ProductClick) : RecyclerView.Adapter<AffiliateMyProductAdapter.ViewHolder>() {
+    inner class ViewHolder(val binding: ItemAffiliateMyProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     interface ProductClick{
@@ -20,7 +20,7 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemAffiliateProductBinding.inflate(
+            ItemAffiliateMyProductBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false)
         )
     }
@@ -30,7 +30,7 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val productData = productList[position]
+        val productData = productList[position].product
 
         holder.binding.apply {
             tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
@@ -44,6 +44,9 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
             tvDiscount.text = "$discountValue$discountType"
             tvCommission.text = "${productData?.productVariants?.get(0)?.discountValue}% Commission"
             tvGetLink.text = "Track Performance"
+
+            tvRating.text = "(${productData?.storeAvgRating})"
+            rating.rating = productData?.storeAvgRating?.toFloatOrNull()?:0f
 
             ivStore.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
                 crossfade(true)

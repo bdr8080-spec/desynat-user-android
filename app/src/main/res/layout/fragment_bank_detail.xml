@@ -130,7 +130,7 @@
                 android:id="@+id/etConfirmAccountNumber"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Enter Confirm Account Number"
+                android:hint="Re-Enter Account Number"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="number"

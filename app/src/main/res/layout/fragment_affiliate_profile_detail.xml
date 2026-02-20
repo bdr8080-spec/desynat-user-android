@@ -42,32 +42,42 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Personal Info"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:background="@drawable/selected_left_tab"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/line_gradient"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAddress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="@dimen/_8sdp"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.9"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Address"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:gravity="center"
                     android:textColor="@color/black"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/line_gradient"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvBank"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="@dimen/_8sdp"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1.1"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Bank Account"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:gravity="center"
                     android:textColor="@color/black"/>
 
@@ -268,6 +278,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:drawableEnd="@drawable/ic_current"
+                    android:drawablePadding="@dimen/_5sdp"
                     android:drawableTint="#808080"
                     android:inputType="text"
                     android:editable="false"
@@ -420,14 +431,44 @@
                     tools:itemCount="2"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/tvAddNewBank"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clAddAnotherAccount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_add_another_account"/>
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:background="@drawable/ic_add_another_account">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivAddNewBank"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:src="@drawable/add_card"
+                        android:layout_centerVertical="true"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintTop_toTopOf="@+id/tvAddNewBank"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvAddNewBank"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tvAddNewBank"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAddNewBank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add another account"
+                        android:gravity="center"
+                        android:textColor="#6F4628"
+                        android:textSize="@dimen/_12sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivAddNewBank"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 

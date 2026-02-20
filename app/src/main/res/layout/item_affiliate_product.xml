@@ -11,7 +11,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivStore"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_110sdp"
+        android:layout_height="@dimen/_100sdp"
         android:scaleType="centerCrop"
         android:clipToOutline="true"
         android:src="@drawable/newest"
@@ -30,7 +30,7 @@
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_2sdp"
         android:textSize="@dimen/_10sdp"
-        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
         app:layout_constraintStart_toStartOf="@+id/ivStore"
         app:layout_constraintEnd_toEndOf="@+id/ivStore"
         app:layout_constraintTop_toBottomOf="@+id/ivStore" />
@@ -40,6 +40,10 @@
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:numStars="5"
+        android:progressBackgroundTint="#C7C7C7"
+        android:progressTint="#FFA41B"
+        android:stepSize="0.5"
         android:contentDescription="@string/app_name"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"/>
@@ -54,7 +58,7 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:text="(123K)"
         android:textColor="@color/black"
-        android:textSize="@dimen/_9sdp"
+        android:textSize="@dimen/_8sdp"
         app:layout_constraintStart_toEndOf="@+id/rating"
         app:layout_constraintTop_toTopOf="@+id/rating"
         app:layout_constraintBottom_toBottomOf="@+id/rating"/>
@@ -82,7 +86,7 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:text="KD 239"
         android:textColor="#99000000"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
 
@@ -106,7 +110,7 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:text="20% off"
         android:textColor="#E70000"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toEndOf="@+id/tvPrice"
         app:layout_constraintTop_toTopOf="@+id/tvPrice"
         app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
@@ -120,7 +124,7 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:text="5% Commission"
         android:textColor="@color/black"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvPrice"/>
 
@@ -130,10 +134,11 @@
         android:layout_height="wrap_content"
         android:text="Get Link"
         android:background="@drawable/ic_get_link"
-        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:textColor="@color/white"
         android:gravity="center"
+        android:singleLine="true"
         android:textSize="@dimen/_10sdp"
         android:paddingVertical="@dimen/_4sdp"
         android:fontFamily="@font/poppins_medium"

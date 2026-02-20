@@ -119,9 +119,13 @@ object Constants {
     const val UPDATE_AFFILIATE_PROFILE = "/api/affiliate/update_affiliate_profile"
     const val UPDATE_AFFILIATE_ADDRESS = "/api/affiliate/update_affiliate_addresse"
     const val UPDATE_AFFILIATE_BANK = "/api/affiliate/update_affiliate_bank_details"
+    const val ADD_AFFILIATE_BANK = "/api/affiliate/add_affiliate_bank_details"
+    const val DELETE_BANK = "/api/affiliate/delete_affiliate_bank_details"
     const val UPDATE_AFFILIATE_PASSWORD = "/api/affiliate/update_affiliate_password"
     const val GET_AFFILIATE_ALL_PRODUCT = "api/affiliate/get_all_products"
     const val GET_AFFILIATE_PRODUCT_DETAIL = "/api/affiliate/get_product_detail"
+    const val ADD_AFFILIATE_PRODUCT = "api/affiliate/add_to_my_products"
+    const val GET_AFFILIATE_PRODUCT_LINK = "api/affiliate/add_to_my_products"
     const val GET_AFFILIATE_MY_PRODUCT = "/api/affiliate/get_my_products"
 
 }

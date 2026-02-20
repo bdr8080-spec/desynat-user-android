@@ -19,7 +19,7 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("admin_verify")
         val adminVerify: String,
         @SerializedName("bank_details")
-        val bankDetails: BankDetails,
+        val bankDetails: List<BankDetails>,
         @SerializedName("bank_update_status")
         val bankUpdateStatus: String,
         @SerializedName("country_code")

@@ -47,7 +47,9 @@ class AffiliateAllProductFragment : BaseFragment() {
     private var search: Job? = null
     private var lastQuery: String? = null
     private var categoryData : GetCategoryResponse.Data?=null
+    private var selectedPos = -1
     private var subCategoryData : GetSubCategoryResponse.Data?=null
+    private var linkDialog: Dialog?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,6 +87,7 @@ class AffiliateAllProductFragment : BaseFragment() {
                         1->{
                         }
                         2->{
+                            selectedPos = position
                             getLinkDialog()
                         }
                     }
@@ -144,26 +147,56 @@ class AffiliateAllProductFragment : BaseFragment() {
                     response?.data?.data?.let { list ->
                         productList.addAll(list)
                     }
-                    binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+                    checkData()
                     affiliateProductAdapter?.notifyDataSetChanged()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.addAffiliateProductResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    linkDialog?.dismiss()
+                    CommonMethod.showSuccessDialog(requireActivity(),"Product added successfully !")
+                    productList.removeAt(selectedPos)
+                    affiliateProductAdapter?.notifyItemRemoved(selectedPos)
+                    affiliateProductAdapter?.notifyItemRangeChanged(selectedPos, productList.size - selectedPos)
+                    checkData()
+                    selectedPos = -1
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.getAffiliateProductLinkResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
                 }
                 isObserver = false
             }
         }
     }
 
-    private fun getLinkDialog() {
-        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
-        val dialogBinding = GetProductLinkDialogBinding.inflate(LayoutInflater.from(requireActivity()))
-        dialogBinding.root.let { dialog?.setContentView(it) }
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+    }
 
-        val window: Window = dialog?.window!!
+    private fun getLinkDialog() {
+        linkDialog = Dialog(requireActivity(), R.style.CustomDialog)
+        val dialogBinding = GetProductLinkDialogBinding.inflate(LayoutInflater.from(requireActivity()))
+        dialogBinding.root.let { linkDialog?.setContentView(it) }
+
+        val window: Window = linkDialog?.window!!
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog?.setCancelable(true)
+        linkDialog?.setCancelable(true)
 
         val params: WindowManager.LayoutParams = window.attributes
         params.gravity = Gravity.CENTER
@@ -171,7 +204,7 @@ class AffiliateAllProductFragment : BaseFragment() {
 
         dialogBinding.apply {
             tvToolbar.setOnClickListener {
-                dialog?.dismiss()
+                linkDialog?.dismiss()
             }
 
             tvCopyLink.setOnClickListener {
@@ -179,10 +212,10 @@ class AffiliateAllProductFragment : BaseFragment() {
             }
 
             btnAdd.setOnClickListener {
-
+                addAffiliateProduct()
             }
         }
-        dialog?.show()
+        linkDialog?.show()
     }
 
     private val speechLauncher =
@@ -225,6 +258,22 @@ class AffiliateAllProductFragment : BaseFragment() {
         map["category_id"] = categoryData?.id.toString()
         map["subcategory_id"] = subCategoryData?.id.toString()
         viewModel.getAffiliateAllProduct(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+    }
+
+    private fun addAffiliateProduct() {
+        val map = HashMap<String, Any>()
+        map["product_id"] = productList[selectedPos].id
+        viewModel.addAffiliateProduct(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+    }
+
+    private fun getAffiliateProductLink() {
+        val map = HashMap<String, Any>()
+        map["product_id"] = productList[selectedPos].id
+        viewModel.getAffiliateProductLink(map)
         isObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }

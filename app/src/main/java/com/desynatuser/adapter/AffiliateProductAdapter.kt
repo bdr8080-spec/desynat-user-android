@@ -31,6 +31,8 @@ class AffiliateProductAdapter(var context:Context, private var productList: Arra
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
+                tvRating.text = "(${productData?.averageRating?.product})"
+                rating.rating = productData?.averageRating?.product?.toFloatOrNull()?:0f
 
                     tvGetLink.setOnClickListener {
                         productClick.onProductClick(position,2)

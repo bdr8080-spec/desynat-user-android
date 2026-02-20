@@ -15,6 +15,7 @@ import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRespons
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
@@ -992,12 +993,12 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
     }
 
     val bankDetailAffiliateUserLiveData = SingleLiveEvent<AddAffiliateUserBankDetail>()
-    suspend fun addAffiliateUserBandDetail(
+    suspend fun addAffiliateUserBankDetail(
         request:AffiliateUserAddBankDetailRequest
     ) {
         handleApiCall(
             api = {
-                api.addAffiliateUserBandDetail(request)
+                api.addAffiliateUserBankDetail(request)
             },
             responseLiveData = bankDetailAffiliateUserLiveData
         )
@@ -1134,6 +1135,18 @@ val getAffiliateProfileLiveData = SingleLiveEvent<GetAffiliateUserProfileRespons
         )
     }
 
+    val addAffiliateUserBankLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun addAffiliateUserBank(
+        request: AffiliateUserAddBankDetailRequest
+    ) {
+        handleApiCall(
+            api = {
+                api.addAffiliateUserBank(request)
+            },
+            responseLiveData = addAffiliateUserBankLiveData
+        )
+    }
+
     val updateAffiliateUserPasswordLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun updateAffiliateUserPassword(
         map: HashMap<String,Any>
@@ -1146,6 +1159,16 @@ val getAffiliateProfileLiveData = SingleLiveEvent<GetAffiliateUserProfileRespons
         )
     }
 
+    val deleteBankLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun deleteBank(id: String
+    ) {
+        handleApiCall(
+            api = {
+                api.deleteBank(id)
+            },
+            responseLiveData = deleteBankLiveData
+        )
+    }
     val getAffiliateAllProductLiveData = SingleLiveEvent<GetAffiliateAllProductResponse>()
     suspend fun getAffiliateAllProduct(map: HashMap<String,Any>
     ) {
@@ -1168,8 +1191,31 @@ val getAffiliateProfileLiveData = SingleLiveEvent<GetAffiliateUserProfileRespons
         )
     }
 
+val addAffiliateProductLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun addAffiliateProduct(map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.addAffiliateProduct(map)
+            },
+            responseLiveData = addAffiliateProductLiveData
+        )
+    }
 
-    val getAffiliateMyProductLiveData = SingleLiveEvent<GetAffiliateAllProductResponse>()
+
+val getAffiliateProductLinkLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun getAffiliateProductLink(map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateProductLink(map)
+            },
+            responseLiveData = getAffiliateProductLinkLiveData
+        )
+    }
+
+
+    val getAffiliateMyProductLiveData = SingleLiveEvent<GetAffiliateMyProductResponse>()
     suspend fun getAffiliateMyProduct(map: HashMap<String,Any>
     ) {
         handleApiCall(
