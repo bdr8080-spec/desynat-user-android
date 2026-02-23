@@ -64,8 +64,16 @@
         tools:layout="@layout/fragment_search_affiliate_product">
 
         <action
-            android:id="@+id/action_searchProductFragment_to_affiliateAllProductFragment"
-            app:destination="@id/affiliateAllProduct"/>
+            android:id="@+id/action_searchProductFragment_to_searchAffiliateProductListFragment"
+            app:destination="@id/searchAffiliateProductList"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchAffiliateProductList"
+        android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateSearchProductListFragment"
+        android:label="Affiliate Search Product List Fragment"
+        tools:layout="@layout/fragment_affiliate_search_product_list">
 
     </fragment>
 
@@ -74,10 +82,6 @@
         android:name="com.desynatuser.ui.affiliateUser.home.product.AffiliateAllProductFragment"
         android:label="Affiliate All Product Fragment"
         tools:layout="@layout/fragment_affiliate_all_product">
-
-        <action
-            android:id="@+id/action_searchProductFragment_to_affiliateAllProductFragment"
-            app:destination="@id/affiliateAllProduct"/>
 
     </fragment>
 

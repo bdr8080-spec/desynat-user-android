@@ -207,6 +207,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
 
             tvPersonalInfo.setOnClickListener {
+                tabType = 0
                 tvPersonalInfo.setTextColor(requireActivity().getColor(R.color.white))
                 tvAddress.setTextColor(requireActivity().getColor(R.color.black))
                 tvBank.setTextColor(requireActivity().getColor(R.color.black))
@@ -220,6 +221,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
 
             tvAddress.setOnClickListener {
+                tabType = 1
                 tvPersonalInfo.setTextColor(requireActivity().getColor(R.color.black))
                 tvAddress.setTextColor(requireActivity().getColor(R.color.white))
                 tvBank.setTextColor(requireActivity().getColor(R.color.black))
@@ -233,6 +235,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
 
             tvBank.setOnClickListener {
+                tabType = 2
                 tvPersonalInfo.setTextColor(requireActivity().getColor(R.color.black))
                 tvAddress.setTextColor(requireActivity().getColor(R.color.black))
                 tvBank.setTextColor(requireActivity().getColor(R.color.white))
@@ -266,6 +269,14 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                         updateAffiliateAddress()
                     }
                 }
+            }
+
+            etMobile.setOnClickListener {
+
+            }
+
+            etEmail.setOnClickListener {
+
             }
 
             ivDoc1.setOnClickListener {
@@ -404,7 +415,9 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                         }
                         3->{
                             CommonMethod.showSuccessDialog(requireActivity(),"Bank details deleted successfully!"){
-                                findNavController().popBackStack()
+                                profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
+                                setData()
+                                //findNavController().popBackStack()
                             }
                         }
                     }
@@ -495,7 +508,9 @@ class AffiliateProfileDetailFragment : BaseFragment() {
         isObserver = true
     }
     private fun deleteBank() {
-        viewModel.deleteBank(bankList[selectedPos].id.toString())
+       val map = HashMap<String, Any>()
+        map["bank_details_id"] = bankList[selectedPos].id
+        viewModel.deleteBank(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }

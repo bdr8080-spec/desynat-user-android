@@ -58,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivAdminStory">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/etSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -68,9 +68,6 @@
                     android:layout_margin="1dp"
                     android:drawablePadding="@dimen/_5sdp"
                     android:hint="Search"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:clickable="true"
                     android:textSize="@dimen/_11sdp"
                     android:layout_centerVertical="true"
                     android:drawableStart="@drawable/ic_search"

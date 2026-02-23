@@ -50,6 +50,7 @@ class AffiliateAllProductFragment : BaseFragment() {
     private var selectedPos = -1
     private var subCategoryData : GetSubCategoryResponse.Data?=null
     private var linkDialog: Dialog?=null
+    private var dialogBinding: GetProductLinkDialogBinding?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -174,7 +175,7 @@ class AffiliateAllProductFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-
+                    dialogBinding?.tvLink?.text = response?.data?.link
                 }
                 isObserver = false
             }
@@ -187,8 +188,8 @@ class AffiliateAllProductFragment : BaseFragment() {
 
     private fun getLinkDialog() {
         linkDialog = Dialog(requireActivity(), R.style.CustomDialog)
-        val dialogBinding = GetProductLinkDialogBinding.inflate(LayoutInflater.from(requireActivity()))
-        dialogBinding.root.let { linkDialog?.setContentView(it) }
+        dialogBinding = GetProductLinkDialogBinding.inflate(LayoutInflater.from(requireActivity()))
+        dialogBinding?.root.let { it?.let { it1 -> linkDialog?.setContentView(it1) } }
 
         val window: Window = linkDialog?.window!!
         window.setLayout(
@@ -202,7 +203,9 @@ class AffiliateAllProductFragment : BaseFragment() {
         params.gravity = Gravity.CENTER
         window.attributes = params
 
-        dialogBinding.apply {
+        dialogBinding?.apply {
+
+            getAffiliateProductLink()
             tvToolbar.setOnClickListener {
                 linkDialog?.dismiss()
             }

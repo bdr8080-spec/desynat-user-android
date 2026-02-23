@@ -153,5 +153,4 @@
         app:layout_constraintStart_toEndOf="@+id/tvClear"
         app:layout_constraintTop_toTopOf="@+id/tvClear" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

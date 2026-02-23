@@ -10,7 +10,7 @@ import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 
 class AffiliateCategoryMyProductAdapter(var context: Context, private val categoryList: List<GetCategoryResponse.Data>, var categoryClick:CategoryClick) :
     RecyclerView.Adapter<AffiliateCategoryMyProductAdapter.ViewHolder>() {
-        var selectedPos = 0
+        var selectedPos = -1
         interface CategoryClick{
             fun onCategoryClick(position: Int)
         }
@@ -40,4 +40,9 @@ class AffiliateCategoryMyProductAdapter(var context: Context, private val catego
     }
 
     override fun getItemCount(): Int = categoryList.size
+
+    fun setSelected(selectedPosition:Int){
+        selectedPos = selectedPosition
+        notifyDataSetChanged()
+    }
 }

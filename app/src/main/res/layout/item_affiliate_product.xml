@@ -50,7 +50,7 @@
 
     <TextView
         android:id="@+id/tvRating"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_2sdp"
         android:fontFamily="@font/poppins_regular"
@@ -79,7 +79,7 @@
 
     <TextView
         android:id="@+id/tvPrice"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
         android:maxLines="1"
@@ -101,7 +101,7 @@
 
     <TextView
         android:id="@+id/tvDiscount"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_4sdp"
         android:ellipsize="end"
@@ -126,14 +126,15 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPrice"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvGetLink"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Get Link"
-        android:background="@drawable/ic_get_link"
+        android:background="@drawable/btn_gradient"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:textColor="@color/white"
@@ -142,6 +143,8 @@
         android:textSize="@dimen/_10sdp"
         android:paddingVertical="@dimen/_4sdp"
         android:fontFamily="@font/poppins_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCommission"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

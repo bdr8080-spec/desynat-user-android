@@ -100,8 +100,7 @@ class AffiliateMyProductFragment : BaseFragment() {
                 })
             rvSubCategory.adapter = affiliateSubCategoryMyProductAdapter
 
-            affiliateCategoryMyProductAdapter =
-                AffiliateCategoryMyProductAdapter(requireActivity(), categoryList, object :
+            affiliateCategoryMyProductAdapter = AffiliateCategoryMyProductAdapter(requireActivity(), categoryList, object :
                     AffiliateCategoryMyProductAdapter.CategoryClick {
                     override fun onCategoryClick(position: Int) {
                         if (position==0){
@@ -109,6 +108,7 @@ class AffiliateMyProductFragment : BaseFragment() {
                             selectedSubCategory = null
                             subCategoryList.clear()
                             affiliateSubCategoryMyProductAdapter?.notifyDataSetChanged()
+                            affiliateMyProductAdapter?.setData(subCategoryList.isNotEmpty())
                             getMyProduct()
                         }
                         else {
@@ -120,6 +120,8 @@ class AffiliateMyProductFragment : BaseFragment() {
 
                     })
             rvCategory.adapter = affiliateCategoryMyProductAdapter
+
+            affiliateMyProductAdapter?.setData(subCategoryList.isNotEmpty())
 
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -184,7 +186,15 @@ class AffiliateMyProductFragment : BaseFragment() {
                 categoryList.clear()
                 categoryList.add(GetCategoryResponse.Data(name = "All", id = 0))
                 categoryList.addAll(response.data)
-                affiliateCategoryMyProductAdapter?.notifyDataSetChanged()
+                var pos = 0
+                if (selectedCategory!=null){
+                    for (i in 0 until categoryList.size){
+                        if (categoryList[i].id==selectedCategory?.id){
+                            pos = i
+                        }
+                    }
+                }
+                affiliateCategoryMyProductAdapter?.setSelected(pos)
                 isCategoryObserver = false
             }
         }
@@ -195,26 +205,20 @@ class AffiliateMyProductFragment : BaseFragment() {
                 subCategoryList.clear()
                 subCategoryList.addAll(response.data)
                 affiliateSubCategoryMyProductAdapter?.notifyDataSetChanged()
+                affiliateMyProductAdapter?.setData(subCategoryList.isNotEmpty())
                 isSubCategoryObserver = false
             }
         }
     }
 
-    private val speechLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val speechLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 val data = result.data
                 val list = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 val text = list?.firstOrNull()
 
                 if (!text.isNullOrEmpty()) {
-                    val bundle = Bundle().apply {
-                        putString("search", text)
-                    }
-                    findNavController().navigate(
-                        R.id.action_searchProductFragment_to_searchProductListFragment,
-                        bundle
-                    )
+                    binding?.etSearch?.setText(text)
                 }
             }
         }

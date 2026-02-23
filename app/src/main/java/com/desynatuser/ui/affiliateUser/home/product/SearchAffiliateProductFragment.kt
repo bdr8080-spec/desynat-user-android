@@ -21,13 +21,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
+import com.desynatuser.adapter.LatestSearchAdapter
+import com.desynatuser.adapter.RecentSearchAdapter
+import com.desynatuser.adapter.RecommendedAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSearchAffiliateProductBinding
+import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
+import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 import com.desynatuser.ui.home.imageDetector.AnnotateRequest
 import com.desynatuser.ui.home.imageDetector.Feature
 import com.desynatuser.ui.home.imageDetector.ImageContent
 import com.desynatuser.ui.home.imageDetector.VisionRequestBody
+import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -43,10 +49,19 @@ import kotlin.getValue
 class SearchAffiliateProductFragment : BaseFragment() {
     private var binding: FragmentSearchAffiliateProductBinding? = null
     private val viewModel: HomeViewModel by viewModels()
-    private var isObserver = false
-
     private var search: Job? = null
     private var lastQuery: String? = null
+
+    var isObserver = false
+    var isLatestObserver = false
+    var isRecommendedObserver = false
+    var searchList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
+
+    var recentSearchAdapter: RecentSearchAdapter?=null
+    var recentSearchList = ArrayList<GetRecentSearchListResponse.Data>()
+    var latestSearchList = ArrayList<GetRecentSearchListResponse.Data>()
+    var latestSearchAdapter: LatestSearchAdapter?=null
+
 
     private lateinit var imagePicker: ImagePicker
     private val cameraLauncher =
@@ -111,31 +126,106 @@ class SearchAffiliateProductFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver) {
-                            //   getStoreList(search = query.ifEmpty { null })
+
                         }
                     }
-
                 }
             })
 
+            latestSearchAdapter = LatestSearchAdapter(requireActivity(), latestSearchList,object: LatestSearchAdapter.ClickOnItem{
+                override fun onClickItem(position: Int) {
+                    val bundle = Bundle().apply {
+                        putString("search", latestSearchList[position].name)
+                    }
+                    findNavController().navigate(R.id.action_searchProductFragment_to_searchAffiliateProductListFragment,bundle)
+                }
+
+            })
+            rvLatestSearch.adapter = latestSearchAdapter
+
+            recentSearchList.clear()
+            recentSearchAdapter = RecentSearchAdapter(requireActivity(), recentSearchList,object: RecentSearchAdapter.ClickOnItem{
+                override fun onClickItem(position: Int) {
+                    val bundle = Bundle().apply {
+                        putString("search", recentSearchList[position].name)
+                    }
+                    findNavController().navigate(R.id.action_searchProductFragment_to_searchAffiliateProductListFragment,bundle)
+                }
+
+            })
+            rvRecentSearch.adapter = recentSearchAdapter
+
+            getRecentSearch()
+            getLatestSearch()
         }
     }
 
     override fun initControl() {
         binding?.apply {
             tvGo.setOnClickListener {
-                findNavController().navigate(R.id.action_searchProductFragment_to_affiliateAllProductFragment)
+                val bundle = Bundle().apply {
+                    putString("search", etSearch.text.toString())
+                }
+                findNavController().navigate(R.id.action_searchProductFragment_to_searchAffiliateProductListFragment,bundle)
             }
 
             ivMic.setOnClickListener {
                 openSpeechDialog()
             }
+
+            ivCamera.setOnClickListener {
+                imagePicker.showImageSourceDialog()
+            }
         }
 
     }
 
-    override fun observe() {
+    private fun getRecentSearch() {
+        viewModel.getAffiliateRecentSearchList()
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
+
+    private fun getLatestSearch() {
+        viewModel.getAffiliateLatestSearchList()
+        isLatestObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+    }
+
+    override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getAffiliateRecentSearchListResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    recentSearchList.clear()
+                    recentSearchList.addAll(response.data)
+                    recentSearchAdapter?.notifyDataSetChanged()
+                }
+                isObserver = false
+            }
+        }
+        viewModel.getAffiliateLatestSearchListResult.observe(viewLifecycleOwner) { response ->
+            if (isLatestObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    latestSearchList.clear()
+                    latestSearchList.addAll(response.data)
+                    latestSearchAdapter?.notifyDataSetChanged()
+                }
+                isLatestObserver = false
+            }
+        }
+
+    }
+
 
     fun uriToBitmap(context: Context, uri: Uri): Bitmap {
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
@@ -210,7 +300,7 @@ class SearchAffiliateProductFragment : BaseFragment() {
                 putStringArrayList("searchList", ArrayList(detectedLabel))
             }
             findNavController().navigate(
-                R.id.action_searchProductFragment_to_searchProductListFragment,
+                R.id.action_searchProductFragment_to_searchAffiliateProductListFragment,
                 bundle
             )
         }
@@ -228,7 +318,7 @@ class SearchAffiliateProductFragment : BaseFragment() {
                         putString("search", text)
                     }
                     findNavController().navigate(
-                        R.id.action_searchProductFragment_to_searchProductListFragment,
+                        R.id.action_searchProductFragment_to_searchAffiliateProductListFragment,
                         bundle
                     )
                 }

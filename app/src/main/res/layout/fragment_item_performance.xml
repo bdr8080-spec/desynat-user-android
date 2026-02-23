@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/tvRating"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_15sdp"
             android:fontFamily="@font/poppins_regular"
@@ -88,7 +88,7 @@
 
         <TextView
             android:id="@+id/tvPrice"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:maxLines="1"
@@ -110,7 +110,7 @@
 
         <TextView
             android:id="@+id/tvDiscount"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
             android:ellipsize="end"

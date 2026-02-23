@@ -8,6 +8,8 @@ import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressReq
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductLinkResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
@@ -760,9 +762,9 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
     val deleteBankResult: LiveData<CommonResponse>
         get() = repository.deleteBankLiveData
 
-    fun deleteBank(id: String) {
+    fun deleteBank(map: HashMap<String, Any>) {
         viewModelScope.launch {
-            repository.deleteBank(id)
+            repository.deleteBank(map)
         }
     }
 
@@ -784,6 +786,15 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
+    val getAffiliateMyProductDetailResult: LiveData<GetAffiliateMyProductDetailResponse>
+        get() = repository.getAffiliateMyProductDetailLiveData
+
+    fun getAffiliateMyProductDetail(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateMyProductDetail(map)
+        }
+    }
+
     val addAffiliateProductResult: LiveData<CommonResponse>
         get() = repository.addAffiliateProductLiveData
 
@@ -793,7 +804,7 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
-    val getAffiliateProductLinkResult: LiveData<CommonResponse>
+    val getAffiliateProductLinkResult: LiveData<GetAffiliateProductLinkResponse>
         get() = repository.getAffiliateProductLinkLiveData
 
     fun getAffiliateProductLink(map: HashMap<String,Any>) {
@@ -808,6 +819,41 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
     fun getAffiliateMyProduct(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.getAffiliateMyProduct(map)
+        }
+    }
+
+    val getAffiliateSorListResult: LiveData<GetStoreSortListResponse>
+        get() = repository.getAffiliateSorListLiveData
+
+    fun getAffiliateSorList() {
+        viewModelScope.launch {
+            repository.getAffiliateSorList()
+        }
+    }
+
+    val affiliateProductSearchResult: LiveData<GetAffiliateAllProductResponse>
+        get() = repository.affiliateProductSearchLiveData
+
+    fun affiliateProductSearch(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.affiliateProductSearch(map)
+        }
+    }
+
+    val getAffiliateRecentSearchListResult: LiveData<GetRecentSearchListResponse>
+        get() = repository.getAffiliateRecentSearchListLiveData
+
+    fun getAffiliateRecentSearchList() {
+        viewModelScope.launch {
+            repository.getAffiliateRecentSearchList()
+        }
+    }
+    val getAffiliateLatestSearchListResult: LiveData<GetRecentSearchListResponse>
+        get() = repository.getAffiliateLatestSearchListLiveData
+
+    fun getAffiliateLatestSearchList() {
+        viewModelScope.launch {
+            repository.getAffiliateLatestSearchList()
         }
     }
 

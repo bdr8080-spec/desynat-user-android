@@ -10,6 +10,8 @@ import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductLinkResponse
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
@@ -475,7 +477,7 @@ interface ApiServices {
 
     @POST(Constants.UPDATE_AFFILIATE_PROFILE)
     suspend fun updateAffiliateUserProfile(
-        @Body request : UpdateAffiliateProfileRequest
+        @Body request: UpdateAffiliateProfileRequest
     ): Response<UpdateAffiliateProfileResponse>
 
 
@@ -499,23 +501,45 @@ interface ApiServices {
         @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
-    @DELETE("${Constants.DELETE_BANK}/{id}")
+    @POST(Constants.DELETE_BANK)
     suspend fun deleteBank(
-        @Path("id") id: String
+        @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
     @GET(Constants.GET_AFFILIATE_ALL_PRODUCT)
-    suspend fun getAffiliateAllProduct(@QueryMap map: HashMap<String,Any>): Response<GetAffiliateAllProductResponse>
+    suspend fun getAffiliateAllProduct(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateAllProductResponse>
 
- @GET(Constants.GET_AFFILIATE_PRODUCT_DETAIL)
-    suspend fun getAffiliateProductDetail(@QueryMap map: HashMap<String,Any>): Response<GetAffiliateProductDetailResponse>
+    @GET(Constants.GET_AFFILIATE_PRODUCT_DETAIL)
+    suspend fun getAffiliateProductDetail(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateProductDetailResponse>
 
- @POST(Constants.ADD_AFFILIATE_PRODUCT)
-    suspend fun addAffiliateProduct(@Body map: HashMap<String,Any>): Response<CommonResponse>
- @GET(Constants.GET_AFFILIATE_PRODUCT_LINK)
-    suspend fun getAffiliateProductLink(@QueryMap map: HashMap<String,Any>): Response<CommonResponse>
+    @GET(Constants.GET_AFFILIATE_MY_PRODUCT_DETAIL)
+    suspend fun getAffiliateMyProductDetail(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateMyProductDetailResponse>
+
+    @POST(Constants.ADD_AFFILIATE_PRODUCT)
+    suspend fun addAffiliateProduct(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.GET_AFFILIATE_PRODUCT_LINK)
+    suspend fun getAffiliateProductLink(@Body map: HashMap<String, Any>): Response<GetAffiliateProductLinkResponse>
+
+    @POST(Constants.GET_AFFILIATE_PRODUCT_SEARCH)
+    suspend fun affiliateProductSearch(@Body map: HashMap<String, Any>): Response<GetAffiliateAllProductResponse>
 
     @GET(Constants.GET_AFFILIATE_MY_PRODUCT)
-    suspend fun getAffiliateMyProduct(@QueryMap map: HashMap<String,Any>): Response<GetAffiliateMyProductResponse>
+    suspend fun getAffiliateMyProduct(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateMyProductResponse>
+
+    @GET(Constants.PRODUCT_FILTER_KEY)
+    suspend fun getAffiliateSorList(): Response<GetStoreSortListResponse>
+
+    @GET(Constants.GET_AFFILIATE_LATEST_SEARCH)
+    suspend fun getAffiliateLatestSearch(): Response<GetRecentSearchListResponse>
+
+    @GET(Constants.GET_AFFILIATE_RECOMMENDED)
+    suspend fun getAffiliateRecommended(): Response<GetRecommendedResponse>
+
+    @GET(Constants.GET_AFFILIATE_LATEST_SEARCH)
+    suspend fun getAffiliateLatestSearchList(): Response<GetRecentSearchListResponse>
+
+    @GET(Constants.GET_AFFILIATE_RECENT_SEARCH_DATA)
+    suspend fun getAffiliateRecentSearchList(): Response<GetRecentSearchListResponse>
 
 }

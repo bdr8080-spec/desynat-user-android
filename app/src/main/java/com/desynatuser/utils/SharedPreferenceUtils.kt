@@ -89,7 +89,7 @@ class SharedPreference(context: Context) {
 
     fun saveUser(user: LoginResponse.Data) {
         val json = Gson().toJson(user)
-        preference.set("userData", json)
+        preference["userData"] = json
     }
 
     fun getUser(): LoginResponse.Data? {
@@ -102,12 +102,12 @@ class SharedPreference(context: Context) {
     }
 
     fun clearUser() {
-        preference.set("userData", "")
+        preference["userData"] = ""
     }
 
     fun saveAffiliateUser(user: GetAffiliateUserProfileResponse.Data) {
         val json = Gson().toJson(user)
-        preference.set("affiliateUserData", json)
+        preference["affiliateUserData"] = json
     }
 
     fun getAffiliateUser(): GetAffiliateUserProfileResponse.Data? {
@@ -120,13 +120,13 @@ class SharedPreference(context: Context) {
     }
 
     fun clearAffiliateUser() {
-        preference.set("affiliateUserData", "")
+        preference["affiliateUserData"] = ""
     }
 
 
     fun saveCountryList(countryList: List<GetCountryResponse.Data>) {
         val json = Gson().toJson(countryList)
-        preference.set("countryList", json)
+        preference["countryList"] = json
     }
 
     fun getCountryList(): List<GetCountryResponse.Data>? {
@@ -141,7 +141,7 @@ class SharedPreference(context: Context) {
 
     fun saveSelectedCountryList(countryList: List<GetCountryResponse.Data>) {
         val json = Gson().toJson(countryList)
-        preference.set("selectedCountryList", json)
+        preference["selectedCountryList"] = json
     }
 
     fun getSelectedCountryList(): List<GetCountryResponse.Data>? {
@@ -156,7 +156,7 @@ class SharedPreference(context: Context) {
 
     fun saveCategoryLIst(countryList: List<GetCategoryResponse.Data>) {
         val json = Gson().toJson(countryList)
-        preference.set("categoryList", json)
+        preference["categoryList"] = json
     }
 
     fun getCategoryList(): List<GetCategoryResponse.Data>? {
@@ -171,7 +171,7 @@ class SharedPreference(context: Context) {
 
     fun saveDefaultAddress(address: GetAddressResponse.Data) {
         val json = Gson().toJson(address)
-        preference.set("defaultAddress", json)
+        preference["defaultAddress"] = json
     }
 
     fun getDefaultAddress(): GetAddressResponse.Data? {
@@ -184,7 +184,7 @@ class SharedPreference(context: Context) {
     }
 
     fun clearAddress() {
-        preference.set("defaultAddress", "")
+        preference["defaultAddress"] = ""
     }
 
 }

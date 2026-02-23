@@ -81,9 +81,11 @@ data class GetAffiliateProductDetailResponse(
         @SerializedName("seller_id")
         val sellerId: String,
         @SerializedName("store")
-        val store: Any,
+        val store: GetAffiliateAllProductResponse.Data.Data.Store,
         @SerializedName("store_id")
         val storeId: String,
+        @SerializedName("affiliate_product_link")
+        val affiliateProductLink: String,
         @SerializedName("subcategory")
         val subcategory: Subcategory,
         @SerializedName("subcategory_id")

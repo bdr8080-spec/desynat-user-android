@@ -73,28 +73,13 @@ class AffiliateCategoryFragment :  BaseFragment() {
                             findNavController().navigate(R.id.action_affiliateCategoryFragment_to_affiliateAllProductFragment,bundle)
                         }
                         2->{
-                            if(position==-1) {
-                                binding?.tvNoDataFound?.isVisible = true
-                            }
-                            else{
-                                binding?.tvNoDataFound?.isVisible = false
-                            }
+                            binding?.tvNoDataFound?.isVisible = position==-1
                         }
                     }
                 }
             })
             rvSubCategory.adapter = affiliateSubCategoryAdapter
 
-//            etSearch.addTextChangedListener(object : TextWatcher {
-//                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//
-//                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//
-//                override fun afterTextChanged(s: Editable?) {
-//                    val query = s.toString().trim()
-//                    affiliateSubCategoryAdapter?.filter(query)
-//                }
-//            })
         }
 
         getAllCategory()

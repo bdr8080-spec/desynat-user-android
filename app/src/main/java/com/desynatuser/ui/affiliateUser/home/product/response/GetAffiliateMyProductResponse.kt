@@ -118,9 +118,9 @@ data class GetAffiliateMyProductResponse(
 
             data class AverageRating(
                 @SerializedName("product")
-                val product: Int,
+                val product: String,
                 @SerializedName("store")
-                val store: Int
+                val store: String
             )
 
             data class Product(

@@ -16,7 +16,12 @@ class AffiliateProductAdapter(var context:Context, private var productList: Arra
             fun bind(position: Int) = with(binding) {
                 val productData = productList[position]
 
+                if (productData?.store?.storeName!=null){
                     tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
+                }
+                else{
+                    tvTitle.text = productData?.productNameEn
+                }
                     tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
                     tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
 
@@ -31,7 +36,8 @@ class AffiliateProductAdapter(var context:Context, private var productList: Arra
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
-                tvRating.text = "(${productData?.averageRating?.product})"
+
+                tvRating.text = "(${productData?.averageRating?.product?:0})"
                 rating.rating = productData?.averageRating?.product?.toFloatOrNull()?:0f
 
                     tvGetLink.setOnClickListener {

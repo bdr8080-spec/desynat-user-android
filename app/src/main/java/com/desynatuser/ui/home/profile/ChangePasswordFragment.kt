@@ -64,7 +64,7 @@ class ChangePasswordFragment : BaseFragment() {
                     if (validation()) {
                         val map = HashMap<String,Any>()
                         if (from=="affiliate"){
-                           // map["old_password"] = binding?.etOldPassword?.text.toString().trim()
+                            map["old_password"] = binding?.etOldPassword?.text.toString().trim()
                             map["password"] = binding?.etPassword?.text.toString().trim()
                             map["confirm_password"] = binding?.etConfirmPassword?.text.toString().trim()
                             viewModel.updateAffiliateUserPassword(map)

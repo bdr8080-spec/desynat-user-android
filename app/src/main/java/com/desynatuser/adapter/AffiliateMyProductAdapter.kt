@@ -3,6 +3,7 @@ package com.desynatuser.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
@@ -13,7 +14,7 @@ import com.desynatuser.utils.CommonMethod
 class AffiliateMyProductAdapter(var context:Context, private var productList: ArrayList<GetAffiliateMyProductResponse.Data.Data>, var productClick:ProductClick) : RecyclerView.Adapter<AffiliateMyProductAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemAffiliateMyProductBinding) :
         RecyclerView.ViewHolder(binding.root)
-
+    private var isCategoryAvailable = false
     interface ProductClick{
         fun onProductClick(position: Int,type:Int)
     }
@@ -33,8 +34,12 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
         val productData = productList[position].product
 
         holder.binding.apply {
-            tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
-
+            if (productData?.store?.storeName!=null){
+                tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
+            }
+            else{
+                tvTitle.text = productData?.productNameEn
+            }
             tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
             tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
 
@@ -43,9 +48,8 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
             val discountType = if (variant?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
             tvCommission.text = "${productData?.productVariants?.get(0)?.discountValue}% Commission"
-            tvGetLink.text = "Track Performance"
 
-            tvRating.text = "(${productData?.storeAvgRating})"
+            tvRating.text = "(${productData?.storeAvgRating?:0})"
             rating.rating = productData?.storeAvgRating?.toFloatOrNull()?:0f
 
             ivStore.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
@@ -54,11 +58,28 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
                 error(R.drawable.ic_placeholder)
             }
 
-            tvGetLink.setOnClickListener {
+            if (isCategoryAvailable){
+                tvTrackPerformance.isVisible = true
+                tvTrackPerformance1.isVisible = false
+            }
+            else{
+                tvTrackPerformance.isVisible = false
+                tvTrackPerformance1.isVisible = true
+            }
+
+            tvTrackPerformance.setOnClickListener {
+                productClick.onProductClick(position,1)
+            }
+
+            tvTrackPerformance1.setOnClickListener {
                 productClick.onProductClick(position,1)
             }
         }
 
     }
 
+    fun setData(isAvailable: Boolean){
+        isCategoryAvailable = isAvailable
+        notifyDataSetChanged()
+    }
 }

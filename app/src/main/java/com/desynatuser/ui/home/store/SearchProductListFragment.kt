@@ -425,7 +425,7 @@ class SearchProductListFragment : BaseFragment() {
 
             rvSort.adapter = sortAdapter
 
-            if (sortList.size!=0) {
+            if (sortList.size==0) {
                 getStoreSortList()
             }
 
