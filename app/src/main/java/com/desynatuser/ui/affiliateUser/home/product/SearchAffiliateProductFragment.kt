@@ -162,6 +162,11 @@ class SearchAffiliateProductFragment : BaseFragment() {
 
     override fun initControl() {
         binding?.apply {
+
+            toolbar.tvToolbar.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             tvGo.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("search", etSearch.text.toString())

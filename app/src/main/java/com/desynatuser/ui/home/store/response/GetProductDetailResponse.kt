@@ -57,9 +57,9 @@ data class GetProductDetailResponse(
         @SerializedName("product_return")
         val productReturn: String,
         @SerializedName("product_specifications")
-        val productSpecifications: List<ProductSpecification>,
+        val productSpecifications: List<GetSingleStoreResponse.Data.AllProduct.Data.ProductSpecification>,
         @SerializedName("product_variants")
-        val productVariants: List<ProductVariant>,
+        val productVariants: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant>,
         @SerializedName("ready_to_ship")
         val readyToShip: String,
         @SerializedName("return_days")
@@ -81,7 +81,7 @@ data class GetProductDetailResponse(
         @SerializedName("upload_size_chart")
         val uploadSizeChart: String,
         @SerializedName("wishlist")
-        val wishlist: Int,
+        var wishlist: Int,
         @SerializedName("review")
         val review: List<Review>,
     ) {

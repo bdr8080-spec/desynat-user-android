@@ -100,6 +100,7 @@ class AffiliateSearchProductListFragment : BaseFragment() {
     var selectedMaxPrice: Int = 0
 
     var isBrandObserver = false
+    var isCategoryObserever = false
     var isSizeObserver = false
     var isColorObserver = false
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
@@ -306,6 +307,16 @@ class AffiliateSearchProductListFragment : BaseFragment() {
                 brandList.addAll(response.data)
                 filterBrandAdapter?.notifyDataSetChanged()
                 isBrandObserver = false
+            }
+        }
+
+        viewModel.categoryResult.observe(viewLifecycleOwner) { response ->
+            if (isCategoryObserever) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                categoryList.clear()
+                categoryList.addAll(response.data)
+                filterCategoryAdapter?.notifyDataSetChanged()
+                isCategoryObserever = false
             }
         }
 
@@ -768,9 +779,11 @@ class AffiliateSearchProductListFragment : BaseFragment() {
     private fun getAllFilterList() {
         viewModel.getColorList()
         viewModel.getBrandList()
+        viewModel.getCategory()
         viewModel.getSizeList()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isBrandObserver = true
+        isCategoryObserever = true
         isSizeObserver = true
         isColorObserver = true
     }

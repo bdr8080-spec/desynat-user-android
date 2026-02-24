@@ -16,6 +16,7 @@ import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProd
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.openCustomDatePicker
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,7 +64,19 @@ class ItemPerformanceFragment : BaseFragment() {
             }
 
             ivCopy.setOnClickListener {
-                CommonMethod.copyText(requireActivity(),productDetailData?.affiliateProductLink?.link?:"")
+                CommonMethod.copyText(requireActivity(),"${productDetailData?.affiliateProductLink?.link?:""}")
+            }
+
+            etFrom.setOnClickListener{
+                openCustomDatePicker(requireActivity()) { date, timestamp ->
+                    etFrom.setText(date)
+                }
+            }
+
+            etTo.setOnClickListener{
+                openCustomDatePicker(requireActivity()) { date, timestamp ->
+                    etFrom.setText(date)
+                }
             }
         }
     }

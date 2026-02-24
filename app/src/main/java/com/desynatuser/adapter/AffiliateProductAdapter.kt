@@ -22,16 +22,16 @@ class AffiliateProductAdapter(var context:Context, private var productList: Arra
                 else{
                     tvTitle.text = productData?.productNameEn
                 }
-                    tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
-                    tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+                    tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.firstOrNull()?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
+                    tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.firstOrNull()?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
 
                     val variant = productData?.productVariants?.getOrNull(0)
                     val discountValue = variant?.discountValue ?: 0
                     val discountType = if (variant?.discountType == "1")"% off" else " KD off"
                     tvDiscount.text = "$discountValue$discountType"
-                    tvCommission.text = "${productData?.productVariants?.get(0)?.discountValue}% Commission"
+                    tvCommission.text = "${productData?.productVariants?.firstOrNull()?.discountValue}% Commission"
 
-                    ivStore.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
+                    ivStore.load(productData?.productVariants?.firstOrNull()?.variantImage?.firstOrNull()) {
                         crossfade(true)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)

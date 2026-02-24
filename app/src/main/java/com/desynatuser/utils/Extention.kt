@@ -3,6 +3,7 @@ package com.desynatuser.utils
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -22,12 +23,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.desynatuser.R
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.util.Calendar
 
 fun AppCompatActivity.statusBarTransparentWithWhite() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -260,6 +263,44 @@ fun EditText.togglePasswordVisibility(passwordToggle: ImageView) {
         this.setSelection(pass.length)
         passwordVisible = newVisibility
     }
+}
+
+fun openCustomDatePicker(
+    context: Context,
+    minDate: Long? = null,
+    onClick: (String, Long) -> Unit
+) {
+    val today = Calendar.getInstance()
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        R.style.DialogTheme,
+        { _, year, month, dayOfMonth ->
+            val selectedCal = Calendar.getInstance()
+            selectedCal.set(Calendar.YEAR, year)
+            selectedCal.set(Calendar.MONTH, month)
+            selectedCal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            selectedCal.set(Calendar.HOUR_OF_DAY, 0)
+            selectedCal.set(Calendar.MINUTE, 0)
+            selectedCal.set(Calendar.SECOND, 0)
+            selectedCal.set(Calendar.MILLISECOND, 0)
+
+            val selectedDate = "$dayOfMonth/${month + 1}/$year"
+            val formattedDate = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+            val timestamp = selectedCal.timeInMillis
+
+            onClick(formattedDate, timestamp)
+        },
+        today.get(Calendar.YEAR),
+        today.get(Calendar.MONTH),
+        today.get(Calendar.DAY_OF_MONTH)
+    )
+
+    if (minDate != null) {
+        datePickerDialog.datePicker.minDate = minDate
+    }
+
+    datePickerDialog.show()
 }
 
 fun String?.orDash(): String = if (this.isNullOrBlank()) "-" else this

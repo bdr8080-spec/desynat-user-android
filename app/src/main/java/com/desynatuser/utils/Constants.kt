@@ -40,7 +40,6 @@ object Constants {
     const val VIEW_PROFILE = "/api/user/view-profile"
     const val CHANGE_NUMBER = "/api/user/change-mobile-number"
     const val USER_OTP = "/api/user/verify-otp"
-
     const val STORE_LIST = "/api/user/category-Wise-Store-List"
     const val SINGLE_STORE = "/api/user/single-store-details"
     const val GET_PRODUCT_DETAIL = "api/user/single-product-details"

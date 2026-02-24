@@ -1,5 +1,6 @@
 package com.desynatuser.ui.affiliateUser
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat

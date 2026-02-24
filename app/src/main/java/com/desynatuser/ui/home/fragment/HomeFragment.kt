@@ -80,7 +80,6 @@ class HomeFragment : BaseFragment() {
     var isHomeAllBannerObserver = false
     var isHomeBottomBannerObserver = false
     var isHomeCategoryBannerObserver = false
-    var isDetactImage = false
     var isCartObserver = false
     private var hasNavigatedFromML = false
 
@@ -182,7 +181,6 @@ class HomeFragment : BaseFragment() {
                 })
                 rvCategory.adapter = categoryAdapter
 
-                //  getDashboardApi()
                 getCategoryApi()
 
             when(Constants.Category){
@@ -305,7 +303,6 @@ class HomeFragment : BaseFragment() {
 
         locationViewModel.location.observe(viewLifecycleOwner) { (lat, lng) ->
             binding?.tvLocation?.text = Constants.location
-
         }
 
         viewModel.dashBoardResult.observe(viewLifecycleOwner) { response ->
@@ -318,7 +315,7 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-   viewModel.getHomeScreenAllBannerResult.observe(viewLifecycleOwner) { response ->
+        viewModel.getHomeScreenAllBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeAllBannerObserver) {
                 response?.let {
 
@@ -332,43 +329,37 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-   viewModel.getHomeScreenBottomBannerResult.observe(viewLifecycleOwner) { response ->
+        viewModel.getHomeScreenBottomBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeBottomBannerObserver) {
                 response?.let {
-
                     discountList.clear()
                     discountList.addAll(response.data)
                     discountedDealBannerViewPagerAdapter?.notifyDataSetChanged()
                     checkDiscountBannerData()
-
                 }
                 isHomeBottomBannerObserver = false
             }
         }
 
-   viewModel.getHomeScreenBottomBannerResult.observe(viewLifecycleOwner) { response ->
+        viewModel.getHomeScreenBottomBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeBottomBannerObserver) {
                 response?.let {
-
                     discountList.clear()
                     discountList.addAll(response.data)
                     discountedDealBannerViewPagerAdapter?.notifyDataSetChanged()
                     checkDiscountBannerData()
-
                 }
                 isHomeBottomBannerObserver = false
             }
         }
 
-   viewModel.getHomeScreenCategoryBannerResult.observe(viewLifecycleOwner) { response ->
+        viewModel.getHomeScreenCategoryBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeCategoryBannerObserver) {
                 response?.let {
-
                     premiumList.clear()
                     premiumList.addAll(response.data)
                     premiumStoreBannerViewPagerAdapter?.notifyDataSetChanged()
                     checkPremiumBannerData()
-
                 }
                 isHomeCategoryBannerObserver = false
             }
@@ -434,14 +425,12 @@ class HomeFragment : BaseFragment() {
         isObserver = true
     }
 
-
     private fun getHomeScreenAllBanner(){
         val map = HashMap<String,Any>()
         map["type"] = "1"
         viewModel.getHomeScreenAllBanner(map)
         isHomeAllBannerObserver = true
     }
-
 
     private fun getHomeScreenBottomBanner(){
         val map = HashMap<String,Any>()
@@ -462,7 +451,6 @@ class HomeFragment : BaseFragment() {
         viewModel.getHomeScreenCategoryBanner(map)
         isHomeCategoryBannerObserver = true
     }
-
 
     private val locationResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

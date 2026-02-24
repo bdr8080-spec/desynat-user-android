@@ -711,4 +711,10 @@ object CommonMethod {
         context.showToast("Copied to clipboard")
     }
 
+    fun shareLink(context: Context, link: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, link)
+        context.startActivity(Intent.createChooser(intent, "Share via"))
+    }
 }

@@ -85,8 +85,6 @@ class AffiliateProfileDetailFragment : BaseFragment() {
     }
 
     override fun initView() {
-        profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
-        setData()
         binding?.apply {
             toolbar.tvToolbar.text = "Profile Details"
 
@@ -272,11 +270,17 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
 
             etMobile.setOnClickListener {
-
+                val bundle = Bundle().apply {
+                    putString("from", "mobile")
+                }
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_affiliateChangeMobileFragment,bundle)
             }
 
             etEmail.setOnClickListener {
-
+                val bundle = Bundle().apply {
+                    putString("from", "email")
+                }
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_affiliateChangeMobileFragment,bundle)
             }
 
             ivDoc1.setOnClickListener {
@@ -591,4 +595,9 @@ class AffiliateProfileDetailFragment : BaseFragment() {
         )
     }
 
+    override fun onResume() {
+        super.onResume()
+        profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
+        setData()
+    }
 }

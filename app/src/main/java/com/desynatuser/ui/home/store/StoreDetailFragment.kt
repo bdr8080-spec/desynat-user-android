@@ -147,6 +147,7 @@ class StoreDetailFragment : BaseFragment() {
                             val bundle = Bundle().apply {
                                 putString("productData", Gson().toJson(productList[position]))
                                 putString("storeData", Gson().toJson(storeData))
+                                putString("productId", productList[position].id.toString())
                             }
                             findNavController().navigate(R.id.action_storeDetailFragment_to_productDetailFragment,bundle)
                         }

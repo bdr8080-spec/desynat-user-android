@@ -43,7 +43,7 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("full_name")
         val fullName: String,
         @SerializedName("id")
-        val id: Int,
+        val id: String,
         @SerializedName("lang")
         val lang: String,
         @SerializedName("let")

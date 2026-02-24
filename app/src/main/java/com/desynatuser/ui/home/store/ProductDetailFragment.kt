@@ -15,8 +15,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.desynatuser.adapter.SizeAdapter
 import com.desynatuser.R
+import com.desynatuser.adapter.SizeAdapter
 import com.desynatuser.adapter.ImagePreviewAdapter
 import com.desynatuser.adapter.ProductColorAdapter
 import com.desynatuser.adapter.ProductImageAdapter
@@ -72,6 +72,7 @@ class ProductDetailFragment : BaseFragment() {
     var ratingList = ArrayList<GetProductDetailResponse.Data.Review>()
 
     var cartId:String? = null
+    var productId:String? = null
     var cartQuantity = 0
     var cartData : AddToCartListResponse.Data?=null
 
@@ -94,6 +95,7 @@ class ProductDetailFragment : BaseFragment() {
 
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
+        productId = arguments?.getString("productId")
         val itemJson = arguments?.getString("productData")
         val itemJsonStore = arguments?.getString("storeData")
         if (!itemJson.isNullOrEmpty()) {
@@ -157,33 +159,22 @@ class ProductDetailFragment : BaseFragment() {
         reviewAdapter = ReviewAdapter(requireActivity(), ratingList)
         binding?.rvRating?.adapter = reviewAdapter
         getProductDetail()
-        setData()
         binding?.tvSearchAddress?.text = SharedPreference.get(requireActivity()).getDefaultAddress()?.address
-
-
-        viewCartDetail()
-    }
-
-    private fun setStoreData(){
-        binding?.apply {
-            tvTitle.text = productDetailData?.store?.storeName
-            tvProductName.text =  productData?.productNameEn+" (by ${productDetailData?.store?.storeName})"
-            tvRating.text = "(${ratingList.size})"
+        if (!Constants.isGuest) {
+            viewCartDetail()
         }
     }
 
     private fun setData() {
         binding?.apply {
+            tvTitle.text = productDetailData?.store?.storeName
+            tvProductName.text =  productDetailData?.productNameEn+" (by ${productDetailData?.store?.storeName})"
+            tvRating.text = "(${ratingList.size})"
+            productInfo = productDetailData?.productVariants?.let { mapVariantsToProducts(it) }!!
 
-            if (productData?.customizedProduct=="1") {
-               btnCustomOrder.isVisible = true
-            }
-            else{
-                btnCustomOrder.isVisible = false
-            }
+            btnCustomOrder.isVisible = productDetailData?.customizedProduct=="1"
 
-
-            if (productData?.wishlist==1) {
+            if (productDetailData?.wishlist==1) {
                 ivLike.setImageResource(R.drawable.ic_heart_filled)
             }
             else{
@@ -201,7 +192,7 @@ class ProductDetailFragment : BaseFragment() {
             variant?.productVariation?.let { sizeList.addAll(it) }
             sizeAdapter?.notifyDataSetChanged()
 
-            tvName.text = productData?.brand?.nameEnglish
+            tvName.text = productDetailData?.brand?.nameEnglish
 
             if (variant?.productVariation?.get(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0){
                 relAddToBag.isVisible = true
@@ -221,16 +212,15 @@ class ProductDetailFragment : BaseFragment() {
             val discountType = if (variant?.productVariation?.get(selectedSizePos)?.discountType == "1")"% off" else " KD off"
             tvOffer.text = "$discountValue$discountType"
 
-
-            tvDescription.text = productData?.descriptionEn
+            tvDescription.text = productDetailData?.descriptionEn
 
             specificationList.clear()
 
-            productData?.productSpecifications?.let { specificationList.addAll(it) }
+            productDetailData?.productSpecifications?.let { specificationList.addAll(it) }
             specificationAdapter?.notifyDataSetChanged()
 
             tvDeliveryDate.text = "Get it by 30/11/2025"
-            tvCashOnDelivery.text = if (productData?.cashOnDelivery=="1")
+            tvCashOnDelivery.text = if (productDetailData?.cashOnDelivery=="1")
             {
                 "Cash on Delivery Available"
             }
@@ -238,9 +228,8 @@ class ProductDetailFragment : BaseFragment() {
                     "Cash on Delivery not Available"
                 }
 
-
-            val returnDays = productData?.returnDays
-            val exchangeDays = productData?.exchangableDays
+            val returnDays = productDetailData?.returnDays
+            val exchangeDays = productDetailData?.exchangableDays
 
             val returnText = returnDays?.let { "$it Days Return" }
             val exchangeText = exchangeDays?.let { "$it Days Exchange" }
@@ -286,7 +275,6 @@ class ProductDetailFragment : BaseFragment() {
                     putString("from", "productDetail")
                 }
                 findNavController().navigate(R.id.action_productDetailFragment_to_savedAddressFragment,bundle)
-
             }
 
             ivBack.setOnClickListener {
@@ -295,9 +283,9 @@ class ProductDetailFragment : BaseFragment() {
 
             ivShare.setOnClickListener {
                 CommonMethod.shareProduct(requireActivity(),
-                    productData?.productNameEn ?: "",
-                    productData?.descriptionEn ?: "",
-                    productData?.productVariants?.get(selectedPos)?.variantImage?.get(0) ?: ""
+                    productDetailData?.productNameEn ?: "",
+                    productDetailData?.descriptionEn ?: "",
+                    productDetailData?.productVariants?.get(selectedPos)?.variantImage?.get(0) ?: ""
                 )
             }
 
@@ -356,7 +344,6 @@ class ProductDetailFragment : BaseFragment() {
                             fromBtn = "buy"
                             addToBag()
                         }
-
                     }
                 }
                 else{
@@ -413,12 +400,13 @@ class ProductDetailFragment : BaseFragment() {
                             )
                         }
                     }
-                    setData()
+                    if (productDetailData!=null){
+                        setData()
+                    }
                 }
                 isCartObserver = false
             }
         }
-
 
         viewModel.addToCartResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
@@ -429,7 +417,7 @@ class ProductDetailFragment : BaseFragment() {
                     fromBtn = ""
                 }
                 else {
-                    var data = response.data
+                    val data = response.data
                     cartList.add(
                         AddToCartListResponse.Data(
                             amount = data.amount,
@@ -479,14 +467,14 @@ class ProductDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
 
-                if (productData?.wishlist==1) {
+                if (productDetailData?.wishlist==1) {
                     showToast("Product removed from your wishlist successfully")
-                    productData?.wishlist=0
+                    productDetailData?.wishlist=0
                     binding?.ivLike?.setImageResource(R.drawable.ic_heart)
                 }
                 else{
                     showToast("Product added to your wishlist successfully")
-                    productData?.wishlist=1
+                    productDetailData?.wishlist=1
                     binding?.ivLike?.setImageResource(R.drawable.ic_heart_filled)
                 }
                 isObserver = false
@@ -522,7 +510,7 @@ class ProductDetailFragment : BaseFragment() {
                     binding?.tvCustomerRating?.isVisible = false
                     binding?.tvViewAll?.isVisible = false
                 }
-                setStoreData()
+                setData()
 
                /* if (quantity != null && quantity > 0) {
                     cartData = response?.data?.addtocart
@@ -536,7 +524,6 @@ class ProductDetailFragment : BaseFragment() {
                 isProductObserver = false
             }
         }
-
     }
 
     private fun checkCartData(quantity: Int) {
@@ -555,35 +542,30 @@ class ProductDetailFragment : BaseFragment() {
             }
         }
     }
-
     private fun addToBag(){
         val map = HashMap<String,Any>()
-        map["product_id"] = productData?.id.toString()
+        map["product_id"] = productId.toString()
         map["quantity"] = 1
         map["variants_id"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
         viewModel.addToCart(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
-
-
     private fun createCustomOrder() {
         val map = HashMap<String, Any>()
-        map["product_id"] = productData?.id.toString()
+        map["product_id"] = productId.toString()
         map["variation_id"] =productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
         viewModel.createCustomOrder(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
-
     private fun addToWishList(){
         val map = HashMap<String,Any>()
-        map["product_id"] = productData?.id.toString()
+        map["product_id"] = productId.toString()
         viewModel.addToWishlist(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
-
     private fun addCartQuantity(type:String){
         val map = HashMap<String,Any>()
         map["cart_id"] = cartId.toString()
@@ -592,7 +574,6 @@ class ProductDetailFragment : BaseFragment() {
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
-
     private fun sizeGuideDialog() {
         val dialog = Dialog(requireActivity(), R.style.CustomDialog)
         val dialogBinding = SizeGuideChartDialogBinding.inflate(LayoutInflater.from(context))
@@ -616,14 +597,12 @@ class ProductDetailFragment : BaseFragment() {
                 dialog.dismiss()
             }
 
-            ivSizeChart.load(productData?.uploadSizeChart) {
+            ivSizeChart.load(productDetailData?.uploadSizeChart) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
-
         }
-
         dialog.show()
     }
 
@@ -647,7 +626,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun getProductDetail(){
         val map = HashMap<String,Any>()
-        map["product_id"] = productData?.id.toString()
+        map["product_id"] = productId.toString()
         viewModel.getProductDetailInfo(map)
         isProductObserver = true
     }

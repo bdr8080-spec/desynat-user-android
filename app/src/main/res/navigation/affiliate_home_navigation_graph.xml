@@ -39,7 +39,17 @@
             android:id="@+id/action_affiliateProfileFragment_to_changePasswordFragment"
             app:destination="@id/changePassword"/>
 
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_affiliateChangeMobileFragment"
+            app:destination="@id/affiliateChangeMobile"/>
+
     </fragment>
+
+    <fragment
+        android:id="@+id/affiliateChangeMobile"
+        android:name="com.desynatuser.ui.affiliateUser.home.profile.AffiliateChangeMobileFragment"
+        android:label="Affiliate Change Mobile Fragment"
+        tools:layout="@layout/fragment_change_mobile"/>
 
     <fragment
         android:id="@+id/affiliateCategory"

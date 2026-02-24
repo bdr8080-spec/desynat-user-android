@@ -106,7 +106,6 @@ class HomeActivity : BaseActivity() {
             R.id.profile,
         )
 
-
         controller.addOnDestinationChangedListener { _, destination, _ ->
 
             if (destination.id in bottomNavDestinations) {
@@ -138,6 +137,12 @@ class HomeActivity : BaseActivity() {
             }
         }
 
+        handleDeepLink(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleDeepLink(intent)
     }
 
     override fun initControl() {
@@ -260,6 +265,24 @@ class HomeActivity : BaseActivity() {
 
     fun updateAdapterCount(){
        bottomAdapter?.setCartCount(Constants.cartItem)
+    }
+
+    private fun handleDeepLink(intent: Intent?) {
+
+        val uri = intent?.data ?: return
+
+        if (uri.path?.contains("/user/product/detail-page") == true) {
+
+            val productId = uri.lastPathSegment
+            val ref = uri.getQueryParameter("ref")
+
+            val bundle = Bundle().apply {
+                putString("productId", productId)
+                putString("REF_ID", ref)
+            }
+            controller.navigate(R.id.productDetail, bundle)
+
+        }
     }
 
 }
