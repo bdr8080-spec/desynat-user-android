@@ -839,7 +839,6 @@ class AffiliateSearchProductListFragment : BaseFragment() {
         return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
     }
 
-
     fun uriToBitmap(context: Context, uri: Uri): Bitmap {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val source = ImageDecoder.createSource(context.contentResolver, uri)

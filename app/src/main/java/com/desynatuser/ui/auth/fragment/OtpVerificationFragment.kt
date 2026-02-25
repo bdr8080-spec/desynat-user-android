@@ -105,8 +105,11 @@ class OtpVerificationFragment : BaseFragment() {
                         showToast("Please enter a valid 6-digit OTP")
                     }
                     else -> {
-                        if (screenType==-1){
-                            verifyUserOtp()
+                        if (screenType == -1) {
+                            when (from) {
+                                "edit", "change" -> verifyUserOtp()
+                                "affiliateEdit", "affiliateChange" -> affiliateUserOtp()
+                            }
                         }
                         else{
                             if (from=="affiliateSignUp"||from=="affiliateLogin"||from=="affiliateForgot"){
@@ -138,6 +141,15 @@ class OtpVerificationFragment : BaseFragment() {
         map["otp"] = binding?.pinView?.text?.trim().toString()
         map["type"] = screenType
         viewModel.otpVerification(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun affiliateUserOtp(){
+        val map = HashMap<String,Any>()
+        map["id"] = userId
+        map["otp"] = binding?.pinView?.text?.trim().toString()
+        homeViewModel.affiliateUserOtp(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -349,6 +361,38 @@ class OtpVerificationFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        homeViewModel.affiliateUserOtpResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    when(from){
+                        "affiliateChange" -> {
+                            val data = SharedPreference.get(requireActivity()).getAffiliateUser()
+                            if (type==1) data?.email = response.data.email
+                            else{ data?.mobile = response.data.mobile
+                                data?.countryCode = response.data.countryCode}
+                            if (data != null) {
+                                SharedPreference.get(requireActivity()).saveAffiliateUser(data)
+                            }
+                            CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email")"Email Address Changed successfully !" else "Mobile Number Changed successfully !"){
+                                findNavController().popBackStack(R.id.affiliateProfileDetail, false)
+                            }
+                        }
+                        "affiliateEdit" -> {
+                            showToast("OTP verified successfully")
+                            val bundle = Bundle().apply {
+                                putString("from", if (type==1)"email" else "mobile")
+                            }
+                            findNavController().navigate(R.id.action_otpFragment_to_affiliateChangeMobileFragment,bundle)
+                        }
+                    }
+
+                }
+                isObserver = false
+            }
+        }
+
 
         viewModel.resendOtpResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {

@@ -23,7 +23,7 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("bank_update_status")
         val bankUpdateStatus: String,
         @SerializedName("country_code")
-        val countryCode: String,
+        var countryCode: String,
         @SerializedName("country_details")
         val countryDetails: CountryDetails,
         @SerializedName("created_at")
@@ -37,7 +37,7 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("document2")
         val document2: String,
         @SerializedName("email")
-        val email: String,
+        var email: String,
         @SerializedName("email_verified_at")
         val emailVerifiedAt: Any,
         @SerializedName("full_name")
@@ -51,7 +51,7 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("long")
         val long: Any,
         @SerializedName("mobile")
-        val mobile: String,
+        var mobile: String,
         @SerializedName("otp")
         val otp: String,
         @SerializedName("otp_verify")

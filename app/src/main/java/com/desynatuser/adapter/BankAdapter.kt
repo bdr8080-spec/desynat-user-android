@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemBankBinding
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 
-class BankAdapter(var context: Context, private val bankList: List<GetAffiliateUserProfileResponse.Data.BankDetails>, var click:OnClick) :
+class BankAdapter(var context: Context, private val bankList: List<GetAffiliateUserProfileResponse.Data.BankDetails>, var isShow: Boolean=true, var click:OnClick) :
     RecyclerView.Adapter<BankAdapter.ViewHolder>() {
 
         interface OnClick{
@@ -18,6 +18,15 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
     inner class ViewHolder(val binding: ItemBankBinding) :
         RecyclerView.ViewHolder(binding.root){
             fun bind(position: Int) = with(binding) {
+
+                if (isShow){
+                    ivEdit.isVisible = true
+                    ivDelete.isVisible = true
+                }
+                else{
+                    ivEdit.isVisible = false
+                    ivDelete.isVisible = false
+                }
 
                 view.isVisible = bankList.size-1 != position
                 val bankData = bankList[position]
@@ -30,6 +39,10 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
 
                 ivDelete.setOnClickListener{
                     click.onClick(position,2)
+                }
+
+                ivRadio.setOnClickListener {
+                    click.onClick(position,3)
                 }
             }
 

@@ -54,6 +54,8 @@ class AffiliateProfileDetailFragment : BaseFragment() {
     private var docUrl1:String?=null
     private var docUrl2:String?=null
     private var imageType = ""
+    var clickType = -1
+
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             imagePicker.onCameraResult(success)
@@ -158,7 +160,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                 }
             }
 
-            bankAdapter = BankAdapter(requireActivity(),bankList,object : BankAdapter.OnClick{
+            bankAdapter = BankAdapter(requireActivity(),bankList, isShow = true,object : BankAdapter.OnClick{
                 override fun onClick(position: Int,type: Int) {
                     when(type){
                         1->{
@@ -270,17 +272,24 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
 
             etMobile.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("from", "mobile")
-                }
-                findNavController().navigate(R.id.action_affiliateProfileFragment_to_affiliateChangeMobileFragment,bundle)
+
+                val map = HashMap<String,Any>()
+                map["for"] = "mobile" //mobile,email
+                map["country_code"] = profileData?.countryCode.toString()
+                map["mobile"] = profileData?.mobile.toString()
+                map["type"] = 0 //0-old,1-new
+                clickType = 0
+                changeAffiliateMobileOrEmail(map)
             }
 
             etEmail.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("from", "email")
-                }
-                findNavController().navigate(R.id.action_affiliateProfileFragment_to_affiliateChangeMobileFragment,bundle)
+
+                val map = HashMap<String,Any>()
+                map["for"] = "email" //mobile,email
+                map["email"] = binding?.etEmail?.text?.trim().toString()
+                map["type"] = 0 //0-old,1-new
+                clickType = 1
+                changeAffiliateMobileOrEmail(map)
             }
 
             ivDoc1.setOnClickListener {
@@ -401,6 +410,34 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.changeAffiliateNumberResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    showToast(response.message)
+                    if (clickType==0){
+                        val bundle = Bundle().apply {
+                            putString("mobileNumber", profileData?.mobile)
+                            putString("countryCode", profileData?.countryCode)
+                            putString("from", "affiliateEdit")
+                            putString("userId", response.data.id)
+                        }
+                        findNavController().navigate(R.id.action_affiliateProfileFragment_to_otpFragment,bundle)
+
+                    }
+                    else if (clickType==1){
+                        val bundle = Bundle().apply {
+                            putString("email", profileData?.email)
+                            putString("from", "affiliateEdit")
+                            putString("userId",response.data.id)
+                        }
+                        findNavController().navigate(R.id.action_affiliateProfileFragment_to_otpFragment,bundle)
+                    }
+                }
+                isObserver = false
+            }
+        }
+
         viewModel.getAffiliateProfileResult.observe(viewLifecycleOwner) { response ->
             if (isProfileObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -498,6 +535,12 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             ProgressDialogUtils.getInstance().showProgress(requireActivity())
             isObserver = true
         }
+    }
+
+    private fun changeAffiliateMobileOrEmail(map:HashMap<String,Any>){
+        viewModel.changeAffiliateNumber(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
     private fun getAffiliateUserProfile(){

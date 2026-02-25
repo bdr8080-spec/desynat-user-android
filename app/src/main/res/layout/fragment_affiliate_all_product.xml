@@ -46,7 +46,7 @@
                     android:textSize="@dimen/_11sdp"
                     android:layout_centerVertical="true"
                     android:drawableStart="@drawable/ic_search"
-                    android:layout_toLeftOf="@+id/ivMic"/>
+                    android:layout_toLeftOf="@+id/ivCamera"/>
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivMic"
@@ -59,9 +59,58 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"/>
 
+                <ImageView
+                    android:id="@+id/ivCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_camera"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/ivMic"/>
+
             </RelativeLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:text="Filter"
+                android:gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:drawableStart="@drawable/icon_filter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:text="Sort"
+                android:gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:drawableEnd="@drawable/ic_sort"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

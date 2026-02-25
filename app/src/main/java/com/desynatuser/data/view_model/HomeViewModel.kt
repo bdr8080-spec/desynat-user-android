@@ -188,7 +188,6 @@ class HomeViewModel @Inject constructor(
             repository.userOtp(map)
         }
     }
-
     val addAddressResult: LiveData<CommonResponse>
         get() = repository.addAddressLiveData
 
@@ -856,5 +855,24 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
             repository.getAffiliateLatestSearchList()
         }
     }
+
+    val changeAffiliateNumberResult: LiveData<ChangeMobileNumbeResponse>
+        get() = repository.changeAffiliateNumberLiveData
+
+    fun changeAffiliateNumber(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.changeAffiliateNumber(map)
+        }
+    }
+
+    val affiliateUserOtpResult: LiveData<LoginResponse>
+        get() = repository.userOtpLiveData
+
+    fun affiliateUserOtp(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.affiliateUserOtp(map)
+        }
+    }
+
 
 }

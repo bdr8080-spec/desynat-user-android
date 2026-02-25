@@ -133,4 +133,7 @@ object Constants {
     const val GET_AFFILIATE_RECOMMENDED = "/api/affiliate/getRecommendedSearchData"
     const val PRODUCT_FILTER_KEY = "/api/affiliate/product_filter_keys"
 
+    const val CHANGE_AFFILIATE_NUMBER = "/api/affiliate/change-mobile-number"
+    const val AFFILIATE_USER_OTP = "/api/affiliate/verify-otp"
+
 }

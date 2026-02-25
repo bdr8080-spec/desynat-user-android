@@ -298,7 +298,6 @@ class HomeFragment : BaseFragment() {
                 binding?.clMain?.isVisible = true
                 isObserver = false
             }
-
         }
 
         locationViewModel.location.observe(viewLifecycleOwner) { (lat, lng) ->

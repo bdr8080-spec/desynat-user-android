@@ -298,8 +298,6 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
             responseLiveData = changeNumberLiveData
         )
     }
-
-
     val userOtpLiveData = SingleLiveEvent<LoginResponse>()
     suspend fun userOtp(
         map: HashMap<String,Any>
@@ -311,7 +309,6 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
             responseLiveData = userOtpLiveData
         )
     }
-
     val addAddressLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun addAddress(
         request: AddAddressRequest
@@ -1283,9 +1280,31 @@ val getAffiliateProductLinkLiveData = SingleLiveEvent<GetAffiliateProductLinkRes
         )
     }
 
+    val changeAffiliateNumberLiveData = SingleLiveEvent<ChangeMobileNumbeResponse>()
+    suspend fun changeAffiliateNumber(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.changeAffiliateNumber(map)
+            },
+            responseLiveData = changeAffiliateNumberLiveData
+        )
+    }
+
+    val affiliateUserOtpLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun affiliateUserOtp(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.affiliateUserOtp(map)
+            },
+            responseLiveData = affiliateUserOtpLiveData
+        )
+    }
 
 }
-
 class SingleLiveEvent<T> : MutableLiveData<T>() {
     private val pending = AtomicBoolean(false)
 

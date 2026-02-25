@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentChangeMobileBinding
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.auth.response.GetCountryResponse
-import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -105,6 +105,34 @@ class AffiliateChangeMobileFragment : BaseFragment() {
             }
         }
 
+        viewModel.changeAffiliateNumberResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    if (from=="email") {
+                        showToast("OTP sent successfully to new email address")
+                    }
+                    else{
+                        showToast("OTP sent successfully")
+                    }
+                    val bundle = Bundle().apply {
+                        if (from=="email"){
+                            putString("email", binding?.etEmail?.text.toString())
+                        } else {
+                            putString("mobileNumber", binding?.etMobile?.text.toString())
+                            putString("countryCode", binding?.tvCountryPicker?.text.toString())
+                        }
+                        putString("from", "affiliateEdit")
+                        putString("userId", response.data.id)
+                    }
+                    findNavController().navigate(R.id.action_changeMobileEmailFragment_to_otpFragment,bundle)
+
+
+                }
+                isObserver = false
+            }
+        }
+
         viewModel.updateAffiliateUserProfileResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -162,8 +190,24 @@ class AffiliateChangeMobileFragment : BaseFragment() {
         return false
     }
 
-
     private fun changeMobileOrEmail(){
+        val map = HashMap<String,Any>()
+        map["for"] = from //mobile,email
+        if (from=="email"){
+            map["email"] = binding?.etEmail?.text?.trim().toString()
+        }
+        else{
+            map["country_code"] = binding?.tvCountryPicker?.text?.trim().toString()
+            map["mobile"] = binding?.etMobile?.text?.trim().toString()
+        }
+
+        map["type"] = 1 //0-old,1-new
+        viewModel.changeAffiliateNumber(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun updateMobileOrEmail(){
         val request = UpdateAffiliateProfileRequest(
             email = if (from=="email")binding?.etEmail?.text?.trim().toString()  else profileData?.email.toString(),
             mobile = if (from!="email")binding?.etMobile?.text?.trim().toString()  else profileData?.mobile.toString(),

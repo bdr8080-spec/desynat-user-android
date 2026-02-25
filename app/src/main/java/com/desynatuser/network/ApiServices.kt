@@ -542,4 +542,15 @@ interface ApiServices {
     @GET(Constants.GET_AFFILIATE_RECENT_SEARCH_DATA)
     suspend fun getAffiliateRecentSearchList(): Response<GetRecentSearchListResponse>
 
+    @POST(Constants.CHANGE_AFFILIATE_NUMBER)
+    suspend fun changeAffiliateNumber(
+        @Body body: HashMap<String, Any>
+    ): Response<ChangeMobileNumbeResponse>
+
+    @POST(Constants.AFFILIATE_USER_OTP)
+    suspend fun affiliateUserOtp(
+        @Body body: HashMap<String, Any>
+    ): Response<LoginResponse>
+
+
 }
