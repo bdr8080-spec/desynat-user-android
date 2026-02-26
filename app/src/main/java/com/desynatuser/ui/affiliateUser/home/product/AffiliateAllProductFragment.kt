@@ -185,8 +185,8 @@ class AffiliateAllProductFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver){
-                            getAffiliateAllProduct()
-                            //affiliateProductSearch()
+                         //   getAffiliateAllProduct()
+                              affiliateProductSearch()
                         }
                     }
                 }
@@ -205,8 +205,8 @@ class AffiliateAllProductFragment : BaseFragment() {
             }
         }
 
-        getAffiliateAllProduct()
-       // affiliateProductSearch()
+      //  getAffiliateAllProduct()
+          affiliateProductSearch()
     }
 
     override fun initControl() {
@@ -563,8 +563,8 @@ class AffiliateAllProductFragment : BaseFragment() {
 
             tvClear.setOnClickListener {
                 sortFilter = null
-                getAffiliateAllProduct()
-            //    affiliateProductSearch()
+             //   getAffiliateAllProduct()
+                affiliateProductSearch()
                 dialog.dismiss()
             }
 
@@ -763,8 +763,8 @@ class AffiliateAllProductFragment : BaseFragment() {
                 selectedSizeList.clear()
                 selectedColorList.clear()
                 selectedBrandList.clear()
-                getAffiliateAllProduct()
-              //  affiliateProductSearch()
+//                getAffiliateAllProduct()
+                affiliateProductSearch()
                 dialog.dismiss()
             }
 
@@ -812,9 +812,7 @@ class AffiliateAllProductFragment : BaseFragment() {
                     filterColorAdapter?.notifyDataSetChanged()
                     tvShowMoreColor.text = "Show More Color"
                 }
-
             }
-
         }
 
         dialog.show()
@@ -846,7 +844,7 @@ class AffiliateAllProductFragment : BaseFragment() {
         }
 
         if (subCategoryData!=null) {
-            map["subcategory_id"] = subCategoryData?.id.toString()
+            map["subcategory_id"] = arrayListOf(subCategoryData?.id.toString())
         }
 
         if (selectedBrandList.isNotEmpty()) {

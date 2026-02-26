@@ -56,7 +56,7 @@
         android:id="@+id/btnAdd"
         style="@style/button"
         android:layout_marginTop="@dimen/_30sdp"
-        android:text="Add to added products"
+        android:text="Add to Products"
         android:padding="@dimen/_8sdp"
         android:textSize="@dimen/_11sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"/>

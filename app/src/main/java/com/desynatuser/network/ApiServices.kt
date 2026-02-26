@@ -12,6 +12,7 @@ import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProduc
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductLinkResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.AffiliateChangeUserOtpVerifyResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
@@ -550,7 +551,7 @@ interface ApiServices {
     @POST(Constants.AFFILIATE_USER_OTP)
     suspend fun affiliateUserOtp(
         @Body body: HashMap<String, Any>
-    ): Response<LoginResponse>
+    ): Response<AffiliateChangeUserOtpVerifyResponse>
 
 
 }

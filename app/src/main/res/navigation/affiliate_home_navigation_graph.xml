@@ -61,7 +61,13 @@
         android:id="@+id/affiliateChangeMobile"
         android:name="com.desynatuser.ui.affiliateUser.home.profile.AffiliateChangeMobileFragment"
         android:label="Affiliate Change Mobile Fragment"
-        tools:layout="@layout/fragment_change_mobile"/>
+        tools:layout="@layout/fragment_change_mobile">
+
+        <action
+            android:id="@+id/action_affiliateChangeMobileFragment_to_otpFragment"
+            app:destination="@id/otp"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/affiliateCategory"

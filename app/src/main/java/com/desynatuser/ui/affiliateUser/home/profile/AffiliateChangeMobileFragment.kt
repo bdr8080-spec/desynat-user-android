@@ -58,15 +58,15 @@ class AffiliateChangeMobileFragment : BaseFragment() {
                     tvInputTitle.text = "Enter New Email Address"
                     clMobile.isVisible = false
                     etEmail.isVisible = true
-                    etEmail.setText(profileData?.email)
+                  //  etEmail.setText(profileData?.email)
                 }
                 else{
                     toolbar.tvToolbar.text = "Change Mobile Number"
                     tvInputTitle.text = "Enter New Mobile Number"
                     clMobile.isVisible = true
                     etEmail.isVisible = false
-                    etMobile.setText(profileData?.mobile)
-                    tvCountryPicker.text = profileData?.countryCode
+                  //  etMobile.setText(profileData?.mobile)
+                  //  tvCountryPicker.text = profileData?.countryCode
                 }
             }
     }
@@ -122,10 +122,10 @@ class AffiliateChangeMobileFragment : BaseFragment() {
                             putString("mobileNumber", binding?.etMobile?.text.toString())
                             putString("countryCode", binding?.tvCountryPicker?.text.toString())
                         }
-                        putString("from", "affiliateEdit")
+                        putString("from", "affiliateChange")
                         putString("userId", response.data.id)
                     }
-                    findNavController().navigate(R.id.action_changeMobileEmailFragment_to_otpFragment,bundle)
+                    findNavController().navigate(R.id.action_affiliateChangeMobileFragment_to_otpFragment,bundle)
 
 
                 }

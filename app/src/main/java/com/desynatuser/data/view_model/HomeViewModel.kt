@@ -10,6 +10,7 @@ import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProduc
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductLinkResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.AffiliateChangeUserOtpVerifyResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
@@ -865,8 +866,8 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
         }
     }
 
-    val affiliateUserOtpResult: LiveData<LoginResponse>
-        get() = repository.userOtpLiveData
+    val affiliateUserOtpResult: LiveData<AffiliateChangeUserOtpVerifyResponse>
+        get() = repository.affiliateUserOtpLiveData
 
     fun affiliateUserOtp(map: HashMap<String,Any>) {
         viewModelScope.launch {

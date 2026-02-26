@@ -219,7 +219,7 @@ class BankDetailFragment : BaseFragment() {
                     false
                 }
                 etConfirmAccountNumber.text.toString().isEmpty() -> {
-                    showToast("Please enter confirm account number")
+                    showToast("Please enter re-enter account number")
                     false
                 }
                 etAccountNumber.text.toString() != etConfirmAccountNumber.text.toString() -> {
