@@ -44,6 +44,7 @@ class AffiliateMyProductFragment : BaseFragment() {
     private var productList = ArrayList<GetAffiliateMyProductResponse.Data.Data>()
     private var categoryList = ArrayList<GetCategoryResponse.Data>()
     private var subCategoryList = ArrayList<GetSubCategoryResponse.Data>()
+    private var allSubCategoryList = ArrayList<GetSubCategoryResponse.Data>()
     private var search: Job? = null
     private var lastQuery: String? = null
     private var isCategoryObserver = false
@@ -113,7 +114,7 @@ class AffiliateMyProductFragment : BaseFragment() {
                         }
                         else {
                             selectedCategory = categoryList[position]
-                            getAllSubCategory(false)
+                            getAllSubCategory(false, category = selectedCategory?.id.toString())
                             getMyProduct()
                         }
                     }
@@ -194,6 +195,9 @@ class AffiliateMyProductFragment : BaseFragment() {
                         }
                     }
                 }
+                if (pos==0){
+                    getAllSubCategory()
+                }
                 affiliateCategoryMyProductAdapter?.setSelected(pos)
                 isCategoryObserver = false
             }
@@ -259,8 +263,8 @@ class AffiliateMyProductFragment : BaseFragment() {
         isCategoryObserver = true
     }
 
-    private fun getAllSubCategory(loading:Boolean=true,search:String?=null){
-        viewModel.getSubCategory(selectedCategory?.id.toString(),search)
+    private fun getAllSubCategory(loading:Boolean=true,search:String?=null,category: String?=null){
+        viewModel.getSubCategory(category,search)
         if (loading){
             ProgressDialogUtils.getInstance().showProgress(requireActivity())
         }

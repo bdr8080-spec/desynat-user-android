@@ -151,9 +151,14 @@ class AffiliateCategoryFragment :  BaseFragment() {
             subCategoryList.clear()
             subCategoryList.addAll(response.data)
             affiliateSubCategoryAdapter?.setData(subCategoryList)
+            checkData()
             isSubCategoryObserver = false
         }
        }
+    }
+
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = subCategoryList.isEmpty()
     }
 
     private fun getAllCategory(){

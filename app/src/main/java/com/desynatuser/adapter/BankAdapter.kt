@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.desynatuser.R
 import com.desynatuser.databinding.ItemBankBinding
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 
 class BankAdapter(var context: Context, private val bankList: List<GetAffiliateUserProfileResponse.Data.BankDetails>, var isShow: Boolean=true, var click:OnClick) :
     RecyclerView.Adapter<BankAdapter.ViewHolder>() {
-
+        var selectedPos = 0
         interface OnClick{
             fun onClick(position: Int,type: Int)
         }
@@ -28,6 +29,13 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
                     ivDelete.isVisible = false
                 }
 
+                if (selectedPos==position){
+                    ivRadio.setImageResource(R.drawable.ic_radio_selected)
+                }
+                else{
+                    ivRadio.setImageResource(R.drawable.ic_radio_unselected)
+                }
+
                 view.isVisible = bankList.size-1 != position
                 val bankData = bankList[position]
 
@@ -41,8 +49,12 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
                     click.onClick(position,2)
                 }
 
-                ivRadio.setOnClickListener {
-                    click.onClick(position,3)
+                clAccount.setOnClickListener {
+                    if (selectedPos!=position){
+                        selectedPos = position
+                        click.onClick(position,3)
+                        notifyDataSetChanged()
+                    }
                 }
             }
 

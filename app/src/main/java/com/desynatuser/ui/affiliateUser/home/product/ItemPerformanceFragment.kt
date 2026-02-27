@@ -17,9 +17,11 @@ import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProd
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.openCustomDatePicker
+import com.desynatuser.utils.openCustomPreSelectedDatePicker
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Calendar
 import kotlin.getValue
 import kotlin.text.toFloatOrNull
 
@@ -31,6 +33,10 @@ class ItemPerformanceFragment : BaseFragment() {
     private var productData :GetAffiliateMyProductResponse.Data.Data?=null
     private var productDetailData : GetAffiliateMyProductDetailResponse.Data?=null
 
+    private var fromTimestamp: Long? = null
+    private var toTimestamp: Long? = null
+    private var fromDateText: String? = null
+    private var toDateText: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,6 +82,36 @@ class ItemPerformanceFragment : BaseFragment() {
             etTo.setOnClickListener{
                 openCustomDatePicker(requireActivity()) { date, timestamp ->
                     etFrom.setText(date)
+                }
+            }
+
+            etFrom.setOnClickListener {
+                val initialDate = fromTimestamp ?: Calendar.getInstance().timeInMillis
+                openCustomPreSelectedDatePicker(requireActivity(), initialDate = initialDate) { date, timestamp ->
+                    fromTimestamp = timestamp
+                    fromDateText = date
+                    etFrom.setText(date)
+
+                    toTimestamp = null
+                    toDateText = null
+                    etTo.setText("")
+                }
+            }
+
+            etTo.setOnClickListener {
+                if (fromTimestamp == null) {
+                    showToast("Please select From date first")
+                    return@setOnClickListener
+                }
+
+                val initialDate = toTimestamp ?: fromTimestamp
+                openCustomPreSelectedDatePicker(
+                    requireActivity(),
+                    minDate = fromTimestamp,initialDate
+                ) { date, timestamp ->
+                    toTimestamp = timestamp
+                    toDateText = date
+                    etTo.setText(date)
                 }
             }
         }
@@ -129,7 +165,7 @@ class ItemPerformanceFragment : BaseFragment() {
             val discountValue = variant?.discountValue ?: 0
             val discountType = if (variant?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
-            tvCommission.text = "${productDetailData?.product?.affiliatedCommission}% Commission"
+            tvCommission.text = "${productDetailData?.product?.affiliatedCommission?:0}% Commission"
             if (productDetailData?.affiliateProductLink!=null){
                 tvLink.isVisible = true
                 ivCopy.isVisible = true

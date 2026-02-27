@@ -191,6 +191,9 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                                 }
                             }
                         }
+                        3->{
+                           // defaultBank()
+                        }
                     }
                 }
 
@@ -399,6 +402,17 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             }
         }
 
+        viewModel.defaultBankResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    updatedType = 4
+                    getAffiliateUserProfile()
+                }
+                isObserver = false
+            }
+        }
+
         viewModel.updateAffiliateUserAddressResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -456,6 +470,13 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                         }
                         3->{
                             CommonMethod.showSuccessDialog(requireActivity(),"Bank details deleted successfully!"){
+                                profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
+                                setData()
+                                //findNavController().popBackStack()
+                            }
+                        }
+                        4->{
+                            CommonMethod.showSuccessDialog(requireActivity(),"Bank account changed successfully!"){
                                 profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
                                 setData()
                                 //findNavController().popBackStack()
@@ -558,6 +579,14 @@ class AffiliateProfileDetailFragment : BaseFragment() {
        val map = HashMap<String, Any>()
         map["bank_details_id"] = bankList[selectedPos].id
         viewModel.deleteBank(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+ private fun defaultBank() {
+       val map = HashMap<String, Any>()
+        map["bank_details_id"] = bankList[selectedPos].id
+        viewModel.defaultBank(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }

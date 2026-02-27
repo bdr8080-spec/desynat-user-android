@@ -47,7 +47,7 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
             val discountValue = variant?.discountValue ?: 0
             val discountType = if (variant?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
-            tvCommission.text = "${productData?.productVariants?.get(0)?.discountValue}% Commission"
+            tvCommission.text = "${productData?.affiliatedCommission?:0}% Commission"
 
             tvRating.text = "(${productData?.storeAvgRating?:0})"
             rating.rating = productData?.storeAvgRating?.toFloatOrNull()?:0f
@@ -58,14 +58,17 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
                 error(R.drawable.ic_placeholder)
             }
 
-            if (isCategoryAvailable){
-                tvTrackPerformance.isVisible = true
-                tvTrackPerformance1.isVisible = false
-            }
-            else{
-                tvTrackPerformance.isVisible = false
-                tvTrackPerformance1.isVisible = true
-            }
+            tvTrackPerformance.isVisible = true
+            tvTrackPerformance1.isVisible = false
+
+//            if (isCategoryAvailable){
+//                tvTrackPerformance.isVisible = true
+//                tvTrackPerformance1.isVisible = false
+//            }
+//            else{
+//                tvTrackPerformance.isVisible = false
+//                tvTrackPerformance1.isVisible = true
+//            }
 
             tvTrackPerformance.setOnClickListener {
                 productClick.onProductClick(position,1)

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.load
 import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment

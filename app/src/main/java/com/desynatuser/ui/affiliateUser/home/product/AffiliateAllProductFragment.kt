@@ -165,7 +165,7 @@ class AffiliateAllProductFragment : BaseFragment() {
                         }
                         2->{
                             selectedPos = position
-                            getLinkDialog()
+                            getAffiliateProductLink()
                         }
                     }
                 }
@@ -277,7 +277,7 @@ class AffiliateAllProductFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    dialogBinding?.tvLink?.text = response?.data?.link
+                    getLinkDialog(response?.data?.link.toString())
                 }
                 isObserver = false
             }
@@ -350,7 +350,7 @@ class AffiliateAllProductFragment : BaseFragment() {
         binding?.tvNoDataFound?.isVisible = productList.isEmpty()
     }
 
-    private fun getLinkDialog() {
+    private fun getLinkDialog(link: String) {
         linkDialog = Dialog(requireActivity(), R.style.CustomDialog)
         dialogBinding = GetProductLinkDialogBinding.inflate(LayoutInflater.from(requireActivity()))
         dialogBinding?.root.let { it?.let { it1 -> linkDialog?.setContentView(it1) } }
@@ -369,7 +369,8 @@ class AffiliateAllProductFragment : BaseFragment() {
 
         dialogBinding?.apply {
 
-            getAffiliateProductLink()
+            tvLink.text = link
+
             tvToolbar.setOnClickListener {
                 linkDialog?.dismiss()
             }
@@ -393,13 +394,14 @@ class AffiliateAllProductFragment : BaseFragment() {
                 val text = list?.firstOrNull()
 
                 if (!text.isNullOrEmpty()) {
-                    val bundle = Bundle().apply {
-                        putString("search", text)
-                    }
-                    findNavController().navigate(
-                        R.id.action_searchProductFragment_to_searchProductListFragment,
-                        bundle
-                    )
+                    binding?.etSearch?.setText(text)
+//                    val bundle = Bundle().apply {
+//                        putString("search", text)
+//                    }
+//                    findNavController().navigate(
+//                        R.id.action_searchProductFragment_to_searchProductListFragment,
+//                        bundle
+//                    )
                 }
             }
         }
@@ -577,12 +579,8 @@ class AffiliateAllProductFragment : BaseFragment() {
                 else{
                     showToast("Please select")
                 }
-
-
             }
-
         }
-
         dialog.show()
     }
 
@@ -653,13 +651,11 @@ class AffiliateAllProductFragment : BaseFragment() {
                 }
             }
 
-
             if (selectedSizeList.isNotEmpty()) {
                 sizeList.forEach { size ->
                     size.isSelected = selectedSizeList.any { it.id == size.id }
                 }
             }
-
 
             newColorList.clear()
             if (colorList.size>10){
@@ -682,7 +678,6 @@ class AffiliateAllProductFragment : BaseFragment() {
                 override fun onClickItem(position: Int) {
 
                 }
-
             })
             rvBrand.adapter = filterBrandAdapter
 

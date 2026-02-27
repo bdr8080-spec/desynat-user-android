@@ -151,7 +151,7 @@ interface ApiServices {
 
     @GET(Constants.GET_SUB_CATEGORY)
     suspend fun getSubCategory(
-        @Query("category_id") categoryId: String,
+        @Query("category_id") categoryId: String?=null,
         @Query("search") search: String? = null
     ): Response<GetSubCategoryResponse>
 
@@ -502,7 +502,12 @@ interface ApiServices {
         @Body map: HashMap<String, Any>
     ): Response<CommonResponse>
 
-    @POST(Constants.DELETE_BANK)
+    @POST(Constants.DEFAULT_BANK)
+    suspend fun defaultBank(
+        @Body map: HashMap<String, Any>
+    ): Response<CommonResponse>
+
+@POST(Constants.DELETE_BANK)
     suspend fun deleteBank(
         @Body map: HashMap<String, Any>
     ): Response<CommonResponse>

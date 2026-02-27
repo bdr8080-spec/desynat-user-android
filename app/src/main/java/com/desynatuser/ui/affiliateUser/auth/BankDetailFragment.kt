@@ -60,7 +60,7 @@ class BankDetailFragment : BaseFragment() {
                 llTab.isVisible = false
                 if (type=="edit"){
                     toolbar.tvToolbar.text = "Edit Account"
-                    btnSubmit.text = "Edit Account"
+                    btnSubmit.text = "Update"
 
                     val itemBankDataJson = arguments?.getString("bankData")
                     if (!itemBankDataJson.isNullOrEmpty()) {

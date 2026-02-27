@@ -128,7 +128,7 @@ class HomeViewModel @Inject constructor(
     val subCategoryResult: LiveData<GetSubCategoryResponse>
         get() = repository.subCategoryLiveData
 
-    fun getSubCategory(categoryId:String,search:String?=null) {
+    fun getSubCategory(categoryId:String?=null,search:String?=null) {
         viewModelScope.launch {
             repository.getSubCategory(categoryId,search)
         }
@@ -765,6 +765,15 @@ val getWalletHistoryResult: LiveData<GetWalletHistoryResponse>
     fun deleteBank(map: HashMap<String, Any>) {
         viewModelScope.launch {
             repository.deleteBank(map)
+        }
+    }
+
+val defaultBankResult: LiveData<CommonResponse>
+        get() = repository.defaultBankLiveData
+
+    fun defaultBank(map: HashMap<String, Any>) {
+        viewModelScope.launch {
+            repository.defaultBank(map)
         }
     }
 

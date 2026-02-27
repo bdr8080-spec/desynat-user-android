@@ -29,7 +29,7 @@ class AffiliateProductAdapter(var context:Context, private var productList: Arra
                     val discountValue = variant?.discountValue ?: 0
                     val discountType = if (variant?.discountType == "1")"% off" else " KD off"
                     tvDiscount.text = "$discountValue$discountType"
-                    tvCommission.text = "${productData?.productVariants?.firstOrNull()?.discountValue}% Commission"
+                    tvCommission.text = "${productData?.affiliatedCommission?:0}% Commission"
 
                     ivStore.load(productData?.productVariants?.firstOrNull()?.variantImage?.firstOrNull()) {
                         crossfade(true)

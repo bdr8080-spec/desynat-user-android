@@ -27,7 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
-        android:paddingBottom="@dimen/_20sdp"
         app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -87,6 +86,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/llCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -120,26 +120,29 @@
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"/>
+
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvNoDataFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_13sdp"
+                android:text="No sub category found"
+                android:layout_marginTop="@dimen/_50sdp"
+                app:layout_constraintTop_toBottomOf="@+id/llCategory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:visibility="gone"
-        android:id="@+id/tvNoDataFound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/black"
-        android:fontFamily="@font/poppins_medium"
-        android:textSize="@dimen/_13sdp"
-        android:text="No sub category found"
-        android:layout_marginTop="@dimen/_30sdp"
-        app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

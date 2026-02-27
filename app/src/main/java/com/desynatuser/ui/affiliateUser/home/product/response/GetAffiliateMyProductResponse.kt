@@ -41,7 +41,7 @@ data class GetAffiliateMyProductResponse(
     ) {
         data class Data(
             @SerializedName("affiliate_commission")
-            val affiliateCommission: Int,
+            val affiliateCommission: String,
             @SerializedName("affiliate_details")
             val affiliateDetails: AffiliateDetails,
             @SerializedName("affiliate_id")

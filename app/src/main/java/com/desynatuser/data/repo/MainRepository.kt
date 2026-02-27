@@ -253,7 +253,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
     }
 
     val subCategoryLiveData = SingleLiveEvent<GetSubCategoryResponse>()
-    suspend fun getSubCategory(categoryId:String,search:String?=null
+    suspend fun getSubCategory(categoryId:String?=null,search:String?=null
     ) {
         handleApiCall(
             api = {
@@ -1156,6 +1156,17 @@ val getAffiliateProfileLiveData = SingleLiveEvent<GetAffiliateUserProfileRespons
                 api.updateAffiliateUserPassword(map)
             },
             responseLiveData = updateAffiliateUserPasswordLiveData
+        )
+    }
+
+    val defaultBankLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun defaultBank(map: HashMap<String, Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.defaultBank(map)
+            },
+            responseLiveData = defaultBankLiveData
         )
     }
 
