@@ -122,24 +122,25 @@
                 android:layout_height="wrap_content"
                 android:text="100 KD"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="@dimen/_11sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tvCentrePrice"
                 android:layout_width="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="@dimen/_11sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:text="50000 KD"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_centerHorizontal="true"/>
 
             <TextView
                 android:id="@+id/tvMaxPrice"
                 android:layout_width="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="@dimen/_11sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:text="100000 KD"

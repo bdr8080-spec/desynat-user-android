@@ -527,6 +527,35 @@ class AffiliateSearchProductListFragment : BaseFragment() {
                 tvCentrePrice.text = "$selectedMaxPrice KD"
             }
 
+            if (selectedMinPrice != 0 || selectedMaxPrice != 0) {
+                min = selectedMinPrice
+                max = selectedMaxPrice
+
+                val minValue = if (selectedMinPrice != 0)
+                    selectedMinPrice.toFloat()
+                else priceSlider.valueFrom
+
+                val maxValue = if (selectedMaxPrice != 0)
+                    selectedMaxPrice.toFloat()
+                else priceSlider.valueTo
+
+                priceSlider.values = listOf(minValue, maxValue)
+
+                tvMinPrice.text = "${CommonMethod.formatFloatPrice(minValue)} KD"
+                tvCentrePrice.text = "${CommonMethod.formatFloatPrice(maxValue)} KD"
+
+                // 🔥 VERY IMPORTANT
+                priceSlider.post {
+                    moveLabel(tvMinPrice, priceSlider, 0)
+                    moveLabel(tvCentrePrice, priceSlider, 1)
+                }
+            }
+            if (selectedDiscount!=null){
+                discount = selectedDiscount
+            }
+            if (selectedRating!=null){
+                rating = selectedRating
+            }
             when (selectedDiscount) {
                 10 -> radioGroupDiscount.check(R.id.rb10)
                 20 -> radioGroupDiscount.check(R.id.rb20)
@@ -685,8 +714,8 @@ class AffiliateSearchProductListFragment : BaseFragment() {
             }
 
             tvApply.setOnClickListener{
-                selectedMaxPrice = min
-                selectedMinPrice = max
+                selectedMaxPrice = max
+                selectedMinPrice = min
                 selectedCategory = category
                 selectedDeliveryTime = deliveryTime
                 selectedRating = rating

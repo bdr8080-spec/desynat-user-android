@@ -29,6 +29,7 @@ class BankDetailFragment : BaseFragment() {
 
     private var isObserver = false
     private var isProfileObserver = false
+    private var isDefaultObserver = false
     private var userId = ""
     private var from = ""
     private var type = ""
@@ -159,16 +160,30 @@ class BankDetailFragment : BaseFragment() {
         viewModel.addAffiliateUserBankResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 response?.let {
-                   getAffiliateUserProfile()
+                    if (SharedPreference.get(requireActivity()).getAffiliateUser()?.bankDetails?.size==0){
+                        defaultBank(response.data.id.toString())
+                    }
+                    else {
+                        getAffiliateUserProfile()
+                    }
                 }
                 isObserver = false
             }
         }
 
+        homeViewModel.defaultBankResult.observe(viewLifecycleOwner) { response ->
+            if (isDefaultObserver) {
+                response?.let {
+                  getAffiliateUserProfile()
+                }
+                isDefaultObserver = false
+            }
+        }
+
         homeViewModel.getAffiliateProfileResult.observe(viewLifecycleOwner) { response ->
             if (isProfileObserver) {
-                ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
+                    ProgressDialogUtils.getInstance().hideProgress()
                     SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                     when(type){
                         "edit"->{
@@ -180,12 +195,12 @@ class BankDetailFragment : BaseFragment() {
                             }
                         }
                         "add"->{
-                            CommonMethod.showSuccessDialog(
-                                requireActivity(),
-                                "Bank Details Added Successfully"
-                            ) {
-                                findNavController().popBackStack()
-                            }
+                                CommonMethod.showSuccessDialog(
+                                    requireActivity(),
+                                    "Bank Details Added Successfully"
+                                ) {
+                                    findNavController().popBackStack()
+                                }
                         }
 
                     }
@@ -195,6 +210,14 @@ class BankDetailFragment : BaseFragment() {
             }
         }
 
+    }
+
+    private fun defaultBank(id: String) {
+        val map = HashMap<String, Any>()
+        map["id"] = id
+        homeViewModel.defaultBank(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isDefaultObserver = true
     }
 
     private fun getAffiliateUserProfile(){

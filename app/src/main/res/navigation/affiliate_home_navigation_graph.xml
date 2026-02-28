@@ -147,5 +147,10 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/inAppCameraFragment"
+        android:name="com.desynatuser.ui.InAppCameraFragment"
+        android:label="In App Fragment"
+        tools:layout="@layout/fragment_in_app_camera"/>
 
 </navigation>

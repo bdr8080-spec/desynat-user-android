@@ -804,6 +804,15 @@ val defaultBankResult: LiveData<CommonResponse>
         }
     }
 
+    val removeAffiliateProductResult: LiveData<CommonResponse>
+        get() = repository.removeAffiliateProductLiveData
+
+    fun removeAffiliateProduct(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.removeAffiliateProduct(map)
+        }
+    }
+
     val addAffiliateProductResult: LiveData<CommonResponse>
         get() = repository.addAffiliateProductLiveData
 

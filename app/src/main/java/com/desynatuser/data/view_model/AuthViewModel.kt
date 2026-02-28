@@ -11,6 +11,7 @@ import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetail
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
+import com.desynatuser.ui.affiliateUser.home.profile.response.AddAnotherBankResponse
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -162,7 +163,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    val addAffiliateUserBankResult: LiveData<CommonResponse>
+    val addAffiliateUserBankResult: LiveData<AddAnotherBankResponse>
         get() = repository.addAffiliateUserBankLiveData
 
     fun addAffiliateUserBank(request: AffiliateUserAddBankDetailRequest) {

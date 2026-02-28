@@ -18,6 +18,7 @@ import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProduc
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductLinkResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.AddAnotherBankResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.AffiliateChangeUserOtpVerifyResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
@@ -1135,7 +1136,7 @@ val getAffiliateProfileLiveData = SingleLiveEvent<GetAffiliateUserProfileRespons
         )
     }
 
-    val addAffiliateUserBankLiveData = SingleLiveEvent<CommonResponse>()
+    val addAffiliateUserBankLiveData = SingleLiveEvent<AddAnotherBankResponse>()
     suspend fun addAffiliateUserBank(
         request: AffiliateUserAddBankDetailRequest
     ) {
@@ -1210,6 +1211,17 @@ val getAffiliateProfileLiveData = SingleLiveEvent<GetAffiliateUserProfileRespons
                 api.getAffiliateMyProductDetail(map)
             },
             responseLiveData = getAffiliateMyProductDetailLiveData
+        )
+    }
+
+ val removeAffiliateProductLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun removeAffiliateProduct(map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.removeAffiliateProduct(map)
+            },
+            responseLiveData = removeAffiliateProductLiveData
         )
     }
 

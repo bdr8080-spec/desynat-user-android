@@ -725,8 +725,8 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             tvApply.setOnClickListener{
-                selectedMaxPrice = min
-                    selectedMinPrice = max
+                selectedMaxPrice = max
+                    selectedMinPrice = min
                 selectedCategory = category
                 selectedDeliveryTime = deliveryTime
                 selectedRating = rating

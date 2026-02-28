@@ -18,6 +18,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <RelativeLayout
+        android:id="@+id/relAllSelection"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/selected_sub_category_stroke"
+        app:layout_constraintTop_toTopOf="@+id/ivAll"
+        app:layout_constraintStart_toStartOf="@+id/ivAll"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAll"
+        app:layout_constraintEnd_toEndOf="@+id/ivAll" />
+
+
     <View
         android:id="@+id/view"
         android:layout_width="0dp"
@@ -33,7 +45,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_placeholder"
         android:background="#F5F5F5"
-        app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
+        app:shapeAppearanceOverlay="@style/rounded_corner3sdp"
         app:layout_constraintTop_toBottomOf="@+id/view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

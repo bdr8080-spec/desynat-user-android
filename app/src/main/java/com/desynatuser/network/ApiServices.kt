@@ -12,6 +12,7 @@ import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProduc
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductLinkResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
+import com.desynatuser.ui.affiliateUser.home.profile.response.AddAnotherBankResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.AffiliateChangeUserOtpVerifyResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
@@ -495,7 +496,7 @@ interface ApiServices {
     @POST(Constants.ADD_AFFILIATE_BANK)
     suspend fun addAffiliateUserBank(
         @Body request: AffiliateUserAddBankDetailRequest
-    ): Response<CommonResponse>
+    ): Response<AddAnotherBankResponse>
 
     @POST(Constants.UPDATE_AFFILIATE_PASSWORD)
     suspend fun updateAffiliateUserPassword(
@@ -520,6 +521,9 @@ interface ApiServices {
 
     @GET(Constants.GET_AFFILIATE_MY_PRODUCT_DETAIL)
     suspend fun getAffiliateMyProductDetail(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateMyProductDetailResponse>
+
+    @POST(Constants.REMOVE_AFFILIATE_MY_PRODUCT)
+    suspend fun removeAffiliateProduct(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
     @POST(Constants.ADD_AFFILIATE_PRODUCT)
     suspend fun addAffiliateProduct(@Body map: HashMap<String, Any>): Response<CommonResponse>

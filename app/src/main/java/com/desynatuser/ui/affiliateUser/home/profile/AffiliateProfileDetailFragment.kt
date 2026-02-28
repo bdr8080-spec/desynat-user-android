@@ -30,6 +30,7 @@ import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+import kotlin.text.toDoubleOrNull
 
 @AndroidEntryPoint
 class AffiliateProfileDetailFragment : BaseFragment() {
@@ -192,7 +193,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                             }
                         }
                         3->{
-                           // defaultBank()
+                            defaultBank(bankList[position].id.toString())
                         }
                     }
                 }
@@ -471,15 +472,17 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                         3->{
                             CommonMethod.showSuccessDialog(requireActivity(),"Bank details deleted successfully!"){
                                 profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
-                                setData()
-                                //findNavController().popBackStack()
+                                bankList.clear()
+                                profileData?.bankDetails?.let { bankList.addAll(it) }
+                                bankAdapter?.notifyDataSetChanged()
                             }
                         }
                         4->{
                             CommonMethod.showSuccessDialog(requireActivity(),"Bank account changed successfully!"){
                                 profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
-                                setData()
-                                //findNavController().popBackStack()
+                                bankList.clear()
+                                profileData?.bankDetails?.let { bankList.addAll(it) }
+                                bankAdapter?.notifyDataSetChanged()
                             }
                         }
                     }
@@ -505,11 +508,22 @@ class AffiliateProfileDetailFragment : BaseFragment() {
             Glide.with(requireActivity()).load(docUrl1).placeholder(R.drawable.doc1).into(ivDoc1)
             Glide.with(requireActivity()).load(docUrl2).placeholder(R.drawable.doc2).into(ivDoc2)
 
-            etCountry.setText(profileData?.countryDetails?.name)
-            etChooseLocation.setText(profileData?.addressDetails?.locations)
-            etAddressLine1.setText(profileData?.addressDetails?.address1)
-            etAddressLine2.setText(profileData?.addressDetails?.address2)
-            etPinCode.setText(profileData?.addressDetails?.pincode)
+            if (latitude==0.0){
+                latitude = profileData?.let?.toDoubleOrNull()?:0.0
+                longitude = profileData?.long?.toDoubleOrNull()?:0.0
+                selectedCountryId = profileData?.addressDetails?.country.toString()
+                for(i in 0 until countryList.size){
+                    if (countryList[i].id.toString()==profileData?.addressDetails?.country){
+                        etCountry.setText(countryList[i].name)
+                    }
+                }
+
+                etChooseLocation.setText(profileData?.addressDetails?.locations)
+                etAddressLine1.setText(profileData?.addressDetails?.address1)
+                etAddressLine2.setText(profileData?.addressDetails?.address2)
+                etPinCode.setText(profileData?.addressDetails?.pincode)
+            }
+
 
             bankList.clear()
             profileData?.bankDetails?.let { bankList.addAll(it) }
@@ -544,7 +558,8 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                 address1 = etAddressLine1.text.toString().trim(),
                 address2 = etAddressLine2.text.toString().trim(),
                 city = etCity.text.toString(),
-                country = etCountry.text.toString().trim(),
+             //   country = etCountry.text.toString().trim(),
+                country = selectedCountryId,
                 let = latitude,
                 long = longitude,
                 pincode = etPinCode.text.toString().trim(),
@@ -583,9 +598,9 @@ class AffiliateProfileDetailFragment : BaseFragment() {
         isObserver = true
     }
 
- private fun defaultBank() {
+ private fun defaultBank(id: String) {
        val map = HashMap<String, Any>()
-        map["bank_details_id"] = bankList[selectedPos].id
+        map["id"] = id
         viewModel.defaultBank(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true

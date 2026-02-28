@@ -107,13 +107,12 @@ class AffiliateMyProductFragment : BaseFragment() {
                         if (position==0){
                             selectedCategory = null
                             selectedSubCategory = null
-                            subCategoryList.clear()
-                            affiliateSubCategoryMyProductAdapter?.notifyDataSetChanged()
-                            affiliateMyProductAdapter?.setData(subCategoryList.isNotEmpty())
+                            getAllSubCategory(false)
                             getMyProduct()
                         }
                         else {
                             selectedCategory = categoryList[position]
+                            selectedSubCategory = null
                             getAllSubCategory(false, category = selectedCategory?.id.toString())
                             getMyProduct()
                         }
@@ -196,7 +195,7 @@ class AffiliateMyProductFragment : BaseFragment() {
                     }
                 }
                 if (pos==0){
-                    getAllSubCategory()
+                    getAllSubCategory(false)
                 }
                 affiliateCategoryMyProductAdapter?.setSelected(pos)
                 isCategoryObserver = false
@@ -208,7 +207,8 @@ class AffiliateMyProductFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 subCategoryList.clear()
                 subCategoryList.addAll(response.data)
-                affiliateSubCategoryMyProductAdapter?.notifyDataSetChanged()
+                selectedSubCategory = null
+                affiliateSubCategoryMyProductAdapter?.setSelectedPos(-1)
                 affiliateMyProductAdapter?.setData(subCategoryList.isNotEmpty())
                 isSubCategoryObserver = false
             }
@@ -246,6 +246,9 @@ class AffiliateMyProductFragment : BaseFragment() {
 
     private fun getMyProduct(){
         val map = HashMap<String, Any>()
+        if (lastQuery!=null&&lastQuery!="null"&&lastQuery!="") {
+            map["search"] = lastQuery.toString()
+        }
         if (selectedCategory!=null){
             map["category_id"] = selectedCategory?.id.toString()
 

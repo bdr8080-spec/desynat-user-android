@@ -30,21 +30,33 @@
             android:clipToOutline="true"
             android:src="@drawable/ic_placeholder"
             android:layout_marginStart="@dimen/_15sdp"
-            app:shapeAppearanceOverlay="@style/half_rounded_corner_10sdp"
+            app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete_icon"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:singleLine="true"
+            android:maxLines="2"
             android:text="Levis Shirt (By Abaya)"
             android:textColor="@color/black"
-            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:textSize="@dimen/_10sdp"
-            app:layout_constraintStart_toStartOf="@+id/ivStore"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/rating"
             app:layout_constraintTop_toBottomOf="@+id/ivStore" />
 
@@ -275,7 +287,6 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"/>
 
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -470,7 +481,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_20sdp"
             app:layout_constraintTop_toBottomOf="@+id/relEarnings"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

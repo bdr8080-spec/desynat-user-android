@@ -47,9 +47,9 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("lang")
         val lang: String,
         @SerializedName("let")
-        val let: Any,
+        val let: String,
         @SerializedName("long")
-        val long: Any,
+        val long: String,
         @SerializedName("mobile")
         var mobile: String,
         @SerializedName("otp")
@@ -128,7 +128,9 @@ data class GetAffiliateUserProfileResponse(
             @SerializedName("upload_proof")
             val uploadProof: Any,
             @SerializedName("user_id")
-            val userId: String
+            val userId: String,
+            @SerializedName("default_account")
+            var defaultAccount: String
         )
 
         data class CountryDetails(

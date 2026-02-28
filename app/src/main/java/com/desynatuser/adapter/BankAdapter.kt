@@ -11,7 +11,6 @@ import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserPr
 
 class BankAdapter(var context: Context, private val bankList: List<GetAffiliateUserProfileResponse.Data.BankDetails>, var isShow: Boolean=true, var click:OnClick) :
     RecyclerView.Adapter<BankAdapter.ViewHolder>() {
-        var selectedPos = 0
         interface OnClick{
             fun onClick(position: Int,type: Int)
         }
@@ -19,6 +18,9 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
     inner class ViewHolder(val binding: ItemBankBinding) :
         RecyclerView.ViewHolder(binding.root){
             fun bind(position: Int) = with(binding) {
+
+                view.isVisible = bankList.size-1 != position
+                val bankData = bankList[position]
 
                 if (isShow){
                     ivEdit.isVisible = true
@@ -29,15 +31,12 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
                     ivDelete.isVisible = false
                 }
 
-                if (selectedPos==position){
+                if (bankData.defaultAccount=="1"){
                     ivRadio.setImageResource(R.drawable.ic_radio_selected)
                 }
                 else{
                     ivRadio.setImageResource(R.drawable.ic_radio_unselected)
                 }
-
-                view.isVisible = bankList.size-1 != position
-                val bankData = bankList[position]
 
                 tvAccountNumber.text = bankData.accountNo
 
@@ -50,10 +49,8 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
                 }
 
                 clAccount.setOnClickListener {
-                    if (selectedPos!=position){
-                        selectedPos = position
+                    if (bankData.defaultAccount=="0"){
                         click.onClick(position,3)
-                        notifyDataSetChanged()
                     }
                 }
             }

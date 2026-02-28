@@ -276,6 +276,15 @@ object CommonMethod {
         }
     }
 
+    fun formatFloatPrice(price: Float): String {
+        return if (price % 1.0 == 0.0) {
+            price.toInt().toString()
+        } else {
+            String.format("%.2f", price)
+          //  price.toString()
+        }
+    }
+
     fun formatPriceToReduceLength(amountStr: String?): String {
         if (amountStr.isNullOrBlank()||amountStr=="null") return ""
         return try {

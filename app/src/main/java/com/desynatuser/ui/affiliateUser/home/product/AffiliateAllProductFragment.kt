@@ -1,13 +1,17 @@
 package com.desynatuser.ui.affiliateUser.home.product
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.text.Editable
@@ -23,6 +27,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -54,6 +59,7 @@ import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.StoryMediaPicker
 import com.desynatuser.utils.showToast
 import com.desynatuser.vision.VisionRetrofit
 import com.google.android.material.slider.RangeSlider
@@ -106,26 +112,43 @@ class AffiliateAllProductFragment : BaseFragment() {
     var isSizeObserver = false
     var isColorObserver = false
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
-
+    var isFirstLoaded = false
     var searchData = ""
     private var searchList: ArrayList<String> = arrayListOf()
     private var sortFilter: String?=null
 
-    private lateinit var imagePicker: ImagePicker
+  //  private lateinit var imagePicker: ImagePicker
+    private lateinit var storyMediaPicker: StoryMediaPicker
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            imagePicker.onCameraResult(success)
+            storyMediaPicker.onImageCameraResult(success)
         }
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            imagePicker.onGalleryResult(uri)
+            storyMediaPicker.onImageGalleryResult(uri)
         }
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            imagePicker.onPermissionResult(granted)
+            if (granted) {
+                storyMediaPicker.showImagePicker()
+            }
         }
+
+//    private val cameraLauncher =
+//        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+//            imagePicker.onCameraResult(success)
+//        }
+//    private val galleryLauncher =
+//        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+//            imagePicker.onGalleryResult(uri)
+//        }
+//
+//    private val permissionLauncher =
+//        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+//            imagePicker.onPermissionResult(granted)
+//        }
 
 
     override fun onCreateView(
@@ -171,6 +194,11 @@ class AffiliateAllProductFragment : BaseFragment() {
                 }
             })
             rvProduct.adapter = affiliateProductAdapter
+            if (!isFirstLoaded) {
+                isFirstLoaded = true
+                affiliateProductSearch()
+            }
+
 
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -184,16 +212,16 @@ class AffiliateAllProductFragment : BaseFragment() {
                     search?.cancel()
                     search = lifecycleScope.launch {
                         delay(600)
-                        if (!isObserver){
-                         //   getAffiliateAllProduct()
-                              affiliateProductSearch()
-                        }
+                        affiliateProductSearch(false)
+//                        if (!isObserver){
+//                              affiliateProductSearch()
+//                        }
                     }
                 }
             })
         }
 
-        imagePicker = ImagePicker(
+      /*  imagePicker = ImagePicker(
             requireActivity(),
             cameraLauncher,
             galleryLauncher,
@@ -203,10 +231,20 @@ class AffiliateAllProductFragment : BaseFragment() {
                 val bitmap = uriToBitmap(requireContext(), uri)
                 callVisionApi(bitmap)
             }
-        }
+        }*/
 
-      //  getAffiliateAllProduct()
-          affiliateProductSearch()
+        storyMediaPicker = StoryMediaPicker(
+            this,
+            cameraLauncher,
+            galleryLauncher
+        ) { uri, type ->
+            uri?.let {
+                Log.e("capture", "uri : "+uri.toString() )
+
+                val bitmap = uriToBitmap(requireContext(), uri)
+                callVisionApi(bitmap)
+            }
+        }
     }
 
     override fun initControl() {
@@ -220,7 +258,9 @@ class AffiliateAllProductFragment : BaseFragment() {
             }
 
             ivCamera.setOnClickListener {
-                imagePicker.showImageSourceDialog()
+             //   imagePicker.showImageSourceDialog()
+                checkPermissionAndOpenStoryPicker()
+             //   storyMediaPicker.showImagePicker()
             }
 
             tvFilter.setOnClickListener {
@@ -230,6 +270,20 @@ class AffiliateAllProductFragment : BaseFragment() {
             tvSort.setOnClickListener {
                 sortProductDialog()
             }
+        }
+    }
+
+    private fun checkPermissionAndOpenStoryPicker() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            Handler(Looper.getMainLooper()).post {
+                storyMediaPicker.showImagePicker()
+            }
+        } else {
+            permissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
@@ -613,10 +667,42 @@ class AffiliateAllProductFragment : BaseFragment() {
             colorList.forEach { it.isSelected = false }
             sizeList.forEach { it.isSelected = false }
 
+            Log.e("slider", "moveLabel35677678: ${selectedMinPrice} ${selectedMaxPrice}", )
+
+
             if (selectedMaxPrice!=0) {
                 tvCentrePrice.text = "$selectedMaxPrice KD"
             }
 
+            if (selectedMinPrice != 0 || selectedMaxPrice != 0) {
+                min = selectedMinPrice
+                max = selectedMaxPrice
+
+                val minValue = if (selectedMinPrice != 0)
+                    selectedMinPrice.toFloat()
+                else priceSlider.valueFrom
+
+                val maxValue = if (selectedMaxPrice != 0)
+                    selectedMaxPrice.toFloat()
+                else priceSlider.valueTo
+
+                priceSlider.values = listOf(minValue, maxValue)
+
+                tvMinPrice.text = "${CommonMethod.formatFloatPrice(minValue)} KD"
+                tvCentrePrice.text = "${CommonMethod.formatFloatPrice(maxValue)} KD"
+
+                priceSlider.post {
+                    moveLabel(tvMinPrice, priceSlider, 0)
+                    moveLabel(tvCentrePrice, priceSlider, 1)
+                }
+            }
+
+            if (selectedDiscount!=null){
+                discount = selectedDiscount
+            }
+            if (selectedRating!=null){
+                rating = selectedRating
+            }
             when (selectedDiscount) {
                 10 -> radioGroupDiscount.check(R.id.rb10)
                 20 -> radioGroupDiscount.check(R.id.rb20)
@@ -702,6 +788,8 @@ class AffiliateAllProductFragment : BaseFragment() {
                 tvMinPrice.text = "$min KD"
                 tvCentrePrice.text = "$max KD"
 
+                Log.e("slider", "moveLabel: ${min} ${max}", )
+
                 slider.post {
                     //  moveLabel(tvMinPrice, slider, 0)
                     if(max==100||max==100000){
@@ -764,8 +852,10 @@ class AffiliateAllProductFragment : BaseFragment() {
             }
 
             tvApply.setOnClickListener{
-                selectedMaxPrice = min
-                selectedMinPrice = max
+                selectedMaxPrice = max
+                selectedMinPrice = min
+                Log.e("slider", "moveLabel12: ${min} ${max}", )
+
                 selectedDeliveryTime = deliveryTime
                 selectedRating = rating
                 selectedDiscount = discount
@@ -821,7 +911,7 @@ class AffiliateAllProductFragment : BaseFragment() {
         label.x = thumbX - label.width / 2f
     }
 
-    private fun affiliateProductSearch() {
+    private fun affiliateProductSearch(isLoading: Boolean=true) {
         val map = HashMap<String,Any>()
 
         if (sortFilter!=null) {
@@ -859,12 +949,15 @@ class AffiliateAllProductFragment : BaseFragment() {
         }
 
         if (selectedDiscount!=0&&selectedDiscount!=null) {
-            map["discount_range"] = selectedDiscount.toString()
+            map["discount_range"] = arrayListOf(selectedDiscount.toString())
         }
 
         viewModel.affiliateProductSearch(map)
         isObserver = true
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        if(isLoading){
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        }
+        searchList.clear()
     }
 
     private fun getStoreSortList(){

@@ -114,6 +114,10 @@ class ItemPerformanceFragment : BaseFragment() {
                     etTo.setText(date)
                 }
             }
+
+            ivDelete.setOnClickListener {
+                removeAffiliateProduct()
+            }
         }
     }
 
@@ -121,6 +125,14 @@ class ItemPerformanceFragment : BaseFragment() {
         val map = HashMap<String, Any>()
         map["id"] = productData?.productId.toString()
         viewModel.getAffiliateMyProductDetail(map)
+        isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+    }
+
+    private fun removeAffiliateProduct(){
+        val map = HashMap<String, Any>()
+        map["id"] = productDetailData?.id.toString()
+        viewModel.removeAffiliateProduct(map)
         isObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
@@ -140,6 +152,18 @@ class ItemPerformanceFragment : BaseFragment() {
                 response?.let {
                     productDetailData = response.data
                     setData()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.removeAffiliateProductResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    CommonMethod.showSuccessDialog(requireActivity(),"Product removed successfully!"){
+                        findNavController().popBackStack()
+                    }
                 }
                 isObserver = false
             }

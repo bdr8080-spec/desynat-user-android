@@ -50,9 +50,12 @@ class AffiliateSubCategoryMyProductAdapter(var context: Context, private var sub
             }
 
             relSelection.isVisible = selected==position
+            relAllSelection.isVisible = selected==-1
 
             ivAll.setOnClickListener {
+                selected = -1
                 subCategoryClick.onSubCategoryClick(position,1)
+                notifyDataSetChanged()
             }
 
             ivSubCategory.setOnClickListener {
@@ -65,5 +68,10 @@ class AffiliateSubCategoryMyProductAdapter(var context: Context, private var sub
     }
 
     override fun getItemCount(): Int = subCategoryList.size
+
+    fun setSelectedPos(position: Int){
+        selected = position
+        notifyDataSetChanged()
+    }
 
 }
