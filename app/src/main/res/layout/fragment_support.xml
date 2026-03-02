@@ -60,32 +60,249 @@
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etSearch"
+            <LinearLayout
+                android:id="@+id/llContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/edit_text"
-                android:hint="Search"
-                android:textSize="@dimen/_11sdp"
-                android:singleLine="true"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"/>
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clSupportEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:background="@drawable/grey_stroke_cards">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivEmail"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_email"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvSupportEmail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:singleLine="true"
+                        android:text="Support Email Address"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivEmail"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvSupportEmailAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:singleLine="true"
+                        android:text="Loremipsum@gmail.com"
+                        android:textColor="#6E4527"
+                        android:textSize="@dimen/_11sdp"
+                        app:layout_constraintStart_toStartOf="@+id/tvSupportEmail"
+                        app:layout_constraintEnd_toEndOf="@+id/tvSupportEmail"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSupportEmail" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clSupportNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/grey_stroke_cards">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_call"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvSupportMobile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:singleLine="true"
+                        android:text="Support Contact Number"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivPhone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tvSupportMobileNumber"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:singleLine="true"
+                        android:text="+966 57689025"
+                        android:textColor="#6E4527"
+                        android:textSize="@dimen/_11sdp"
+                        app:layout_constraintStart_toStartOf="@+id/tvSupportMobile"
+                        app:layout_constraintEnd_toEndOf="@+id/tvSupportMobile"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSupportMobile" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clWhatsapp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/grey_stroke_cards">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivWhatsapp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_whatsapp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvWhatsapp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:singleLine="true"
+                    android:text="Chat on Whatsapp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clSupportTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/grey_stroke_cards">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivChatWithSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_support_chat"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvChatWithSupport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:singleLine="true"
+                    android:text="Chat with the Support Team"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/llTicket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp">
+
+            <RelativeLayout
+                android:id="@+id/relSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_back"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toLeftOf="@+id/ivAddTicket">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/edit_text"
+                    android:paddingVertical="@dimen/_6sdp"
+                    android:background="@drawable/edit_search"
+                    android:layout_margin="1dp"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:hint="Search"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_centerVertical="true"
+                    android:drawableStart="@drawable/ic_search"
+                    android:layout_toLeftOf="@+id/ivMic"/>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivMic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_6sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:background="@color/light_pink"
+                    app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
+                    android:src="@drawable/ic_mic"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivAddTicket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:src="@drawable/ic_add_ticket"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvWithdrawl"
+                android:id="@+id/rvTicket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:layout_marginTop="@dimen/_15sdp"
-                tools:listitem="@layout/item_withdrawal"
+                tools:listitem="@layout/item_ticket"
                 tools:itemCount="2"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"/>
+
+        </LinearLayout>
 
         </LinearLayout>
 

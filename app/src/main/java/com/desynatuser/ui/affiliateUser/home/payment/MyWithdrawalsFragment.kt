@@ -78,7 +78,7 @@ class MyWithdrawalsFragment : BaseFragment() {
                 }
 
             })
-            rvWithdrawl.adapter = withdrawalAdapter
+            rvWithdrawal.adapter = withdrawalAdapter
 
 
             when(type){

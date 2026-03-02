@@ -78,19 +78,25 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_3sdp"
+        app:layout_constraintTop_toBottomOf="@id/clInfo"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:visibility="gone"
         android:id="@+id/tvTransaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:fontFamily="@font/poppins_medium"
         android:text="Transaction Id"
         android:textColor="#80000000"
         android:textSize="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clInfo" />
+        app:layout_constraintTop_toBottomOf="@id/view" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:visibility="gone"

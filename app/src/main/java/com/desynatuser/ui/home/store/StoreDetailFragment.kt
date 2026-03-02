@@ -5,16 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
-import android.text.Highlights
 import android.text.TextWatcher
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -32,18 +29,12 @@ import com.desynatuser.adapter.HighlightAdapter
 import com.desynatuser.adapter.ProductAdapter
 import com.desynatuser.adapter.ReelAdapter
 import com.desynatuser.adapter.SortListAdapter
-import com.desynatuser.adapter.StoreAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
-import com.desynatuser.databinding.FragmentProductDetailBinding
-import com.desynatuser.databinding.FragmentStoreBinding
 import com.desynatuser.databinding.FragmentStoreDetailBinding
 import com.desynatuser.databinding.ProductFilterBinding
-import com.desynatuser.databinding.SizeGuideChartDialogBinding
 import com.desynatuser.databinding.SortProductBinding
-import com.desynatuser.databinding.StoreFilterBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
-import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
@@ -79,22 +70,17 @@ class StoreDetailFragment : BaseFragment() {
     private var storeDetailData: GetSingleStoreResponse.Data?=null
     var selectedPos = -1
     private var sortFilter: String?=null
-
     private var search: Job? = null
     private var lastQuery: String? = null
-
     private var sortAdapter: SortListAdapter? = null
-
     private var filterColorAdapter: FilterColorAdapter? = null
     private var filterBrandAdapter: FilterBrandAdapter? = null
     private var filterSizeAdapter: FilterSizeAdapter? = null
     private var filterCategoryAdapter: FilterCategoryAdapter? = null
-
     private var categoryList = ArrayList<GetCategoryResponse.Data>()
     private var sizeList = ArrayList<GetSizeListResponse.Data>()
     private var colorList = ArrayList<GetAllColorListResponse.Data>()
     private var brandList = ArrayList<GetAllBrandListResponse.Data>()
-
     private var selectedBrandList = ArrayList<GetAllBrandListResponse.Data>()
     private var selectedSizeList = ArrayList<GetSizeListResponse.Data>()
     private var selectedColorList = ArrayList<GetAllColorListResponse.Data>()
@@ -104,13 +90,11 @@ class StoreDetailFragment : BaseFragment() {
     var selectedDeliveryTime: String? = null
     var selectedMinPrice: Int = 0
     var selectedMaxPrice: Int = 0
-
     var isBrandObserver = false
     var isSizeObserver = false
     var isColorObserver = false
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
     private var isFirstLoad = true
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
