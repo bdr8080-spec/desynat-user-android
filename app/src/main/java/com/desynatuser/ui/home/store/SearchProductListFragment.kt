@@ -613,7 +613,7 @@ class SearchProductListFragment : BaseFragment() {
 
                 slider.post {
                     //  moveLabel(tvMinPrice, slider, 0)
-                    if(max==100||max==100000){
+                    if(max==100||max==10000){
                         tvCentrePrice.isVisible = false
                     }
                     else{

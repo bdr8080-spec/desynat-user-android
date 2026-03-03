@@ -1,6 +1,5 @@
 package com.desynatuser.ui.affiliateUser
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
@@ -19,17 +18,17 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AffiliateHomeActivity : BaseActivity() {
-    private var binding: ActivityAffiliateHomeBinding? =null
+    private var binding: ActivityAffiliateHomeBinding? = null
     private lateinit var controller: NavController
     var bottonNavItemList = ArrayList<BottomNavItem>()
-    private var bottomAdapter : BottomNavAdapter? =null
+    private var bottomAdapter: BottomNavAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityAffiliateHomeBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        CommonMethod.detectGestureMode(binding?.root!!,binding?.viewBottom!!)
+        CommonMethod.detectGestureMode(binding?.root!!, binding?.viewBottom!!)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
             val imeInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
@@ -53,17 +52,48 @@ class AffiliateHomeActivity : BaseActivity() {
 
     override fun initView() {
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         controller = navHostFragment.navController
         val navGraph = controller.navInflater.inflate(R.navigation.affiliate_home_navigation_graph)
         controller.graph = navGraph
 
         bottonNavItemList.clear()
-        bottonNavItemList.add(BottomNavItem("Home",R.drawable.ic_home,R.drawable.ic_selected_home))
-        bottonNavItemList.add(BottomNavItem("Products",R.drawable.products_ic,R.drawable.ic_selected_products))
-        bottonNavItemList.add(BottomNavItem("Category",R.drawable.icon_affiliate,R.drawable.icon_affiliate))
-        bottonNavItemList.add(BottomNavItem("Payments",R.drawable.payments_ic,R.drawable.ic_selected_payment))
-        bottonNavItemList.add(BottomNavItem("Profile",R.drawable.ic_profile,R.drawable.ic_selected_profile))
+        bottonNavItemList.add(
+            BottomNavItem(
+                "Home",
+                R.drawable.ic_home,
+                R.drawable.ic_selected_home
+            )
+        )
+        bottonNavItemList.add(
+            BottomNavItem(
+                "Products",
+                R.drawable.products_ic,
+                R.drawable.ic_selected_products
+            )
+        )
+        bottonNavItemList.add(
+            BottomNavItem(
+                "Category",
+                R.drawable.icon_affiliate,
+                R.drawable.icon_affiliate
+            )
+        )
+        bottonNavItemList.add(
+            BottomNavItem(
+                "Payments",
+                R.drawable.payments_ic,
+                R.drawable.ic_selected_payment
+            )
+        )
+        bottonNavItemList.add(
+            BottomNavItem(
+                "Profile",
+                R.drawable.ic_profile,
+                R.drawable.ic_selected_profile
+            )
+        )
 
         setBottomAdapter()
 
@@ -72,6 +102,7 @@ class AffiliateHomeActivity : BaseActivity() {
             R.id.affiliateProfile,
             R.id.affiliateCategory,
             R.id.affiliateMyProduct,
+            R.id.affiliatePaymentFragment
         )
 
         controller.addOnDestinationChangedListener { _, destination, _ ->
@@ -88,12 +119,19 @@ class AffiliateHomeActivity : BaseActivity() {
                 R.id.affiliateHome -> {
                     bottomAdapter?.setSelectedItem(0)
                 }
+
                 R.id.affiliateMyProduct -> {
                     bottomAdapter?.setSelectedItem(1)
                 }
+
                 R.id.affiliateCategory -> {
                     bottomAdapter?.setSelectedItem(2)
                 }
+
+                R.id.affiliatePaymentFragment -> {
+                    bottomAdapter?.setSelectedItem(3)
+                }
+
                 R.id.affiliateProfile -> {
                     bottomAdapter?.setSelectedItem(4)
                 }
@@ -108,20 +146,22 @@ class AffiliateHomeActivity : BaseActivity() {
     override fun observer() {
     }
 
-    fun setBottomAdapter(){
-        bottomAdapter = BottomNavAdapter(this,bottonNavItemList, object :BottomNavAdapter.BottomNavItemClick{
-            override fun onBottomNavItemClick(position: Int) {
-                when(position) {
-                    0 -> controller.navigate(R.id.affiliateHome)
-                    1 -> controller.navigate(R.id.affiliateMyProduct)
-                    2 -> controller.navigate(R.id.affiliateCategory)
-                    4 -> controller.navigate(R.id.affiliateProfile)
+    fun setBottomAdapter() {
+        bottomAdapter =
+            BottomNavAdapter(this, bottonNavItemList, object : BottomNavAdapter.BottomNavItemClick {
+                override fun onBottomNavItemClick(position: Int) {
+                    when (position) {
+                        0 -> controller.navigate(R.id.affiliateHome)
+                        1 -> controller.navigate(R.id.affiliateMyProduct)
+                        2 -> controller.navigate(R.id.affiliateCategory)
+                        3 -> controller.navigate(R.id.affiliatePaymentFragment)
+                        4 -> controller.navigate(R.id.affiliateProfile)
+                    }
+
                 }
 
-            }
 
-
-        })
+            })
         binding?.rvBottomNav?.adapter = bottomAdapter
 
     }

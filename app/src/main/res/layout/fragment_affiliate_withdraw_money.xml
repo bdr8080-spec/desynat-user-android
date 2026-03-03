@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".ui.affiliateUser.home.payment.AffiliateWithdrawMoneyFragment">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/common_toolbar"/>
+        layout="@layout/common_toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit">
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,9 +25,9 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvAmount"
                 style="@style/edit_text_title"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="Amount"
-                android:layout_marginHorizontal="@dimen/_15sdp"/>
+                android:text="Amount" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,74 +39,74 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvCurrency"
-                    android:layout_width="wrap_content"
                     style="@style/edit_text"
+                    android:layout_width="wrap_content"
                     android:background="@null"
                     android:hint="KD"
-                    android:textSize="@dimen/_11sdp"
-                    android:textColorHint="#80000000"/>
+                    android:textColorHint="#80000000"
+                    android:textSize="@dimen/_11sdp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:background="#80000000"/>
+                    android:background="#80000000" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etAmount"
-                    android:layout_width="match_parent"
                     style="@style/edit_text"
+                    android:layout_width="match_parent"
                     android:background="@null"
                     android:hint="Enter amount"
-                    android:textSize="@dimen/_11sdp"
+                    android:inputType="numberDecimal"
                     android:textColorHint="#80000000"
-                    android:inputType="numberDecimal"/>
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="Select Account"
-                android:textSize="@dimen/_12sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"/>
+                android:textSize="@dimen/_12sdp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clAddAnotherAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:paddingVertical="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/ic_add_another_account">
+                android:background="@drawable/ic_add_another_account"
+                android:paddingVertical="@dimen/_8sdp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivAddNewBank"
                     android:layout_width="@dimen/_12sdp"
                     android:layout_height="@dimen/_12sdp"
-                    android:src="@drawable/add_card"
                     android:layout_centerVertical="true"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintTop_toTopOf="@+id/tvAddNewBank"
+                    android:src="@drawable/add_card"
                     app:layout_constraintBottom_toBottomOf="@+id/tvAddNewBank"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAddNewBank"
+                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tvAddNewBank"/>
+                    app:layout_constraintTop_toTopOf="@+id/tvAddNewBank" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAddNewBank"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add another account"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_medium"
                     android:gravity="center"
+                    android:text="Add another account"
                     android:textColor="#6F4628"
                     android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivAddNewBank"/>
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/ivAddNewBank"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,10 +114,10 @@
                 android:id="@+id/rvBank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_bank"
                 android:layout_marginTop="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="2"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                tools:listitem="@layout/item_bank" />
 
         </LinearLayout>
 
@@ -126,12 +126,12 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnSubmit"
         style="@style/button"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:text="Submit Request"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:text="Submit Request"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

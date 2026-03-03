@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.adapter.AffiliatePaymentAdapter
 import com.desynatuser.base.BaseFragment
@@ -19,7 +20,7 @@ class AffiliatePaymentFragment : BaseFragment() {
     private var binding: FragmentAffiliatePaymentBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
-    private var paymentAdapter: AffiliatePaymentAdapter?=null
+    private var paymentAdapter: AffiliatePaymentAdapter? = null
     private var paymentList = ArrayList<String>()
 
     override fun onCreateView(
@@ -39,26 +40,30 @@ class AffiliatePaymentFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            paymentAdapter = AffiliatePaymentAdapter(requireActivity(),paymentList,object :
-                AffiliatePaymentAdapter.OnClick{
+            paymentAdapter = AffiliatePaymentAdapter(requireActivity(), paymentList, object :
+                AffiliatePaymentAdapter.OnClick {
                 override fun click(position: Int, type: Int) {
 
                 }
 
             })
             rvPayment.adapter = paymentAdapter
-
         }
     }
 
     override fun initControl() {
+        binding?.apply {
+            tvWithdraw.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliatePaymentFragment_to_affiliateWithdrawMoneyFragment)
+            }
+        }
 
     }
 
     override fun observe() {
     }
 
-    private fun checkData(){
+    private fun checkData() {
         binding?.tvNoDataFound?.isVisible = paymentList.isEmpty()
     }
 }

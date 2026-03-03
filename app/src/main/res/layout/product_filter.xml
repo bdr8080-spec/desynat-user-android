@@ -107,7 +107,7 @@
             app:trackColorInactive="@color/light_brown"
             app:trackHeight="@dimen/_4sdp"
             android:valueFrom="100"
-            android:valueTo="100000"
+            android:valueTo="10000"
             app:labelBehavior="gone"
             app:values="@array/initial_price_values"
             android:theme="@style/WD_Slider"/>
@@ -132,7 +132,7 @@
                 android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:text="50000 KD"
+                android:text="5000 KD"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_centerHorizontal="true"/>
 
@@ -143,7 +143,7 @@
                 android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:text="100000 KD"
+                android:text="10000 KD"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>

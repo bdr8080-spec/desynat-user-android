@@ -21,9 +21,9 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
     private var binding: FragmentAffiliateWithdrawMoneyBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
-    private var profileData : GetAffiliateUserProfileResponse.Data?=null
+    private var profileData: GetAffiliateUserProfileResponse.Data? = null
     private var bankList = ArrayList<GetAffiliateUserProfileResponse.Data.BankDetails>()
-    private var bankAdapter: BankAdapter?=null
+    private var bankAdapter: BankAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,16 +48,20 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
             profileData?.bankDetails?.let { bankList.addAll(it) }
             bankAdapter?.notifyDataSetChanged()
 
-            bankAdapter = BankAdapter(requireActivity(),bankList,isShow=false,object : BankAdapter.OnClick{
-                override fun onClick(position: Int,type: Int) {
-                    when(type){
-                      3->{
+            bankAdapter = BankAdapter(
+                requireActivity(),
+                bankList,
+                isShow = false,
+                object : BankAdapter.OnClick {
+                    override fun onClick(position: Int, type: Int) {
+                        when (type) {
+                            3 -> {
 
-                      }
+                            }
+                        }
                     }
-                }
 
-            })
+                })
 
             rvBank.adapter = bankAdapter
         }
@@ -70,7 +74,7 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
             }
 
             btnSubmit.setOnClickListener {
-                CommonMethod.showSuccessDialog(requireActivity(),"Request sent successfully!"){
+                CommonMethod.showSuccessDialog(requireActivity(), "Request sent successfully!") {
 
                 }
             }

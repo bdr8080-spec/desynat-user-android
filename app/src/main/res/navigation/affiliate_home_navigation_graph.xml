@@ -23,6 +23,10 @@
             android:id="@+id/action_affiliateProfileFragment_to_affiliateProfileDetailFragment"
             app:destination="@id/affiliateProfileDetail"/>
 
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_myWithdrawalsFragment"
+            app:destination="@id/myWithdrawalsFragment"/>
+
     </fragment>
 
     <fragment
@@ -152,5 +156,29 @@
         android:name="com.desynatuser.ui.InAppCameraFragment"
         android:label="In App Fragment"
         tools:layout="@layout/fragment_in_app_camera"/>
+
+    <fragment
+        android:id="@+id/affiliatePaymentFragment"
+        android:name="com.desynatuser.ui.affiliateUser.home.payment.AffiliatePaymentFragment"
+        android:label="Affiliate Payment Fragment"
+        tools:layout="@layout/fragment_affiliate_payment">
+
+        <action
+            android:id="@+id/action_affiliatePaymentFragment_to_affiliateWithdrawMoneyFragment"
+            app:destination="@id/affiliateWithdrawMoneyFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/affiliateWithdrawMoneyFragment"
+        android:name="com.desynatuser.ui.affiliateUser.home.payment.AffiliateWithdrawMoneyFragment"
+        android:label="Affiliate Withdraw Money Fragment"
+        tools:layout="@layout/fragment_affiliate_withdraw_money"/>
+
+    <fragment
+        android:id="@+id/myWithdrawalsFragment"
+        android:name="com.desynatuser.ui.affiliateUser.home.payment.MyWithdrawalsFragment"
+        android:label="My Withdrawals Fragment"
+        tools:layout="@layout/fragment_my_withdrawals"/>
 
 </navigation>

@@ -63,6 +63,10 @@ class AffiliateProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_affiliateProfileDetailFragment)
             }
 
+            rlMyWithdrawals.setOnClickListener{
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_myWithdrawalsFragment)
+            }
+
             relLogout.setOnClickListener {
                 Constants.isLogout = true
                 CommonMethod.clearAffiliateData(requireActivity())

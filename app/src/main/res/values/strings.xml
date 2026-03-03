@@ -27,6 +27,6 @@
 
     <array name="initial_price_values">
         <item>100</item>
-        <item>50000</item>
+        <item>5000</item>
     </array>
 </resources>
