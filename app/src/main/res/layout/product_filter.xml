@@ -98,7 +98,7 @@
             android:id="@+id/priceSlider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stepSize="100"
+            android:stepSize="10"
             app:haloRadius="0dp"
             app:thumbColor="@color/brown"
             app:thumbRadius="@dimen/_10sdp"
@@ -106,8 +106,8 @@
             app:trackColorActive="@color/brown"
             app:trackColorInactive="@color/light_brown"
             app:trackHeight="@dimen/_4sdp"
-            android:valueFrom="100"
-            android:valueTo="10000"
+            android:valueFrom="0"
+            android:valueTo="1000"
             app:labelBehavior="gone"
             app:values="@array/initial_price_values"
             android:theme="@style/WD_Slider"/>
@@ -120,7 +120,7 @@
                 android:id="@+id/tvMinPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100 KD"
+                android:text="0 KD"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"/>
@@ -132,7 +132,7 @@
                 android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:text="5000 KD"
+                android:text="500 KD"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_centerHorizontal="true"/>
 
@@ -143,7 +143,7 @@
                 android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:text="10000 KD"
+                android:text="1000 KD"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>

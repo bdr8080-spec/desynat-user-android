@@ -45,15 +45,13 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" >
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
-                    android:scheme="http"
-                    android:host="157.241.119.72"
+                    android:scheme="https"
+                    android:host="desynat.com"
                     android:pathPrefix="/user/product/detail-page" />
             </intent-filter>
 

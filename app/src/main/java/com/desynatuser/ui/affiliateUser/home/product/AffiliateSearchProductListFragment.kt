@@ -400,7 +400,7 @@ class AffiliateSearchProductListFragment : BaseFragment() {
             map["brand_id"] = selectedBrandList.map { it.id }
         }
 
-        if (selectedMinPrice != 0 && selectedMaxPrice != 0) {
+        if (selectedMaxPrice != 0) {
             map["price_min"] = selectedMinPrice!!
             map["price_max"] = selectedMaxPrice!!
         }
@@ -654,7 +654,7 @@ class AffiliateSearchProductListFragment : BaseFragment() {
 
                 slider.post {
                     //  moveLabel(tvMinPrice, slider, 0)
-                    if(max==100||max==10000){
+                    if(max==0||max==1000){
                         tvCentrePrice.isVisible = false
                     }
                     else{

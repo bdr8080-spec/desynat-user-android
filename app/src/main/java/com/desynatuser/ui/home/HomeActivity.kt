@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -269,12 +270,15 @@ class HomeActivity : BaseActivity() {
 
     private fun handleDeepLink(intent: Intent?) {
 
-        val uri = intent?.data ?: return
+        val data: Uri? = intent?.data?: return
 
-        if (uri.path?.contains("/user/product/detail-page") == true) {
+        data?.let {
 
-            val productId = uri.lastPathSegment
-            val ref = uri.getQueryParameter("ref")
+            val productId = it.lastPathSegment
+            val ref = it.getQueryParameter("ref")
+
+            Log.d("DeepLink", "ProductId: $productId")
+            Log.d("DeepLink", "Ref: $ref")
 
             val bundle = Bundle().apply {
                 putString("productId", productId)
