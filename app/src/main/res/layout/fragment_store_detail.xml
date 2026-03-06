@@ -176,7 +176,6 @@
                 android:id="@+id/rvHighlights"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_highlights"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_15sdp"

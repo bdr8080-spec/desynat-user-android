@@ -113,14 +113,18 @@ class ProfileFragment : BaseFragment() {
             }
 
             rlLanguage.setOnClickListener {
-//                val bundle = Bundle().apply {
-//                    putString("from", "profile")
-//                }
-//                findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
+                val bundle = Bundle().apply {
+                    putString("from", "profile")
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
             }
 
             relAbout.setOnClickListener {
 
+            }
+
+            rlGoCurrency.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_changeCurrencyFragment)
             }
 
             rlAffiliate.setOnClickListener {

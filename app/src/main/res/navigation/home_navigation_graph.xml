@@ -111,6 +111,10 @@
             android:id="@+id/action_profileFragment_to_languageFragment"
             app:destination="@id/language"/>
 
+        <action
+            android:id="@+id/action_profileFragment_to_changeCurrencyFragment"
+            app:destination="@id/changeCurrency"/>
+
     </fragment>
 
     <fragment
@@ -434,7 +438,12 @@
             android:id="@+id/action_addMoneyInWalletFragment_to_paymentFragment"
             app:destination="@id/payment"/>
 
-
     </fragment>
+
+    <fragment
+        android:id="@+id/changeCurrency"
+        android:name="com.desynatuser.ui.home.cms.ChangeCurrencyFragment"
+        android:label="Change Currency Fragment"
+        tools:layout="@layout/fragment_change_currency"/>
 
 </navigation>
