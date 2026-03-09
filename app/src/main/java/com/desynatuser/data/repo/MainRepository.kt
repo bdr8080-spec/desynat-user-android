@@ -13,6 +13,8 @@ import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetail
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetWithdrawalRequestResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
@@ -1325,6 +1327,40 @@ val getAffiliateProductLinkLiveData = SingleLiveEvent<GetAffiliateProductLinkRes
                 api.affiliateUserOtp(map)
             },
             responseLiveData = affiliateUserOtpLiveData
+        )
+    }
+
+    val getAffiliatePaymentLiveData = SingleLiveEvent<GetAllAffiliateOrderResponse>()
+    suspend fun getAffiliatePayment()
+    {
+        handleApiCall(
+            api = {
+                api.getAffiliatePayment()
+            },
+            responseLiveData = getAffiliatePaymentLiveData
+        )
+    }
+
+    val getWithdrawalRequestLiveData = SingleLiveEvent<GetWithdrawalRequestResponse>()
+    suspend fun getWithdrawalRequest(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.getWithdrawalRequest(map)
+            },
+            responseLiveData = getWithdrawalRequestLiveData
+        )
+    }
+
+    val withdrawAffiliateAmountLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun withdrawAffiliateAmount(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.withdrawAffiliateAmount(map)
+            },
+            responseLiveData = withdrawAffiliateAmountLiveData
         )
     }
 

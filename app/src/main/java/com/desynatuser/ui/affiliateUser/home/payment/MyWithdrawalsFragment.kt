@@ -15,6 +15,10 @@ import com.desynatuser.adapter.AffiliateWithdrawalAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentMyWithdrawalsBinding
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetWithdrawalRequestResponse
+import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -26,11 +30,12 @@ class MyWithdrawalsFragment : BaseFragment() {
     private var binding: FragmentMyWithdrawalsBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
-    private var withdrawalList = ArrayList<String>()
+    private var withdrawalList = ArrayList<GetWithdrawalRequestResponse.Data.WithdrawRequest>()
     private var withdrawalAdapter: AffiliateWithdrawalAdapter?=null
-    private var type = 1
+    private var type = 0
     private var search: Job? = null
     private var lastQuery: String? = null
+    private var totalWithdrawals = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +69,7 @@ class MyWithdrawalsFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver){
-
+                            getWithdrawalRequest()
                         }
                     }
 
@@ -82,10 +87,10 @@ class MyWithdrawalsFragment : BaseFragment() {
 
 
             when(type){
-                1->{
+                0->{
                    upcoming()
                 }
-                2->{
+                1->{
                     completed()
                 }
             }
@@ -111,17 +116,19 @@ class MyWithdrawalsFragment : BaseFragment() {
 
     private fun upcoming(){
         binding?.apply {
-            type = 1
-            tvUpcoming.background = null
-            tvUpcoming.setTextColor(requireActivity().getColor(R.color.black))
-            tvCompleted.setTextColor(requireActivity().getColor(R.color.white))
-            tvCompleted.setBackgroundResource(R.drawable.selected_right_tab)
+            type = 0
+            getWithdrawalRequest()
+            tvCompleted.background = null
+            tvCompleted.setTextColor(requireActivity().getColor(R.color.black))
+            tvUpcoming.setTextColor(requireActivity().getColor(R.color.white))
+            tvUpcoming.setBackgroundResource(R.drawable.selected_left_tab)
         }
     }
 
     private fun completed(){
         binding?.apply {
-            type = 2
+            type = 1
+            getWithdrawalRequest()
             tvUpcoming.background = null
             tvUpcoming.setTextColor(requireActivity().getColor(R.color.black))
             tvCompleted.setTextColor(requireActivity().getColor(R.color.white))
@@ -130,6 +137,49 @@ class MyWithdrawalsFragment : BaseFragment() {
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.getWithdrawalRequestResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    totalWithdrawals = response.data.totalWithdrawals
+                    setData()
+                    withdrawalList.clear()
+                    withdrawalList.addAll(response.data.withdrawRequests)
+                    withdrawalAdapter?.notifyDataSetChanged()
+                    checkData()
+                }
+                isObserver = false
+            }
+        }
+    }
+
+    private fun checkData() {
+        binding?.tvNoDataFound?.isVisible = withdrawalList.isEmpty()
+    }
+
+    private fun setData(){
+        binding?.apply {
+            tvTotalWithdrawal.text = "${CommonMethod.formatPrice(totalWithdrawals.toDoubleOrNull()?:0.0)} KD"
+        }
+    }
+
+    private fun getWithdrawalRequest(){
+        val map = HashMap<String, Any>()
+        map["req_type"] = type // //0-pending/upcoming,1-approved/credited
+        if (lastQuery!=null){
+            map["search"] = lastQuery.toString()
+        }
+        viewModel.getWithdrawalRequest(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }

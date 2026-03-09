@@ -33,7 +33,7 @@ class BankDetailFragment : BaseFragment() {
     private var userId = ""
     private var from = ""
     private var type = ""
-    private var bankData: GetAffiliateUserProfileResponse.Data.BankDetails?=null
+    private var bankData: GetAffiliateUserProfileResponse.Data.BankDetails? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,26 +57,26 @@ class BankDetailFragment : BaseFragment() {
         binding?.apply {
 
 
-            if (from=="profile"){
+            if (from == "profile") {
                 llTab.isVisible = false
-                if (type=="edit"){
+                if (type == "edit") {
                     toolbar.tvToolbar.text = "Edit Account"
                     btnSubmit.text = "Update"
 
                     val itemBankDataJson = arguments?.getString("bankData")
                     if (!itemBankDataJson.isNullOrEmpty()) {
-                        bankData = Gson().fromJson(itemBankDataJson,
-                            GetAffiliateUserProfileResponse.Data.BankDetails::class.java)
+                        bankData = Gson().fromJson(
+                            itemBankDataJson,
+                            GetAffiliateUserProfileResponse.Data.BankDetails::class.java
+                        )
                         setData()
                     }
 
-                }
-                else{
+                } else {
                     toolbar.tvToolbar.text = "Add Account"
                     btnSubmit.text = "Add Account"
                 }
-            }
-            else{
+            } else {
                 llTab.isVisible = true
                 toolbar.tvToolbar.text = "Bank Details"
                 btnSubmit.text = "Submit"
@@ -108,7 +108,7 @@ class BankDetailFragment : BaseFragment() {
             }
 
             btnSubmit.setOnClickListener {
-                if (validation()){
+                if (validation()) {
                     addAffiliateUserBandDetail()
                 }
             }
@@ -123,7 +123,7 @@ class BankDetailFragment : BaseFragment() {
                 isObserver = false
             }
         }
- homeViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+        homeViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isProfileObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
@@ -135,14 +135,14 @@ class BankDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                        CommonMethod.showSuccessDialog(
-                            requireActivity(),
-                            "Details Submitted Successfully"
-                        ) {
-                            findNavController().navigate(
-                                R.id.action_affiliateAddBankDetailFragment_to_underReviewFragment
-                            )
-                        }
+                    CommonMethod.showSuccessDialog(
+                        requireActivity(),
+                        "Details Submitted Successfully"
+                    ) {
+                        findNavController().navigate(
+                            R.id.action_affiliateAddBankDetailFragment_to_underReviewFragment
+                        )
+                    }
                 }
                 isObserver = false
             }
@@ -151,7 +151,7 @@ class BankDetailFragment : BaseFragment() {
         viewModel.updateAffiliateUserBankResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 response?.let {
-                   getAffiliateUserProfile()
+                    getAffiliateUserProfile()
                 }
                 isObserver = false
             }
@@ -160,10 +160,11 @@ class BankDetailFragment : BaseFragment() {
         viewModel.addAffiliateUserBankResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 response?.let {
-                    if (SharedPreference.get(requireActivity()).getAffiliateUser()?.bankDetails?.size==0){
+                    if (SharedPreference.get(requireActivity())
+                            .getAffiliateUser()?.bankDetails?.size == 0
+                    ) {
                         defaultBank(response.data.id.toString())
-                    }
-                    else {
+                    } else {
                         getAffiliateUserProfile()
                     }
                 }
@@ -174,7 +175,7 @@ class BankDetailFragment : BaseFragment() {
         homeViewModel.defaultBankResult.observe(viewLifecycleOwner) { response ->
             if (isDefaultObserver) {
                 response?.let {
-                  getAffiliateUserProfile()
+                    getAffiliateUserProfile()
                 }
                 isDefaultObserver = false
             }
@@ -185,8 +186,8 @@ class BankDetailFragment : BaseFragment() {
                 response?.let {
                     ProgressDialogUtils.getInstance().hideProgress()
                     SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
-                    when(type){
-                        "edit"->{
+                    when (type) {
+                        "edit" -> {
                             CommonMethod.showSuccessDialog(
                                 requireActivity(),
                                 "Bank Details Updated Successfully"
@@ -194,13 +195,14 @@ class BankDetailFragment : BaseFragment() {
                                 findNavController().popBackStack()
                             }
                         }
-                        "add"->{
-                                CommonMethod.showSuccessDialog(
-                                    requireActivity(),
-                                    "Bank Details Added Successfully"
-                                ) {
-                                    findNavController().popBackStack()
-                                }
+
+                        "add" -> {
+                            CommonMethod.showSuccessDialog(
+                                requireActivity(),
+                                "Bank Details Added Successfully"
+                            ) {
+                                findNavController().popBackStack()
+                            }
                         }
 
                     }
@@ -220,7 +222,7 @@ class BankDetailFragment : BaseFragment() {
         isDefaultObserver = true
     }
 
-    private fun getAffiliateUserProfile(){
+    private fun getAffiliateUserProfile() {
         homeViewModel.getAffiliateProfile()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isProfileObserver = true
@@ -233,26 +235,32 @@ class BankDetailFragment : BaseFragment() {
                     showToast("Please enter bank name")
                     false
                 }
+
                 etAccountHolderName.text.toString().isEmpty() -> {
                     showToast("Please enter account holder name")
                     false
                 }
+
                 etAccountNumber.text.toString().isEmpty() -> {
                     showToast("Please enter account number")
                     false
                 }
+
                 etConfirmAccountNumber.text.toString().isEmpty() -> {
                     showToast("Please enter re-enter account number")
                     false
                 }
+
                 etAccountNumber.text.toString() != etConfirmAccountNumber.text.toString() -> {
                     showToast("Account number and confirm account number didn't match")
                     false
                 }
+
                 etIban.text.toString().isEmpty() -> {
                     showToast("Please enter IBAN number")
                     false
                 }
+
                 etSwift.text.toString().isEmpty() -> {
                     showToast("Please enter SWIFT/BIC number")
                     false
@@ -264,7 +272,7 @@ class BankDetailFragment : BaseFragment() {
         return false
     }
 
-    private fun addAffiliateUserBandDetail(){
+    private fun addAffiliateUserBandDetail() {
         binding?.apply {
             val request = AffiliateUserAddBankDetailRequest(
                 accountHolderName = etAccountHolderName.text.toString().trim(),
@@ -273,17 +281,15 @@ class BankDetailFragment : BaseFragment() {
                 confirmAccountNo = etConfirmAccountNumber.text.toString().trim(),
                 iban = etIban.text.toString().trim(),
                 swift = etSwift.text.toString().trim(),
-                bankDetailsId = if (type=="edit") bankData?.id.toString() else null
+                bankDetailsId = if (type == "edit") bankData?.id.toString() else null
             )
-            if (from=="profile"){
-                if (type=="edit"){
+            if (from == "profile") {
+                if (type == "edit") {
                     viewModel.updateAffiliateUserBank(request)
-                }
-                else{
+                } else {
                     viewModel.addAffiliateUserBank(request)
                 }
-            }
-            else{
+            } else {
                 viewModel.addAffiliateUserBankDetail(request)
             }
             ProgressDialogUtils.getInstance().showProgress(requireActivity())

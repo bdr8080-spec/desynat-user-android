@@ -257,7 +257,7 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             ivChat.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     chatWithSeller()
                 }
                 else{

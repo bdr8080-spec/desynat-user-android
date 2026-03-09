@@ -7,6 +7,8 @@ import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddBankDetail
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserResponse
 import com.desynatuser.ui.affiliateUser.auth.response.CreateAffiliateUserRequest
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetWithdrawalRequestResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
@@ -562,5 +564,14 @@ interface ApiServices {
         @Body body: HashMap<String, Any>
     ): Response<AffiliateChangeUserOtpVerifyResponse>
 
+    @GET(Constants.GET_AFFILIATE_PAYMENT)
+    suspend fun getAffiliatePayment(): Response<GetAllAffiliateOrderResponse>
 
+    @GET(Constants.GET_WITHDRAWAL_REQUEST)
+    suspend fun getWithdrawalRequest(@QueryMap map: HashMap<String, Any>): Response<GetWithdrawalRequestResponse>
+
+    @POST(Constants.WITHDRAW_AFFILIATE_AMOUNT)
+    suspend fun withdrawAffiliateAmount(
+        @Body body: HashMap<String, Any>
+    ): Response<CommonResponse>
 }

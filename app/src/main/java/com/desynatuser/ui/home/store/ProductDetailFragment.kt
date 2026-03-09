@@ -73,6 +73,8 @@ class ProductDetailFragment : BaseFragment() {
 
     var cartId:String? = null
     var productId:String? = null
+    var refLink:String? = null
+    var refId:String? = null
     var cartQuantity = 0
     var cartData : AddToCartListResponse.Data?=null
 
@@ -96,6 +98,11 @@ class ProductDetailFragment : BaseFragment() {
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
         productId = arguments?.getString("productId")
+        if (arguments?.getString("ref_link")!=null){
+            refLink = arguments?.getString("ref_link")
+            refId = arguments?.getString("ref_id")
+        }
+
         val itemJson = arguments?.getString("productData")
         val itemJsonStore = arguments?.getString("storeData")
         if (!itemJson.isNullOrEmpty()) {
@@ -160,7 +167,7 @@ class ProductDetailFragment : BaseFragment() {
         binding?.rvRating?.adapter = reviewAdapter
         getProductDetail()
         binding?.tvSearchAddress?.text = SharedPreference.get(requireActivity()).getDefaultAddress()?.address
-        if (!Constants.isGuest) {
+        if (SharedPreference.get(requireActivity()).accessToken!="") {
             viewCartDetail()
         }
     }
@@ -294,7 +301,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnAddToBag.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     if (selectedSizePos == -1) {
                         showToast("Please select size")
                     } else {
@@ -307,7 +314,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             ivMinus.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     addCartQuantity("decrement")
                 }
                 else{
@@ -316,7 +323,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             ivPlus.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     addCartQuantity("increment")
                 }
                 else{
@@ -325,7 +332,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             ivLike.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     addToWishList()
                 }
                 else{
@@ -334,7 +341,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnBuyNow.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     if (selectedSizePos == -1) {
                         showToast("Please select size")
                     } else {
@@ -352,7 +359,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             btnCustomOrder.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                 createCustomOrder()
                 }
                 else{
@@ -361,7 +368,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             relCartItem.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
                 }
                 else{
@@ -547,6 +554,10 @@ class ProductDetailFragment : BaseFragment() {
         map["product_id"] = productId.toString()
         map["quantity"] = 1
         map["variants_id"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
+
+        if (refLink!=null){
+            map["reference_link"] = refLink.toString()
+        }
         viewModel.addToCart(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true

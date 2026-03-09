@@ -16,11 +16,11 @@ class CurrencyAdapter(var context:Context, var currencyList: ArrayList<String>, 
             val currencyData = currencyList[position]
             tvCurrency.text = currencyData
             if (selectedPos==position){
-                ivRadio.setImageResource(R.drawable.icon_read_bell)
+                ivRadio.setImageResource(R.drawable.ic_radio_selected)
                 clMain.setBackgroundResource(R.drawable.notification_read_background)
             }
             else{
-                ivRadio.setImageResource(R.drawable.icon_unread_bell)
+                ivRadio.setImageResource(R.drawable.ic_radio_unselected)
                 clMain.setBackgroundResource(R.drawable.notification_unread_background)
             }
 

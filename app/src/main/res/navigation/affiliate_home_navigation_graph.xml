@@ -173,7 +173,13 @@
         android:id="@+id/affiliateWithdrawMoneyFragment"
         android:name="com.desynatuser.ui.affiliateUser.home.payment.AffiliateWithdrawMoneyFragment"
         android:label="Affiliate Withdraw Money Fragment"
-        tools:layout="@layout/fragment_affiliate_withdraw_money"/>
+        tools:layout="@layout/fragment_affiliate_withdraw_money">
+
+        <action
+            android:id="@+id/action_affiliateWithdrawMoneyFragment_to_affiliateAddBankDetailFragment"
+            app:destination="@id/affiliateAddBankDetail"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/myWithdrawalsFragment"

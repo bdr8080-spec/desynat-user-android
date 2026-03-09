@@ -7,44 +7,62 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemPaymentBinding
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
 import com.desynatuser.utils.CommonMethod
 
-class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<String>, var onClick:OnClick) : RecyclerView.Adapter<AffiliatePaymentAdapter.ViewHolder>() {
+class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<GetAllAffiliateOrderResponse.Data.Order>, var onClick:OnClick) : RecyclerView.Adapter<AffiliatePaymentAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemPaymentBinding) :
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
             val paymentData = paymentList[position]
 
-            /*tvPurchasedByValue.text = paymentData?.sellerDetails?.firstName+" "+ paymentData?.sellerDetails?.lastName
-            tvTransactionIdValue.text = paymentData?.firstName
-            tvProductName.text = paymentData?.firstName
-            tvCategoryValue.text = paymentData?.firstName
-            tvQuantityValue.text = paymentData?.firstName
-            tvMyEarnings.text = "${CommonMethod.formatPrice(110.00)} KD"
-            tvTotalAmount.text = "${CommonMethod.formatPrice(110.00)} KD"
-            tvReasonValue.text = paymentData?.rejectReason
+            tvPurchasedByValue.text = paymentData?.userDetails?.fullName
+            tvTransactionIdValue.text = paymentData?.order?.transactionId
+            tvProductName.text = paymentData?.productDetails?.productNameEn
+            tvCategoryValue.text = paymentData?.productDetails?.category?.name
+            tvQuantityValue.text = paymentData?.quantity.toString()
+            tvMyEarnings.text = "${CommonMethod.formatPrice(paymentData?.amount?.toDoubleOrNull()?:0.0)} KD"
+            tvTotalAmount.text = "${CommonMethod.formatPrice(paymentData?.amount?.toDoubleOrNull()?:0.0)} KD"
+            tvReasonValue.text = paymentData?.cancelReason
             tvPurchaseOnValue.text = CommonMethod.customizeChangeDateFormat(paymentData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
 
-                when(paymentData?.adminVerify){
-                    0->{
+            if (paymentData?.paymentStatus=="2"||paymentData?.paymentStatus=="3"){
+                tvStatusValue.text = "Cancelled"
+                tvStatusValue.setTextColor(Color.parseColor("#D53B36"))
+                tvReason.isVisible = true
+                tvReasonValue.isVisible = true
+            }
+            else {
+                when (paymentData?.order?.deliveryStatus) {
+                    "0" -> {
                         tvStatusValue.text = "Pending"
                         tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
                         tvReason.isVisible = false
                         tvReasonValue.isVisible = false
                     }
-                    1->{
+
+                    "3" -> {
                         tvStatusValue.text = "Completed"
                         tvStatusValue.setTextColor(Color.parseColor("#17854C"))
                         tvReason.isVisible = false
                         tvReasonValue.isVisible = false
                     }
-                    2->{
+
+                    "4" -> {
                         tvStatusValue.text = "Cancelled"
                         tvStatusValue.setTextColor(Color.parseColor("#D53B36"))
                         tvReason.isVisible = true
                         tvReasonValue.isVisible = true
                     }
-                }*/
+
+                    else -> {
+                        tvStatusValue.text = "Ongoing"
+                        tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+                        tvReason.isVisible = false
+                        tvReasonValue.isVisible = false
+                    }
+                }
+            }
             }
         }
 
@@ -66,7 +84,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<St
      holder.bind(position)
     }
 
-    fun setData(newList: ArrayList<String>) {
+    fun setData(newList: ArrayList<GetAllAffiliateOrderResponse.Data.Order>) {
         paymentList = newList
         notifyDataSetChanged()
     }

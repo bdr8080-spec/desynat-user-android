@@ -115,6 +115,23 @@
                 tools:itemCount="2"
                 tools:listitem="@layout/item_withdrawal" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="visible"
+                android:id="@+id/tvNoDataFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="No withdrawals found"
+                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp" />

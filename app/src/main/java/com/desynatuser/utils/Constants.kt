@@ -134,8 +134,11 @@ object Constants {
     const val GET_AFFILIATE_LATEST_SEARCH = "/api/affiliate/getLatestSearchData"
     const val GET_AFFILIATE_RECOMMENDED = "/api/affiliate/getRecommendedSearchData"
     const val PRODUCT_FILTER_KEY = "/api/affiliate/product_filter_keys"
-
     const val CHANGE_AFFILIATE_NUMBER = "/api/affiliate/change-mobile-number"
     const val AFFILIATE_USER_OTP = "/api/affiliate/verify-otp"
+
+    const val GET_AFFILIATE_PAYMENT = "/api/affiliate/affiliate_all_order"
+    const val WITHDRAW_AFFILIATE_AMOUNT = "/api/affiliate/affiliate_submit_withdraw_request"
+    const val GET_WITHDRAWAL_REQUEST = "/api/affiliate/affiliate_all_withdraw_request"
 
 }

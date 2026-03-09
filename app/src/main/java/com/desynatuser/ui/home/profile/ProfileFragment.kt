@@ -50,7 +50,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     override fun initView() {
-        if (!Constants.isGuest) {
+        if (SharedPreference.get(requireActivity()).accessToken!="") {
             getProfile()
         }
     }
@@ -60,7 +60,7 @@ class ProfileFragment : BaseFragment() {
         binding?.apply {
 
             ivEdit.setOnClickListener{
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_profileFragment_to_profileDetailsFragment)
                 }
                 else{
@@ -69,7 +69,7 @@ class ProfileFragment : BaseFragment() {
             }
 
             tvMyOrder.setOnClickListener{
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_profileFragment_to_myOrderFragment)
                 } else{
                     CommonMethod.showLoginAlert(requireActivity())
@@ -77,7 +77,7 @@ class ProfileFragment : BaseFragment() {
             }
 
             tvSaveAddress.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     val bundle = Bundle().apply {
                         putString("from", "profile")
                     }
@@ -91,7 +91,7 @@ class ProfileFragment : BaseFragment() {
             }
 
             tvGiftCard.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     val bundle = Bundle().apply {
                         putString("from", "profile")
                     }
@@ -105,7 +105,7 @@ class ProfileFragment : BaseFragment() {
             }
 
             rlWallet.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_profileFragment_to_myWalletFragment)
                 } else{
                     CommonMethod.showLoginAlert(requireActivity())
@@ -127,8 +127,12 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_changeCurrencyFragment)
             }
 
+            rlGoCurrency.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_changeCountryFragment)
+            }
+
             rlAffiliate.setOnClickListener {
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     SharedPreference.get(requireActivity()).userType = 2
                     CommonMethod.clearAffiliateData(requireActivity())
                     Constants.isGuest = false
@@ -147,7 +151,7 @@ class ProfileFragment : BaseFragment() {
             }
 
             relLogout.setOnClickListener {
-                if(Constants.isGuest){
+                if(SharedPreference.get(requireActivity()).accessToken==""){
                     Constants.isGuest = false
                     Constants.isLogout = true
                     Constants.Category = "Women"
@@ -219,7 +223,7 @@ class ProfileFragment : BaseFragment() {
 
     fun setProfileData(){
         binding?.apply {
-            if (Constants.isGuest) {
+            if (SharedPreference.get(requireActivity()).accessToken=="") {
                 tvEmail.isVisible = false
                 ivEdit.isVisible = false
             } else {

@@ -138,7 +138,7 @@ class HomeFragment : BaseFragment() {
 
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
-            if (!Constants.isGuest){
+            if (SharedPreference.get(requireActivity()).accessToken!=""){
                 tvDeliverTo.text = "Deliver to ${user?.fullName}"
             }
             if (Constants.location!=""){
@@ -216,7 +216,7 @@ class HomeFragment : BaseFragment() {
 
             }
 
-        if (Constants.isGuest==false){
+        if (SharedPreference.get(requireActivity()).accessToken!=""==false){
             viewCartDetail()
         }
 
@@ -246,7 +246,7 @@ class HomeFragment : BaseFragment() {
             }
 
             ivChat.setOnClickListener{
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_homeFragment_to_chatListFragment)
                 } else{
                     CommonMethod.showLoginAlert(requireActivity())
@@ -254,7 +254,7 @@ class HomeFragment : BaseFragment() {
             }
 
             ivWishlist.setOnClickListener{
-                if (!Constants.isGuest) {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
                 } else{
                     CommonMethod.showLoginAlert(requireActivity())

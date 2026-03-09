@@ -115,6 +115,10 @@
             android:id="@+id/action_profileFragment_to_changeCurrencyFragment"
             app:destination="@id/changeCurrency"/>
 
+        <action
+            android:id="@+id/action_profileFragment_to_changeCountryFragment"
+            app:destination="@id/changeCountry"/>
+
     </fragment>
 
     <fragment
@@ -445,5 +449,11 @@
         android:name="com.desynatuser.ui.home.cms.ChangeCurrencyFragment"
         android:label="Change Currency Fragment"
         tools:layout="@layout/fragment_change_currency"/>
+
+    <fragment
+        android:id="@+id/changeCountry"
+        android:name="com.desynatuser.ui.home.cms.ChangeCountryFragment"
+        android:label="Change Country Fragment"
+        tools:layout="@layout/fragment_change_country"/>
 
 </navigation>

@@ -49,9 +49,15 @@ class BankAdapter(var context: Context, private val bankList: List<GetAffiliateU
                 }
 
                 clAccount.setOnClickListener {
-                    if (bankData.defaultAccount=="0"){
+                    if (isShow){
+                        if (bankData.defaultAccount=="0"){
+                            click.onClick(position,3)
+                        }
+                    }
+                    else{
                         click.onClick(position,3)
                     }
+
                 }
             }
 

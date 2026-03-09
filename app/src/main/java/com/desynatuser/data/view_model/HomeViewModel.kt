@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.desynatuser.data.repo.MainRepository
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
+import com.desynatuser.ui.affiliateUser.home.payment.response.GetWithdrawalRequestResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateAllProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateProductDetailResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
@@ -890,6 +892,33 @@ val defaultBankResult: LiveData<CommonResponse>
     fun affiliateUserOtp(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.affiliateUserOtp(map)
+        }
+    }
+
+    val getAffiliatePaymentResult: LiveData<GetAllAffiliateOrderResponse>
+        get() = repository.getAffiliatePaymentLiveData
+
+    fun getAffiliatePayment() {
+        viewModelScope.launch {
+            repository.getAffiliatePayment()
+        }
+    }
+
+    val getWithdrawalRequestResult: LiveData<GetWithdrawalRequestResponse>
+        get() = repository.getWithdrawalRequestLiveData
+
+    fun getWithdrawalRequest(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getWithdrawalRequest(map)
+        }
+    }
+
+    val withdrawAffiliateAmountResult: LiveData<CommonResponse>
+        get() = repository.withdrawAffiliateAmountLiveData
+
+    fun withdrawAffiliateAmount(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.withdrawAffiliateAmount(map)
         }
     }
 

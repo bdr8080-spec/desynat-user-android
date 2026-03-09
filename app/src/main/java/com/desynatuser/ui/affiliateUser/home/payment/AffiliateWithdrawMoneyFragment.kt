@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
 import com.desynatuser.adapter.BankAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateWithdrawMoneyBinding
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
+import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
@@ -24,6 +27,7 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
     private var profileData: GetAffiliateUserProfileResponse.Data? = null
     private var bankList = ArrayList<GetAffiliateUserProfileResponse.Data.BankDetails>()
     private var bankAdapter: BankAdapter? = null
+    private var selectedBank: GetAffiliateUserProfileResponse.Data.BankDetails?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +50,6 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
             profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
             bankList.clear()
             profileData?.bankDetails?.let { bankList.addAll(it) }
-            bankAdapter?.notifyDataSetChanged()
-
             bankAdapter = BankAdapter(
                 requireActivity(),
                 bankList,
@@ -56,7 +58,7 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
                     override fun onClick(position: Int, type: Int) {
                         when (type) {
                             3 -> {
-
+                                selectedBank = bankList[position]
                             }
                         }
                     }
@@ -64,6 +66,12 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
                 })
 
             rvBank.adapter = bankAdapter
+
+            for (i in 0 until bankList.size){
+                if (bankList[i].defaultAccount=="1"){
+                    selectedBank = bankList[i]
+                }
+            }
         }
     }
 
@@ -74,14 +82,60 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
             }
 
             btnSubmit.setOnClickListener {
-                CommonMethod.showSuccessDialog(requireActivity(), "Request sent successfully!") {
-
+                if (etAmount.text.toString().isEmpty()){
+                    showToast("Please enter amount")
                 }
+                else if (selectedBank==null){
+                    showToast("Please select bank account")
+                }
+                else{
+                    withdrawAffiliateAmount()
+                }
+
+            }
+
+            clAddAnotherAccount.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("userId", profileData?.userId.toString())
+                    putString("from", "profile")
+                    putString("type", "add")
+                }
+                findNavController().navigate(
+                    R.id.action_affiliateWithdrawMoneyFragment_to_affiliateAddBankDetailFragment,bundle
+                )
             }
         }
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+            }
+        }
+
+        viewModel.withdrawAffiliateAmountResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    CommonMethod.showSuccessWithTimeDialog(requireActivity(), "Request sent successfully!", time = 1500) {
+                        findNavController().popBackStack()
+                    }
+                }
+                isObserver = false
+            }
+        }
+    }
+
+    private fun withdrawAffiliateAmount() {
+        val map = HashMap<String, Any>()
+        map["amount"] = binding?.etAmount?.text?.trim().toString()
+        map["bankdetails_id"] = selectedBank?.id.toString()
+        viewModel.withdrawAffiliateAmount(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }

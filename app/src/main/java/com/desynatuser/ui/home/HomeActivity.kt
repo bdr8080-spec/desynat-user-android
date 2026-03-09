@@ -25,6 +25,7 @@ import com.desynatuser.databinding.ActivityHomeBinding
 import com.desynatuser.ui.response.BottomNavItem
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
+import com.desynatuser.utils.SharedPreference
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -75,6 +76,7 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initView() {
+        SharedPreference.get(this).affiliateAccessToken = ""
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (Constants.location==""){
@@ -125,7 +127,7 @@ class HomeActivity : BaseActivity() {
                     bottomAdapter?.setSelectedItem(1)
                 }
                 R.id.myBag -> {
-                    if (!Constants.isGuest) {
+                    if (SharedPreference.get(this).accessToken!="") {
                         bottomAdapter?.setSelectedItem(3)
                     }
                     else{
@@ -159,7 +161,7 @@ class HomeActivity : BaseActivity() {
                     0 -> controller.navigate(R.id.home)
                     1 -> controller.navigate(R.id.catalog)
                     //2 -> controller.navigate(R.id.catalog)
-                    3 -> if (!Constants.isGuest){ controller.navigate(R.id.myBag)} else{
+                    3 -> if (SharedPreference.get(this@HomeActivity).accessToken!=""){ controller.navigate(R.id.myBag)} else{
                         CommonMethod.showLoginAlert(this@HomeActivity)
                     }
                     4 -> controller.navigate(R.id.profile)
@@ -282,7 +284,8 @@ class HomeActivity : BaseActivity() {
 
             val bundle = Bundle().apply {
                 putString("productId", productId)
-                putString("REF_ID", ref)
+                putString("ref_id", ref)
+                putString("ref_link", it.toString())
             }
             controller.navigate(R.id.productDetail, bundle)
 
