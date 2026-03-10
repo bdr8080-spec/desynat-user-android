@@ -89,6 +89,11 @@
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
+
+        <meta-data
+            android:name="io.branch.sdk.BranchKey"
+            android:value="key_live_gxyEOLdhSW3LluhpHTtqSochCyhaJYaJ" />
+
     </application>
 
 </manifest>

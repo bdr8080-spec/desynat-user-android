@@ -27,6 +27,31 @@
             android:id="@+id/action_affiliateProfileFragment_to_myWithdrawalsFragment"
             app:destination="@id/myWithdrawalsFragment"/>
 
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_languageFragment"
+            app:destination="@id/language"/>
+
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_changeCurrencyFragment"
+            app:destination="@id/changeCurrency"/>
+
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_changeCountryFragment"
+            app:destination="@id/changeCountry"/>
+
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_supportFragment"
+            app:destination="@id/support"/>
+
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_settingFragment"
+            app:destination="@id/setting"/>
+
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_faqFragment"
+            app:destination="@id/faq"/>
+
+
     </fragment>
 
     <fragment
@@ -186,5 +211,42 @@
         android:name="com.desynatuser.ui.affiliateUser.home.payment.MyWithdrawalsFragment"
         android:label="My Withdrawals Fragment"
         tools:layout="@layout/fragment_my_withdrawals"/>
+
+    <fragment
+        android:id="@+id/changeCurrency"
+        android:name="com.desynatuser.ui.home.cms.ChangeCurrencyFragment"
+        android:label="Change Currency Fragment"
+        tools:layout="@layout/fragment_change_currency"/>
+
+    <fragment
+        android:id="@+id/changeCountry"
+        android:name="com.desynatuser.ui.home.cms.ChangeCountryFragment"
+        android:label="Change Country Fragment"
+        tools:layout="@layout/fragment_change_country"/>
+
+    <fragment
+        android:id="@+id/support"
+        android:name="com.desynatuser.ui.home.cms.SupportFragment"
+        android:label="Support Fragment"
+        tools:layout="@layout/fragment_support"/>
+
+    <fragment
+        android:id="@+id/setting"
+        android:name="com.desynatuser.ui.home.cms.SettingFragment"
+        android:label="Setting Fragment"
+        tools:layout="@layout/fragment_setting"/>
+
+    <fragment
+        android:id="@+id/faq"
+        android:name="com.desynatuser.ui.home.cms.FaqFragment"
+        android:label="Faq Fragment"
+        tools:layout="@layout/fragment_faq"/>
+
+    <fragment
+        android:id="@+id/language"
+        android:name="com.desynatuser.ui.auth.fragment.LanguageFragment"
+        android:label="Language Fragment"
+        tools:layout="@layout/fragment_language"/>
+
 
 </navigation>

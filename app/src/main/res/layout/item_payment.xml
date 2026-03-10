@@ -93,13 +93,17 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPurchasedByValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="Atif Aslam"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="textEnd"
+        android:singleLine="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvPurchasedBy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tvPurchasedBy"
         app:layout_constraintTop_toTopOf="@id/tvPurchasedBy" />
@@ -119,13 +123,17 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvProductName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="Nike Shirt"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="textEnd"
+        android:singleLine="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvProduct"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tvProduct"
         app:layout_constraintTop_toTopOf="@id/tvProduct" />
@@ -145,13 +153,16 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvCategoryValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="Men's Shirt"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="textEnd"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvCategory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tvCategory"
         app:layout_constraintTop_toTopOf="@id/tvCategory" />
@@ -171,13 +182,16 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvQuantityValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="02"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="textEnd"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvQuantity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tvQuantity"
         app:layout_constraintTop_toTopOf="@id/tvQuantity" />
@@ -197,13 +211,16 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTotalAmount"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="299 KD"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="textEnd"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvPurchasedBy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tvTotal"
         app:layout_constraintTop_toTopOf="@id/tvTotal" />
@@ -223,13 +240,16 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPurchaseOnValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="21/03/2026 at 07:30 OM"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="textEnd"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvPurchaseOn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tvPurchaseOn"
         app:layout_constraintTop_toTopOf="@id/tvPurchaseOn" />
@@ -249,13 +269,16 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvStatusValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="Pending"
         android:textColor="#FE7D49"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="textEnd"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvStatus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tvStatus"
         app:layout_constraintTop_toTopOf="@id/tvStatus" />

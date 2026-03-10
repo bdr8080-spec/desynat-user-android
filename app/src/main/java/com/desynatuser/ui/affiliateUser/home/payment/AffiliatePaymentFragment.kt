@@ -1,9 +1,14 @@
 package com.desynatuser.ui.affiliateUser.home.payment
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -27,6 +32,7 @@ class AffiliatePaymentFragment : BaseFragment() {
     private var paymentAdapter: AffiliatePaymentAdapter? = null
     private var paymentData: GetAllAffiliateOrderResponse.Data?=null
     private var paymentList = ArrayList<GetAllAffiliateOrderResponse.Data.Order>()
+    private var animator: ObjectAnimator?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +51,12 @@ class AffiliatePaymentFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
+
+            animator = ObjectAnimator.ofFloat(ivRefresh, View.ROTATION, 0f, 360f)
+            animator?.duration = 800
+            animator?.repeatCount = ValueAnimator.INFINITE
+            animator?.interpolator = LinearInterpolator()
+
             paymentAdapter = AffiliatePaymentAdapter(requireActivity(), paymentList, object :
                 AffiliatePaymentAdapter.OnClick {
                 override fun click(position: Int, type: Int) {
@@ -63,6 +75,11 @@ class AffiliatePaymentFragment : BaseFragment() {
             tvWithdraw.setOnClickListener {
                 findNavController().navigate(R.id.action_affiliatePaymentFragment_to_affiliateWithdrawMoneyFragment)
             }
+
+            ivRefresh.setOnClickListener {
+                animator?.start()
+                getAffiliatePayment(false)
+            }
         }
 
     }
@@ -79,6 +96,8 @@ class AffiliatePaymentFragment : BaseFragment() {
         viewModel.getAffiliatePaymentResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                animator?.cancel()
+                binding?.ivRefresh?.setImageResource(R.drawable.ic_refresh)
                 response?.let {
                     paymentData = response.data
                     paymentList.clear()
@@ -96,9 +115,11 @@ class AffiliatePaymentFragment : BaseFragment() {
         binding?.tvNoDataFound?.isVisible = paymentList.isEmpty()
     }
 
-    private fun getAffiliatePayment(){
+    private fun getAffiliatePayment(isLoading: Boolean=true){
         viewModel.getAffiliatePayment()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        if (isLoading){
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        }
         isObserver = true
     }
 

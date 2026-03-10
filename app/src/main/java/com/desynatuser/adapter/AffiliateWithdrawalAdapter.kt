@@ -16,12 +16,11 @@ class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayL
         fun bind(position: Int) = with(binding){
             val withdrawalData = withdrawalList[position]
 
-            tvRequestIdValue.text = withdrawalData?.requestId
+            tvRequestIdValue.text = "#${withdrawalData?.requestId}"
             tvAccountNumber.text = withdrawalData?.bankDetails?.accountNo
-            tvTransactionValue.text = withdrawalData?.requestId
             tvTotalAmountValue.text = "${CommonMethod.formatPrice(withdrawalData?.amount?.toDoubleOrNull()?:0.0)} KD"
-            tvCreditOn.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
-            tvRequestedOnValue.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.updatedAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
+            tvCreditOn.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.updatedAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
+            tvRequestedOnValue.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
 
                 when(withdrawalData?.adminVerify){
                     0->{
@@ -35,6 +34,8 @@ class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayL
                         tvTransaction.isVisible = true
                         tvCreditOn.isVisible = true
                         tvTransactionValue.isVisible = true
+                        tvTransactionValue.text = "#${withdrawalData?.transactionId}"
+
                     }
                     2->{
                         tvStatusValue.text = "Rejected"

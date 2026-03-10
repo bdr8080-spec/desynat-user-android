@@ -68,6 +68,11 @@ class LanguageFragment : BaseFragment() {
 
     override fun initControl() {
         binding?.apply {
+
+            tvToolbar.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             cbArabic.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     cbEnglish.isChecked = false

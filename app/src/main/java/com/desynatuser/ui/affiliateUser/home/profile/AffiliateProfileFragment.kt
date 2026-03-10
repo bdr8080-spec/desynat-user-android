@@ -78,7 +78,36 @@ class AffiliateProfileFragment : BaseFragment() {
                 )
                 requireActivity().finish()
             }
+
+
+           /* rlLanguage.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("from", "profile")
+                }
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_languageFragment,bundle)
+            }
+
+            rlSetting.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_settingFragment)
+            }
+
+            rlSupport.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_supportFragment)
+            }
+
+            rlFaq.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_faqFragment)
+            }
+
+            rlChangeCurrency.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_changeCurrencyFragment)
+            }
+
+            rlChangeCountry.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_changeCountryFragment)
+            }*/
         }
+
     }
 
     override fun observe() {

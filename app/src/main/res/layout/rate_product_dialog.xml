@@ -41,7 +41,7 @@
         android:text="Rate Nike T- Shirt"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_15sdp"
-        android:textSize="@dimen/_13sdp"
+        android:textSize="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_15sdp" />
 
     <androidx.appcompat.widget.AppCompatRatingBar
@@ -65,7 +65,7 @@
         android:text="Write Review"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_15sdp"
-        android:textSize="@dimen/_13sdp"
+        android:textSize="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_15sdp" />
 
     <RelativeLayout
@@ -93,14 +93,15 @@
             android:layout_alignParentEnd="true"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="visible"
             android:id="@+id/rvProductReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etProductReview"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
+            tools:itemCount="3"
             tools:listitem="@layout/item_review"/>
 
     </RelativeLayout>
@@ -113,7 +114,7 @@
         android:text="Rate Store"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_15sdp"
-        android:textSize="@dimen/_13sdp"
+        android:textSize="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_15sdp" />
 
     <androidx.appcompat.widget.AppCompatRatingBar
@@ -137,7 +138,7 @@
         android:text="Write Review"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_15sdp"
-        android:textSize="@dimen/_13sdp"
+        android:textSize="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_15sdp" />
 
     <RelativeLayout

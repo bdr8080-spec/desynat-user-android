@@ -293,6 +293,15 @@ val productDetailResult: LiveData<GetProductDetailResponse>
         }
     }
 
+ val cartHomeDetailLiveDataResult: LiveData<GetCartResponse>
+        get() = repository.cartHomeDetailLiveData
+
+    fun viewHomeCartDetail() {
+        viewModelScope.launch {
+            repository.viewHomeCartDetail()
+        }
+    }
+
 
     val addToWishlistResult: LiveData<CommonResponse>
         get() = repository.addToWishlistLiveData

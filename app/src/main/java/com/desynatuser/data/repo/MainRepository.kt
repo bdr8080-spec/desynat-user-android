@@ -438,6 +438,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
+    val cartHomeDetailLiveData = SingleLiveEvent<GetCartResponse>()
+    suspend fun viewHomeCartDetail()
+    {
+        handleApiCall(
+            api = {
+                api.viewCartDetail()
+            },
+            responseLiveData = cartHomeDetailLiveData
+        )
+    }
+
     val addToWishlistLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun addToWishlist(map:HashMap<String,Any>)
     {

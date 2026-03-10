@@ -21,7 +21,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
             tvProductName.text = paymentData?.productDetails?.productNameEn
             tvCategoryValue.text = paymentData?.productDetails?.category?.name
             tvQuantityValue.text = paymentData?.quantity.toString()
-            tvMyEarnings.text = "${CommonMethod.formatPrice(paymentData?.amount?.toDoubleOrNull()?:0.0)} KD"
+            tvMyEarnings.text = "${CommonMethod.formatPrice(paymentData?.affiliateCommission?.toDoubleOrNull()?:0.0)} KD"
             tvTotalAmount.text = "${CommonMethod.formatPrice(paymentData?.amount?.toDoubleOrNull()?:0.0)} KD"
             tvReasonValue.text = paymentData?.cancelReason
             tvPurchaseOnValue.text = CommonMethod.customizeChangeDateFormat(paymentData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )

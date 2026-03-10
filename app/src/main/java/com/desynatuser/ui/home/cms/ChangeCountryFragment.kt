@@ -41,8 +41,13 @@ class ChangeCountryFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Change Country"
+            val data = if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+                SharedPreference.get(requireActivity()).getSelectedCountryList()
+            }
+            else{
+                SharedPreference.get(requireActivity()).getCountryList()
+            }
 
-            val data = SharedPreference.get(requireActivity()).getCountryList()
             countryList.clear()
             data?.let { countryList.addAll(it) }
 

@@ -382,6 +382,7 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
             }
@@ -389,6 +390,7 @@ class ProductDetailFragment : BaseFragment() {
 
         viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
             if (isCartObserver) {
+                binding?.progressBar?.isVisible = false
                 ProgressDialogUtils.getInstance().hideProgress()
                 myBagList.clear()
                 response?.data?.cartData?.let { myBagList.addAll(it) }
@@ -418,6 +420,7 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.addToCartResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
 
                 if (fromBtn=="buy"){
                     findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
@@ -444,6 +447,7 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.cartQuantityResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 if (cartQuantity==1&&response.data.quantity==1){
                     var pos = -1
                     for(i in 0 until cartList.size){
@@ -473,7 +477,7 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.addToWishlistResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-
+                binding?.progressBar?.isVisible = false
                 if (productDetailData?.wishlist==1) {
                     showToast("Product removed from your wishlist successfully")
                     productDetailData?.wishlist=0
@@ -491,6 +495,7 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.createCustomOrderResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 val bundle = Bundle().apply {
                     putString("from", "productDetail")
                     putString("customOrderData",Gson().toJson(response.data))
@@ -503,6 +508,7 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.productDetailResult.observe(viewLifecycleOwner) { response ->
             if (isProductObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 productDetailData = response.data
                 ratingList.clear()
                 productDetailData?.review?.let { ratingList.addAll(it) }
@@ -559,7 +565,7 @@ class ProductDetailFragment : BaseFragment() {
             map["reference_link"] = refLink.toString()
         }
         viewModel.addToCart(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
     private fun createCustomOrder() {
@@ -567,14 +573,14 @@ class ProductDetailFragment : BaseFragment() {
         map["product_id"] = productId.toString()
         map["variation_id"] =productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
         viewModel.createCustomOrder(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
     private fun addToWishList(){
         val map = HashMap<String,Any>()
         map["product_id"] = productId.toString()
         viewModel.addToWishlist(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
     private fun addCartQuantity(type:String){
@@ -582,7 +588,7 @@ class ProductDetailFragment : BaseFragment() {
         map["cart_id"] = cartId.toString()
         map["type"] = type//// increment,decrement
         viewModel.addCartQuantity(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
     private fun sizeGuideDialog() {
@@ -693,7 +699,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun viewCartDetail(){
         viewModel.viewCartDetail()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isCartObserver = true
     }
 

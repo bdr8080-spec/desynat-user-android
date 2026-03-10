@@ -119,6 +119,18 @@
             android:id="@+id/action_profileFragment_to_changeCountryFragment"
             app:destination="@id/changeCountry"/>
 
+        <action
+            android:id="@+id/action_profileFragment_to_supportFragment"
+            app:destination="@id/support"/>
+
+        <action
+            android:id="@+id/action_profileFragment_to_settingFragment"
+            app:destination="@id/setting"/>
+
+        <action
+            android:id="@+id/action_profileFragment_to_faqFragment"
+            app:destination="@id/faq"/>
+
     </fragment>
 
     <fragment
@@ -455,5 +467,23 @@
         android:name="com.desynatuser.ui.home.cms.ChangeCountryFragment"
         android:label="Change Country Fragment"
         tools:layout="@layout/fragment_change_country"/>
+
+    <fragment
+        android:id="@+id/support"
+        android:name="com.desynatuser.ui.home.cms.SupportFragment"
+        android:label="Support Fragment"
+        tools:layout="@layout/fragment_support"/>
+
+    <fragment
+        android:id="@+id/setting"
+        android:name="com.desynatuser.ui.home.cms.SettingFragment"
+        android:label="Setting Fragment"
+        tools:layout="@layout/fragment_setting"/>
+
+    <fragment
+        android:id="@+id/faq"
+        android:name="com.desynatuser.ui.home.cms.FaqFragment"
+        android:label="Faq Fragment"
+        tools:layout="@layout/fragment_faq"/>
 
 </navigation>

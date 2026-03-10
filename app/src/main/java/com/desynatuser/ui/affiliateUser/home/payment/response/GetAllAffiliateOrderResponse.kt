@@ -23,7 +23,7 @@ data class GetAllAffiliateOrderResponse(
             @SerializedName("affiliate_admin_commission")
             val affiliateAdminCommission: String,
             @SerializedName("affiliate_commission")
-            val affiliateCommission: Any,
+            val affiliateCommission: String,
             @SerializedName("affiliate_id")
             val affiliateId: String,
             @SerializedName("amount")

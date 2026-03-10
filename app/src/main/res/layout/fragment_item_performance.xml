@@ -65,6 +65,12 @@
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:numStars="5"
+            android:progressBackgroundTint="#C7C7C7"
+            android:progressTint="#FFA41B"
+            android:rating="0"
+            android:secondaryProgressTint="#FFA41B"
+            android:stepSize="0.5"
             android:contentDescription="@string/app_name"
             android:layout_marginEnd="@dimen/_2sdp"
             app:layout_constraintEnd_toStartOf="@+id/tvRating"
@@ -98,19 +104,6 @@
             android:layout_marginTop="@dimen/_1sdp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"  />
-
-<!--        <TextView-->
-<!--            android:id="@+id/tvDiscountPrice"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/poppins_semi_bold"-->
-<!--            android:maxLines="1"-->
-<!--            android:text="KD 239"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="@dimen/_10sdp"-->
-<!--            android:layout_marginEnd="@dimen/_15sdp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/tvPrice" />-->
 
         <TextView
             android:id="@+id/tvPrice"

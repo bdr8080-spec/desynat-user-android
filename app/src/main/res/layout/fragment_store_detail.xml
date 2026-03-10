@@ -130,7 +130,7 @@
                     android:numStars="5"
                     android:progressBackgroundTint="#C7C7C7"
                     android:progressTint="#FFA41B"
-                    android:rating="2.5"
+                    android:rating="0"
                     android:secondaryProgressTint="#FFA41B"
                     android:stepSize="0.5"
                     app:layout_constraintStart_toStartOf="@+id/tvBrand"

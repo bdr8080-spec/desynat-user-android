@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemChangeCountryBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.desynatuser.utils.SharedPreference
 
 class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCountryResponse.Data>, var clickOnItem:ClickOnItem) : RecyclerView.Adapter<ChangeCountryAdapter.ViewHolder>() {
 
@@ -17,7 +18,12 @@ class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCo
         fun bind(position: Int) = with(binding){
             val countryData = countryList[position]
             tvCountry.text = countryData.name
-            Glide.with(context).load(countryData.flag).into(ivFlag)
+            if (SharedPreference.get(context).affiliateAccessToken!=""){
+                Glide.with(context).load(countryData.flag1).into(ivFlag)
+            }
+            else{
+                Glide.with(context).load(countryData.flag).into(ivFlag)
+            }
             if (selectedPos==position){
                 ivRadio.setImageResource(R.drawable.ic_radio_selected)
                 clMain.setBackgroundResource(R.drawable.notification_read_background)

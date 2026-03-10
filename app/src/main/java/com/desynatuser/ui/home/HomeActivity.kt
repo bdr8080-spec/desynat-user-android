@@ -25,6 +25,7 @@ import com.desynatuser.databinding.ActivityHomeBinding
 import com.desynatuser.ui.response.BottomNavItem
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
+import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -32,6 +33,7 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.myfatoorah.sdk.views.MFSDK
 import dagger.hilt.android.AndroidEntryPoint
+import io.branch.referral.Branch
 import org.greenrobot.eventbus.EventBus
 import java.io.IOException
 import java.util.Locale
@@ -139,13 +141,18 @@ class HomeActivity : BaseActivity() {
                 }
             }
         }
-
-        handleDeepLink(intent)
+      //  handleDeepLink(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handleDeepLink(intent)
+        setIntent(intent)
+      //  handleDeepLink(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handleDeepLinkWithBranch()
     }
 
     override fun initControl() {
@@ -292,6 +299,77 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    private fun handleDeepLinkWithBranch() {
+
+        Branch.sessionBuilder(this)
+            .withCallback { referringParams, error ->
+
+                if (error != null) {
+                    Log.e("BranchError", error.message ?: "")
+                    return@withCallback
+                }
+
+                referringParams ?: return@withCallback
+
+                var productId: String? = null
+                var refId: String? = null
+                var fullLink: String? = null
+
+                val isBranchLink = referringParams.getBoolean("+clicked_branch_link")
+
+                if (isBranchLink) {
+
+                    // Branch link
+                    productId = referringParams.getString("product_id")
+                    refId = referringParams.getString("ref")
+                    fullLink = intent?.data?.toString()
+
+                    Log.d("DeepLink", "Branch Product ID: $productId")
+                    Log.d("DeepLink", "Branch Ref ID: $refId")
+                    Log.d("DeepLink", "Branch URL: $fullLink")
+
+                } else {
+
+                    // Non Branch link
+                    val nonBranchUrl = referringParams.getString("+non_branch_link")
+
+                    if (!nonBranchUrl.isNullOrEmpty()) {
+
+                        val uri = Uri.parse(nonBranchUrl)
+
+                        productId = uri.lastPathSegment
+                        refId = uri.getQueryParameter("ref")
+                        fullLink = nonBranchUrl
+
+                        Log.d("DeepLink", "NonBranch Product ID: $productId")
+                        Log.d("DeepLink", "NonBranch Ref ID: $refId")
+                        Log.d("DeepLink", "Full URL: $fullLink")
+                    }
+                }
+
+                openProductScreen(productId, refId, fullLink)
+
+            }
+            .withData(intent?.data)
+            .init()
+    }
+
+    private fun openProductScreen(productId: String?, refId: String?, fullLink: String?) {
+
+        if (productId.isNullOrEmpty()) return
+
+        val bundle = Bundle().apply {
+            putString("productId", productId)
+            putString("ref_id", refId)
+            putString("ref_link", fullLink)
+        }
+
+        ProgressDialogUtils.getInstance().hideProgress()
+
+        if (controller.currentDestination?.id != R.id.productDetail) {
+            controller.navigate(R.id.productDetail, bundle)
+        }
+    }
 }
 
 data class PaymentResultEvent(

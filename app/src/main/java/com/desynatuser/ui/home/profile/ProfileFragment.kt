@@ -112,24 +112,58 @@ class ProfileFragment : BaseFragment() {
                 }
             }
 
-            rlLanguage.setOnClickListener {
+          /*  rlLanguage.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("from", "profile")
                 }
                 findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
             }
 
+            rlSetting.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+            }
+
+            rlSupport.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    findNavController().navigate(R.id.action_profileFragment_to_supportFragment)
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+            }
+
+            rlFaq.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    findNavController().navigate(R.id.action_profileFragment_to_faqFragment)
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+            }
+
+            rlGoCurrency.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    findNavController().navigate(R.id.action_profileFragment_to_changeCurrencyFragment)
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+            }
+
+            rlChangeCountry.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    findNavController().navigate(R.id.action_profileFragment_to_changeCountryFragment)
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+            }
+
             relAbout.setOnClickListener {
 
-            }
-
-            rlGoCurrency.setOnClickListener {
-                findNavController().navigate(R.id.action_profileFragment_to_changeCurrencyFragment)
-            }
-
-            rlGoCurrency.setOnClickListener {
-                findNavController().navigate(R.id.action_profileFragment_to_changeCountryFragment)
-            }
+            }*/
 
             rlAffiliate.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {

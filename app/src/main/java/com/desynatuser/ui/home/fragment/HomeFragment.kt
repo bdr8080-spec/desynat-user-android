@@ -296,6 +296,7 @@ class HomeFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
                 binding?.clMain?.isVisible = true
+                binding?.progressBar?.isVisible = false
                 isObserver = false
             }
         }
@@ -307,6 +308,7 @@ class HomeFragment : BaseFragment() {
         viewModel.dashBoardResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 response?.let {
 
                 }
@@ -364,9 +366,10 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
+        viewModel.cartHomeDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
             if (isCartObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 myBagList.clear()
                 response?.data?.cartData?.let { myBagList.addAll(it) }
                 Constants.cartItem = myBagList.size
@@ -390,6 +393,7 @@ class HomeFragment : BaseFragment() {
         viewModel.subCategoryResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 response?.let {
                     categoryList.clear()
                     categoryList.addAll(response.data)
@@ -409,7 +413,7 @@ class HomeFragment : BaseFragment() {
 
     private fun getDashboardApi(){
         viewModel.getDashBoard()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
@@ -419,7 +423,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getSubCategoryApi(id:String){
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         viewModel.getSubCategory(id)
         isObserver = true
     }
@@ -474,8 +478,8 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun viewCartDetail(){
-        viewModel.viewCartDetail()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        viewModel.viewHomeCartDetail()
+        binding?.progressBar?.isVisible = true
         isCartObserver = true
     }
 

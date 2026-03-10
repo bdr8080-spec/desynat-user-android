@@ -34,6 +34,8 @@ data class GetWithdrawalRequestResponse(
             val rejectReason: String,
             @SerializedName("request_id")
             val requestId: String,
+            @SerializedName("transaction_id")
+            val transactionId: String,
             @SerializedName("type")
             val type: Int,
             @SerializedName("updated_at")
