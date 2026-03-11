@@ -565,7 +565,7 @@ interface ApiServices {
     ): Response<AffiliateChangeUserOtpVerifyResponse>
 
     @GET(Constants.GET_AFFILIATE_PAYMENT)
-    suspend fun getAffiliatePayment(): Response<GetAllAffiliateOrderResponse>
+    suspend fun getAffiliatePayment(@QueryMap map: HashMap<String, Any>): Response<GetAllAffiliateOrderResponse>
 
     @GET(Constants.GET_WITHDRAWAL_REQUEST)
     suspend fun getWithdrawalRequest(@QueryMap map: HashMap<String, Any>): Response<GetWithdrawalRequestResponse>

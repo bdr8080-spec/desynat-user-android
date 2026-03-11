@@ -1342,11 +1342,11 @@ val getAffiliateProductLinkLiveData = SingleLiveEvent<GetAffiliateProductLinkRes
     }
 
     val getAffiliatePaymentLiveData = SingleLiveEvent<GetAllAffiliateOrderResponse>()
-    suspend fun getAffiliatePayment()
+    suspend fun getAffiliatePayment(map: HashMap<String,Any>)
     {
         handleApiCall(
             api = {
-                api.getAffiliatePayment()
+                api.getAffiliatePayment(map)
             },
             responseLiveData = getAffiliatePaymentLiveData
         )

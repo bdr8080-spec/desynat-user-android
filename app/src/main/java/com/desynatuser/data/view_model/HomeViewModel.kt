@@ -907,9 +907,9 @@ val defaultBankResult: LiveData<CommonResponse>
     val getAffiliatePaymentResult: LiveData<GetAllAffiliateOrderResponse>
         get() = repository.getAffiliatePaymentLiveData
 
-    fun getAffiliatePayment() {
+    fun getAffiliatePayment(map: HashMap<String,Any>) {
         viewModelScope.launch {
-            repository.getAffiliatePayment()
+            repository.getAffiliatePayment(map)
         }
     }
 

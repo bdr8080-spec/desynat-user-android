@@ -73,18 +73,6 @@ class ItemPerformanceFragment : BaseFragment() {
                 CommonMethod.copyText(requireActivity(),"${productDetailData?.affiliateProductLink?.link?:""}")
             }
 
-            etFrom.setOnClickListener{
-                openCustomDatePicker(requireActivity()) { date, timestamp ->
-                    etFrom.setText(date)
-                }
-            }
-
-            etTo.setOnClickListener{
-                openCustomDatePicker(requireActivity()) { date, timestamp ->
-                    etFrom.setText(date)
-                }
-            }
-
             etFrom.setOnClickListener {
                 val initialDate = fromTimestamp ?: Calendar.getInstance().timeInMillis
                 openCustomPreSelectedDatePicker(requireActivity(), initialDate = initialDate) { date, timestamp ->

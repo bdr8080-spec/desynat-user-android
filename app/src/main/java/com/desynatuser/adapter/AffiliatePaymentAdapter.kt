@@ -17,7 +17,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
             val paymentData = paymentList[position]
 
             tvPurchasedByValue.text = paymentData?.userDetails?.fullName
-            tvTransactionIdValue.text = paymentData?.order?.transactionId
+            tvTransactionIdValue.text = "#${paymentData?.order?.transactionId?:paymentData?.id}"
             tvProductName.text = paymentData?.productDetails?.productNameEn
             tvCategoryValue.text = paymentData?.productDetails?.category?.name
             tvQuantityValue.text = paymentData?.quantity.toString()
@@ -34,19 +34,90 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
             }
             else {
                 when (paymentData?.order?.deliveryStatus) {
-                    "0" -> {
-                        tvStatusValue.text = "Pending"
-                        tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
-                        tvReason.isVisible = false
-                        tvReasonValue.isVisible = false
-                    }
+//                    "0" -> {
+//                        tvStatusValue.text = "Pending"
+//                        tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+//                        tvReason.isVisible = false
+//                        tvReasonValue.isVisible = false
+//                    }
 
-                    "3" -> {
+                    "3"->{
                         tvStatusValue.text = "Completed"
                         tvStatusValue.setTextColor(Color.parseColor("#17854C"))
                         tvReason.isVisible = false
                         tvReasonValue.isVisible = false
                     }
+
+/*                    "3" -> {
+                        if (paymentData?.rEType == "0" && paymentData?.pOrderdetailsId == "0" && paymentData?.rEApprove == "0" && paymentData?.returnType == "0") {
+                            tvStatusValue.text = "Completed"
+                            tvStatusValue.setTextColor(Color.parseColor("#17854C"))
+                            tvReason.isVisible = false
+                            tvReasonValue.isVisible = false
+                        }
+                        else if (paymentData?.rEType == "0" && paymentData?.pOrderdetailsId == "0" && paymentData?.rEApprove == "1" && paymentData?.returnType == "2") {
+
+//                            if (paymentData?.exchangeOrderDetails?.deliveryStatus=="7"){
+//                                tvStatusValue.text = "Ongoing"
+//                                tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+//                            }
+//                            else if (paymentData?.exchangeOrderDetails?.deliveryStatus=="3"){
+//                                tvStatusValue.text = "Exchanged"
+//                                tvStatusValue.setTextColor(Color.parseColor("#16B364"))
+//                            }
+//                            else{
+//                                tvStatusValue.text = "Exchange Req.."
+//                                tvStatusValue.setTextColor(Color.parseColor("#FF5F1B"))
+//                            }
+
+                            tvStatusValue.text = "Pending"
+                            tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+                            tvReason.isVisible = false
+                            tvReasonValue.isVisible = false
+                        }
+
+                        else if (paymentData?.rEType == "0" && paymentData?.pOrderdetailsId == "0" && paymentData?.rEApprove == "0" && paymentData?.returnType == "2") {
+//                            tvStatusValue.text = "Exchange Req.."
+//                            tvStatusValue.setTextColor(Color.parseColor("#FF5F1B"))
+
+                            tvStatusValue.text = "Pending"
+                            tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+                            tvReason.isVisible = false
+                            tvReasonValue.isVisible = false
+                        }
+
+                        else if (paymentData?.rEType=="0"&&paymentData?.pOrderdetailsId=="0"&&paymentData?.rEApprove=="0"&&paymentData?.returnType=="1"){
+//                            tvStatusValue.text = "Return Req.."
+//                            tvStatusValue.setTextColor(Color.parseColor("#FF5F1B"))
+                            tvStatusValue.text = "Pending"
+                            tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+                            tvReason.isVisible = false
+                            tvReasonValue.isVisible = false
+                        }
+                        else if (paymentData?.rEType=="0"&&paymentData?.pOrderdetailsId=="0"&&paymentData?.rEApprove=="1"&&paymentData?.returnType=="1") {
+//                            tvStatusValue.text = "Returned"
+//                            tvStatusValue.setTextColor(Color.parseColor("#FF5F1B"))
+                            tvStatusValue.text = "Pending"
+                            tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+                            tvReason.isVisible = false
+                            tvReasonValue.isVisible = false
+                        }
+                        else{
+                            tvStatusValue.text = "Completed"
+                            tvStatusValue.setTextColor(Color.parseColor("#17854C"))
+                            tvReason.isVisible = false
+                            tvReasonValue.isVisible = false
+                        }
+
+                        }
+                    "5"->{
+//                        tvStatusValue.text = "Return Req.."
+//                        tvStatusValue.setTextColor(Color.parseColor("#FF5F1B"))
+                        tvStatusValue.text = "Pending"
+                        tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+                        tvReason.isVisible = false
+                        tvReasonValue.isVisible = false
+                    }*/
 
                     "4" -> {
                         tvStatusValue.text = "Cancelled"
@@ -54,13 +125,19 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
                         tvReason.isVisible = true
                         tvReasonValue.isVisible = true
                     }
-
-                    else -> {
-                        tvStatusValue.text = "Ongoing"
+                    else ->{
+                        tvStatusValue.text = "Pending"
                         tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
                         tvReason.isVisible = false
                         tvReasonValue.isVisible = false
                     }
+
+//                    else -> {
+//                        tvStatusValue.text = "Ongoing"
+//                        tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
+//                        tvReason.isVisible = false
+//                        tvReasonValue.isVisible = false
+//                    }
                 }
             }
             }

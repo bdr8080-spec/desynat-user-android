@@ -28,13 +28,14 @@ class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayL
                         tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
                     }
                     1->{
-                        tvStatusValue.text = "Completed"
+                      //  tvStatusValue.text = "Completed"
+                        tvStatusValue.text = "Credit"
                         tvStatusValue.setTextColor(Color.parseColor("#17854C"))
                         tvCredited.isVisible = true
                         tvTransaction.isVisible = true
                         tvCreditOn.isVisible = true
                         tvTransactionValue.isVisible = true
-                        tvTransactionValue.text = "#${withdrawalData?.transactionId}"
+                        tvTransactionValue.text = "#${withdrawalData?.transactionId?:withdrawalData?.requestId}"
 
                     }
                     2->{

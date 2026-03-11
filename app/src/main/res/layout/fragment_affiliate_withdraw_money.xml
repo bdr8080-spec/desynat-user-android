@@ -71,6 +71,15 @@
                 android:text="Select Account"
                 android:textSize="@dimen/_12sdp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_bank" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clAddAnotherAccount"
                 android:layout_width="match_parent"
@@ -109,15 +118,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvBank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_bank" />
 
         </LinearLayout>
 

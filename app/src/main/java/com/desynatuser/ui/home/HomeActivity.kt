@@ -141,18 +141,18 @@ class HomeActivity : BaseActivity() {
                 }
             }
         }
-      //  handleDeepLink(intent)
+        handleDeepLink(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-      //  handleDeepLink(intent)
+        handleDeepLink(intent)
     }
 
     override fun onStart() {
         super.onStart()
-        handleDeepLinkWithBranch()
+      //  handleDeepLinkWithBranch()
     }
 
     override fun initControl() {
