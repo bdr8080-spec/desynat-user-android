@@ -10,7 +10,8 @@ data class GetAffiliateMyProductDetailResponse(
     val message: String,
     @SerializedName("status")
     val status: String
-) {
+)
+{
     data class Data(
         @SerializedName("affiliate_commission")
         val affiliateCommission: Int,
@@ -18,6 +19,10 @@ data class GetAffiliateMyProductDetailResponse(
         val affiliateDetails: AffiliateDetails,
         @SerializedName("affiliate_id")
         val affiliateId: Int,
+        @SerializedName("affiliate_product_click_records")
+        val affiliateProductClickRecords: List<AffiliateProductClickRecord>,
+        @SerializedName("affiliate_product_click_records_count")
+        val affiliateProductClickRecordsCount: Int,
         @SerializedName("affiliate_product_link")
         val affiliateProductLink: AffiliateProductLink,
         @SerializedName("average_rating")
@@ -26,27 +31,22 @@ data class GetAffiliateMyProductDetailResponse(
         val createdAt: String,
         @SerializedName("id")
         val id: Int,
+        @SerializedName("my_earning")
+        val myEarning: String,
+        @SerializedName("conversionrate")
+        val conversionrate: String,
         @SerializedName("product")
         val product: Product,
         @SerializedName("product_id")
         val productId: Int,
+        @SerializedName("Total_order")
+        val totalOrder: Int,
+        @SerializedName("Total_revenue")
+        val totalRevenue: String,
         @SerializedName("updated_at")
         val updatedAt: String
-    ) {
-        data class AffiliateProductLink(
-            @SerializedName("affiliate_id")
-            val affiliateId: Int,
-            @SerializedName("created_at")
-            val createdAt: String,
-            @SerializedName("id")
-            val id: Int,
-            @SerializedName("link")
-            val link: String,
-            @SerializedName("product_id")
-            val productId: Int,
-            @SerializedName("updated_at")
-            val updatedAt: String
-        )
+    )
+    {
         data class AffiliateDetails(
             @SerializedName("address_update_status")
             val addressUpdateStatus: String,
@@ -102,6 +102,40 @@ data class GetAffiliateMyProductDetailResponse(
             val updatedAt: String,
             @SerializedName("user_id")
             val userId: Int
+        )
+
+        data class AffiliateProductClickRecord(
+            @SerializedName("affiliate_id")
+            val affiliateId: Int,
+            @SerializedName("affiliate_product_id")
+            val affiliateProductId: Int,
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("id")
+            val id: Int,
+            @SerializedName("product_id")
+            val productId: Int,
+            @SerializedName("reference_link")
+            val referenceLink: String,
+            @SerializedName("updated_at")
+            val updatedAt: String,
+            @SerializedName("user_id")
+            val userId: Any
+        )
+
+        data class AffiliateProductLink(
+            @SerializedName("affiliate_id")
+            val affiliateId: Int,
+            @SerializedName("created_at")
+            val createdAt: String,
+            @SerializedName("id")
+            val id: Int,
+            @SerializedName("link")
+            val link: String,
+            @SerializedName("product_id")
+            val productId: Int,
+            @SerializedName("updated_at")
+            val updatedAt: String
         )
 
         data class AverageRating(
@@ -165,7 +199,7 @@ data class GetAffiliateMyProductDetailResponse(
             @SerializedName("return_days")
             val returnDays: String,
             @SerializedName("review")
-            val review: List<Any>,
+            val review: List<Review>,
             @SerializedName("review_count")
             val reviewCount: Int,
             @SerializedName("review_rating")
@@ -246,7 +280,7 @@ data class GetAffiliateMyProductDetailResponse(
                 @SerializedName("actual_price")
                 val actualPrice: String,
                 @SerializedName("bust")
-                val bust: String,
+                val bust: Any,
                 @SerializedName("color")
                 val color: Color,
                 @SerializedName("color_id")
@@ -260,17 +294,17 @@ data class GetAffiliateMyProductDetailResponse(
                 @SerializedName("final_price")
                 val finalPrice: String,
                 @SerializedName("hip")
-                val hip: String,
+                val hip: Any,
                 @SerializedName("id")
                 val id: Int,
                 @SerializedName("length")
-                val length: String,
+                val length: Any,
                 @SerializedName("parent_child")
                 val parentChild: String,
                 @SerializedName("product_id")
                 val productId: Int,
                 @SerializedName("shoulder")
-                val shoulder: String,
+                val shoulder: Any,
                 @SerializedName("size")
                 val size: Size,
                 @SerializedName("size_id")
@@ -280,7 +314,7 @@ data class GetAffiliateMyProductDetailResponse(
                 @SerializedName("sku_threshold_value")
                 val skuThresholdValue: Any,
                 @SerializedName("sleeve_length")
-                val sleeveLength: String,
+                val sleeveLength: Any,
                 @SerializedName("status")
                 val status: String,
                 @SerializedName("total_stock")
@@ -290,7 +324,7 @@ data class GetAffiliateMyProductDetailResponse(
                 @SerializedName("variant_image")
                 val variantImage: List<String>,
                 @SerializedName("waist")
-                val waist: String
+                val waist: Any
             ) {
                 data class Color(
                     @SerializedName("created_at")
@@ -317,13 +351,44 @@ data class GetAffiliateMyProductDetailResponse(
                 )
             }
 
+            data class Review(
+                @SerializedName("created_at")
+                val createdAt: String,
+                @SerializedName("id")
+                val id: Int,
+                @SerializedName("order_id")
+                val orderId: Int,
+                @SerializedName("orderdetails_id")
+                val orderdetailsId: Int,
+                @SerializedName("product_id")
+                val productId: Int,
+                @SerializedName("product_image")
+                val productImage: Any,
+                @SerializedName("product_rating")
+                val productRating: String,
+                @SerializedName("product_review")
+                val productReview: String,
+                @SerializedName("store_id")
+                val storeId: Int,
+                @SerializedName("store_image")
+                val storeImage: Any,
+                @SerializedName("store_rating")
+                val storeRating: String,
+                @SerializedName("store_review")
+                val storeReview: String,
+                @SerializedName("updated_at")
+                val updatedAt: String,
+                @SerializedName("user_id")
+                val userId: Int
+            )
+
             data class SellerDetails(
                 @SerializedName("accept_terms")
                 val acceptTerms: String,
                 @SerializedName("admin_verify")
                 val adminVerify: String,
-                @SerializedName("affilate_commissi on")
-                val affilateCommissiOn: String,
+                @SerializedName("affilate_commission")
+                val affilateCommission: String,
                 @SerializedName("bank_information")
                 val bankInformation: String,
                 @SerializedName("country_code")

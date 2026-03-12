@@ -30,10 +30,38 @@ class AffiliateHomeActivity : BaseActivity() {
         setContentView(binding?.root)
         CommonMethod.detectGestureMode(binding?.root!!, binding?.viewBottom!!)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
-            val imeInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+//            val imeInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+//
+//            val reduceBy = resources.getDimensionPixelSize(R.dimen.keyboard_padding_reduce)
+//
+//            v.setPadding(
+//                v.paddingLeft,
+//                v.paddingTop,
+//                v.paddingRight,
+//                imeInset
+//            )
+//            insets
+//        }
 
-            val reduceBy = resources.getDimensionPixelSize(R.dimen.keyboard_padding_reduce)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+
+            val isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+
+            // current fragment check
+            val currentFragmentId = controller.currentDestination?.id
+
+            if (currentFragmentId == R.id.affiliatePaymentFragment) {
+
+                if (isKeyboardVisible) {
+                    showBottomBar(false)
+                } else {
+                    showBottomBar(true)
+                }
+
+            }
+
+            val imeInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
 
             v.setPadding(
                 v.paddingLeft,
@@ -41,6 +69,7 @@ class AffiliateHomeActivity : BaseActivity() {
                 v.paddingRight,
                 imeInset
             )
+
             insets
         }
 
@@ -164,6 +193,11 @@ class AffiliateHomeActivity : BaseActivity() {
             })
         binding?.rvBottomNav?.adapter = bottomAdapter
 
+    }
+
+    fun showBottomBar(isShow: Boolean){
+        binding?.rvBottomNav?.isVisible = isShow
+        binding?.viewBackground?.isVisible = isShow
     }
 
 }

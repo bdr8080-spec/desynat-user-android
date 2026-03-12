@@ -33,7 +33,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
                 tvReasonValue.isVisible = true
             }
             else {
-                when (paymentData?.order?.deliveryStatus) {
+                when (paymentData?.deliveryStatus) {
 //                    "0" -> {
 //                        tvStatusValue.text = "Pending"
 //                        tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))

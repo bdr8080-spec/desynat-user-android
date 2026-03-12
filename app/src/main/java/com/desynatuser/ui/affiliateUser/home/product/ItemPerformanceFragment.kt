@@ -16,8 +16,7 @@ import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProd
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
-import com.desynatuser.utils.openCustomDatePicker
-import com.desynatuser.utils.openCustomPreSelectedDatePicker
+import com.desynatuser.utils.openCustomPreSelectedDatePickerWithReset
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,15 +74,29 @@ class ItemPerformanceFragment : BaseFragment() {
 
             etFrom.setOnClickListener {
                 val initialDate = fromTimestamp ?: Calendar.getInstance().timeInMillis
-                openCustomPreSelectedDatePicker(requireActivity(), initialDate = initialDate) { date, timestamp ->
-                    fromTimestamp = timestamp
-                    fromDateText = date
-                    etFrom.setText(date)
 
-                    toTimestamp = null
-                    toDateText = null
-                    etTo.setText("")
-                }
+                openCustomPreSelectedDatePickerWithReset(
+                    requireActivity(),
+                    initialDate = initialDate,
+                    onClick = { date, timestamp ->
+                        fromTimestamp = timestamp
+                        fromDateText = CommonMethod.formatDate(date,"dd/MM/yyyy","yyyy-MM-dd")
+                        etFrom.setText(date)
+
+                        toTimestamp = null
+                        toDateText = null
+                        etTo.setText("")
+                    },
+                    onReset = {
+                        etFrom.setText("")
+                        etTo.setText("")
+                        fromTimestamp = null
+                        fromDateText = null
+                        toTimestamp = null
+                        toDateText = null
+                        getAffiliateMyProductDetail()
+                    }
+                )
             }
 
             etTo.setOnClickListener {
@@ -93,14 +106,26 @@ class ItemPerformanceFragment : BaseFragment() {
                 }
 
                 val initialDate = toTimestamp ?: fromTimestamp
-                openCustomPreSelectedDatePicker(
+
+                openCustomPreSelectedDatePickerWithReset(
                     requireActivity(),
-                    minDate = fromTimestamp,initialDate
-                ) { date, timestamp ->
-                    toTimestamp = timestamp
-                    toDateText = date
-                    etTo.setText(date)
-                }
+                    minDate = fromTimestamp,initialDate,
+                    onClick = { date, timestamp ->
+                        toTimestamp = timestamp
+                        toDateText = CommonMethod.formatDate(date,"dd/MM/yyyy","yyyy-MM-dd")
+                        etTo.setText(date)
+                        getAffiliateMyProductDetail()
+                    },
+                    onReset = {
+                        etFrom.setText("")
+                        etTo.setText("")
+                        fromTimestamp = null
+                        fromDateText = null
+                        toTimestamp = null
+                        toDateText = null
+                        getAffiliateMyProductDetail()
+                    }
+                )
             }
 
             ivDelete.setOnClickListener {
@@ -112,6 +137,10 @@ class ItemPerformanceFragment : BaseFragment() {
     private fun getAffiliateMyProductDetail(){
         val map = HashMap<String, Any>()
         map["id"] = productData?.productId.toString()
+        if (fromDateText!=null&&toDateText!=null){
+            map["start_date"] = fromDateText.toString()
+            map["end_date"] = toDateText.toString()
+        }
         viewModel.getAffiliateMyProductDetail(map)
         isObserver = true
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -187,6 +216,11 @@ class ItemPerformanceFragment : BaseFragment() {
                 tvLink.isVisible = false
                 ivCopy.isVisible = false
             }
+            tvTotalClicks.text = (productDetailData?.affiliateProductClickRecordsCount?:0).toString()
+            tvTotalOrder.text = (productDetailData?.totalOrder?:0).toString()
+            tvTotalRevenue.text = "${CommonMethod.formatPrice(productDetailData?.totalRevenue?.toDoubleOrNull()?:0.0)} KD"
+            tvMyEarnings.text = "${CommonMethod.formatPrice(productDetailData?.myEarning?.toDoubleOrNull()?:0.0)} KD"
+            tvConversionRate.text = productDetailData?.conversionrate
         }
     }
 }

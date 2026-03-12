@@ -300,6 +300,51 @@ fun openCustomPreSelectedDatePicker(
     datePickerDialog.show()
 }
 
+fun openCustomPreSelectedDatePickerWithReset(
+    context: Context,
+    minDate: Long? = null,
+    initialDate: Long? = null,
+    onClick: (date: String, timestamp: Long) -> Unit,
+    onReset: (() -> Unit)? = null
+) {
+    val cal = Calendar.getInstance()
+
+    if (initialDate != null) {
+        cal.timeInMillis = initialDate
+    }
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        R.style.DialogTheme,
+        { _, year, month, dayOfMonth ->
+
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, month)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            val selectedDate =
+                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(cal.time)
+
+            onClick(selectedDate, cal.timeInMillis)
+
+        },
+        cal.get(Calendar.YEAR),
+        cal.get(Calendar.MONTH),
+        cal.get(Calendar.DAY_OF_MONTH)
+    )
+
+    minDate?.let { datePickerDialog.datePicker.minDate = it }
+
+    // ✅ RESET BUTTON
+    datePickerDialog.setButton(
+        DatePickerDialog.BUTTON_NEUTRAL,
+        "Reset"
+    ) { _, _ ->
+        onReset?.invoke()
+    }
+
+    datePickerDialog.show()
+}
 
 fun openCustomDatePicker(
     context: Context,

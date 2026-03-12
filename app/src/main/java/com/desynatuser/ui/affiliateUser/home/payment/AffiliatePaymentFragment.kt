@@ -22,12 +22,10 @@ import com.desynatuser.adapter.AffiliatePaymentAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliatePaymentBinding
-import com.desynatuser.databinding.OrderFilterDialogBinding
 import com.desynatuser.databinding.PaymentFilterDialogBinding
 import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
-import com.desynatuser.utils.openCustomDatePicker
 import com.desynatuser.utils.openCustomPreSelectedDatePicker
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -236,7 +234,6 @@ class AffiliatePaymentFragment : BaseFragment() {
                     else -> null
                 }
             }
-
 
             etFrom.setOnClickListener {
                 val initialDate = fromTemp ?: Calendar.getInstance().timeInMillis
