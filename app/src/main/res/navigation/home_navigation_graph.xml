@@ -31,6 +31,10 @@
             android:id="@+id/action_homeFragment_to_wishlistFragment"
             app:destination="@id/wishlist"/>
 
+        <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notification"/>
+
     </fragment>
 
     <fragment
@@ -472,7 +476,13 @@
         android:id="@+id/support"
         android:name="com.desynatuser.ui.home.cms.SupportFragment"
         android:label="Support Fragment"
-        tools:layout="@layout/fragment_support"/>
+        tools:layout="@layout/fragment_support">
+
+        <action
+            android:id="@+id/action_supportFragment_to_ticketDetailFragment"
+            app:destination="@id/ticketDetail"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/setting"
@@ -485,5 +495,17 @@
         android:name="com.desynatuser.ui.home.cms.FaqFragment"
         android:label="Faq Fragment"
         tools:layout="@layout/fragment_faq"/>
+
+    <fragment
+        android:id="@+id/ticketDetail"
+        android:name="com.desynatuser.ui.home.cms.TicketDetailFragment"
+        android:label="Ticket Detail Fragment"
+        tools:layout="@layout/fragment_ticket_detail"/>
+
+    <fragment
+        android:id="@+id/notification"
+        android:name="com.desynatuser.ui.home.fragment.NotificationFragment"
+        android:label="Notification Fragment"
+        tools:layout="@layout/fragment_notification"/>
 
 </navigation>

@@ -84,7 +84,7 @@ class SupportFragment : BaseFragment() {
 
             ticketAdapter = TicketAdapter(requireActivity(),ticketList,object : TicketAdapter.OnClick{
                 override fun click(position: Int, type: Int) {
-
+                    findNavController().navigate(R.id.action_supportFragment_to_ticketDetailFragment)
                 }
 
             })

@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -33,6 +34,23 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import android.util.Base64
+
+fun ImageView.loadBase64Image(base64String: String?) {
+    if (base64String.isNullOrEmpty()) return
+
+    try {
+        val cleanBase64 = base64String.substringAfter("base64,", "")
+        if (cleanBase64.isEmpty()) return
+
+        val decodedBytes = Base64.decode(cleanBase64, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        this.setImageBitmap(bitmap)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
 
 fun AppCompatActivity.statusBarTransparentWithWhite() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

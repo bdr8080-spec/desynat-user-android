@@ -19,7 +19,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import coil.load
+import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.adapter.FilterBrandAdapter
 import com.desynatuser.adapter.FilterCategoryAdapter
@@ -45,6 +48,7 @@ import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
+import com.desynatuser.utils.loadBase64Image
 import com.desynatuser.utils.showToast
 import com.google.android.material.slider.RangeSlider
 import com.google.gson.Gson
@@ -66,7 +70,7 @@ class StoreDetailFragment : BaseFragment() {
     private var productAdapter: ProductAdapter? = null
     private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
     private var sortList = ArrayList<GetStoreSortListResponse.Data>()
-    private var storeData: GetStoreResponse.Data?=null
+   // private var storeData: GetStoreResponse.Data?=null
     private var storeDetailData: GetSingleStoreResponse.Data?=null
     var selectedPos = -1
     private var sortFilter: String?=null
@@ -95,6 +99,7 @@ class StoreDetailFragment : BaseFragment() {
     var isColorObserver = false
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
     private var isFirstLoad = true
+    private var storeId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -116,21 +121,15 @@ class StoreDetailFragment : BaseFragment() {
         categoryList.clear()
         SharedPreference.get(requireActivity()).getCategoryList()?.let { categoryList.addAll(it) }
         ProgressDialogUtils.getInstance().hideProgress()
-        val itemJson = arguments?.getString("storeData")
-        if (!itemJson.isNullOrEmpty()) {
-            storeData = Gson().fromJson(itemJson, GetStoreResponse.Data::class.java)
-            setData()
-        }
-
+         storeId = arguments?.getString("storeId").toString()
         binding?.apply {
 
-            productAdapter = ProductAdapter(requireActivity(),productList,storeData?.storeName.toString(),3,object: ProductAdapter.ProductClick{
+            productAdapter = ProductAdapter(requireActivity(),productList,storeDetailData?.store?.storeName.toString(),3,object: ProductAdapter.ProductClick{
                 override fun onProductClick(position: Int,type:Int) {
                     when(type){
                         1->{
                             val bundle = Bundle().apply {
                                 putString("productData", Gson().toJson(productList[position]))
-                                putString("storeData", Gson().toJson(storeData))
                                 putString("productId", productList[position].id.toString())
                             }
                             findNavController().navigate(R.id.action_storeDetailFragment_to_productDetailFragment,bundle)
@@ -166,7 +165,7 @@ class StoreDetailFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver)
-                            getStoreDetail()
+                            getStoreDetail(isLoading = false)
                     }
 
                 }
@@ -174,33 +173,46 @@ class StoreDetailFragment : BaseFragment() {
 
         }
 
-        if (isFirstLoad) {
-            getStoreDetail()
-            isFirstLoad = false
-        }
+        getStoreDetail()
+//        if (isFirstLoad) {
+//            getStoreDetail()
+//            isFirstLoad = false
+//        }
 
     }
 
     private fun setData() {
         binding?.apply {
-            tvToolbar.text = storeData?.storeName
-            tvBrand.text = storeData?.storeName
-            tvDescription.text = storeData?.bio
-            tvName.text = storeData?.sellerInformation?.firstName+" "+storeData?.sellerInformation?.lastName
+            tvToolbar.text = storeDetailData?.store?.storeName
+            tvBrand.text = storeDetailData?.store?.storeName
+            tvDescription.text = storeDetailData?.store?.bio
+          //  ratingBar.rating = storeDetailData?.store?.
+            tvName.text = storeDetailData?.store?.sellerInformation?.firstName+" "+storeDetailData?.store?.sellerInformation?.lastName
 
-            ivProfileImage.load(storeData?.sellerInformation?.profilePic) {
+            ivProfileImage.load(storeDetailData?.store?.sellerInformation?.profilePic) {
                 crossfade(true)
                 placeholder(R.drawable.ic_user)
                 error(R.drawable.ic_user)
             }
 
-            ivStore.load(storeData?.storeImage) {
-                crossfade(true)
-                placeholder(R.color.black)
-                error(R.color.black)
+            Glide.with(requireActivity()).load(storeDetailData?.store?.storeImage).placeholder(R.color.black).into(ivStore)
+
+            if (storeDetailData?.store?.sellerInformation?.profileQr != null) {
+
+                val imageLoader = ImageLoader.Builder(requireContext())
+                    .components {
+                        add(SvgDecoder.Factory())
+                    }
+                    .build()
+
+                ivQr.load(storeDetailData?.store?.sellerInformation?.profileQr, imageLoader) {
+                    crossfade(true)
+                    placeholder(R.drawable.qr)
+                    error(R.drawable.qr)
+                }
             }
 
-            if (storeData?.storeAvailability==1){
+            if (storeDetailData?.store?.storeAvailability==1){
                 tvStatus.text = "Busy"
                 tvStatus.isVisible = true
             }
@@ -218,10 +230,11 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             ivShare.setOnClickListener {
-                CommonMethod.shareProduct(requireActivity(),
-                    storeData?.storeName ?: "",
-                    storeData?.bio ?: "",
-                    storeData?.storeImage ?: ""
+                CommonMethod.shareProductWithImage(requireActivity(),
+                    "Store name: ${storeDetailData?.store?.storeName}",
+                    "Bio: ${storeDetailData?.store?.bio}",
+                    storeDetailData?.store?.storeImage ?: "",
+                    storeDetailData?.store?.sellerInformation?.qrSellerUrl ?: ""
                 )
             }
 
@@ -269,9 +282,9 @@ class StoreDetailFragment : BaseFragment() {
 
     private fun chatWithSeller(){
         val map = HashMap<String, Any>()
-        map["seller_id"] = storeData?.sellerId.toString()
+        map["seller_id"] = storeDetailData?.store?.sellerId.toString()
         viewModel.chatWithSeller(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
@@ -281,9 +294,9 @@ class StoreDetailFragment : BaseFragment() {
         isSortObserver = true
     }
 
-    private fun getStoreDetail(){
+    private fun getStoreDetail(isLoading: Boolean=true){
         val map = HashMap<String,Any>()
-        map["store_id"] = storeData?.id.toString()
+        map["store_id"] = storeId
         if (sortFilter!=null) {
             map["sort_filter"] = sortFilter.toString()
         }
@@ -311,12 +324,14 @@ class StoreDetailFragment : BaseFragment() {
             map["size_id"] = selectedSizeList.map { it.id }
         }
 
-        if (selectedDiscount!=0) {
+        if (selectedDiscount!=0&&selectedDiscount!=null) {
             map["discount_range"] = selectedDiscount.toString()
         }
 
         viewModel.getSingleStoreInfo(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        if (isLoading){
+            binding?.progressBar?.isVisible = true
+        }
         isObserver = true
     }
 
@@ -324,7 +339,7 @@ class StoreDetailFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["product_id"] = productList[selectedPos].id
         viewModel.addToWishlist(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
@@ -332,7 +347,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.getColorList()
         viewModel.getBrandList()
         viewModel.getSizeList()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isBrandObserver = true
         isSizeObserver = true
         isColorObserver = true
@@ -343,6 +358,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
             }
@@ -351,6 +367,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.brandListResult.observe(viewLifecycleOwner) { response ->
             if (isBrandObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 brandList.clear()
                 brandList.addAll(response.data)
                 filterBrandAdapter?.notifyDataSetChanged()
@@ -361,6 +378,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.sizeListResult.observe(viewLifecycleOwner) { response ->
             if (isSizeObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 sizeList.clear()
                 sizeList.addAll(response.data)
                 filterSizeAdapter?.notifyDataSetChanged()
@@ -371,6 +389,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.colorListResult.observe(viewLifecycleOwner) { response ->
             if (isColorObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 colorList.clear()
                 colorList.addAll(response.data)
 
@@ -390,6 +409,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.storeSortResult.observe(viewLifecycleOwner) { response ->
             if (isSortObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 sortList.clear()
                 sortList.addAll(response.data)
                 sortAdapter?.notifyDataSetChanged()
@@ -400,7 +420,9 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.storeDetailResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 storeDetailData = response.data
+                setData()
                 setProductData()
                 isObserver = false
             }
@@ -409,6 +431,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.chatWithSellerResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 val bundle = Bundle().apply {
                     putString("from", "store")
                     putString("normalChatData", Gson().toJson(response.data))
@@ -421,6 +444,7 @@ class StoreDetailFragment : BaseFragment() {
         viewModel.addToWishlistResult.observe(viewLifecycleOwner) { response ->
         if (isObserver) {
             ProgressDialogUtils.getInstance().hideProgress()
+            binding?.progressBar?.isVisible = false
 
             if (productList[selectedPos].wishlist==1){
                 showToast("Product removed from your wishlist successfully")
@@ -443,7 +467,7 @@ class StoreDetailFragment : BaseFragment() {
             productList.clear()
             storeDetailData?.allProduct?.data?.let { productList.addAll(it) }
             checkData()
-            productAdapter?.notifyDataSetChanged()
+            productAdapter?.updateStoreName(storeDetailData?.store?.storeName?:"")
         }
     }
 

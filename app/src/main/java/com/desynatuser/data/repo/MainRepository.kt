@@ -36,6 +36,7 @@ import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
+import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -1372,6 +1373,42 @@ val getAffiliateProductLinkLiveData = SingleLiveEvent<GetAffiliateProductLinkRes
                 api.withdrawAffiliateAmount(map)
             },
             responseLiveData = withdrawAffiliateAmountLiveData
+        )
+    }
+
+    val getDealBannerLiveData = SingleLiveEvent<GetDealBannerResponse>()
+    suspend fun getDealBanner(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getDealBanner(map)
+            },
+            responseLiveData = getDealBannerLiveData
+        )
+    }
+
+    val getUserNotificationLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun getUserNotification(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getUserNotification(map)
+            },
+            responseLiveData = getUserNotificationLiveData
+        )
+    }
+
+    val readUserNotificationLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun readUserNotification(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.readUserNotification(map)
+            },
+            responseLiveData = readUserNotificationLiveData
         )
     }
 

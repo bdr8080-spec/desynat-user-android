@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +28,10 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.text.get
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
@@ -54,7 +57,16 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun initView() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("FCM_ERROR", "Token failed", task.exception)
+                return@addOnCompleteListener
+            }
 
+            val token = task.result
+            Log.d("FCM_TOKEN", token)
+            SharedPreference.get(requireActivity()).deviceToken = token
+        }
 
         if (SharedPreference.get(requireActivity()).userType==2){
             if (SharedPreference.get(requireActivity()).getSelectedCountryList()==null){

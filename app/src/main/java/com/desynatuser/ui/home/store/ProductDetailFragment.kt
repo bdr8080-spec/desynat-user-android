@@ -50,7 +50,6 @@ class ProductDetailFragment : BaseFragment() {
     var isObserver = false
     var isCartObserver = false
     var isProductObserver = false
-    private var storeData :GetStoreResponse.Data?=null
     private var productData :GetSingleStoreResponse.Data.AllProduct.Data?=null
     private var productDetailData :GetProductDetailResponse.Data?=null
     private var imageList = ArrayList<String>()
@@ -104,14 +103,12 @@ class ProductDetailFragment : BaseFragment() {
         }
 
         val itemJson = arguments?.getString("productData")
-        val itemJsonStore = arguments?.getString("storeData")
         if (!itemJson.isNullOrEmpty()) {
-            storeData = Gson().fromJson(itemJsonStore, GetStoreResponse.Data::class.java)
             productData = Gson().fromJson(itemJson, GetSingleStoreResponse.Data.AllProduct.Data::class.java)
             productInfo = productData?.productVariants?.let { mapVariantsToProducts(it) }!!
         }
 
-        similarProductAdapter = SimilarProductAdapter(requireActivity(), arrayListOf("",""),storeData?.storeName.toString(),object:SimilarProductAdapter.ProductClick{
+        similarProductAdapter = SimilarProductAdapter(requireActivity(), arrayListOf("",""),productDetailData?.store?.storeName.toString(),object:SimilarProductAdapter.ProductClick{
             override fun onProductClick(position: Int) {
 
             }
@@ -176,7 +173,8 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
             tvTitle.text = productDetailData?.store?.storeName
             tvProductName.text =  productDetailData?.productNameEn+" (by ${productDetailData?.store?.storeName})"
-            tvRating.text = "(${ratingList.size})"
+        //    tvRating.text = "(${ratingList.size})"
+           // ratingBar.rating = productDetailData?.reviewRating
             productInfo = productDetailData?.productVariants?.let { mapVariantsToProducts(it) }!!
 
             btnCustomOrder.isVisible = productDetailData?.customizedProduct=="1"
@@ -289,10 +287,11 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             ivShare.setOnClickListener {
-                CommonMethod.shareProduct(requireActivity(),
-                    productDetailData?.productNameEn ?: "",
-                    productDetailData?.descriptionEn ?: "",
-                    productDetailData?.productVariants?.get(selectedPos)?.variantImage?.get(0) ?: ""
+                CommonMethod.shareProductWithImage(requireActivity(),
+                    "Product name: ${productDetailData?.productNameEn}",
+                    "Description: ${productDetailData?.descriptionEn}",
+                    productDetailData?.productVariants?.get(selectedPos)?.variantImage?.get(0) ?: "",
+                    "https://desynat.com/user/product/detail-page/${productId}"
                 )
             }
 

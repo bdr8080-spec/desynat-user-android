@@ -50,11 +50,10 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="https"
-                    android:host="desynat.com"
-                    android:pathPrefix="/user/product/detail-page" />
-
+                <data android:scheme="https" />
+                <data android:host="desynat.com" />
+                <data android:pathPrefix="/user/product/detail-page" />
+                <data android:pathPrefix="/user/store-details" />
             </intent-filter>
 
         </activity>
@@ -74,6 +73,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"

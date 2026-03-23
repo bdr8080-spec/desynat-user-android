@@ -30,6 +30,7 @@ import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
+import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -574,4 +575,14 @@ interface ApiServices {
     suspend fun withdrawAffiliateAmount(
         @Body body: HashMap<String, Any>
     ): Response<CommonResponse>
+
+    @POST(Constants.GET_DEALS_BANNER)
+    suspend fun getDealBanner(@Body body: HashMap<String, Any>): Response<GetDealBannerResponse>
+
+    @GET(Constants.GET_ALL_USER_NOTIFICATION)
+    suspend fun getUserNotification(@QueryMap map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.READ_USER_NOTIFICATION)
+    suspend fun readUserNotification(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
 }

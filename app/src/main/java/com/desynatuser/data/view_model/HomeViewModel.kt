@@ -25,6 +25,7 @@ import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
+import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
@@ -928,6 +929,33 @@ val defaultBankResult: LiveData<CommonResponse>
     fun withdrawAffiliateAmount(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.withdrawAffiliateAmount(map)
+        }
+    }
+
+    val getDealBannerResult: LiveData<GetDealBannerResponse>
+        get() = repository.getDealBannerLiveData
+
+    fun getDealBanner(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getDealBanner(map)
+        }
+    }
+
+    val getUserNotificationResult: LiveData<CommonResponse>
+        get() = repository.getUserNotificationLiveData
+
+    fun getUserNotification(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getUserNotification(map)
+        }
+    }
+
+    val readUserNotificationResult: LiveData<CommonResponse>
+        get() = repository.readUserNotificationLiveData
+
+    fun readUserNotification(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.readUserNotification(map)
         }
     }
 

@@ -2,7 +2,8 @@ package com.desynatuser.utils
 
 object Constants {
 
-    const val BASE_URL = "http://157.241.119.72"
+   // const val BASE_URL = "http://157.241.119.72"
+    const val BASE_URL = "https://desynat.com"
 
     var MERCHANT_ID = "BCR2DN5TRCW73QI6"
     var MERCHANT_NAME = "Desynat"
@@ -140,5 +141,8 @@ object Constants {
     const val GET_AFFILIATE_PAYMENT = "/api/affiliate/affiliate_all_order"
     const val WITHDRAW_AFFILIATE_AMOUNT = "/api/affiliate/affiliate_submit_withdraw_request"
     const val GET_WITHDRAWAL_REQUEST = "/api/affiliate/affiliate_all_withdraw_request"
+    const val GET_DEALS_BANNER = "/api/user/user-get-deals"
+    const val GET_ALL_USER_NOTIFICATION = "/api/user/user-notification"
+    const val READ_USER_NOTIFICATION = "/api/user/read-user-notification"
 
 }

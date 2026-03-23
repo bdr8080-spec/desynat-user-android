@@ -8,6 +8,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import android.os.Handler
@@ -30,6 +32,7 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowInsetsCompat
@@ -44,7 +47,13 @@ import com.desynatuser.databinding.LoginAlertDialogLayoutBinding
 import com.desynatuser.databinding.SuccessDialogLayoutBinding
 import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -557,6 +566,49 @@ object CommonMethod {
         }
 
         context.startActivity(Intent.createChooser(intent, "Share via"))
+    }
+
+    fun shareProductWithImage(context: Context, name: String, desc: String, imageUrl: String,link: String) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            try {
+
+                val url = URL(imageUrl)
+                val bitmap = BitmapFactory.decodeStream(url.openStream())
+
+                val file = File(context.cacheDir, "shared_image.png")
+                val output = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
+                output.close()
+
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.provider",
+                    file
+                )
+
+                val shareText = """
+                $name
+                $desc
+                $link
+            """.trimIndent()
+
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "image/*"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_TEXT, shareText)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+
+                withContext(Dispatchers.Main) {
+                    context.startActivity(Intent.createChooser(intent, "Share via"))
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun getExpectedDeliveryDate(startDays: Int = 3, endDays: Int = 5,output:String="dd/MM/yyyy"): String {

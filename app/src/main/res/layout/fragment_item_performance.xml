@@ -84,7 +84,7 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="1"
             android:layout_marginTop="@dimen/_1sdp"
-            android:text="(123K)"
+            android:text="(0)"
             android:textColor="@color/black"
             android:textSize="@dimen/_9sdp"
             app:layout_constraintTop_toTopOf="@+id/rating"

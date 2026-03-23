@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
-import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.FragmentChangeMobileBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -54,12 +51,14 @@ class ChangeMobileFragment : BaseFragment() {
                 if (from=="email"){
                     toolbar.tvToolbar.text = "Change Email Address"
                     tvInputTitle.text = "Enter New Email Address"
+                    tvInfo.text = "Great! now enter the email address that you want to continue with"
                     clMobile.isVisible = false
                     etEmail.isVisible = true
                 }
                 else{
                     toolbar.tvToolbar.text = "Change Mobile Number"
                     tvInputTitle.text = "Enter New Mobile Number"
+                    tvInfo.text = "Great! now enter the mobile number that you want to continue with"
                     clMobile.isVisible = true
                     etEmail.isVisible = false
                 }

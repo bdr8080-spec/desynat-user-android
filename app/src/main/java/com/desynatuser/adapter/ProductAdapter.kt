@@ -80,4 +80,9 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
         }
     }
 
+    fun updateStoreName(name: String){
+        storeName = name
+        notifyDataSetChanged()
+    }
+
 }

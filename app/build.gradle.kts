@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.okhttp)
 //    coil
     implementation("io.coil-kt:coil:2.7.0")
+    implementation("io.coil-kt:coil-svg:2.7.0")
 
 //    for opt
     implementation(libs.ccp)
@@ -127,4 +128,8 @@ dependencies {
 
     implementation("io.branch.sdk.android:library:5.+")
 
+    implementation("com.google.firebase:firebase-analytics")
+
+    implementation ("com.google.firebase:firebase-messaging:25.0.1")
+    implementation ("org.greenrobot:eventbus:3.3.1")
 }

@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.desynatuser.R
 import com.desynatuser.adapter.BottomNavAdapter
@@ -279,25 +280,45 @@ class HomeActivity : BaseActivity() {
 
     private fun handleDeepLink(intent: Intent?) {
 
-        val data: Uri? = intent?.data?: return
+        val data: Uri = intent?.data ?: return
 
-        data?.let {
+        val path = data.path
+        val id = data.lastPathSegment
+        val ref = data.getQueryParameter("ref")
 
-            val productId = it.lastPathSegment
-            val ref = it.getQueryParameter("ref")
+        Log.d("DeepLink", "Path: $path")
+        Log.d("DeepLink", "Id: $id")
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .build()
 
-            Log.d("DeepLink", "ProductId: $productId")
-            Log.d("DeepLink", "Ref: $ref")
+        when {
 
-            val bundle = Bundle().apply {
-                putString("productId", productId)
-                putString("ref_id", ref)
-                putString("ref_link", it.toString())
+            path?.contains("/user/product/detail-page") == true -> {
+
+                val bundle = Bundle().apply {
+                    putString("productId", id)
+                    if (ref!=null){
+                        putString("ref_id", ref)
+                        putString("ref_link", data.toString())
+                    }
+                }
+
+                controller.navigate(R.id.productDetail, bundle, navOptions)
+
             }
-            controller.navigate(R.id.productDetail, bundle)
 
+            path?.contains("/user/store-details") == true -> {
+
+                val bundle = Bundle().apply {
+                    putString("storeId", id)
+                }
+
+                controller.navigate(R.id.storeDetail, bundle, navOptions)
+            }
         }
     }
+
 
     private fun handleDeepLinkWithBranch() {
 

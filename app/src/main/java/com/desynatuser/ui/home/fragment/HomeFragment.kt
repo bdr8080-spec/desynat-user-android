@@ -48,6 +48,7 @@ import com.desynatuser.databinding.HomeBannerDialogBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.HomeActivity
+import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.imageDetector.AnnotateRequest
 import com.desynatuser.ui.home.imageDetector.Feature
 import com.desynatuser.ui.home.imageDetector.ImageContent
@@ -79,6 +80,7 @@ class HomeFragment : BaseFragment() {
     var isHomeBannerObserver = false
     var isHomeAllBannerObserver = false
     var isHomeBottomBannerObserver = false
+    var isHomeDealBannerObserver = false
     var isHomeCategoryBannerObserver = false
     var isCartObserver = false
     private var hasNavigatedFromML = false
@@ -98,7 +100,8 @@ class HomeFragment : BaseFragment() {
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
     private var homeBannerList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
     private var premiumList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
-    private var discountList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
+    private var categoryBannerList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
+    private var discountList = ArrayList<GetDealBannerResponse.Data>()
     private var homeWomenBannerViewPagerAdapter : HomeWomenBannerViewPagerAdapter? =null
     private var discountedDealBannerViewPagerAdapter : DiscountedDealBannerViewPagerAdapter? =null
     private var premiumStoreBannerViewPagerAdapter : PremiumStoreBannerViewPagerAdapter? =null
@@ -222,7 +225,8 @@ class HomeFragment : BaseFragment() {
 
         getHomeScreenAllBanner()
         getHomeScreenBottomBanner()
-        getHomeScreenCategoryBanner()
+        getHomeScreenDealBanner()
+      //  getHomeScreenCategoryBanner()
 
     }
 
@@ -261,13 +265,17 @@ class HomeFragment : BaseFragment() {
                 }
             }
 
+            ivNotification.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_notificationFragment)
+            }
+
             tvWomen.setOnClickListener {
                 Constants.Category = "Women"
                 viewWomen.isVisible = true
                 viewMen.isInvisible = true
                 viewKids.isInvisible = true
                 getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
-                getHomeScreenCategoryBanner()
+                getHomeScreenDealBanner()
             }
 
             tvMen.setOnClickListener {
@@ -276,7 +284,7 @@ class HomeFragment : BaseFragment() {
                 viewWomen.isInvisible = true
                 viewKids.isInvisible = true
                 getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
-                getHomeScreenCategoryBanner()
+                getHomeScreenDealBanner()
             }
 
             tvKids.setOnClickListener {
@@ -285,7 +293,7 @@ class HomeFragment : BaseFragment() {
                 viewMen.isInvisible = true
                 viewWomen.isInvisible = true
                 getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
-                getHomeScreenCategoryBanner()
+                getHomeScreenDealBanner()
             }
         }
     }
@@ -330,25 +338,25 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        viewModel.getHomeScreenBottomBannerResult.observe(viewLifecycleOwner) { response ->
-            if (isHomeBottomBannerObserver) {
+        viewModel.getDealBannerResult.observe(viewLifecycleOwner) { response ->
+            if (isHomeDealBannerObserver) {
                 response?.let {
                     discountList.clear()
                     discountList.addAll(response.data)
                     discountedDealBannerViewPagerAdapter?.notifyDataSetChanged()
                     checkDiscountBannerData()
                 }
-                isHomeBottomBannerObserver = false
+                isHomeDealBannerObserver = false
             }
         }
 
         viewModel.getHomeScreenBottomBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeBottomBannerObserver) {
                 response?.let {
-                    discountList.clear()
-                    discountList.addAll(response.data)
-                    discountedDealBannerViewPagerAdapter?.notifyDataSetChanged()
-                    checkDiscountBannerData()
+                    premiumList.clear()
+                    premiumList.addAll(response.data)
+                    premiumStoreBannerViewPagerAdapter?.notifyDataSetChanged()
+                    checkPremiumBannerData()
                 }
                 isHomeBottomBannerObserver = false
             }
@@ -357,10 +365,9 @@ class HomeFragment : BaseFragment() {
         viewModel.getHomeScreenCategoryBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeCategoryBannerObserver) {
                 response?.let {
-                    premiumList.clear()
-                    premiumList.addAll(response.data)
-                    premiumStoreBannerViewPagerAdapter?.notifyDataSetChanged()
-                    checkPremiumBannerData()
+                    categoryBannerList.clear()
+                    categoryBannerList.addAll(response.data)
+
                 }
                 isHomeCategoryBannerObserver = false
             }
@@ -440,6 +447,18 @@ class HomeFragment : BaseFragment() {
         map["type"] = "2"
         viewModel.getHomeScreenBottomBanner(map)
         isHomeBottomBannerObserver = true
+    }
+
+    private fun getHomeScreenDealBanner(){
+        val map = HashMap<String,Any>()
+        map["category"] = when(Constants.Category){
+            "Men" ->  "1"
+            "Women" ->  "2"
+            "Kids" ->  "3"
+            else -> "2"
+        }
+        viewModel.getDealBanner(map)
+        isHomeDealBannerObserver = true
     }
 
     private fun getHomeScreenCategoryBanner(){

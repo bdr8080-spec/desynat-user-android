@@ -9,6 +9,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +31,10 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+import kotlin.text.get
 
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment() {
@@ -75,6 +78,16 @@ class SignUpFragment : BaseFragment() {
     }
 
     override fun initView() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("FCM_ERROR", "Token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            val token = task.result
+            Log.d("FCM_TOKEN", token)
+            SharedPreference.get(requireActivity()).deviceToken = token
+        }
         setCountry()
         binding?.apply {
             CommonMethod.removeSpace(etFullName)

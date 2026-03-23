@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_1sdp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="(123K)"
+                    android:text="(0)"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
@@ -151,8 +151,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivQr"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
                     android:src="@drawable/qr"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -365,5 +365,18 @@
         android:src="@drawable/ic_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/brown" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

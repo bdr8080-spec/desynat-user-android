@@ -307,7 +307,63 @@ data class GetSingleStoreResponse(
             @SerializedName("store_phone")
             val storePhone: String,
             @SerializedName("updated_at")
-            val updatedAt: String
+            val updatedAt: String,
+            @SerializedName("seller_information")
+            val sellerInformation: SellerInformation,
         )
+        {
+            data class SellerInformation(
+                @SerializedName("accept_terms")
+                val acceptTerms: String,
+                @SerializedName("admin_verify")
+                val adminVerify: String,
+                @SerializedName("affilate_commission")
+                val affilateCommission: String,
+                @SerializedName("bank_information")
+                val bankInformation: String,
+                @SerializedName("country_code")
+                val countryCode: String,
+                @SerializedName("created_at")
+                val createdAt: String,
+                @SerializedName("device_token")
+                val deviceToken: String,
+                @SerializedName("device_type")
+                val deviceType: String,
+                @SerializedName("email")
+                val email: String,
+                @SerializedName("fcm_token")
+                val fcmToken: Any,
+                @SerializedName("first_name")
+                val firstName: String,
+                @SerializedName("id")
+                val id: Int,
+                @SerializedName("is_block")
+                val isBlock: Int,
+                @SerializedName("lang")
+                val lang: Any,
+                @SerializedName("last_name")
+                val lastName: String,
+                @SerializedName("mobile")
+                val mobile: String,
+                @SerializedName("otp")
+                val otp: String,
+                @SerializedName("otp_verify")
+                val otpVerify: String,
+                @SerializedName("password")
+                val password: String,
+                @SerializedName("profile_pic")
+                val profilePic: String,
+                @SerializedName("profile_qr")
+                val profileQr: String,
+                @SerializedName("qrSellerUrl")
+                val qrSellerUrl: String,
+                @SerializedName("reject_reason")
+                val rejectReason: Any,
+                @SerializedName("store_information")
+                val storeInformation: String,
+                @SerializedName("updated_at")
+                val updatedAt: String
+            )
+        }
     }
 }

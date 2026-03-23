@@ -87,7 +87,7 @@ class StoreFragment : BaseFragment() {
             storeAdapter = StoreAdapter(requireActivity(),storeList,object: StoreAdapter.StoreClick{
                 override fun onStoreClick(position: Int) {
                     val bundle = Bundle().apply {
-                        putString("storeData", Gson().toJson(storeList[position]))
+                        putString("storeId", storeList[position].id.toString())
                     }
                     findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
                 }
