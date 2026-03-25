@@ -96,7 +96,15 @@ class StoreFragment : BaseFragment() {
             rvStore.adapter = storeAdapter
 
 
-            premiumStoreViewPagerAdapter = PremiumStoreViewPagerAdapter(requireActivity(),premiumStoreList)
+            premiumStoreViewPagerAdapter = PremiumStoreViewPagerAdapter(requireActivity(),premiumStoreList,object :PremiumStoreViewPagerAdapter.OnClick{
+                override fun onItemClick(position: Int) {
+                    val bundle = Bundle().apply {
+                        putString("storeId", premiumStoreList[position]?.sellerDetails?.storeInfo?.id.toString())
+                    }
+                    findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
+                }
+
+            })
             binding?.viewPager?.adapter = premiumStoreViewPagerAdapter
 
             TabLayoutMediator(binding!!.dotsIndicatorStore, binding!!.viewPager) { _, _ -> }.attach()

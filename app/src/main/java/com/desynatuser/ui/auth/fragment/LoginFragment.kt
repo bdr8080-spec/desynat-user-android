@@ -246,6 +246,8 @@ class LoginFragment : BaseFragment() {
         map["type"] = type
         map["password"] = binding?.etPassword?.text?.trim().toString()
         map["lang"] = SharedPreference.get(requireActivity()).language
+        map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
+        map["device_type"] = Constants.DEVICE_TYPE
         if (SharedPreference.get(requireActivity()).userType==2){
             viewModel.loginAffiliateUser(map)
         }

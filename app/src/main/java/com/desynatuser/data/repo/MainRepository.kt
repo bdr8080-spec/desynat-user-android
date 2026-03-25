@@ -38,6 +38,8 @@ import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetNotificationCountResponse
+import com.desynatuser.ui.home.fragment.response.GetNotificationResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
@@ -1388,7 +1390,7 @@ val getAffiliateProductLinkLiveData = SingleLiveEvent<GetAffiliateProductLinkRes
         )
     }
 
-    val getUserNotificationLiveData = SingleLiveEvent<CommonResponse>()
+    val getUserNotificationLiveData = SingleLiveEvent<GetNotificationResponse>()
     suspend fun getUserNotification(
         map: HashMap<String,Any>
     ) {
@@ -1397,6 +1399,28 @@ val getAffiliateProductLinkLiveData = SingleLiveEvent<GetAffiliateProductLinkRes
                 api.getUserNotification(map)
             },
             responseLiveData = getUserNotificationLiveData
+        )
+    }
+
+val userNotificationCountLiveData = SingleLiveEvent<GetNotificationCountResponse>()
+    suspend fun userNotificationCount(
+    ) {
+        handleApiCall(
+            api = {
+                api.userNotificationCount()
+            },
+            responseLiveData = userNotificationCountLiveData
+        )
+    }
+
+val affiliateUserNotificationCountLiveData = SingleLiveEvent<GetNotificationCountResponse>()
+    suspend fun affiliateUserNotificationCount(
+    ) {
+        handleApiCall(
+            api = {
+                api.affiliateUserNotificationCount()
+            },
+            responseLiveData = affiliateUserNotificationCountLiveData
         )
     }
 
@@ -1409,6 +1433,30 @@ val getAffiliateProductLinkLiveData = SingleLiveEvent<GetAffiliateProductLinkRes
                 api.readUserNotification(map)
             },
             responseLiveData = readUserNotificationLiveData
+        )
+    }
+
+   val getAffiliateUserNotificationLiveData = SingleLiveEvent<GetNotificationResponse>()
+    suspend fun getAffiliateUserNotification(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateUserNotification(map)
+            },
+            responseLiveData = getAffiliateUserNotificationLiveData
+        )
+    }
+
+    val readAffiliateUserNotificationLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun readAffiliateUserNotification(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.readAffiliateUserNotification(map)
+            },
+            responseLiveData = readAffiliateUserNotificationLiveData
         )
     }
 

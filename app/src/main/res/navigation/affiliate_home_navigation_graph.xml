@@ -11,6 +11,10 @@
         android:label="Affiliate Home Fragment"
         tools:layout="@layout/fragment_affiliate_home">
 
+        <action
+            android:id="@+id/action_affiliateHomeFragment_to_notificationFragment"
+            app:destination="@id/affiliateNotification"/>
+
     </fragment>
 
     <fragment
@@ -248,5 +252,10 @@
         android:label="Language Fragment"
         tools:layout="@layout/fragment_language"/>
 
+    <fragment
+        android:id="@+id/affiliateNotification"
+        android:name="com.desynatuser.ui.home.fragment.NotificationFragment"
+        android:label="Notification Fragment"
+        tools:layout="@layout/fragment_notification"/>
 
 </navigation>

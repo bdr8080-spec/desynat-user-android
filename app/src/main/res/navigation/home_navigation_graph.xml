@@ -35,6 +35,10 @@
             android:id="@+id/action_homeFragment_to_notificationFragment"
             app:destination="@id/notification"/>
 
+        <action
+            android:id="@+id/action_homeFragment_to_storeDetailFragment"
+            app:destination="@id/storeDetail"/>
+
     </fragment>
 
     <fragment

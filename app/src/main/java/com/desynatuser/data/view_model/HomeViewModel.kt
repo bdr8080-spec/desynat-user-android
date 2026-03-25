@@ -27,6 +27,8 @@ import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetNotificationCountResponse
+import com.desynatuser.ui.home.fragment.response.GetNotificationResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
@@ -941,7 +943,7 @@ val defaultBankResult: LiveData<CommonResponse>
         }
     }
 
-    val getUserNotificationResult: LiveData<CommonResponse>
+    val getUserNotificationResult: LiveData<GetNotificationResponse>
         get() = repository.getUserNotificationLiveData
 
     fun getUserNotification(map: HashMap<String,Any>) {
@@ -956,6 +958,41 @@ val defaultBankResult: LiveData<CommonResponse>
     fun readUserNotification(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.readUserNotification(map)
+        }
+    }
+
+ val getAffiliateUserNotificationResult: LiveData<GetNotificationResponse>
+        get() = repository.getAffiliateUserNotificationLiveData
+
+    fun getAffiliateUserNotification(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateUserNotification(map)
+        }
+    }
+
+    val readAffiliateUserNotificationResult: LiveData<CommonResponse>
+        get() = repository.readAffiliateUserNotificationLiveData
+
+    fun readAffiliateUserNotification(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.readAffiliateUserNotification(map)
+        }
+    }
+
+    val userNotificationCountResult: LiveData<GetNotificationCountResponse>
+        get() = repository.userNotificationCountLiveData
+
+    fun userNotificationCount() {
+        viewModelScope.launch {
+            repository.userNotificationCount()
+        }
+    }
+    val affiliateUserNotificationCountResult: LiveData<GetNotificationCountResponse>
+        get() = repository.affiliateUserNotificationCountLiveData
+
+    fun affiliateUserNotificationCount() {
+        viewModelScope.launch {
+            repository.affiliateUserNotificationCount()
         }
     }
 

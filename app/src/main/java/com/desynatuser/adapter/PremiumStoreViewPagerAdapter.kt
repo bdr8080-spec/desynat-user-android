@@ -12,9 +12,11 @@ import com.desynatuser.ui.auth.fragment.BannerData
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 
-class PremiumStoreViewPagerAdapter(val context:Context,private val bannerList: List<GetHomeScreenAllBannerResponse.Data>) :
+class PremiumStoreViewPagerAdapter(val context:Context,private val bannerList: List<GetHomeScreenAllBannerResponse.Data>,var click:OnClick) :
     RecyclerView.Adapter<PremiumStoreViewPagerAdapter.ViewHolder>() {
-
+    interface OnClick{
+        fun onItemClick(position: Int)
+    }
     inner class ViewHolder(val binding: ItemDealBannerBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -27,6 +29,10 @@ class PremiumStoreViewPagerAdapter(val context:Context,private val bannerList: L
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
        // holder.binding.ivBanner.load(bannerList[position].uploadBanner)
         Glide.with(context).load(bannerList[position].uploadBanner).into(holder.binding.ivBanner)
+
+        holder.binding.ivBanner.setOnClickListener {
+            click.onItemClick(position)
+        }
 
     }
 

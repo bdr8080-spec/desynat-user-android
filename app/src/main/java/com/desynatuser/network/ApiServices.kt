@@ -32,6 +32,8 @@ import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetNotificationCountResponse
+import com.desynatuser.ui.home.fragment.response.GetNotificationResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
@@ -580,9 +582,21 @@ interface ApiServices {
     suspend fun getDealBanner(@Body body: HashMap<String, Any>): Response<GetDealBannerResponse>
 
     @GET(Constants.GET_ALL_USER_NOTIFICATION)
-    suspend fun getUserNotification(@QueryMap map: HashMap<String, Any>): Response<CommonResponse>
+    suspend fun getUserNotification(@QueryMap map: HashMap<String, Any>): Response<GetNotificationResponse>
 
     @POST(Constants.READ_USER_NOTIFICATION)
     suspend fun readUserNotification(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @GET(Constants.USER_NOTIFICATION_COUNT)
+    suspend fun userNotificationCount(): Response<GetNotificationCountResponse>
+
+    @GET(Constants.GET_AFFILIATE_USER_NOTIFICATION)
+    suspend fun getAffiliateUserNotification(@QueryMap map: HashMap<String, Any>): Response<GetNotificationResponse>
+
+    @POST(Constants.READ_AFFILIATE_USER_NOTIFICATION)
+    suspend fun readAffiliateUserNotification(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @GET(Constants.AFFILIATE_USER_NOTIFICATION_COUNT)
+    suspend fun affiliateUserNotificationCount(): Response<GetNotificationCountResponse>
 
 }

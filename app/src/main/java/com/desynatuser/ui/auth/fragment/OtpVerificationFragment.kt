@@ -17,6 +17,7 @@ import com.desynatuser.databinding.FragmentOtpVerificationBinding
 import com.desynatuser.ui.affiliateUser.AffiliateHomeActivity
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -140,6 +141,10 @@ class OtpVerificationFragment : BaseFragment() {
         map["user_id"] = userId
         map["otp"] = binding?.pinView?.text?.trim().toString()
         map["type"] = screenType
+        if (screenType==1){
+            map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
+        }
+
         viewModel.otpVerification(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -159,6 +164,10 @@ class OtpVerificationFragment : BaseFragment() {
         map["id"] = userId
         map["otp"] = binding?.pinView?.text?.trim().toString()
         map["type"] = "1"
+        map["device_type"] = Constants.DEVICE_TYPE
+        if (from=="affiliateLogin"){
+            map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
+        }
         viewModel.verifyAffiliateUserOtp(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true

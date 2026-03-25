@@ -13,7 +13,9 @@ import com.desynatuser.adapter.NotificationAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentNotificationBinding
+import com.desynatuser.ui.home.fragment.response.GetNotificationResponse
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import kotlin.getValue
@@ -26,7 +28,7 @@ class NotificationFragment : BaseFragment() {
     private var isFromSwipe=false
     private var selectedPos = -1
 
-    private var notificationList = ArrayList<String>()
+    private var notificationList = ArrayList<GetNotificationResponse.Data.Data>()
     private var notificationAdapter: NotificationAdapter?=null
 
     override fun onCreateView(
@@ -47,7 +49,6 @@ class NotificationFragment : BaseFragment() {
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
         binding?.apply {
-            toolbar.tvToolbar.text = "Notifications"
 
             notificationAdapter = NotificationAdapter(requireActivity(),notificationList,object :
                 NotificationAdapter.ClickOnItem{
@@ -72,15 +73,25 @@ class NotificationFragment : BaseFragment() {
 
     override fun initControl() {
         binding?.apply {
-            toolbar.tvToolbar.setOnClickListener {
+            ivBack.setOnClickListener {
                 findNavController().popBackStack()
+            }
+
+            tvReadAll.setOnClickListener {
+             //   readAllNotification()
             }
         }
     }
 
     private fun getNotification(isLoading: Boolean=true){
         var map = HashMap<String, Any>()
-        viewModel.getUserNotification(map)
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken.isNotEmpty()) {
+            viewModel.getAffiliateUserNotification(map)
+        }
+        else{
+            viewModel.getUserNotification(map)
+        }
+
         isObserver = true
         if (isLoading){
             ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -88,9 +99,27 @@ class NotificationFragment : BaseFragment() {
     }
 
     private fun readUserNotification(){
-        var map = HashMap<String, Any>()
-        //map["notification_id"] = notificationList[selectedPos].id
-        viewModel.readUserNotification(map)
+        val map = HashMap<String, Any>()
+        map["notification_id"] = notificationList[selectedPos].id
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken.isNotEmpty()) {
+            viewModel.readAffiliateUserNotification(map)
+        }
+        else{
+            viewModel.readUserNotification(map)
+        }
+
+        isReadObserver = true
+    }
+
+    private fun readAllNotification(){
+        val map = HashMap<String, Any>()
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken.isNotEmpty()) {
+            viewModel.readAffiliateUserNotification(map)
+        }
+        else{
+            viewModel.readUserNotification(map)
+        }
+
         isReadObserver = true
     }
 
@@ -116,7 +145,7 @@ class NotificationFragment : BaseFragment() {
                     binding?.swipeRefreshLayout?.isRefreshing = false
                 }
                 notificationList.clear()
-             //   notificationList.addAll(response.data)
+                notificationList.addAll(response.data.data)
                 notificationAdapter?.notifyDataSetChanged()
                 checkData()
                 isFromSwipe = false
@@ -128,6 +157,36 @@ class NotificationFragment : BaseFragment() {
             if (isReadObserver){
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
+                notificationList[selectedPos].isRead = 1
+                notificationAdapter?.notifyItemChanged(selectedPos)
+                selectedPos = -1
+                isReadObserver = false
+            }
+        }
+
+        viewModel.getAffiliateUserNotificationResult.observe(viewLifecycleOwner){response ->
+            if (isObserver){
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+                if (isFromSwipe){
+                    binding?.swipeRefreshLayout?.isRefreshing = false
+                }
+                notificationList.clear()
+                notificationList.addAll(response.data.data)
+                notificationAdapter?.notifyDataSetChanged()
+                checkData()
+                isFromSwipe = false
+                isObserver = false
+            }
+        }
+
+        viewModel.readAffiliateUserNotificationResult.observe(viewLifecycleOwner){response ->
+            if (isReadObserver){
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+                notificationList[selectedPos].isRead = 1
+                notificationAdapter?.notifyItemChanged(selectedPos)
+                selectedPos = -1
                 isReadObserver = false
             }
         }

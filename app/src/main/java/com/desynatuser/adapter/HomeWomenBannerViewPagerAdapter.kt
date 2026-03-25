@@ -3,18 +3,16 @@ package com.desynatuser.adapter
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.bumptech.glide.Glide
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemBannerBinding
 import com.desynatuser.databinding.ItemHomeBannerBinding
-import com.desynatuser.ui.auth.fragment.BannerData
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
-import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 
-class HomeWomenBannerViewPagerAdapter(val context: Context, private val bannerList: List<GetHomeScreenAllBannerResponse.Data>) :
+class HomeWomenBannerViewPagerAdapter(val context: Context, private val bannerList: List<GetHomeScreenAllBannerResponse.Data>,var click: OnClick) :
     RecyclerView.Adapter<HomeWomenBannerViewPagerAdapter.ViewHolder>() {
-
+    interface OnClick{
+        fun onItemClick(position: Int)
+    }
     inner class ViewHolder(val binding: ItemHomeBannerBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -31,6 +29,12 @@ class HomeWomenBannerViewPagerAdapter(val context: Context, private val bannerLi
         }
         else{
             holder.binding.ivBanner.setImageResource(R.drawable.home_banner)
+        }
+
+        holder.binding.ivBanner.setOnClickListener {
+            if (bannerList[position].uploadBanner!=null&&bannerList[position].uploadBanner!="null"&&bannerList[position].uploadBanner!="") {
+                click.onItemClick(position)
+            }
         }
 
     }

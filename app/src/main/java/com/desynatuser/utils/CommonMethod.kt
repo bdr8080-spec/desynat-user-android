@@ -246,19 +246,39 @@ object CommonMethod {
 
         val filter = InputFilter { source, start, end, dest, dstart, dend ->
 
-            // Block English alphabets
-            val englishRegex = Regex("[a-zA-Z]")
+            val arabicRegex = Regex("^[\\u0600-\\u06FF \\n]+$")
 
-            if (source != null && source.contains(englishRegex)) {
+            if (source != null && !source.matches(arabicRegex)) {
                 return@InputFilter ""
             }
 
-            // Block leading space
+            // block leading space
             if (dstart == 0 && source.startsWith(" ")) {
                 return@InputFilter ""
             }
 
-            return@InputFilter null
+            null
+        }
+
+        editText.filters = arrayOf(filter)
+    }
+
+    fun applyEnglishOnlyFilter(editText: EditText) {
+
+        val filter = InputFilter { source, start, end, dest, dstart, dend ->
+
+            val englishRegex = Regex("^[a-zA-Z \\n]+$")
+
+            if (source != null && !source.matches(englishRegex)) {
+                return@InputFilter ""
+            }
+
+            // block leading space
+            if (dstart == 0 && source.startsWith(" ")) {
+                return@InputFilter ""
+            }
+
+            null
         }
 
         editText.filters = arrayOf(filter)

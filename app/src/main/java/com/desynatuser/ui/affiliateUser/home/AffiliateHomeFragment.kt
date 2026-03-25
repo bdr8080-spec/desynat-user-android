@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
@@ -21,6 +23,7 @@ class AffiliateHomeFragment : BaseFragment() {
     private var binding: FragmentAffiliateHomeBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    var isNotificationObserver = false
     var profileData : GetAffiliateUserProfileResponse.Data?=null
 
     override fun onCreateView(
@@ -48,6 +51,8 @@ class AffiliateHomeFragment : BaseFragment() {
             setData()
         }
 
+        notificationCount()
+
     }
 
     private fun setData(){
@@ -58,14 +63,33 @@ class AffiliateHomeFragment : BaseFragment() {
     }
 
     override fun initControl() {
+        binding?.apply {
+            ivNotification.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateHomeFragment_to_notificationFragment)
+            }
+        }
     }
 
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (isObserver) {
+            if (isObserver||isNotificationObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
                 isObserver = false
+                isNotificationObserver = false
+            }
+        }
+
+
+        viewModel.affiliateUserNotificationCountResult.observe(viewLifecycleOwner) { response ->
+            if (isNotificationObserver) {
+
+                response?.let {
+                    if (response?.data!=null&&response?.data!=0){
+                        setNotificationCount(response.data)
+                    }
+                }
+                isNotificationObserver = false
             }
         }
 
@@ -87,4 +111,13 @@ class AffiliateHomeFragment : BaseFragment() {
         isObserver = true
     }
 
+    private fun notificationCount(){
+        viewModel.affiliateUserNotificationCount()
+        isNotificationObserver = true
+    }
+
+    private fun setNotificationCount(data: Int) {
+        binding?.relCount?.isVisible = true
+        binding?.tvCount?.text = data.toString()
+    }
 }

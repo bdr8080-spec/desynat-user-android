@@ -83,6 +83,7 @@ class HomeFragment : BaseFragment() {
     var isHomeDealBannerObserver = false
     var isHomeCategoryBannerObserver = false
     var isCartObserver = false
+    var isNotificationObserver = false
     private var hasNavigatedFromML = false
 
     private var adapter: ViewPagerAdapter?=null
@@ -143,20 +144,48 @@ class HomeFragment : BaseFragment() {
         binding?.apply {
             if (SharedPreference.get(requireActivity()).accessToken!=""){
                 tvDeliverTo.text = "Deliver to ${user?.fullName}"
+                notificationCount()
             }
             if (Constants.location!=""){
                 tvLocation.text = Constants.location
             }
 
-            homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(requireActivity(),homeBannerList)
+            homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(requireActivity(),homeBannerList,object :
+                HomeWomenBannerViewPagerAdapter.OnClick{
+                override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString("storeId", homeBannerList[position]?.sellerDetails?.storeInfo?.id?.toString())
+                        }
+                     findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
+                }
+
+            })
                 viewPager.adapter = homeWomenBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicator, binding!!.viewPager) { _, _ -> }.attach()
 
-                discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(requireActivity(),discountList)
+                discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(requireActivity(),discountList,object :
+                    DiscountedDealBannerViewPagerAdapter.OnClick{
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString("storeId", discountList[position]?.sellerDealrecord?.get(0)?.productDetails?.storeId.toString())
+                        }
+                     findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
+                    }
+
+                })
                 viewPagerDiscountedDeals.adapter = discountedDealBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicatorDiscountedDeals, binding!!.viewPagerDiscountedDeals) { _, _ -> }.attach()
 
-                premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(requireActivity(),premiumList)
+                premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(requireActivity(),premiumList,object :
+                PremiumStoreBannerViewPagerAdapter.OnClick{
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString("storeId", premiumList[position]?.sellerDetails?.storeInfo?.id?.toString())
+                        }
+                     findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
+                    }
+
+                })
                 viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
 
@@ -300,12 +329,26 @@ class HomeFragment : BaseFragment() {
 
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (isObserver) {
+            if (isObserver||isNotificationObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
                 binding?.clMain?.isVisible = true
                 binding?.progressBar?.isVisible = false
                 isObserver = false
+                isNotificationObserver = false
+            }
+        }
+
+
+        viewModel.userNotificationCountResult.observe(viewLifecycleOwner) { response ->
+            if (isNotificationObserver) {
+
+                response?.let {
+                    if (response?.data!=null&&response?.data!=0){
+                        setNotificationCount(response.data)
+                    }
+                }
+                isNotificationObserver = false
             }
         }
 
@@ -418,6 +461,11 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    private fun setNotificationCount(data: Int) {
+        binding?.relCount?.isVisible = true
+        binding?.tvCount?.text = data.toString()
+    }
+
     private fun getDashboardApi(){
         viewModel.getDashBoard()
         binding?.progressBar?.isVisible = true
@@ -500,6 +548,11 @@ class HomeFragment : BaseFragment() {
         viewModel.viewHomeCartDetail()
         binding?.progressBar?.isVisible = true
         isCartObserver = true
+    }
+
+    private fun notificationCount(){
+        viewModel.userNotificationCount()
+        isNotificationObserver = true
     }
 
     private fun openSpeechDialog() {
