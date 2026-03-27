@@ -324,6 +324,10 @@ class HomeFragment : BaseFragment() {
                 getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
                 getHomeScreenDealBanner()
             }
+
+            ivAdminStory.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_viewStoryFragment)
+            }
         }
     }
 
@@ -755,5 +759,6 @@ class HomeFragment : BaseFragment() {
         discountHandler.removeCallbacksAndMessages(null)
         premiumHandler.removeCallbacksAndMessages(null)
     }
+
 
 }

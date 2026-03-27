@@ -81,7 +81,8 @@
         style="@style/edit_text"
         android:hint="Write Here"
         android:inputType="textCapSentences"
-        android:background="@null"/>
+        android:background="@null"
+        android:layout_toLeftOf="@+id/ivPickProduct"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPickProduct"
@@ -102,6 +103,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             tools:itemCount="3"
+            android:layout_toLeftOf="@+id/ivPickProduct"
             tools:listitem="@layout/item_review"/>
 
     </RelativeLayout>
@@ -154,7 +156,8 @@
             style="@style/edit_text"
             android:hint="Write Here"
             android:inputType="textCapSentences"
-            android:background="@null"/>
+            android:background="@null"
+            android:layout_toLeftOf="@+id/ivPickStore"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPickStore"
@@ -162,6 +165,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attachment"
             android:padding="@dimen/_10sdp"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -170,9 +174,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/etStoreReview"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
+            android:layout_toLeftOf="@+id/ivPickStore"
             tools:listitem="@layout/item_review"/>
 
     </RelativeLayout>

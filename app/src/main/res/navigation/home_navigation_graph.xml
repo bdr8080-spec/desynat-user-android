@@ -39,6 +39,10 @@
             android:id="@+id/action_homeFragment_to_storeDetailFragment"
             app:destination="@id/storeDetail"/>
 
+        <action
+            android:id="@+id/action_homeFragment_to_viewStoryFragment"
+            app:destination="@id/viewStory"/>
+
     </fragment>
 
     <fragment
@@ -511,5 +515,11 @@
         android:name="com.desynatuser.ui.home.fragment.NotificationFragment"
         android:label="Notification Fragment"
         tools:layout="@layout/fragment_notification"/>
+
+    <fragment
+        android:id="@+id/viewStory"
+        android:name="com.desynatuser.ui.home.story.ViewStoryFragment"
+        android:label="View Story Fragment"
+        tools:layout="@layout/fragment_view_story"/>
 
 </navigation>

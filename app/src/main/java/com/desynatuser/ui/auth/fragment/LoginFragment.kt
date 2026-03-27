@@ -274,6 +274,8 @@ class LoginFragment : BaseFragment() {
 
             map["type"] = type
             map["lang"] = SharedPreference.get(requireActivity()).language
+            map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
+            map["device_type"] = Constants.DEVICE_TYPE
             viewModel.loginWithOtpAffiliateUser(map)
         }
         else{
@@ -283,6 +285,8 @@ class LoginFragment : BaseFragment() {
             map["email_mobile"] = binding?.etEmailMobile?.text?.trim().toString()
             map["type"] = type
             map["lang"] = SharedPreference.get(requireActivity()).language
+            map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
+            map["device_type"] = Constants.DEVICE_TYPE
             viewModel.loginViaEmailOrMobile(map)
         }
 

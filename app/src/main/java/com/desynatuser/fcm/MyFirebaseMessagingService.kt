@@ -33,6 +33,31 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         Log.e("onMessageReceived: ", remoteMessage?.data.toString())
         Log.e("onMessageReceived: ", remoteMessage?.notification.toString())
+
+        Log.e("onMessageReceived", "From: ${remoteMessage.from}")
+        Log.e("onMessageReceived", "MessageId: ${remoteMessage.messageId}")
+        Log.e("onMessageReceived", "SentTime: ${remoteMessage.sentTime}")
+        Log.e("onMessageReceived", "TTL: ${remoteMessage.ttl}")
+        Log.e("onMessageReceived", "CollapseKey: ${remoteMessage.collapseKey}")
+
+        // Notification payload
+        remoteMessage.notification?.let {
+            Log.e("onMessageReceived", "Notification Title: ${it.title}")
+            Log.e("onMessageReceived", "Notification Body: ${it.body}")
+            Log.e("onMessageReceived", "Notification Tag: ${it.tag}")
+            Log.e("onMessageReceived", "Notification ChannelId: ${it.channelId}")
+            Log.e("onMessageReceived", "Notification ClickAction: ${it.clickAction}")
+            sendNotification(it.title.toString(),it.body.toString())
+        }
+
+        // Data payload
+        if (remoteMessage.data.isNotEmpty()) {
+            Log.e("onMessageReceived", "Data Payload:")
+            for ((key, value) in remoteMessage.data) {
+                Log.e("onMessageReceived", "Key: $key  Value: $value")
+            }
+        }
+
 //        val obj = JSONObject(remoteMessage.data as Map<String, String>).toString()
 //        val notificationData = Gson().fromJson(obj, NotificationInfoModel::class.java)
 //        sendNotification(notificationData)
@@ -60,11 +85,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     @SuppressLint("InvalidWakeLockTag")
-    private fun sendNotification(notificationData: NotificationInfoModel) {
+    private fun sendNotification(titleText: String, body: String) {
+
+        //   private fun sendNotification(notificationData: NotificationInfoModel) {
 
         val intent = Intent(this, HomeActivity::class.java)
         intent.putExtra("from", "push")
-        intent.putExtra("notificationData", notificationData)
+     //   intent.putExtra("notificationData", notificationData)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         var pendingIntent: PendingIntent? = null
@@ -86,8 +113,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             )
         }
 
-        val message = notificationData.body
-        val title = getString(R.string.app_name)
+        val message = body
+        val title = titleText
+      //  val title = getString(R.string.app_name)
         val channelId = getString(R.string.channel)
         val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
