@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -21,6 +22,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -69,6 +71,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
@@ -133,6 +138,9 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            onMessageEvent(null)
+        }
         initView()
         initControl()
         observe()
@@ -326,7 +334,7 @@ class HomeFragment : BaseFragment() {
             }
 
             ivAdminStory.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_viewStoryFragment)
+           //     findNavController().navigate(R.id.action_homeFragment_to_viewStoryFragment)
             }
         }
     }
@@ -760,5 +768,25 @@ class HomeFragment : BaseFragment() {
         premiumHandler.removeCallbacksAndMessages(null)
     }
 
+    override fun onStart() {
+        super.onStart()
+        Constants.currentScreen = "home"
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Constants.currentScreen = ""
+        EventBus.getDefault().unregister(this)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: String?=null) {
+        if (event!=null) {
+            notificationCount()
+        }
+    }
 
 }

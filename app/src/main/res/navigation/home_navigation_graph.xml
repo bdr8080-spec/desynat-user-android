@@ -518,7 +518,7 @@
 
     <fragment
         android:id="@+id/viewStory"
-        android:name="com.desynatuser.ui.home.story.ViewStoryFragment"
+        android:name="com.desynatuser.ui.home.storyHighlights.ViewStoryFragment"
         android:label="View Story Fragment"
         tools:layout="@layout/fragment_view_story"/>
 

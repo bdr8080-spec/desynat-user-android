@@ -1,4 +1,4 @@
-package com.desynatuser.ui.home.story
+package com.desynatuser.ui.home.storyHighlights
 
 import android.animation.ValueAnimator
 import android.os.Bundle
@@ -17,8 +17,6 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentViewStoryBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.getValue
 
 @AndroidEntryPoint
@@ -47,14 +45,11 @@ class ViewStoryFragment : BaseFragment() {
 
     override fun initView() {
 
-        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
-
         val myStories = ArrayList<String>()
 
         myStories.add("https://picsum.photos/600/800")
 
         myStories.add("https://picsum.photos/600/801")
-
 
         setupProgressBars(myStories.size)
         binding?.viewPager?.adapter = StoryPagerAdapter(myStories)
@@ -83,8 +78,6 @@ class ViewStoryFragment : BaseFragment() {
 
     override fun observe() {
     }
-
-
 
     private fun setupProgressBars(count: Int) {
 

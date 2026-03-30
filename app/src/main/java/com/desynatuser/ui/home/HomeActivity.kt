@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -35,6 +36,7 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.myfatoorah.sdk.views.MFSDK
 import dagger.hilt.android.AndroidEntryPoint
 import io.branch.referral.Branch
+import me.leolin.shortcutbadger.ShortcutBadger
 import org.greenrobot.eventbus.EventBus
 import java.io.IOException
 import java.util.Locale
@@ -390,6 +392,14 @@ class HomeActivity : BaseActivity() {
         if (controller.currentDestination?.id != R.id.productDetail) {
             controller.navigate(R.id.productDetail, bundle)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        SharedPreference.get(this).badgeCount = 0
+        ShortcutBadger.removeCount(this)
+     //   NotificationManagerCompat.from(this).cancelAll()
     }
 }
 
