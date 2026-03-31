@@ -18,6 +18,7 @@ import com.desynatuser.R
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.fcm.NotificationInfoModel
+import com.desynatuser.utils.AppLifecycleListener
 import com.desynatuser.utils.Constants
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -167,5 +168,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notification.number = badgeCount
         CoreApplication.notificationManager?.notify(notificationId, notification)
         ShortcutBadger.applyCount(applicationContext, badgeCount)
+//        if (AppLifecycleListener.isAppInForeground) {
+//            ShortcutBadger.removeCount(applicationContext)
+//        }
     }
 }

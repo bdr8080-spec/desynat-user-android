@@ -25,6 +25,7 @@ import com.desynatuser.ui.affiliateUser.home.profile.response.AffiliateChangeUse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
+import com.desynatuser.ui.affiliateUser.home.response.GetHomeDashboardResponse
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -77,6 +78,7 @@ import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
@@ -1448,6 +1450,18 @@ val affiliateUserNotificationCountLiveData = SingleLiveEvent<GetNotificationCoun
         )
     }
 
+val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
+    suspend fun getAffiliateDashboard(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateDashboard(map)
+            },
+            responseLiveData = getAffiliateDashboardLiveData
+        )
+    }
+
     val readAffiliateUserNotificationLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun readAffiliateUserNotification(
         map: HashMap<String,Any>
@@ -1459,6 +1473,56 @@ val affiliateUserNotificationCountLiveData = SingleLiveEvent<GetNotificationCoun
             responseLiveData = readAffiliateUserNotificationLiveData
         )
     }
+
+
+    val getSellerStoryLiveData = SingleLiveEvent<GetSellerStoryResponse>()
+    suspend fun getSellerStory(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getSellerStory(map)
+            },
+            responseLiveData = getSellerStoryLiveData
+        )
+    }
+
+    var getSellerReelLiveData = SingleLiveEvent<GetSellerStoryResponse>()
+    suspend fun getSellerReel(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getSellerReel(map)
+            },
+            responseLiveData = getSellerReelLiveData
+        )
+    }
+
+    val getSellerHighlightsLiveData = SingleLiveEvent<GetSellerStoryResponse>()
+    suspend fun getSellerHighlights(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getSellerHighlights(map)
+            },
+            responseLiveData = getSellerHighlightsLiveData
+        )
+    }
+
+    val getAdminStoryLiveData = SingleLiveEvent<GetSellerStoryResponse>()
+    suspend fun getAdminStory(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAdminStory(map)
+            },
+            responseLiveData = getAdminStoryLiveData
+        )
+    }
+
 
 }
 class SingleLiveEvent<T> : MutableLiveData<T>() {

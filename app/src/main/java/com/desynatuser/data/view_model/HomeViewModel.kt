@@ -16,6 +16,7 @@ import com.desynatuser.ui.affiliateUser.home.profile.response.AffiliateChangeUse
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileRequest
 import com.desynatuser.ui.affiliateUser.home.profile.response.UpdateAffiliateProfileResponse
+import com.desynatuser.ui.affiliateUser.home.response.GetHomeDashboardResponse
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
@@ -66,6 +67,7 @@ import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
@@ -970,6 +972,15 @@ val defaultBankResult: LiveData<CommonResponse>
         }
     }
 
+ val getAffiliateDashboardResult: LiveData<GetHomeDashboardResponse>
+        get() = repository.getAffiliateDashboardLiveData
+
+    fun getAffiliateDashboard(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateDashboard(map)
+        }
+    }
+
     val readAffiliateUserNotificationResult: LiveData<CommonResponse>
         get() = repository.readAffiliateUserNotificationLiveData
 
@@ -993,6 +1004,43 @@ val defaultBankResult: LiveData<CommonResponse>
     fun affiliateUserNotificationCount() {
         viewModelScope.launch {
             repository.affiliateUserNotificationCount()
+        }
+    }
+
+
+    val getSellerStoryResult: LiveData<GetSellerStoryResponse>
+        get() = repository.getSellerStoryLiveData
+
+    fun getSellerStory(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getSellerStory(map)
+        }
+    }
+
+    val getSellerReelResult: LiveData<GetSellerStoryResponse>
+        get() = repository.getSellerReelLiveData
+
+    fun getSellerReel(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getSellerReel(map)
+        }
+    }
+
+    val getSellerHighlightsResult: LiveData<GetSellerStoryResponse>
+        get() = repository.getSellerHighlightsLiveData
+
+    fun getSellerHighlights(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getSellerHighlights(map)
+        }
+    }
+
+    val getAdminStoryResult: LiveData<GetSellerStoryResponse>
+        get() = repository.getAdminStoryLiveData
+
+    fun getAdminStory(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAdminStory(map)
         }
     }
 

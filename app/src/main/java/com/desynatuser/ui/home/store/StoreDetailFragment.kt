@@ -44,6 +44,7 @@ import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
@@ -62,6 +63,13 @@ class StoreDetailFragment : BaseFragment() {
     private var binding : FragmentStoreDetailBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    var isReelObserver = false
+    var isStoryObserver = false
+    var isHighlightObserver = false
+
+    private var storyList= ArrayList<GetSellerStoryResponse.Data>()
+    private var highlightList= ArrayList<GetSellerStoryResponse.Data>()
+    private var reelList= ArrayList<GetSellerStoryResponse.Data>()
     var isSortObserver = false
 
     private var reelAdapter: ReelAdapter? = null
@@ -146,10 +154,42 @@ class StoreDetailFragment : BaseFragment() {
             })
             rvProduct.adapter = productAdapter
 
-            highlightAdapter = HighlightAdapter(requireActivity(), arrayListOf("","","","","","","",""))
+            highlightAdapter = HighlightAdapter(requireActivity(), highlightList,object :
+                HighlightAdapter.OnClick{
+                override fun onItemClick(position: Int) {
+                    if (highlightList.size!=0) {
+                        val bundle = Bundle().apply {
+                            putString("from", "highlights")
+                            putString("sellerId", storeDetailData?.store?.sellerId.toString())
+                            putString("storyData", Gson().toJson(highlightList))
+                        }
+                        findNavController().navigate(
+                            R.id.action_storeDetailFragment_to_viewStoryFragment,
+                            bundle
+                        )
+                    }
+                }
+
+            })
             rvHighlights.adapter = highlightAdapter
 
-            reelAdapter = ReelAdapter(requireActivity(), arrayListOf("","","","","","","",""))
+            reelAdapter = ReelAdapter(requireActivity(), reelList,object :
+                ReelAdapter.OnClick{
+                override fun onItemClick(position: Int) {
+                    if (reelList.size!=0) {
+                        val bundle = Bundle().apply {
+                            putString("from", "reel")
+                            putString("sellerId", storeDetailData?.store?.sellerId.toString())
+                            putString("storyData", Gson().toJson(reelList[position]))
+                        }
+                        findNavController().navigate(
+                            R.id.action_storeDetailFragment_to_viewReelFragment,
+                            bundle
+                        )
+                    }
+                }
+
+            })
             rvReel.adapter = reelAdapter
 
             etSearch.addTextChangedListener(object : TextWatcher {
@@ -236,6 +276,20 @@ class StoreDetailFragment : BaseFragment() {
                     storeDetailData?.store?.storeImage ?: "",
                     storeDetailData?.store?.sellerInformation?.qrSellerUrl ?: ""
                 )
+            }
+
+            ivProfileImage.setOnClickListener {
+                if (storyList.size!=0) {
+                    val bundle = Bundle().apply {
+                        putString("from", "story")
+                        putString("sellerId", storeDetailData?.store?.sellerId.toString())
+                        putString("storyData", Gson().toJson(storyList))
+                    }
+                    findNavController().navigate(
+                        R.id.action_storeDetailFragment_to_viewStoryFragment,
+                        bundle
+                    )
+                }
             }
 
             tvFilter.setOnClickListener {
@@ -353,14 +407,38 @@ class StoreDetailFragment : BaseFragment() {
         isColorObserver = true
     }
 
+    private fun getSellerStory(){
+        val map = HashMap<String, Any>()
+        map["seller_id"]= storeDetailData?.store?.sellerId.toString()
+        viewModel.getSellerStory(map)
+        isStoryObserver = true
+    }
+
+    private fun getSellerReel(){
+        val map = HashMap<String, Any>()
+        map["seller_id"]= storeDetailData?.store?.sellerId.toString()
+        viewModel.getSellerReel(map)
+        isReelObserver = true
+    }
+
+    private fun getSellerHighlights(){
+        val map = HashMap<String, Any>()
+        map["seller_id"]= storeDetailData?.store?.sellerId.toString()
+        viewModel.getSellerHighlights(map)
+        isHighlightObserver = true
+    }
+
     override fun observe() {
 
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (isObserver) {
+            if (isObserver||isStoryObserver||isReelObserver||isHighlightObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
+                isStoryObserver = false
+                isReelObserver = false
+                isHighlightObserver = false
             }
         }
 
@@ -422,6 +500,9 @@ class StoreDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
                 storeDetailData = response.data
+                getSellerHighlights()
+                getSellerStory()
+                getSellerReel()
                 setData()
                 setProductData()
                 isObserver = false
@@ -459,7 +540,61 @@ class StoreDetailFragment : BaseFragment() {
             selectedPos = -1
             isObserver = false
         }
+
     }
+
+        viewModel.getSellerReelResult.observe(viewLifecycleOwner) { response ->
+            if (isReelObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    reelList.clear()
+                    reelList.addAll(response.data)
+                    reelAdapter?.notifyDataSetChanged()
+
+                }
+                isReelObserver = false
+            }
+        }
+
+
+        viewModel.getSellerHighlightsResult.observe(viewLifecycleOwner) { response ->
+            if (isHighlightObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    highlightList.clear()
+                    highlightList.addAll(response.data)
+                    highlightAdapter?.notifyDataSetChanged()
+
+                }
+                isHighlightObserver = false
+            }
+        }
+
+
+        viewModel.getSellerStoryResult.observe(viewLifecycleOwner) { response ->
+            if (isStoryObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    storyList.clear()
+                    storyList.addAll(response.data)
+                    setStory()
+
+                }
+                isStoryObserver = false
+            }
+        }
+    }
+
+
+    private fun setStory(){
+        binding?.apply {
+            if (storyList.size!=0){
+                ivStoryHighlight.isVisible = true
+            }
+            else{
+                ivStoryHighlight.isVisible = false
+            }
+        }
     }
 
     private fun setProductData() {

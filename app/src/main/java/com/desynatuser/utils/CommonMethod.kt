@@ -563,12 +563,14 @@ object CommonMethod {
         SharedPreference.get(context).clearUser()
         SharedPreference.get(context).clearAddress()
         SharedPreference.get(context).accessToken = ""
+        SharedPreference.get(context).badgeCount = 0
         Constants.Category = "Women"
     }
 
     fun clearAffiliateData(context: Context){
         SharedPreference.get(context).clearAffiliateUser()
         SharedPreference.get(context).affiliateAccessToken = ""
+        SharedPreference.get(context).badgeCount = 0
     }
 
     fun shareProduct(context:Context,name: String, desc: String, imageUrl: String) {

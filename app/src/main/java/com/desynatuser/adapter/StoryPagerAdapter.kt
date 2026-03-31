@@ -2,12 +2,15 @@ package com.desynatuser.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.desynatuser.databinding.ItemStoryBinding
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 
 class StoryPagerAdapter(
-    private val stories: List<String>
+    private val stories: List<GetSellerStoryResponse.Data>, private val onVideoReady: (position: Int, duration: Long) -> Unit
+, private val onVideoFinished: (Int) -> Unit
 ) : RecyclerView.Adapter<StoryPagerAdapter.StoryViewHolder>() {
 
     inner class StoryViewHolder(val binding: ItemStoryBinding) :
@@ -23,11 +26,80 @@ class StoryPagerAdapter(
     override fun getItemCount(): Int = stories.size
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-
+        holder.binding.videoStory.stopPlayback()
         val story = stories[position]
+        val url = story.file ?: ""
 
-        Glide.with(holder.itemView.context)
-            .load(story)
-            .into(holder.binding.ivStory)
+        val isVideo = url.endsWith(".mp4") || url.endsWith(".mov")
+        val isGif = url.endsWith(".gif")
+
+        if (isVideo) {
+            holder.binding.videoLoader.isVisible = true
+            holder.binding.ivStory.isVisible = false
+            holder.binding.videoStory.isVisible = true
+
+            holder.binding.videoStory.setVideoPath(url)
+
+            holder.binding.videoStory.setOnPreparedListener { mp ->
+                mp.isLooping = false
+                holder.binding.videoLoader.isVisible = false
+                val duration = mp.duration.toLong()
+
+                onVideoReady(position, duration)
+                holder.binding.videoStory.start()
+            }
+
+            holder.binding.videoStory.setOnInfoListener { _, what, _ ->
+
+                when (what) {
+
+                    android.media.MediaPlayer.MEDIA_INFO_BUFFERING_START -> {
+                        holder.binding.videoLoader.isVisible = true
+                    }
+
+                    android.media.MediaPlayer.MEDIA_INFO_BUFFERING_END -> {
+                        holder.binding.videoLoader.isVisible = false
+                    }
+                }
+
+                false
+            }
+
+        } else {
+            holder.binding.videoLoader.isVisible = false
+            holder.binding.ivStory.isVisible = true
+            holder.binding.videoStory.isVisible = false
+
+            if (isGif) {
+                Glide.with(holder.itemView.context)
+                    .asGif()
+                    .load(url)
+                    .into(holder.binding.ivStory)
+            } else {
+                Glide.with(holder.itemView.context)
+                    .load(url)
+                    .into(holder.binding.ivStory)
+            }
+        }
+
+        if (position + 1 < stories.size) {
+
+            val nextUrl = stories[position + 1].file ?: ""
+
+            Glide.with(holder.itemView.context)
+                .load(nextUrl)
+                .preload()
+        }
+
+        if (!story.title.isNullOrEmpty() && story.title != "null") {
+            holder.binding.tvTitle.isVisible = true
+            holder.binding.tvTitle.text = story.title
+        } else {
+            holder.binding.tvTitle.isVisible = false
+        }
+
+        holder.binding.videoStory.setOnCompletionListener {
+            onVideoFinished(position)
+        }
     }
 }

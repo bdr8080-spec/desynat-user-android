@@ -71,10 +71,12 @@
                 android:background="@drawable/grey_stroke_cards"
                 app:layout_constraintTop_toBottomOf="@+id/ivStore">
 
+
+
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProfileImage"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:src="@drawable/ic_user"
                     android:scaleType="centerCrop"
                     android:clipToOutline="true"
@@ -82,6 +84,17 @@
                     app:shapeAppearanceOverlay="@style/circle_image"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:visibility="gone"
+                    android:id="@+id/ivStoryHighlight"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/ic_highlight_seller_story"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileImage"
+                    app:layout_constraintTop_toTopOf="@+id/ivProfileImage"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivProfileImage"
+                    app:layout_constraintEnd_toEndOf="@+id/ivProfileImage"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvName"

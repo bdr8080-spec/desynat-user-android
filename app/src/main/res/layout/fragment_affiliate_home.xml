@@ -346,7 +346,7 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvActiveUser"
+                            android:id="@+id/tvActiveProduct"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semi_bold"
@@ -402,7 +402,7 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvInActiveUser"
+                            android:id="@+id/tvInActiveProduct"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semi_bold"
@@ -475,7 +475,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_regular"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="Active"
+                            android:text="New"
                             android:textSize="@dimen/_12sdp"
                             android:textColor="@color/black"
                             android:layout_marginStart="@dimen/_15sdp"
@@ -483,7 +483,7 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvNewUser"
+                            android:id="@+id/tvNewOrder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semi_bold"
@@ -539,7 +539,7 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvOnGoingUser"
+                            android:id="@+id/tvOnGoingOrder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semi_bold"
@@ -598,7 +598,7 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvCompleteUser"
+                            android:id="@+id/tvCompleteOrder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semi_bold"
@@ -654,7 +654,7 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvCancelledUser"
+                            android:id="@+id/tvCancelledOrder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semi_bold"

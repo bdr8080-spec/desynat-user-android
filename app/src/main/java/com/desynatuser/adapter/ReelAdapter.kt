@@ -4,14 +4,29 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.desynatuser.databinding.ItemHighlightsBinding
+import com.bumptech.glide.Glide
+import com.desynatuser.R
 import com.desynatuser.databinding.ItemReelBinding
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 
-class ReelAdapter(var context: Context, private val reelList: List<String>) :
+class ReelAdapter(var context: Context, private val reelList: List<GetSellerStoryResponse.Data>,var onClick: OnClick) :
     RecyclerView.Adapter<ReelAdapter.ViewHolder>() {
-
+    interface OnClick{
+        fun onItemClick(position: Int)
+    }
     inner class ViewHolder(val binding: ItemReelBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(position: Int) = with(binding) {
+            val reelData = reelList[position]
+
+            Glide.with(context).load(reelData?.file).placeholder(
+                R.drawable.ic_placeholder).into(ivProfile)
+
+            root.setOnClickListener {
+                onClick.onItemClick(position)
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
         return ViewHolder(
@@ -19,7 +34,7 @@ class ReelAdapter(var context: Context, private val reelList: List<String>) :
         )
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.bind(position)
 
     }
 

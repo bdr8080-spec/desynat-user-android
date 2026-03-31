@@ -58,6 +58,7 @@ import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.CommonMethod
@@ -71,6 +72,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import me.leolin.shortcutbadger.ShortcutBadger
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -82,6 +84,7 @@ class HomeFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val locationViewModel: LocationViewModel by activityViewModels()
     var isObserver = false
+    var isAdminObserver = false
     var isHomeBannerObserver = false
     var isHomeAllBannerObserver = false
     var isHomeBottomBannerObserver = false
@@ -96,6 +99,7 @@ class HomeFragment : BaseFragment() {
 
     var isCategoryObserver = false
     private var bestSellingAdapter: BestSellingAdapter?=null
+    private val myStories = ArrayList<GetSellerStoryResponse.Data>()
 
     private var mainCategoryList = ArrayList<GetCategoryResponse.Data>()
     private var categoryList = ArrayList<GetSubCategoryResponse.Data>()
@@ -147,7 +151,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initView() {
-
+        getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
             if (SharedPreference.get(requireActivity()).accessToken!=""){
@@ -334,7 +338,16 @@ class HomeFragment : BaseFragment() {
             }
 
             ivAdminStory.setOnClickListener {
-           //     findNavController().navigate(R.id.action_homeFragment_to_viewStoryFragment)
+                if (myStories.size!=0) {
+                    val bundle = Bundle().apply {
+                        putString("from", "admin")
+                        putString("storyData", Gson().toJson(myStories))
+                    }
+                    findNavController().navigate(
+                        R.id.action_homeFragment_to_viewStoryFragment,
+                        bundle
+                    )
+                }
             }
         }
     }
@@ -358,6 +371,11 @@ class HomeFragment : BaseFragment() {
                 response?.let {
                     if (response?.data!=null&&response?.data!=0){
                         setNotificationCount(response.data)
+                    }
+                    else{
+                                SharedPreference.get(requireActivity()).badgeCount = 0
+        ShortcutBadger.removeCount(requireActivity())
+
                     }
                 }
                 isNotificationObserver = false
@@ -452,6 +470,20 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+
+        viewModel.getAdminStoryResult.observe(viewLifecycleOwner) { response ->
+            if (isAdminObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    myStories.clear()
+                    myStories.addAll(response.data)
+                    setAdminStory()
+
+                }
+                isAdminObserver = false
+            }
+        }
+
         viewModel.subCategoryResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -473,9 +505,27 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    private fun setAdminStory() {
+        binding?.apply {
+            if (myStories.size!=0){
+                ivAdminStory.setBackgroundResource(R.drawable.ic_admin_highlight_story)
+            }
+            else{
+                ivAdminStory.setBackgroundResource(R.drawable.ic_admin_story)
+            }
+        }
+    }
+
+    private fun getAdminStory(){
+        val map = HashMap<String, Any>()
+        viewModel.getAdminStory(map)
+        isAdminObserver = true
+    }
+
     private fun setNotificationCount(data: Int) {
         binding?.relCount?.isVisible = true
         binding?.tvCount?.text = data.toString()
+        ShortcutBadger.applyCount(requireActivity(), data)
     }
 
     private fun getDashboardApi(){

@@ -147,6 +147,13 @@ object Constants {
     const val READ_USER_NOTIFICATION = "/api/user/read-user-notification"
     const val USER_NOTIFICATION_COUNT = "/api/user/count-user-notification"
 
+    const val GET_SELLER_STORY = "/api/user/get_seller_stories"
+    const val GET_SELLER_REEL = "/api/user/get_seller_reels"
+    const val GET_SELLER_HIGHLIGHTS = "/api/user/get_seller_highlights"
+    const val GET_ADMIN_STORY = "/api/user/get_admin_stories"
+
+ const val GET_AFFILIATE_DASHBOARD = "/api/affiliate/get_affiliate_dashboard_data"
+
  const val GET_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
  const val READ_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
  const val AFFILIATE_USER_NOTIFICATION_COUNT = "/api/affiliate/CountaffiliateUserNotification"

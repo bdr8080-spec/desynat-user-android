@@ -397,8 +397,8 @@ class HomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        SharedPreference.get(this).badgeCount = 0
-        ShortcutBadger.removeCount(this)
+//        SharedPreference.get(this).badgeCount = 0
+//        ShortcutBadger.removeCount(this)
      //   NotificationManagerCompat.from(this).cancelAll()
     }
 }

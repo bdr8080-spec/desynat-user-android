@@ -247,6 +247,14 @@
             android:id="@+id/action_storeDetailFragment_to_chatFragment"
             app:destination="@id/chat"/>
 
+        <action
+            android:id="@+id/action_storeDetailFragment_to_viewStoryFragment"
+            app:destination="@id/viewStory"/>
+
+        <action
+            android:id="@+id/action_storeDetailFragment_to_viewReelFragment"
+            app:destination="@id/viewReel"/>
+
     </fragment>
 
     <fragment
@@ -521,5 +529,11 @@
         android:name="com.desynatuser.ui.home.storyHighlights.ViewStoryFragment"
         android:label="View Story Fragment"
         tools:layout="@layout/fragment_view_story"/>
+
+    <fragment
+        android:id="@+id/viewReel"
+        android:name="com.desynatuser.ui.home.storyHighlights.ViewReelFragment"
+        android:label="View Reel Fragment"
+        tools:layout="@layout/fragment_view_reel"/>
 
 </navigation>

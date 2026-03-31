@@ -18,6 +18,7 @@ import com.desynatuser.databinding.FragmentStoreDetailBinding
 import com.desynatuser.databinding.FragmentWishListBinding
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -27,6 +28,7 @@ class WishListFragment : BaseFragment() {
     private var binding : FragmentWishListBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
+    private var reelList = ArrayList<GetSellerStoryResponse.Data>()
 
     private var reelAdapter: ReelAdapter? = null
     private var productAdapter: ProductAdapter? = null
@@ -78,7 +80,12 @@ class WishListFragment : BaseFragment() {
             rvProduct.adapter = productAdapter
 
 
-            reelAdapter = ReelAdapter(requireActivity(), arrayListOf("","","","","","","",""))
+            reelAdapter = ReelAdapter(requireActivity(), reelList,object : ReelAdapter.OnClick{
+                override fun onItemClick(position: Int) {
+
+                }
+
+            })
             rvReel.adapter = reelAdapter
         }
 
