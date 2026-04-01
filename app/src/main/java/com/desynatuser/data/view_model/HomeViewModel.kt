@@ -60,6 +60,7 @@ import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetProductDetailResponse
+import com.desynatuser.ui.home.store.response.GetSharedReelLinkResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
@@ -1043,6 +1044,26 @@ val defaultBankResult: LiveData<CommonResponse>
             repository.getAdminStory(map)
         }
     }
+
+    val addRemoveReelToWishlistResult: LiveData<CommonResponse>
+        get() = repository.addRemoveReelToWishlistLiveData
+
+    fun addRemoveReelToWishlist(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.addRemoveReelToWishlist(map)
+        }
+    }
+
+
+    val shareReelResult: LiveData<GetSharedReelLinkResponse>
+        get() = repository.shareReelLiveData
+
+    fun shareReel(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.shareReel(map)
+        }
+    }
+
 
 
 }

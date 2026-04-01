@@ -71,6 +71,7 @@ import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetProductDetailResponse
+import com.desynatuser.ui.home.store.response.GetSharedReelLinkResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
@@ -1520,6 +1521,30 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
                 api.getAdminStory(map)
             },
             responseLiveData = getAdminStoryLiveData
+        )
+    }
+
+    val addRemoveReelToWishlistLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun addRemoveReelToWishlist(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.addRemoveReelToWishlist(map)
+            },
+            responseLiveData = addRemoveReelToWishlistLiveData
+        )
+    }
+
+    val shareReelLiveData = SingleLiveEvent<GetSharedReelLinkResponse>()
+    suspend fun shareReel(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.shareReel(map)
+            },
+            responseLiveData = shareReelLiveData
         )
     }
 

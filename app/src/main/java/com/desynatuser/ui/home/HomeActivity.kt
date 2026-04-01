@@ -112,6 +112,7 @@ class HomeActivity : BaseActivity() {
             R.id.catalog,
             R.id.myBag,
             R.id.profile,
+            R.id.liveEvent
         )
 
         controller.addOnDestinationChangedListener { _, destination, _ ->
@@ -142,6 +143,9 @@ class HomeActivity : BaseActivity() {
                 R.id.profile -> {
                     bottomAdapter?.setSelectedItem(4)
                 }
+                R.id.liveEvent -> {
+                    bottomAdapter?.setSelectedItem(2)
+                }
             }
         }
         handleDeepLink(intent)
@@ -170,7 +174,7 @@ class HomeActivity : BaseActivity() {
                 when(position) {
                     0 -> controller.navigate(R.id.home)
                     1 -> controller.navigate(R.id.catalog)
-                    //2 -> controller.navigate(R.id.catalog)
+                    2 -> controller.navigate(R.id.liveEvent)
                     3 -> if (SharedPreference.get(this@HomeActivity).accessToken!=""){ controller.navigate(R.id.myBag)} else{
                         CommonMethod.showLoginAlert(this@HomeActivity)
                     }

@@ -29,7 +29,9 @@ data class GetSellerStoryResponse(
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("title")
-        val title: String
+        val title: String,
+        @SerializedName("wishlist")
+        var wishlist: Int
     ) {
         data class SellerDetails(
             @SerializedName("accept_terms")

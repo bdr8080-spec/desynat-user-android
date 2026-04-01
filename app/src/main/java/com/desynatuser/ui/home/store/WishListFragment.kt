@@ -34,6 +34,7 @@ class WishListFragment : BaseFragment() {
     private var productAdapter: ProductAdapter? = null
     private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
     var selectedPos = -1
+    var selectedReelPos = -1
     var storeName = ""
 
     override fun onCreateView(
@@ -80,9 +81,30 @@ class WishListFragment : BaseFragment() {
             rvProduct.adapter = productAdapter
 
 
-            reelAdapter = ReelAdapter(requireActivity(), reelList,object : ReelAdapter.OnClick{
-                override fun onItemClick(position: Int) {
+            reelAdapter = ReelAdapter(requireActivity(), reelList,1,object : ReelAdapter.OnClick{
+                override fun onItemClick(position: Int,type:Int) {
+                    when(type){
+                        1->{
+                            if (reelList.size!=0) {
+                                val bundle = Bundle().apply {
+                                    putString("from", "reel")
+                                    putString("sellerId", reelList[position]?.sellerId.toString())
+                                    putString("storyData", Gson().toJson(reelList[position]))
+                                }
+                                findNavController().navigate(
+                                    R.id.action_storeDetailFragment_to_viewReelFragment,
+                                    bundle
+                                )
+                            }
+                        }
+                        2->{
+                            selectedReelPos = position
+                            removeReelToWishlist()
+                        }
+                        3->{
 
+                        }
+                    }
                 }
 
             })
@@ -97,6 +119,14 @@ class WishListFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["product_id"] = productList[selectedPos].id
         viewModel.addToWishlist(map)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+
+    private fun removeReelToWishlist(){
+        val map = HashMap<String,Any>()
+        map["reel_id"] = reelList[selectedReelPos].id
+        viewModel.addRemoveReelToWishlist(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -130,7 +160,7 @@ class WishListFragment : BaseFragment() {
                 tvReel.setBackgroundResource(R.drawable.selected_right_tab)
                 rvReel.isVisible = false
                 rvReel.isVisible = true
-                tvNoDataFound.isVisible = false
+                checkReelData()
             }
 
 
@@ -165,6 +195,25 @@ class WishListFragment : BaseFragment() {
             }
         }
 
+        viewModel.addRemoveReelToWishlistResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+
+                    showToast("Reel removed from your wishlist successfully")
+                reelList.removeAt(selectedReelPos)
+
+
+                reelAdapter?.notifyItemRemoved(selectedReelPos)
+                reelAdapter?.notifyItemRangeChanged(
+                    selectedReelPos,
+                    reelList.size - selectedReelPos
+                )
+                checkReelData()
+                selectedReelPos = -1
+                isObserver = false
+            }
+        }
+
         viewModel.wishlistResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -180,6 +229,10 @@ class WishListFragment : BaseFragment() {
 
     fun checkData(){
         binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+    }
+
+    fun checkReelData(){
+        binding?.tvNoDataFound?.isVisible = reelList.isEmpty()
     }
 
 

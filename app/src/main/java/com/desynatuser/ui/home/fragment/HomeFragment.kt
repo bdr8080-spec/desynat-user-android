@@ -364,7 +364,6 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-
         viewModel.userNotificationCountResult.observe(viewLifecycleOwner) { response ->
             if (isNotificationObserver) {
 
@@ -373,8 +372,8 @@ class HomeFragment : BaseFragment() {
                         setNotificationCount(response.data)
                     }
                     else{
-                                SharedPreference.get(requireActivity()).badgeCount = 0
-        ShortcutBadger.removeCount(requireActivity())
+                        SharedPreference.get(requireActivity()).badgeCount = 0
+                     ShortcutBadger.removeCount(requireActivity())
 
                     }
                 }
@@ -608,7 +607,6 @@ class HomeFragment : BaseFragment() {
 
     private fun viewCartDetail(){
         viewModel.viewHomeCartDetail()
-        binding?.progressBar?.isVisible = true
         isCartObserver = true
     }
 

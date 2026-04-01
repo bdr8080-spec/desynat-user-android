@@ -9,10 +9,10 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemReelBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 
-class ReelAdapter(var context: Context, private val reelList: List<GetSellerStoryResponse.Data>,var onClick: OnClick) :
+class ReelAdapter(var context: Context, private val reelList: List<GetSellerStoryResponse.Data>, var from:Int,var onClick: OnClick) :
     RecyclerView.Adapter<ReelAdapter.ViewHolder>() {
     interface OnClick{
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int,type:Int)
     }
     inner class ViewHolder(val binding: ItemReelBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -22,8 +22,27 @@ class ReelAdapter(var context: Context, private val reelList: List<GetSellerStor
             Glide.with(context).load(reelData?.file).placeholder(
                 R.drawable.ic_placeholder).into(ivProfile)
 
+            if (from!=1) {
+                if (reelData.wishlist == 1) {
+                    ivLike.setImageResource(R.drawable.ic_like_filled)
+                } else {
+                    ivLike.setImageResource(R.drawable.ic_like)
+                }
+            }
+            else{
+                ivLike.setImageResource(R.drawable.ic_like_filled)
+            }
+
             root.setOnClickListener {
-                onClick.onItemClick(position)
+                onClick.onItemClick(position,1)
+            }
+
+            ivLike.setOnClickListener {
+                onClick.onItemClick(position,2)
+            }
+
+            ivShare.setOnClickListener {
+                onClick.onItemClick(position,3)
             }
         }
     }

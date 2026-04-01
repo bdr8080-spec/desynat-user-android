@@ -6,7 +6,7 @@ object Constants {
  //const val BASE_URL = "http://65.2.12.223" //new
     const val BASE_URL = "https://desynat.com"
 
-    var MERCHANT_ID = "BCR2DN5TRCW73QI6"
+   var MERCHANT_ID = "BCR2DN5TRCW73QI6"
     var MERCHANT_NAME = "Desynat"
 
     var language="en"
@@ -151,6 +151,8 @@ object Constants {
     const val GET_SELLER_REEL = "/api/user/get_seller_reels"
     const val GET_SELLER_HIGHLIGHTS = "/api/user/get_seller_highlights"
     const val GET_ADMIN_STORY = "/api/user/get_admin_stories"
+    const val ADD_REMOVE_REEL_TO_WISHLIST = "/api/user/add_remove_reel_to_whislist"
+    const val SHARE_REEL = "/api/user/share_reel"
 
  const val GET_AFFILIATE_DASHBOARD = "/api/affiliate/get_affiliate_dashboard_data"
 

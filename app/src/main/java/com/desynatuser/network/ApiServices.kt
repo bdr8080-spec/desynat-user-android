@@ -65,6 +65,7 @@ import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetProductDetailResponse
+import com.desynatuser.ui.home.store.response.GetSharedReelLinkResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
@@ -615,5 +616,11 @@ interface ApiServices {
 
     @GET(Constants.GET_ADMIN_STORY)
     suspend fun getAdminStory(@QueryMap map: HashMap<String, Any>): Response<GetSellerStoryResponse>
+
+    @POST(Constants.ADD_REMOVE_REEL_TO_WISHLIST)
+    suspend fun addRemoveReelToWishlist(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @GET(Constants.SHARE_REEL)
+    suspend fun shareReel(@QueryMap map: HashMap<String, Any>): Response<GetSharedReelLinkResponse>
 
 }

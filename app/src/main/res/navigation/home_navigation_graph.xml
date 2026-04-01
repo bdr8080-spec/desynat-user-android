@@ -536,4 +536,10 @@
         android:label="View Reel Fragment"
         tools:layout="@layout/fragment_view_reel"/>
 
+    <fragment
+        android:id="@+id/liveEvent"
+        android:name="com.desynatuser.ui.home.storyHighlights.LiveEventFragment"
+        android:label="Live Event Fragment"
+        tools:layout="@layout/fragment_live_event"/>
+
 </navigation>

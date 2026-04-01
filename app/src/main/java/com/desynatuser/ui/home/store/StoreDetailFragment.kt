@@ -81,6 +81,7 @@ class StoreDetailFragment : BaseFragment() {
    // private var storeData: GetStoreResponse.Data?=null
     private var storeDetailData: GetSingleStoreResponse.Data?=null
     var selectedPos = -1
+    var selectedReelPos = -1
     private var sortFilter: String?=null
     private var search: Job? = null
     private var lastQuery: String? = null
@@ -173,20 +174,32 @@ class StoreDetailFragment : BaseFragment() {
             })
             rvHighlights.adapter = highlightAdapter
 
-            reelAdapter = ReelAdapter(requireActivity(), reelList,object :
+            reelAdapter = ReelAdapter(requireActivity(), reelList,2,object :
                 ReelAdapter.OnClick{
-                override fun onItemClick(position: Int) {
-                    if (reelList.size!=0) {
-                        val bundle = Bundle().apply {
-                            putString("from", "reel")
-                            putString("sellerId", storeDetailData?.store?.sellerId.toString())
-                            putString("storyData", Gson().toJson(reelList[position]))
+                override fun onItemClick(position: Int,type:Int) {
+                    when(type){
+                        1->{
+                            if (reelList.size!=0) {
+                                val bundle = Bundle().apply {
+                                    putString("from", "reel")
+                                    putString("sellerId", reelList[position]?.sellerId.toString())
+                                    putString("storyData", Gson().toJson(reelList[position]))
+                                }
+                                findNavController().navigate(
+                                    R.id.action_storeDetailFragment_to_viewReelFragment,
+                                    bundle
+                                )
+                            }
                         }
-                        findNavController().navigate(
-                            R.id.action_storeDetailFragment_to_viewReelFragment,
-                            bundle
-                        )
+                        2->{
+                            selectedReelPos = position
+                            addRemoveReelToWishlist()
+                        }
+                        3->{
+
+                        }
                     }
+
                 }
 
             })
@@ -397,6 +410,14 @@ class StoreDetailFragment : BaseFragment() {
         isObserver = true
     }
 
+    private fun addRemoveReelToWishlist(){
+        val map = HashMap<String,Any>()
+        map["reel_id"] = reelList[selectedReelPos].id
+        viewModel.addRemoveReelToWishlist(map)
+        binding?.progressBar?.isVisible = true
+        isObserver = true
+    }
+
     private fun getAllFilterList() {
         viewModel.getColorList()
         viewModel.getBrandList()
@@ -542,6 +563,27 @@ class StoreDetailFragment : BaseFragment() {
         }
 
     }
+
+        viewModel.addRemoveReelToWishlistResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+
+                if (reelList[selectedReelPos].wishlist==1){
+                    showToast("Reel removed from your wishlist successfully")
+                    reelList[selectedReelPos].wishlist = 0
+                }
+                else{
+                    showToast("Reel added to your wishlist successfully")
+                    reelList[selectedReelPos].wishlist = 1
+                }
+
+                reelAdapter?.notifyItemChanged(selectedReelPos)
+                selectedReelPos = -1
+                isObserver = false
+            }
+
+        }
 
         viewModel.getSellerReelResult.observe(viewLifecycleOwner) { response ->
             if (isReelObserver) {

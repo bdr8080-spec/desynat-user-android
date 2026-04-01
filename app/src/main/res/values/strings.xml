@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Desynat User</string>
     <string name="map_key">AIzaSyA4L_dBeJDWuqtBT9ZOOUhjigbh6Lxi43s</string>
+    <string name="agora_app_id">564c1a00b81c4d1c91d0a3a22db4a8bd</string>
+    <string name="agora_token">007eJxTYDhyJbPbYHp1B9M0qyLnXaEaa4xfOCnYb2J5wP5vkbh5fJICg6mZSbJhooFBkoVhskmKYbKlYYpBonGikVFKkkmiRVLK/5NnMhsCGRk8db8xMzJAIIjPx5CTWZbqnJGYl5eaY2hkzMAAADQZIig=</string>
+
+
     <string name="channel">desynat notification</string>
     <string name="channel_description">desynat notification for user alert</string>
     <string name="my_fatoorah_token">hjwN8fTAsBPH3f6Sq8huJH4o0JAa52Fv1SGD7JVvqUlylU72JnCKnTTF974Eq_eeQSJVjCiHG4ndx7cQAwwHX9c3ohdak53eTVc0r-N1aBIC13C8erZGrvISvYVFoVRtdn59h3vDBfPH5qL-fzIvhxCKfbmESgO-IvhcusQJsAxRUjMJ9PRiNc5vJYYo26LXVUxiilwBaO7wbOiMk08_n19lLgQLgN1_hfWl0Mi5uQABnpQUo0LLx8vNLyGV4YQ0TajJ7yPY5SuLzwBFbzCWnKPGKnNj9XgSs6T-rUn5RDOl0h8nYyiJcYs-LKP5gPzLZYF-7yoZuCs5NtAFpWjfcVRO83k1WkpcfVzGd6nEkFQfFskxSDw93dYkIjgNk4b2yRZGp4ny08sbeFSOFX6fxBAlqvtrZ_RPuxxfapL7eePswToOXWRxdXORMKwBCmBLryvOl7XFU3DNPQVgPuvsTSYQ525Idh20uXzTPV5wqSqbUhbuEbGJoQz9P6K1edsCaevhhMXZuBuf1gSzTIoIW1n_ZEeav1z09XccJfLwYNFidMqmjCpqXvou07Q-vNvgdcMCu6SKZGOKq9thX8pvn9vG2Jilt-5VlPY1QE1ZeuSyZTLSSK4Vige5c1ULlEKVUsikLjHmAD6yhT0xTkMm2vA_uwWV_qwAKIdvw8zQaUAiGiF8</string>
