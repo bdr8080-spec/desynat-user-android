@@ -71,8 +71,11 @@ import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
+import com.desynatuser.ui.home.store.response.GetWishlistedReelResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetAgoraTokenResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetLiveStreamingRoomResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
@@ -85,6 +88,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -622,5 +626,17 @@ interface ApiServices {
 
     @GET(Constants.SHARE_REEL)
     suspend fun shareReel(@QueryMap map: HashMap<String, Any>): Response<GetSharedReelLinkResponse>
+
+    @GET(Constants.GET_WISHLISTED_REEL)
+    suspend fun getWishlistedReel(@QueryMap map: HashMap<String, Any>): Response<GetWishlistedReelResponse>
+
+    @GET(Constants.GET_LIVE_STREAMING_ROOM)
+    suspend fun getLiveStreamingRoom(): Response<GetLiveStreamingRoomResponse>
+
+    @POST("https://desynat.com${Constants.GET_AGORA_TOKEN}")
+    suspend fun getAgoraToken(
+        @Header("Authorization") token: String,
+        @Body  map: HashMap<String, Any>
+    ): Response<GetAgoraTokenResponse>
 
 }

@@ -13,6 +13,9 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentViewReelBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
+import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
@@ -47,7 +50,7 @@ class ViewReelFragment : BaseFragment() {
         }
         binding?.apply {
 
-
+            setReelLikeStatus()
             val url = reelData?.file ?: ""
 
             val isVideo = url.endsWith(".mp4") || url.endsWith(".mov")
@@ -60,10 +63,38 @@ class ViewReelFragment : BaseFragment() {
 
                 videoStory.setVideoPath(url)
 
-                videoStory.setOnPreparedListener { mp ->
-                    mp.isLooping = false
-                   videoLoader.isVisible = false
+//                videoStory.setOnPreparedListener { mp ->
+//                    mp.isLooping = false
+//                   videoLoader.isVisible = false
+//
+//                    videoStory.start()
+//                }
 
+                videoStory.setOnPreparedListener { mp ->
+
+                    val videoWidth = mp.videoWidth
+                    val videoHeight = mp.videoHeight
+
+                    val viewWidth = videoStory.width
+                    val viewHeight = videoStory.height
+
+                    val videoProportion = videoWidth.toFloat() / videoHeight.toFloat()
+                    val viewProportion = viewWidth.toFloat() / viewHeight.toFloat()
+
+                    val layoutParams = videoStory.layoutParams
+
+                    if (videoProportion > viewProportion) {
+                        layoutParams.width = viewWidth
+                        layoutParams.height = (viewWidth / videoProportion).toInt()
+                    } else {
+                        layoutParams.height = viewHeight
+                        layoutParams.width = (viewHeight * videoProportion).toInt()
+                    }
+
+                    videoStory.layoutParams = layoutParams
+
+                    mp.isLooping = false
+                    videoLoader.isVisible = false
                     videoStory.start()
                 }
 
@@ -104,9 +135,9 @@ class ViewReelFragment : BaseFragment() {
             }
 
 
-            if (!reelData?.title.isNullOrEmpty() && reelData?.title != "null") {
+            if (!reelData?.caption.isNullOrEmpty() && reelData?.caption != "null") {
                 tvTitle.isVisible = true
-                tvTitle.text = reelData?.title
+                tvTitle.text = reelData?.caption
             } else {
                 tvTitle.isVisible = false
             }
@@ -124,6 +155,14 @@ class ViewReelFragment : BaseFragment() {
                 findNavController().popBackStack()
             }
 
+            ivLike.setOnClickListener {
+                addRemoveReelToWishlist()
+            }
+
+            ivShare.setOnClickListener {
+                shareReel()
+            }
+
             ivPlay.setOnClickListener {
                 if (videoStory.isPlaying) {
                     videoStory.pause()
@@ -138,5 +177,72 @@ class ViewReelFragment : BaseFragment() {
     }
 
     override fun observe() {
+
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                errorMessage?.let { showToast(it) }
+                isObserver = false
+
+            }
+        }
+
+        viewModel.addRemoveReelToWishlistResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                if (reelData?.wishlist==1){
+                    reelData?.wishlist = 0
+                    showToast("Reel removed from your wishlist successfully")
+                }
+                else{
+                    reelData?.wishlist = 1
+                    showToast("Reel added to your wishlist successfully")
+                }
+                setReelLikeStatus()
+                isObserver = false
+            }
+
+        }
+
+        viewModel.shareReelResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                val fileUrl = reelData?.file ?: ""
+
+                val isVideo = fileUrl.contains(".mp4", true) ||
+                        fileUrl.contains(".mov", true) ||
+                        fileUrl.contains(".mkv", true)
+                CommonMethod.shareReel(requireActivity(),
+                    caption = reelData?.caption ?: "",
+                    mediaUrl = fileUrl,
+                    link = response.data.file ?: "",
+                    isVideo = isVideo
+
+                )
+                isObserver = false
+            }
+        }
+    }
+
+    private fun addRemoveReelToWishlist(){
+        val map = HashMap<String,Any>()
+        map["reel_id"] = reelData?.id.toString()
+        viewModel.addRemoveReelToWishlist(map)
+        isObserver = true
+    }
+    private fun shareReel(){
+        val map = HashMap<String,Any>()
+        map["reel_id"] = reelData?.id.toString()
+        viewModel.shareReel(map)
+        isObserver = true
+    }
+
+    private fun setReelLikeStatus(){
+        binding?.apply {
+            if (reelData?.wishlist == 1) {
+                ivLike.setImageResource(R.drawable.ic_like_filled)
+            } else {
+                ivLike.setImageResource(R.drawable.ic_like)
+            }
+        }
     }
 }

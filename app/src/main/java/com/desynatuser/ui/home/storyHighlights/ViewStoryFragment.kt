@@ -11,6 +11,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.desynatuser.R
 import com.desynatuser.adapter.StoryPagerAdapter
@@ -25,7 +26,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import me.leolin.shortcutbadger.ShortcutBadger
+import kotlin.compareTo
 import kotlin.getValue
+import kotlin.toString
 
 @AndroidEntryPoint
 class ViewStoryFragment : BaseFragment() {
@@ -40,6 +43,8 @@ class ViewStoryFragment : BaseFragment() {
     private var sellerId: String=""
 
     private var progressAnimator: ValueAnimator? = null
+
+    private var isManualNavigation = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,44 +87,12 @@ class ViewStoryFragment : BaseFragment() {
 //            "highlights"->getSellerHighlights()
 //        }
 
-        storyPagerAdapter = StoryPagerAdapter(
-            myStories,
-            onVideoReady = { position, duration ->
-                startVideoProgress(position, duration)
-            },
-            onVideoFinished = { position ->
-                val next = position + 1
-                if (next < myStories.size) {
-                    binding?.viewPager?.currentItem = next
-                } else {
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        )
-        binding?.viewPager?.adapter = storyPagerAdapter
+
 
         setData()
 
-        binding?.viewPager?.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {
-
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-
-                    if (progressBars.isEmpty()) return
-
-                    // cancel old animation safely
-                    progressAnimator?.removeAllListeners()
-                    progressAnimator?.cancel()
-
-                    progressBars.forEachIndexed { index, progressBar ->
-                        progressBar.progress = if (index < position) 100 else 0
-                    }
-
-                    startProgress(position)
-                }
-            }
-        )
+        setupAdapter()
+        setupPagerCallback()
 
 
     }
@@ -196,82 +169,6 @@ class ViewStoryFragment : BaseFragment() {
 
     }
 
-    private fun setupProgressBars(count: Int) {
-
-        binding?.layoutProgress?.removeAllViews()
-        progressBars.clear()
-
-        repeat(count) { index ->
-
-            val progressBar = ProgressBar(
-                requireContext(),
-                null,
-                android.R.attr.progressBarStyleHorizontal
-            )
-
-            progressBar.progressDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.story_progress)
-
-            val params = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT
-            )
-
-            params.weight = 1f
-            params.marginEnd = 8
-
-            progressBar.layoutParams = params
-            progressBar.max = 100
-
-            binding?.layoutProgress?.addView(progressBar)
-
-            progressBars.add(progressBar)
-        }
-    }
-
-
-    private fun startProgress(index: Int) {
-
-        if (progressBars.isEmpty() || index >= progressBars.size) return
-
-        val story = myStories[index]
-        val url = story.file ?: ""
-
-
-
-        if (url.endsWith(".mp4") || url.endsWith(".mov") || url.endsWith(".gif")) {
-            return
-        }
-
-        val duration = 10000L
-
-        progressAnimator?.cancel()
-
-        if (duration > 0) {
-
-            progressAnimator = ValueAnimator.ofInt(0, 100)
-            progressAnimator?.duration = duration
-
-            progressAnimator?.addUpdateListener {
-                progressBars[index].progress = it.animatedValue as Int
-            }
-
-            progressAnimator?.doOnEnd {
-
-                if (!isAdded) return@doOnEnd
-
-                val nextIndex = index + 1
-
-                if (nextIndex < progressBars.size) {
-                    binding?.viewPager?.currentItem = nextIndex
-                } else {
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                }
-            }
-
-            progressAnimator?.start()
-        }
-    }
 
     private fun getAdminStory(){
         val map = HashMap<String, Any>()
@@ -304,43 +201,209 @@ class ViewStoryFragment : BaseFragment() {
         isObserver = true
     }
 
-    private fun setData(){
+    private fun setData() {
         if (myStories.isNotEmpty()) {
             setupProgressBars(myStories.size)
             startProgress(0)
         }
     }
+    private fun setupAdapter() {
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+        storyPagerAdapter = StoryPagerAdapter(
+            myStories,
+            object : StoryPagerAdapter.OnClick {
+
+                override fun clickOnItem(position: Int) {
+
+                }
+
+
+                override fun onNext(position: Int) {
+                    isManualNavigation = true
+
+                    stopProgress()
+
+                    val current = binding?.viewPager?.currentItem ?: return
+                    val next = current + 1
+
+                    if (next < myStories.size) {
+                        binding?.viewPager?.currentItem = next
+                    } else {
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+
+                override fun onPrevious(position: Int) {
+                    isManualNavigation = true
+
+                    stopProgress()
+
+                    val current = binding?.viewPager?.currentItem ?: return
+                    val prev = current - 1
+
+                    if (prev >= 0) {
+                        binding?.viewPager?.currentItem = prev
+                    }
+                }
+
+                override fun onPause(position: Int) {
+                    progressAnimator?.pause()
+                }
+
+                override fun onResume(position: Int) {
+                    progressAnimator?.resume()
+                }
+            },
+
+            onVideoReady = { position, duration ->
+                startVideoProgress(position, duration)
+            },
+
+            onVideoFinished = { position ->
+
+                if (isManualNavigation) {
+                    isManualNavigation = false
+                    return@StoryPagerAdapter
+                }
+
+                goToNext(position)
+            }
+        )
+
+        binding?.viewPager?.adapter = storyPagerAdapter
+    }
+
+    private fun setupPagerCallback() {
+        binding?.viewPager?.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    stopProgress()
+
+                    progressBars.forEachIndexed { index, progressBar ->
+                        progressBar.progress = if (index < position) 100 else 0
+                    }
+
+                    startProgress(position)
+                }
+            }
+        )
+    }
+
+
+    private fun stopProgress() {
+        progressAnimator?.removeAllListeners()
         progressAnimator?.cancel()
-        binding = null
+    }
+
+    private fun startProgress(index: Int) {
+
+        if (progressBars.isEmpty() || index >= progressBars.size) return
+
+        val url = myStories[index].file ?: ""
+
+        // Skip video/gif
+        if (url.endsWith(".mp4") || url.endsWith(".mov") || url.endsWith(".gif")) {
+            return
+        }
+
+        progressAnimator = ValueAnimator.ofInt(0, 100).apply {
+            duration = 10000L
+
+            addUpdateListener {
+                progressBars[index].progress = it.animatedValue as Int
+            }
+
+            doOnEnd {
+
+                if (!isAdded) return@doOnEnd
+
+                if (isManualNavigation) {
+                    isManualNavigation = false
+                    return@doOnEnd
+                }
+
+                goToNext(index)
+            }
+
+            start()
+        }
     }
 
     private fun startVideoProgress(index: Int, duration: Long) {
 
-        progressAnimator?.cancel()
+        stopProgress()
 
-        progressAnimator = ValueAnimator.ofInt(0, 100)
-        progressAnimator?.duration = duration
+        progressAnimator = ValueAnimator.ofInt(0, 100).apply {
+            this.duration = duration
 
-        progressAnimator?.addUpdateListener {
-            progressBars[index].progress = it.animatedValue as Int
-        }
-
-        progressAnimator?.doOnEnd {
-
-            if (!isAdded) return@doOnEnd
-
-            val nextIndex = index + 1
-
-            if (nextIndex < progressBars.size) {
-                binding?.viewPager?.currentItem = nextIndex
-            } else {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+            addUpdateListener {
+                progressBars[index].progress = it.animatedValue as Int
             }
-        }
 
-        progressAnimator?.start()
+            doOnEnd {
+
+                if (!isAdded) return@doOnEnd
+
+                if (isManualNavigation) {
+                    isManualNavigation = false
+                    return@doOnEnd
+                }
+
+                goToNext(index)
+            }
+
+            start()
+        }
+    }
+
+
+    private fun goToNext(position: Int) {
+        val next = position + 1
+
+        if (next < myStories.size) {
+            binding?.viewPager?.currentItem = next
+        } else {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    private fun setupProgressBars(count: Int) {
+
+        binding?.layoutProgress?.removeAllViews()
+        progressBars.clear()
+
+        repeat(count) {
+
+            val progressBar = ProgressBar(
+                requireContext(),
+                null,
+                android.R.attr.progressBarStyleHorizontal
+            )
+
+            progressBar.progressDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.story_progress)
+
+            progressBar.layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1f
+            ).apply {
+                marginEnd = 8
+            }
+
+            progressBar.max = 100
+
+            binding?.layoutProgress?.addView(progressBar)
+            progressBars.add(progressBar)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopProgress()
+        binding = null
     }
 }

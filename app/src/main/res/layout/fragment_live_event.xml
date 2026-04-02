@@ -27,6 +27,24 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:visibility="gone"
+        android:id="@+id/tvToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Live Event"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13sdp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Live"

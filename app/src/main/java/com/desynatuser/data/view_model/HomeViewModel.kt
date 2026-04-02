@@ -66,8 +66,11 @@ import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
+import com.desynatuser.ui.home.store.response.GetWishlistedReelResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetAgoraTokenResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetLiveStreamingRoomResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
@@ -1026,6 +1029,14 @@ val defaultBankResult: LiveData<CommonResponse>
             repository.getSellerReel(map)
         }
     }
+    val getWishlistedReelResult: LiveData<GetWishlistedReelResponse>
+        get() = repository.getWishlistedReelLiveData
+
+    fun getWishlistedReel(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getWishlistedReel(map)
+        }
+    }
 
     val getSellerHighlightsResult: LiveData<GetSellerStoryResponse>
         get() = repository.getSellerHighlightsLiveData
@@ -1064,6 +1075,21 @@ val defaultBankResult: LiveData<CommonResponse>
         }
     }
 
+    val getAgoraTokenResult: LiveData<GetAgoraTokenResponse>
+        get() = repository.getAgoraTokenLiveData
 
+    fun getAgoraToken(token: String, map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAgoraToken(token,map)
+        }
+    }
+    val getLiveStreamingRoomResult: LiveData<GetLiveStreamingRoomResponse>
+        get() = repository.getLiveStreamingRoomLiveData
+
+    fun getLiveStreamingRoom() {
+        viewModelScope.launch {
+            repository.getLiveStreamingRoom()
+        }
+    }
 
 }

@@ -51,6 +51,16 @@ android {
             exclude(group = "com.google.guava", module = "listenablefuture")
         }
     }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a")
+            isUniversalApk = false
+        }
+    }
+
 }
 
 dependencies {

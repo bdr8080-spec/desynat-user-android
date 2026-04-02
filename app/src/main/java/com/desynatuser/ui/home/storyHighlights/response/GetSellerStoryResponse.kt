@@ -30,7 +30,9 @@ data class GetSellerStoryResponse(
         val updatedAt: String,
         @SerializedName("title")
         val title: String,
-        @SerializedName("wishlist")
+        @SerializedName("caption")
+        val caption: String,
+        @SerializedName("is_whishlisted")
         var wishlist: Int
     ) {
         data class SellerDetails(

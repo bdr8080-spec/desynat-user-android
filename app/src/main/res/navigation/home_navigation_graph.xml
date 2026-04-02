@@ -300,7 +300,13 @@
         android:id="@+id/wishlist"
         android:name="com.desynatuser.ui.home.store.WishListFragment"
         android:label="Wishlist Fragment"
-        tools:layout="@layout/fragment_wish_list"/>
+        tools:layout="@layout/fragment_wish_list">
+
+        <action
+            android:id="@+id/action_wishlistFragment_to_viewReelFragment"
+            app:destination="@id/viewReel"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/promoCode"

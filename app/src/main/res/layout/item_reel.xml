@@ -10,7 +10,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivProfile"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_130sdp"
+        android:layout_height="@dimen/_150sdp"
         android:scaleType="centerCrop"
         android:clipToOutline="true"
         android:src="@drawable/newest"

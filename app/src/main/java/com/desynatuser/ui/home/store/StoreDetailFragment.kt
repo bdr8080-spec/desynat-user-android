@@ -159,10 +159,12 @@ class StoreDetailFragment : BaseFragment() {
                 HighlightAdapter.OnClick{
                 override fun onItemClick(position: Int) {
                     if (highlightList.size!=0) {
+                        val list = ArrayList<GetSellerStoryResponse.Data>()
+                        list.add(highlightList[position])
                         val bundle = Bundle().apply {
                             putString("from", "highlights")
                             putString("sellerId", storeDetailData?.store?.sellerId.toString())
-                            putString("storyData", Gson().toJson(highlightList))
+                            putString("storyData", Gson().toJson(list))
                         }
                         findNavController().navigate(
                             R.id.action_storeDetailFragment_to_viewStoryFragment,
@@ -196,7 +198,8 @@ class StoreDetailFragment : BaseFragment() {
                             addRemoveReelToWishlist()
                         }
                         3->{
-
+                            selectedReelPos = position
+                            shareReel()
                         }
                     }
 
@@ -418,6 +421,13 @@ class StoreDetailFragment : BaseFragment() {
         isObserver = true
     }
 
+    private fun shareReel(){
+        val map = HashMap<String,Any>()
+        map["reel_id"] = reelList[selectedReelPos].id
+        viewModel.shareReel(map)
+        isObserver = true
+    }
+
     private fun getAllFilterList() {
         viewModel.getColorList()
         viewModel.getBrandList()
@@ -568,7 +578,6 @@ class StoreDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
-
                 if (reelList[selectedReelPos].wishlist==1){
                     showToast("Reel removed from your wishlist successfully")
                     reelList[selectedReelPos].wishlist = 0
@@ -623,6 +632,25 @@ class StoreDetailFragment : BaseFragment() {
 
                 }
                 isStoryObserver = false
+            }
+        }
+
+        viewModel.shareReelResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                val fileUrl = reelList[selectedReelPos]?.file ?: ""
+
+                val isVideo = fileUrl.contains(".mp4", true) ||
+                        fileUrl.contains(".mov", true) ||
+                        fileUrl.contains(".mkv", true)
+                CommonMethod.shareReel(requireActivity(),
+                    caption = reelList[selectedReelPos]?.caption ?: "",
+                    mediaUrl = fileUrl,
+                    link = response.data.file ?: "",
+                    isVideo = isVideo
+
+                )
+                selectedPos = -1
+                isObserver = false
             }
         }
     }

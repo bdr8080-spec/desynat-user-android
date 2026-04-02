@@ -77,8 +77,11 @@ import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.store.response.GetWishlistResponse
+import com.desynatuser.ui.home.store.response.GetWishlistedReelResponse
 import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetAgoraTokenResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetLiveStreamingRoomResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
@@ -1500,6 +1503,18 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
         )
     }
 
+    var getWishlistedReelLiveData = SingleLiveEvent<GetWishlistedReelResponse>()
+    suspend fun getWishlistedReel(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getWishlistedReel(map)
+            },
+            responseLiveData = getWishlistedReelLiveData
+        )
+    }
+
     val getSellerHighlightsLiveData = SingleLiveEvent<GetSellerStoryResponse>()
     suspend fun getSellerHighlights(
         map: HashMap<String,Any>
@@ -1535,6 +1550,29 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
             responseLiveData = addRemoveReelToWishlistLiveData
         )
     }
+
+    val getLiveStreamingRoomLiveData = SingleLiveEvent<GetLiveStreamingRoomResponse>()
+    suspend fun getLiveStreamingRoom(
+    ) {
+        handleApiCall(
+            api = {
+                api.getLiveStreamingRoom()
+            },
+            responseLiveData = getLiveStreamingRoomLiveData
+        )
+    }
+
+    val getAgoraTokenLiveData = SingleLiveEvent<GetAgoraTokenResponse>()
+    suspend fun getAgoraToken(token: String, map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAgoraToken(token,map)
+            },
+            responseLiveData = getAgoraTokenLiveData
+        )
+    }
+
 
     val shareReelLiveData = SingleLiveEvent<GetSharedReelLinkResponse>()
     suspend fun shareReel(

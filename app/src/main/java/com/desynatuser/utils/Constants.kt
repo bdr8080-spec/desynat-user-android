@@ -153,11 +153,14 @@ object Constants {
     const val GET_ADMIN_STORY = "/api/user/get_admin_stories"
     const val ADD_REMOVE_REEL_TO_WISHLIST = "/api/user/add_remove_reel_to_whislist"
     const val SHARE_REEL = "/api/user/share_reel"
+    const val GET_WISHLISTED_REEL = "/api/user/get_whishlisted_reel"
 
  const val GET_AFFILIATE_DASHBOARD = "/api/affiliate/get_affiliate_dashboard_data"
 
  const val GET_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
  const val READ_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
  const val AFFILIATE_USER_NOTIFICATION_COUNT = "/api/affiliate/CountaffiliateUserNotification"
+ const val GET_LIVE_STREAMING_ROOM = "/api/user/show-all-live-streaming-request"
+ const val GET_AGORA_TOKEN = "/api/agora/token"
 
 }

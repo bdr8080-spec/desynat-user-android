@@ -633,6 +633,67 @@ object CommonMethod {
         }
     }
 
+    fun shareReel(
+        context: Context,
+        caption: String,
+        mediaUrl: String,
+        link: String,
+        isVideo: Boolean
+    ) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            try {
+                val url = URL(mediaUrl)
+                val connection = url.openConnection()
+                connection.connect()
+
+                val inputStream = connection.getInputStream()
+
+                // ✅ Unique file name (fix override issue)
+                val fileName = if (isVideo) {
+                    "reel_${System.currentTimeMillis()}.mp4"
+                } else {
+                    "reel_${System.currentTimeMillis()}.png"
+                }
+
+                val file = File(context.cacheDir, fileName)
+
+                val outputStream = FileOutputStream(file)
+                inputStream.copyTo(outputStream)
+
+                outputStream.close()
+                inputStream.close()
+
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.provider",
+                    file
+                )
+
+                val shareText = "Caption: ${caption}\n$link"
+
+                val mimeType = if (isVideo) "video/mp4" else "image/png"
+
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = mimeType
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_TEXT, shareText)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+
+                withContext(Dispatchers.Main) {
+                    context.startActivity(
+                        Intent.createChooser(intent, "Share Reel via")
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
     fun getExpectedDeliveryDate(startDays: Int = 3, endDays: Int = 5,output:String="dd/MM/yyyy"): String {
 
         val calendar = Calendar.getInstance()

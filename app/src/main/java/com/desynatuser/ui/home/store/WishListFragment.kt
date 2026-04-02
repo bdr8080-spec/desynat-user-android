@@ -34,6 +34,7 @@ class WishListFragment : BaseFragment() {
     private var productAdapter: ProductAdapter? = null
     private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
     var selectedPos = -1
+    var type = 1
     var selectedReelPos = -1
     var storeName = ""
 
@@ -88,11 +89,10 @@ class WishListFragment : BaseFragment() {
                             if (reelList.size!=0) {
                                 val bundle = Bundle().apply {
                                     putString("from", "reel")
-                                    putString("sellerId", reelList[position]?.sellerId.toString())
                                     putString("storyData", Gson().toJson(reelList[position]))
                                 }
                                 findNavController().navigate(
-                                    R.id.action_storeDetailFragment_to_viewReelFragment,
+                                    R.id.action_wishlistFragment_to_viewReelFragment,
                                     bundle
                                 )
                             }
@@ -102,16 +102,24 @@ class WishListFragment : BaseFragment() {
                             removeReelToWishlist()
                         }
                         3->{
-
+                            selectedReelPos = position
+                            shareReel()
                         }
                     }
                 }
 
             })
             rvReel.adapter = reelAdapter
-        }
 
-        getWishList()
+            when(type){
+                1->{
+                    product()
+                }
+                2->{
+                    reel()
+                }
+            }
+        }
 
         }
 
@@ -131,8 +139,21 @@ class WishListFragment : BaseFragment() {
         isObserver = true
     }
 
+    private fun shareReel(){
+        val map = HashMap<String,Any>()
+        map["reel_id"] = reelList[selectedReelPos].id
+        viewModel.shareReel(map)
+        isObserver = true
+    }
+
     private fun getWishList(){
         viewModel.getWishList()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+    private fun getWishlistedReel(){
+        val map = HashMap<String, Any>()
+        viewModel.getWishlistedReel(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
@@ -144,26 +165,43 @@ class WishListFragment : BaseFragment() {
             }
 
             tvProduct.setOnClickListener {
-                tvProduct.setBackgroundResource(R.drawable.selected_left_tab)
-                tvProduct.setTextColor(requireActivity().getColor(R.color.white))
-                tvReel.setTextColor(requireActivity().getColor(R.color.black))
-                tvReel.background = null
-                rvProduct.isVisible = true
-                rvReel.isVisible = false
-                checkData()
+                product()
+
             }
 
             tvReel.setOnClickListener {
-                tvProduct.background = null
-                tvProduct.setTextColor(requireActivity().getColor(R.color.black))
-                tvReel.setTextColor(requireActivity().getColor(R.color.white))
-                tvReel.setBackgroundResource(R.drawable.selected_right_tab)
-                rvReel.isVisible = false
-                rvReel.isVisible = true
-                checkReelData()
+               reel()
             }
 
 
+        }
+    }
+
+    private fun product(){
+        binding?.apply {
+            type = 1
+            getWishList()
+            tvProduct.setBackgroundResource(R.drawable.selected_left_tab)
+            tvProduct.setTextColor(requireActivity().getColor(R.color.white))
+            tvReel.setTextColor(requireActivity().getColor(R.color.black))
+            tvReel.background = null
+            rvProduct.isVisible = true
+            rvReel.isVisible = false
+            checkData()
+        }
+    }
+
+    private fun reel(){
+        binding?.apply {
+            type = 2
+            tvProduct.background = null
+            getWishlistedReel()
+            tvProduct.setTextColor(requireActivity().getColor(R.color.black))
+            tvReel.setTextColor(requireActivity().getColor(R.color.white))
+            tvReel.setBackgroundResource(R.drawable.selected_right_tab)
+            rvProduct.isVisible = false
+            rvReel.isVisible = true
+            checkReelData()
         }
     }
 
@@ -225,14 +263,51 @@ class WishListFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.getWishlistedReelResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                reelList.clear()
+                for(i in 0 until response.data.size){
+                    if (response.data[i].reelDetails!=null){
+                        reelList.add(response.data[i].reelDetails)
+                    }
+                }
+                reelAdapter?.notifyDataSetChanged()
+                checkReelData()
+                selectedPos = -1
+                isObserver = false
+            }
+        }
+
+        viewModel.shareReelResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                val fileUrl = reelList[selectedReelPos]?.file ?: ""
+
+                val isVideo = fileUrl.contains(".mp4", true) ||
+                        fileUrl.contains(".mov", true) ||
+                        fileUrl.contains(".mkv", true)
+                CommonMethod.shareReel(requireActivity(),
+                    caption = reelList[selectedReelPos]?.caption ?: "",
+                    mediaUrl = fileUrl,
+                    link = response.data.file ?: "",
+                    isVideo = isVideo
+
+                )
+                selectedPos = -1
+                isObserver = false
+            }
+        }
     }
 
     fun checkData(){
         binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+        binding?.tvNoDataFound?.text = "No product found in wishlist"
     }
 
     fun checkReelData(){
         binding?.tvNoDataFound?.isVisible = reelList.isEmpty()
+        binding?.tvNoDataFound?.text = "No reel found in wishlist"
     }
 
 
