@@ -83,6 +83,7 @@ class StoreDetailFragment : BaseFragment() {
     var selectedPos = -1
     var selectedReelPos = -1
     private var sortFilter: String?=null
+    private var type = 1 //1-product.2-reel
     private var search: Job? = null
     private var lastQuery: String? = null
     private var sortAdapter: SortListAdapter? = null
@@ -132,6 +133,15 @@ class StoreDetailFragment : BaseFragment() {
         ProgressDialogUtils.getInstance().hideProgress()
          storeId = arguments?.getString("storeId").toString()
         binding?.apply {
+
+            when(type){
+                1->{
+                    product()
+                }
+                2->{
+                    reel()
+                }
+            }
 
             productAdapter = ProductAdapter(requireActivity(),productList,storeDetailData?.store?.storeName.toString(),3,object: ProductAdapter.ProductClick{
                 override fun onProductClick(position: Int,type:Int) {
@@ -321,22 +331,11 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             tvProduct.setOnClickListener {
-                tvProduct.setBackgroundResource(R.drawable.selected_left_tab)
-                tvProduct.setTextColor(requireActivity().getColor(R.color.white))
-                tvReel.setTextColor(requireActivity().getColor(R.color.black))
-                tvReel.background = null
-                clProduct.isVisible = true
-                rvReel.isVisible = false
-                checkData()
+              product()
             }
 
             tvReel.setOnClickListener {
-                tvProduct.background = null
-                tvProduct.setTextColor(requireActivity().getColor(R.color.black))
-                tvReel.setTextColor(requireActivity().getColor(R.color.white))
-                tvReel.setBackgroundResource(R.drawable.selected_right_tab)
-                clProduct.isVisible = false
-                rvReel.isVisible = true
+               reel()
             }
 
             ivChat.setOnClickListener {
@@ -350,6 +349,31 @@ class StoreDetailFragment : BaseFragment() {
         }
     }
 
+    private fun product(){
+        binding?.apply {
+            type = 1
+            tvProduct.setBackgroundResource(R.drawable.selected_left_tab)
+            tvProduct.setTextColor(requireActivity().getColor(R.color.white))
+            tvReel.setTextColor(requireActivity().getColor(R.color.black))
+            tvReel.background = null
+            clProduct.isVisible = true
+            rvReel.isVisible = false
+            checkData()
+        }
+    }
+
+    private fun reel(){
+        binding?.apply {
+            type =2
+            tvProduct.background = null
+            tvProduct.setTextColor(requireActivity().getColor(R.color.black))
+            tvReel.setTextColor(requireActivity().getColor(R.color.white))
+            tvReel.setBackgroundResource(R.drawable.selected_right_tab)
+            clProduct.isVisible = false
+            rvReel.isVisible = true
+        }
+
+    }
     private fun chatWithSeller(){
         val map = HashMap<String, Any>()
         map["seller_id"] = storeDetailData?.store?.sellerId.toString()
@@ -426,6 +450,7 @@ class StoreDetailFragment : BaseFragment() {
         map["reel_id"] = reelList[selectedReelPos].id
         viewModel.shareReel(map)
         isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
 
     private fun getAllFilterList() {
@@ -637,6 +662,7 @@ class StoreDetailFragment : BaseFragment() {
 
         viewModel.shareReelResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
                 val fileUrl = reelList[selectedReelPos]?.file ?: ""
 
                 val isVideo = fileUrl.contains(".mp4", true) ||

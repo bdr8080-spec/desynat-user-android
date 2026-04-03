@@ -26,6 +26,10 @@ class ViewReelFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
     private var reelData: GetSellerStoryResponse.Data?=null
+
+    private val handler = android.os.Handler()
+    private lateinit var runnable: Runnable
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,14 +67,9 @@ class ViewReelFragment : BaseFragment() {
 
                 videoStory.setVideoPath(url)
 
-//                videoStory.setOnPreparedListener { mp ->
-//                    mp.isLooping = false
-//                   videoLoader.isVisible = false
-//
-//                    videoStory.start()
-//                }
 
                 videoStory.setOnPreparedListener { mp ->
+
 
                     val videoWidth = mp.videoWidth
                     val videoHeight = mp.videoHeight
@@ -93,9 +92,65 @@ class ViewReelFragment : BaseFragment() {
 
                     videoStory.layoutParams = layoutParams
 
+
+// for center crop
+                /*    val videoWidth = mp.videoWidth
+                    val videoHeight = mp.videoHeight
+
+                    val viewWidth = videoStory.width
+                    val viewHeight = videoStory.height
+
+                    val scaleX: Float
+                    val scaleY: Float
+
+                    val videoRatio = videoWidth.toFloat() / videoHeight
+                    val viewRatio = viewWidth.toFloat() / viewHeight
+
+                    if (videoRatio > viewRatio) {
+                        // video wider → scale height
+                        scaleX = videoRatio / viewRatio
+                        scaleY = 1f
+                    } else {
+                        // video taller → scale width
+                        scaleX = 1f
+                        scaleY = viewRatio / videoRatio
+                    }
+
+                    videoStory.scaleX = scaleX
+                    videoStory.scaleY = scaleY*/
+
+
+                    val duration = videoStory.duration
+                    seekBar?.max = duration
+
+                    runnable = object : Runnable {
+                        override fun run() {
+                            val currentPosition = videoStory.currentPosition
+                            val duration = videoStory.duration
+
+                            // FIX: handle last frame properly
+                            if (currentPosition >= duration - 500) {
+                                seekBar?.progress = duration
+                               tvCurrentTime?.text = formatTime(duration)
+                           //    tvRemainingTime?.text = "-00:00"
+                                tvRemainingTime?.text = "${formatTime(duration)}"
+                            } else {
+                                seekBar?.progress = currentPosition
+                                tvCurrentTime?.text = formatTime(currentPosition)
+                           //     tvRemainingTime?.text = "-${formatTime(duration - currentPosition)}"
+                                tvRemainingTime?.text = "${formatTime(duration)}"
+                            }
+
+                            handler.postDelayed(this, 500)
+                        }
+                    }
+
+                    startSeekBarUpdate()
+
                     mp.isLooping = false
                     videoLoader.isVisible = false
                     videoStory.start()
+                    ivPlay.setImageResource(R.drawable.ic_pause)
                 }
 
                 videoStory.setOnInfoListener { _, what, _ ->
@@ -143,8 +198,17 @@ class ViewReelFragment : BaseFragment() {
             }
 
             videoStory.setOnCompletionListener {
+
+                val duration = videoStory.duration
+
+                seekBar.progress = duration
+                tvCurrentTime.text = formatTime(duration)
+               // tvRemainingTime.text = "-00:00"
+
+                ivPlay.isVisible = true
                 ivPlay.setImageResource(R.drawable.ic_play)
 
+                handler.removeCallbacks(runnable)
             }
         }
     }
@@ -166,13 +230,38 @@ class ViewReelFragment : BaseFragment() {
             ivPlay.setOnClickListener {
                 if (videoStory.isPlaying) {
                     videoStory.pause()
-                    ivPlay.isVisible = true
+                    ivPlay.setImageResource(R.drawable.ic_play)
                 } else {
+
+                    if (videoStory.currentPosition >= videoStory.duration - 500) {
+                        videoStory.seekTo(0)
+
+                        seekBar.progress = 0
+                        tvCurrentTime.text = "00:00"
+                   //     tvRemainingTime.text = "-${formatTime(videoStory.duration)}"
+                        tvRemainingTime.text = "${formatTime(videoStory.duration)}"
+                    }
+
                     videoStory.start()
                     ivPlay.setImageResource(R.drawable.ic_pause)
+
+                    startSeekBarUpdate()
+                }
+            }
+
+            seekBar.setOnSeekBarChangeListener(object :
+                android.widget.SeekBar.OnSeekBarChangeListener {
+
+                override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
+                    if (fromUser) {
+                        videoStory.seekTo(progress)
+                    }
                 }
 
-            }
+                override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {}
+            })
         }
     }
 
@@ -180,6 +269,7 @@ class ViewReelFragment : BaseFragment() {
 
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
+                binding?.videoLoader?.isVisible = false
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
                 isObserver = false
@@ -206,11 +296,12 @@ class ViewReelFragment : BaseFragment() {
 
         viewModel.shareReelResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
+                binding?.videoLoader?.isVisible = false
                 val fileUrl = reelData?.file ?: ""
 
                 val isVideo = fileUrl.contains(".mp4", true) ||
                         fileUrl.contains(".mov", true) ||
-                        fileUrl.contains(".mkv", true)
+                        fileUrl.contains(".mkv", true) ||fileUrl.contains(".avi", true)
                 CommonMethod.shareReel(requireActivity(),
                     caption = reelData?.caption ?: "",
                     mediaUrl = fileUrl,
@@ -234,6 +325,7 @@ class ViewReelFragment : BaseFragment() {
         map["reel_id"] = reelData?.id.toString()
         viewModel.shareReel(map)
         isObserver = true
+        binding?.videoLoader?.isVisible = true
     }
 
     private fun setReelLikeStatus(){
@@ -244,5 +336,42 @@ class ViewReelFragment : BaseFragment() {
                 ivLike.setImageResource(R.drawable.ic_like)
             }
         }
+    }
+
+    private fun formatTime(ms: Int): String {
+        val totalSeconds = ms / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        return String.format("%02d:%02d", minutes, seconds)
+    }
+
+    private fun startSeekBarUpdate() {
+        runnable = object : Runnable {
+            override fun run() {
+                val currentPosition = binding?.videoStory?.currentPosition ?: 0
+                val duration = binding?.videoStory?.duration ?: 0
+
+                if (currentPosition >= duration - 500) {
+                    binding?.seekBar?.progress = duration
+                    binding?.tvCurrentTime?.text = formatTime(duration)
+                  //  binding?.tvRemainingTime?.text = "-00:00"
+                    binding?.tvRemainingTime?.text = "${formatTime(duration)}"
+                } else {
+                    binding?.seekBar?.progress = currentPosition
+                    binding?.tvCurrentTime?.text = formatTime(currentPosition)
+                  //  binding?.tvRemainingTime?.text = "-${formatTime(duration - currentPosition)}"
+                    binding?.tvRemainingTime?.text = "${formatTime(duration)}"
+                }
+
+                handler.postDelayed(this, 500)
+            }
+        }
+        handler.post(runnable)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacksAndMessages(null)
+        binding = null
     }
 }

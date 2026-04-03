@@ -43,7 +43,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
-        app:layout_constraintBottom_toTopOf="@+id/tvTitle"/>
+        app:layout_constraintBottom_toTopOf="@+id/videoControls"/>
+
+    <LinearLayout
+        android:id="@+id/videoControls"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:elevation="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvTitle">
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressTint="@color/brown"
+            android:thumbTint="@color/brown"
+            android:splitTrack="false"/>
+
+<!--        android:paddingStart="0dp"-->
+<!--        android:paddingEnd="0dp"-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/tvCurrentTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/tvRemainingTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:visibility="gone"
@@ -84,7 +136,7 @@
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_20sdp"
         android:paddingHorizontal="@dimen/_15sdp"
-        app:layout_constraintBottom_toTopOf="@+id/tvTitle"
+        app:layout_constraintBottom_toTopOf="@+id/videoControls"
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView

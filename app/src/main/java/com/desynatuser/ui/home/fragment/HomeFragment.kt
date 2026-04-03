@@ -507,10 +507,10 @@ class HomeFragment : BaseFragment() {
     private fun setAdminStory() {
         binding?.apply {
             if (myStories.size!=0){
-                ivAdminStory.setBackgroundResource(R.drawable.ic_admin_highlight_story)
+                ivAdminStory.setImageResource(R.drawable.ic_admin_highlight_story)
             }
             else{
-                ivAdminStory.setBackgroundResource(R.drawable.ic_admin_story)
+                ivAdminStory.setImageResource(R.drawable.ic_admin_story)
             }
         }
     }

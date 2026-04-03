@@ -4,4 +4,15 @@
     android:viewportWidth="44"
     android:viewportHeight="50">
 
+    <!-- Background -->
+    <path
+        android:pathData="M4,0L40,0A4,4 0,0 1,44 4L44,45.348A4,4 0,0 1,40 49.348L4,49.348A4,4 0,0 1,0 45.348L0,4A4,4 0,0 1,4 0z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.56"/>
+
+    <!-- Pause Icon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M14,12h4v26h-4zM26,12h4v26h-4z"/>
+
 </vector>

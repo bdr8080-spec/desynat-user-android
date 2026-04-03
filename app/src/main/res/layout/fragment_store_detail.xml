@@ -72,14 +72,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/ivStore">
 
 
-
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProfileImage"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="@dimen/_52sdp"
+                    android:layout_height="@dimen/_52sdp"
                     android:src="@drawable/ic_user"
                     android:scaleType="centerCrop"
                     android:clipToOutline="true"
+                    android:padding="@dimen/_2sdp"
                     android:background="@color/light_pink"
                     app:shapeAppearanceOverlay="@style/circle_image"
                     app:layout_constraintStart_toStartOf="parent"
@@ -88,8 +88,9 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:visibility="gone"
                     android:id="@+id/ivStoryHighlight"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="@dimen/_54sdp"
+                    android:layout_height="@dimen/_54sdp"
+                    android:padding="@dimen/_1sdp"
                     android:src="@drawable/ic_highlight_seller_story"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileImage"
                     app:layout_constraintTop_toTopOf="@+id/ivProfileImage"

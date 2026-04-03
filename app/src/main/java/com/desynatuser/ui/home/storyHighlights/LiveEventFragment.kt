@@ -37,6 +37,7 @@ class LiveEventFragment : BaseFragment() {
     private var isTokenObserver = true
     private var channelId = ""
     private var token = ""
+    private var appId = ""
     private var uid = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,29 +79,20 @@ class LiveEventFragment : BaseFragment() {
         viewModel.getLiveStreamingRoomResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                if (response.data!=null){
-                    if (response.data?.currentRequests?.isNotEmpty() == true){
+                if (response.data.isNotEmpty()){
 
-                        channelId = response?.data?.currentRequests?.get(0)?.channelId.toString()
+                        channelId = response?.data?.get(0)?.channelId.toString()
+                        if (response?.data?.get(0)?.liveToken!=null&&response?.data?.get(0)?.liveToken!="null"&&response?.data?.get(0)?.liveToken!=""){
 
-                        if (response?.data?.currentRequests?.get(0)?.liveToken==null){
-                            getAgoraLiveTokenApi(response.data.currentRequests[0].id.toString())
-                        }
-                        else{
-                            token = response?.data?.currentRequests?.get(0)?.liveToken.toString()
-                            val uidValue = response?.data?.currentRequests?.get(0)?.uid.toString()
+                            token = response?.data?.get(0)?.liveToken.toString()
+                            val uidValue = response?.data?.get(0)?.uid.toString()
                             uid = uidValue.toIntOrNull() ?: 0
                             startLiveStreaming()
                         }
+                        else{
+                            getAgoraToken(response.data[0].id.toString())
+                        }
 
-                    }
-                    else  if (response.data?.futureRequests?.isNotEmpty() == true){
-                        showNoDataUIForNextEvent(true)
-
-                    }
-                    else{
-                        showNoDataUI(true)
-                    }
                 }
                 else{
                     showNoDataUI(true)
@@ -113,8 +105,12 @@ class LiveEventFragment : BaseFragment() {
         viewModel.getAgoraTokenResult.observe(viewLifecycleOwner) { response ->
             if (isTokenObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                if (response.token!=null){
-                        token = response.token
+                if (response.data!=null){
+                        token = response.data.token
+                        uid = response.data.uid.toIntOrNull()?:0
+                        channelId = response.data.channel
+                        appId = response.data.appId
+                    startLiveStreaming()
                     Log.d("LIVE_TEST", "token ${token}")
 
                 }
@@ -240,6 +236,7 @@ class LiveEventFragment : BaseFragment() {
     private fun getAgoraToken(id: String){
         val map = HashMap<String,Any>()
         map["id"] = id
+        map["role"] = 2
         viewModel.getAgoraToken(SharedPreference.get(requireActivity()).accessToken,map)
         isTokenObserver = true
     }
@@ -264,30 +261,6 @@ class LiveEventFragment : BaseFragment() {
         )
 
         joinChannel()
-    }
-
-    private fun getAgoraLiveTokenApi(id: String){
-        val map = HashMap<String,Any>()
-        map["id"] = id
-        lifecycleScope.launch {
-            try {
-                val response = VisionRetrofit.api.getAgoraToken(
-                    SharedPreference.get(requireActivity()).accessToken,
-                    map
-                )
-                ProgressDialogUtils.getInstance().hideProgress()
-                Log.e("AGORA_TOKEN_RESPONSE", response.body().toString() ?: "Error")
-
-                token = response.body()?.token.toString()
-                val uidValue = response.body()?.uid.toString()
-                uid = uidValue.toIntOrNull() ?: 0
-                startLiveStreaming()
-
-            } catch (e: Exception) {
-                ProgressDialogUtils.getInstance().hideProgress()
-                Log.e("AGORA_TOKEN_ERROR", e.message ?: "Error")
-            }
-        }
     }
 
 }

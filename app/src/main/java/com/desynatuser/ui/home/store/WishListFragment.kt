@@ -144,6 +144,7 @@ class WishListFragment : BaseFragment() {
         map["reel_id"] = reelList[selectedReelPos].id
         viewModel.shareReel(map)
         isObserver = true
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
     }
 
     private fun getWishList(){
@@ -282,6 +283,7 @@ class WishListFragment : BaseFragment() {
 
         viewModel.shareReelResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
                 val fileUrl = reelList[selectedReelPos]?.file ?: ""
 
                 val isVideo = fileUrl.contains(".mp4", true) ||
