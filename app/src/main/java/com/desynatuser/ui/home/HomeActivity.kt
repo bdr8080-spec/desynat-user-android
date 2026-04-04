@@ -112,7 +112,7 @@ class HomeActivity : BaseActivity() {
             R.id.catalog,
             R.id.myBag,
             R.id.profile,
-            R.id.liveEvent
+           // R.id.liveEvent
         )
 
         controller.addOnDestinationChangedListener { _, destination, _ ->

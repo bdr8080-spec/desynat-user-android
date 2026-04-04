@@ -39,6 +39,10 @@ class LiveEventFragment : BaseFragment() {
     private var token = ""
     private var appId = ""
     private var uid = 0
+    private var isMuted = false
+    private var isVideoSetup = false
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +66,33 @@ class LiveEventFragment : BaseFragment() {
     override fun initControl() {
         binding?.apply {
             ivBack.setOnClickListener {
+                AgoraManager.getEngine()?.apply {
+                    leaveChannel()
+                }
+
                 findNavController().popBackStack()
+            }
+
+            tvLeave.setOnClickListener {
+                AgoraManager.getEngine()?.apply {
+                    leaveChannel()
+                }
+
+                findNavController().popBackStack()
+            }
+
+            tvMute.setOnClickListener {
+                val engine = AgoraManager.getEngine()
+
+                isMuted = !isMuted
+
+                engine?.muteAllRemoteAudioStreams(isMuted)
+
+                if (isMuted) {
+                    binding?.tvMute?.text = "Unmute"
+                } else {
+                    binding?.tvMute?.text = "Mute"
+                }
             }
         }
     }
@@ -125,14 +155,38 @@ class LiveEventFragment : BaseFragment() {
 
         override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
             Log.d("LIVE_TEST", "Audience joined channel")
+            activity?.runOnUiThread {
+                showNoDataUIWaiting(true)
+            }
         }
 
         override fun onUserJoined(uid: Int, elapsed: Int) {
             Log.d("LIVE_TEST", "Host joined: $uid")
-            activity?.runOnUiThread {
-                setupRemoteVideo(uid)
+            if (!isVideoSetup) {
+                isVideoSetup = true
 
-                showNoDataUIWaiting(false)
+                activity?.runOnUiThread {
+                    setupRemoteVideo(uid)
+                    showNoDataUI(false)
+                }
+            }
+        }
+
+        override fun onRemoteVideoStateChanged(
+            uid: Int,
+            state: Int,
+            reason: Int,
+            elapsed: Int
+        ) {
+            Log.d("LIVE_TEST", "Remote video state: $state for uid: $uid")
+
+            if (state == 2 && !isVideoSetup) { // decoding
+                isVideoSetup = true
+
+                activity?.runOnUiThread {
+                    setupRemoteVideo(uid)
+                    showNoDataUI(false)
+                }
             }
         }
 
@@ -147,9 +201,10 @@ class LiveEventFragment : BaseFragment() {
                 )
 
                 showNoDataUI(true)
+                checkForNextEvent()
+
             }
 
-            checkForNextEvent()
         }
 
         override fun onError(err: Int) {
@@ -163,16 +218,21 @@ class LiveEventFragment : BaseFragment() {
     private fun showNoDataUI(isShow: Boolean=false) {
         binding?.apply {
             tvNoDataFound.isVisible = isShow
+            ivBack.isVisible = isShow
             tvToolbar.isVisible = isShow
             tvLive.isVisible = !isShow
+            relMute.isVisible = !isShow
+            tvNoDataFound.text = "No event found"
         }
     }
 
     private fun showNoDataUIForNextEvent(isShow: Boolean=false) {
         binding?.apply {
             tvNoDataFound.isVisible = isShow
+            ivBack.isVisible = isShow
             tvToolbar.isVisible = isShow
             tvLive.isVisible = !isShow
+            relMute.isVisible = !isShow
             tvNoDataFound.text = "Waiting for next live event..."
         }
     }
@@ -180,9 +240,11 @@ class LiveEventFragment : BaseFragment() {
     private fun showNoDataUIWaiting(isShow: Boolean=false) {
         binding?.apply {
             tvNoDataFound.isVisible = isShow
+            ivBack.isVisible = isShow
             tvToolbar.isVisible = isShow
             tvLive.isVisible = !isShow
-            tvNoDataFound.text = "Waiting for host to join"
+            relMute.isVisible = !isShow
+            tvNoDataFound.text = "Waiting for host to join..."
         }
     }
 
@@ -209,8 +271,6 @@ class LiveEventFragment : BaseFragment() {
 
     private fun setupRemoteVideo(uid: Int) {
 
-        binding?.videoContainer?.removeAllViews()
-
         val surfaceView = RtcEngine.CreateRendererView(requireContext())
 
         binding?.videoContainer?.addView(surfaceView)
@@ -222,6 +282,14 @@ class LiveEventFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        AgoraManager.getEngine()?.leaveChannel()
+
+        binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
 
         AgoraManager.getEngine()?.leaveChannel()
 
