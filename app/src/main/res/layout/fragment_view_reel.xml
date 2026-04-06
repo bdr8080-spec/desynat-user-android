@@ -17,33 +17,46 @@
         android:text="Reel"
         android:textColor="@color/black"
         android:textSize="@dimen/_13sdp"
+        android:elevation="@dimen/_4sdp"
         android:textAlignment="center"
-        android:background="@color/transparent"
+        android:background="@color/white"
         android:drawableStart="@drawable/ic_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:visibility="gone"
-        android:id="@+id/ivStory"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:elevation="@dimen/_1sdp"
+        android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
-        app:layout_constraintBottom_toTopOf="@+id/tvTitle"/>
+        app:layout_constraintBottom_toTopOf="@+id/videoControls">
 
-    <VideoView
-        android:id="@+id/videoStory"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvToolbar"
-        app:layout_constraintBottom_toTopOf="@+id/videoControls"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="gone"
+            android:id="@+id/ivStory"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="@dimen/_1sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <VideoView
+            android:id="@+id/videoStory"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/videoControls"
@@ -173,7 +186,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:indeterminate="true"
-        android:indeterminateTint="@color/brown"
+        android:indeterminateTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

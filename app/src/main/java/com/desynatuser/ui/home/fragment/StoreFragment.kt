@@ -32,6 +32,7 @@ import com.desynatuser.databinding.StoreFilterBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.ProgressDialogUtils
@@ -49,6 +50,7 @@ class StoreFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
     var isAllBannerObserver = false
+    var isAdminObserver = false
     private var subCategoryData: GetSubCategoryResponse.Data?=null
     private var isFirstLoad = true
 
@@ -59,6 +61,9 @@ class StoreFragment : BaseFragment() {
     private var search: Job? = null
     private var lastQuery: String? = null
     var filter:String? = null
+
+    private val myStories = ArrayList<GetSellerStoryResponse.Data>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +82,7 @@ class StoreFragment : BaseFragment() {
 
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
+        getAdminStory()
         val itemJson = arguments?.getString("subCategoryData")
         if (!itemJson.isNullOrEmpty()) {
             subCategoryData = Gson().fromJson(itemJson, GetSubCategoryResponse.Data::class.java)
@@ -140,6 +146,20 @@ class StoreFragment : BaseFragment() {
     override fun initControl() {
 
         binding?.apply {
+
+            ivAdminStory.setOnClickListener {
+                if (myStories.size!=0) {
+                    val bundle = Bundle().apply {
+                        putString("from", "admin")
+                        putString("storyData", Gson().toJson(myStories))
+                    }
+                    findNavController().navigate(
+                        R.id.actions_storeFragment_to_viewStoryFragment,
+                        bundle
+                    )
+                }
+            }
+
             toolbar.tvToolbar.setOnClickListener {
                 findNavController().popBackStack()
             }
@@ -177,6 +197,13 @@ class StoreFragment : BaseFragment() {
         isObserver = true
     }
 
+
+    private fun getAdminStory(){
+        val map = HashMap<String, Any>()
+        viewModel.getAdminStory(map)
+        isAdminObserver = true
+    }
+
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
@@ -185,6 +212,20 @@ class StoreFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.getAdminStoryResult.observe(viewLifecycleOwner) { response ->
+            if (isAdminObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    myStories.clear()
+                    myStories.addAll(response.data)
+                    setAdminStory()
+
+                }
+                isAdminObserver = false
+            }
+        }
+
 
         viewModel.getHomeScreenAllBannerResult.observe(viewLifecycleOwner) { response ->
             if (isAllBannerObserver) {
@@ -354,4 +395,18 @@ class StoreFragment : BaseFragment() {
         bannerHandler.removeCallbacksAndMessages(null)
     }
 
+    private fun setAdminStory() {
+        /*  binding?.apply {
+          //    ivAdminStory.segmentCount = myStories.size
+              if (myStories.size!=0){
+                  ivAdminStory.setImageResource(R.drawable.ic_admin_highlight_story)
+              }
+              else{
+                  ivAdminStory.setImageResource(R.drawable.ic_admin_story)
+              }
+          }*/
+
+        binding?.ivHighlightStory?.isVisible = myStories.isNotEmpty()
+
+    }
 }

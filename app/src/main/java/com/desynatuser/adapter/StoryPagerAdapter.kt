@@ -9,6 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.desynatuser.databinding.ItemStoryBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
+import kotlin.div
+import kotlin.text.compareTo
+import kotlin.text.toFloat
+import kotlin.text.toInt
+import kotlin.text.toLong
+import kotlin.times
 
 class StoryPagerAdapter(
     private val stories: List<GetSellerStoryResponse.Data>,private val click:OnClick,private val onVideoReady: (position: Int, duration: Long) -> Unit
@@ -60,28 +66,65 @@ class StoryPagerAdapter(
                 val viewWidth = holder.binding.videoStory.width
                 val viewHeight = holder.binding.videoStory.height
 
-                val videoProportion = videoWidth.toFloat() / videoHeight.toFloat()
-                val viewProportion = viewWidth.toFloat() / viewHeight.toFloat()
+                val videoRatio = videoWidth.toFloat() / videoHeight
+                val viewRatio = viewWidth.toFloat() / viewHeight
 
                 val layoutParams = holder.binding.videoStory.layoutParams
 
-                if (videoProportion > viewProportion) {
-                    layoutParams.width = viewWidth
-                    layoutParams.height = (viewWidth / videoProportion).toInt()
-                } else {
+                if (videoRatio > viewRatio) {
+                    // 👉 video is wider → scale by HEIGHT (crop left/right)
                     layoutParams.height = viewHeight
-                    layoutParams.width = (viewHeight * videoProportion).toInt()
+                    layoutParams.width = (viewHeight * videoRatio).toInt()
+                } else {
+                    // 👉 video is taller → scale by WIDTH (crop top/bottom)
+                    layoutParams.width = viewWidth
+                    layoutParams.height = (viewWidth / videoRatio).toInt()
                 }
 
                 holder.binding.videoStory.layoutParams = layoutParams
 
                 mp.isLooping = false
                 holder.binding.videoLoader.isVisible = false
-                val duration = mp.duration.toLong()
 
+                val duration = mp.duration.toLong()
                 onVideoReady(position, duration)
+
                 holder.binding.videoStory.start()
             }
+
+
+            /*
+                        holder.binding.videoStory.setOnPreparedListener { mp ->
+
+                            val videoWidth = mp.videoWidth
+                            val videoHeight = mp.videoHeight
+
+                            val viewWidth = holder.binding.videoStory.width
+                            val viewHeight = holder.binding.videoStory.height
+
+                            val videoProportion = videoWidth.toFloat() / videoHeight.toFloat()
+                            val viewProportion = viewWidth.toFloat() / viewHeight.toFloat()
+
+                            val layoutParams = holder.binding.videoStory.layoutParams
+
+                            if (videoProportion > viewProportion) {
+                                layoutParams.width = viewWidth
+                                layoutParams.height = (viewWidth / videoProportion).toInt()
+                            } else {
+                                layoutParams.height = viewHeight
+                                layoutParams.width = (viewHeight * videoProportion).toInt()
+                            }
+
+                            holder.binding.videoStory.layoutParams = layoutParams
+
+                            mp.isLooping = false
+                            holder.binding.videoLoader.isVisible = false
+                            val duration = mp.duration.toLong()
+
+                            onVideoReady(position, duration)
+                            holder.binding.videoStory.start()
+                        }
+            */
 
             holder.binding.videoStory.setOnInfoListener { _, what, _ ->
 

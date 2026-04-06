@@ -31,9 +31,25 @@
                 android:src="@drawable/ic_admin_story"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_1sdp"
                 app:shapeAppearanceOverlay="@style/circle_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:visibility="gone"
+                android:id="@+id/ivHighlightStory"
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                app:strokeWidth="@dimen/_2sdp"
+                app:strokeColor="@color/brown"
+                android:clipToOutline="true"
+                android:padding="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_14sdp"
+                app:shapeAppearanceOverlay="@style/circle_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
 
             <RelativeLayout
                 android:id="@+id/relSearch"

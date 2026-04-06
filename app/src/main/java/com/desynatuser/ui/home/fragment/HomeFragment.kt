@@ -505,14 +505,18 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setAdminStory() {
-        binding?.apply {
+      /*  binding?.apply {
+        //    ivAdminStory.segmentCount = myStories.size
             if (myStories.size!=0){
                 ivAdminStory.setImageResource(R.drawable.ic_admin_highlight_story)
             }
             else{
                 ivAdminStory.setImageResource(R.drawable.ic_admin_story)
             }
-        }
+        }*/
+
+        binding?.ivHighlightStory?.isVisible = myStories.isNotEmpty()
+
     }
 
     private fun getAdminStory(){

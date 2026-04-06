@@ -71,27 +71,31 @@ class ViewReelFragment : BaseFragment() {
                 videoStory.setOnPreparedListener { mp ->
 
 
-                    val videoWidth = mp.videoWidth
-                    val videoHeight = mp.videoHeight
+                    videoStory.post {
 
-                    val viewWidth = videoStory.width
-                    val viewHeight = videoStory.height
+                        val videoWidth = mp.videoWidth.toFloat()
+                        val videoHeight = mp.videoHeight.toFloat()
 
-                    val videoProportion = videoWidth.toFloat() / videoHeight.toFloat()
-                    val viewProportion = viewWidth.toFloat() / viewHeight.toFloat()
+                        val viewWidth = videoStory.width.toFloat()
+                        val viewHeight = videoStory.height.toFloat()
 
-                    val layoutParams = videoStory.layoutParams
+                        val scale = maxOf(
+                            viewWidth / videoWidth,
+                            viewHeight / videoHeight
+                        )
 
-                    if (videoProportion > viewProportion) {
-                        layoutParams.width = viewWidth
-                        layoutParams.height = (viewWidth / videoProportion).toInt()
-                    } else {
-                        layoutParams.height = viewHeight
-                        layoutParams.width = (viewHeight * videoProportion).toInt()
+                        val scaledWidth = scale * videoWidth
+                        val scaledHeight = scale * videoHeight
+
+                        val layoutParams = videoStory.layoutParams
+                        layoutParams.width = scaledWidth.toInt()
+                        layoutParams.height = scaledHeight.toInt()
+                        videoStory.layoutParams = layoutParams
+
+                        // Center it
+                        videoStory.translationX = (viewWidth - scaledWidth) / 2
+                        videoStory.translationY = (viewHeight - scaledHeight) / 2
                     }
-
-                    videoStory.layoutParams = layoutParams
-
 
 // for center crop
                 /*    val videoWidth = mp.videoWidth

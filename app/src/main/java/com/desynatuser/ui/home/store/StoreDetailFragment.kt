@@ -15,6 +15,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -684,11 +685,12 @@ class StoreDetailFragment : BaseFragment() {
 
     private fun setStory(){
         binding?.apply {
+         //   ivProfileImage.segmentCount = storyList.size
             if (storyList.size!=0){
                 ivStoryHighlight.isVisible = true
             }
             else{
-                ivStoryHighlight.isVisible = false
+                ivStoryHighlight.isInvisible = true
             }
         }
     }
