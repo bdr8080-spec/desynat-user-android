@@ -31,12 +31,18 @@ import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
+import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
+import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
+import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetNewestProductResponse
 import com.desynatuser.ui.home.fragment.response.GetNotificationCountResponse
 import com.desynatuser.ui.home.fragment.response.GetNotificationResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
+import com.desynatuser.ui.home.fragment.response.GetTopRatedProductResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -638,5 +644,32 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Body  map: HashMap<String, Any>
     ): Response<GetAgoraTokenResponse>
+
+    @GET(Constants.BEST_SELLING_PRODUCT)
+    suspend fun getBestSellingProduct(): Response<GetBestSellingProductResponse>
+
+    @GET(Constants.TOP_RATING_PRODUCT)
+    suspend fun getTopRatedProduct(): Response<GetTopRatedProductResponse>
+
+    @GET(Constants.SUGGEST_STORE)
+    suspend fun getSuggestedStore(): Response<GetAllSuggestStoreResponse>
+
+    @GET(Constants.NEWEST_PRODUCT)
+    suspend fun getNewestProduct(): Response<GetNewestProductResponse>
+
+    @GET(Constants.GET_TICKET_TYPE)
+    suspend fun getTicketType(): Response<GetTicketTypeResponse>
+
+    @GET(Constants.GET_RAISED_TICKET)
+    suspend fun getRaisedTicket(@QueryMap map: HashMap<String, Any>): Response<GetAllRaisedTicketResponse>
+
+    @POST(Constants.RAISE_TICKET)
+    suspend fun raiseTicket(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @GET(Constants.GET_AFFILIATE_RAISED_TICKET)
+    suspend fun getAffiliateRaisedTicket(@QueryMap map: HashMap<String, Any>): Response<GetAllRaisedTicketResponse>
+
+    @POST(Constants.AFFILIATE_RAISE_TICKET)
+    suspend fun affiliateRaiseTicket(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
 }

@@ -37,12 +37,18 @@ import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
+import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
+import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
+import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetNewestProductResponse
 import com.desynatuser.ui.home.fragment.response.GetNotificationCountResponse
 import com.desynatuser.ui.home.fragment.response.GetNotificationResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
+import com.desynatuser.ui.home.fragment.response.GetTopRatedProductResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -1586,6 +1592,111 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
         )
     }
 
+    val getNewestProductLiveData = SingleLiveEvent<GetNewestProductResponse>()
+    suspend fun getNewestProduct(
+    ) {
+        handleApiCall(
+            api = {
+                api.getNewestProduct()
+            },
+            responseLiveData = getNewestProductLiveData
+        )
+    }
+
+
+    val getSuggestedStoreLiveData = SingleLiveEvent<GetAllSuggestStoreResponse>()
+    suspend fun getSuggestedStore(
+    ) {
+        handleApiCall(
+            api = {
+                api.getSuggestedStore()
+            },
+            responseLiveData = getSuggestedStoreLiveData
+        )
+    }
+
+
+    val getTopRatedProductLiveData = SingleLiveEvent<GetTopRatedProductResponse>()
+    suspend fun getTopRatedProduct(
+    ) {
+        handleApiCall(
+            api = {
+                api.getTopRatedProduct()
+            },
+            responseLiveData = getTopRatedProductLiveData
+        )
+    }
+
+
+    val getBestSellingProductLiveData = SingleLiveEvent<GetBestSellingProductResponse>()
+    suspend fun getBestSellingProduct(
+    ) {
+        handleApiCall(
+            api = {
+                api.getBestSellingProduct()
+            },
+            responseLiveData = getBestSellingProductLiveData
+        )
+    }
+
+    val getTicketTypeLiveData = SingleLiveEvent<GetTicketTypeResponse>()
+    suspend fun getTicketType(
+    ) {
+        handleApiCall(
+            api = {
+                api.getTicketType()
+            },
+            responseLiveData = getTicketTypeLiveData
+        )
+    }
+
+    var getRaisedTicketLiveData = SingleLiveEvent<GetAllRaisedTicketResponse>()
+    suspend fun getRaisedTicket(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getRaisedTicket(map)
+            },
+            responseLiveData = getRaisedTicketLiveData
+        )
+    }
+
+    var raiseTicketLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun raiseTicket(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.raiseTicket(map)
+            },
+            responseLiveData = raiseTicketLiveData
+        )
+    }
+
+    var getAffiliateRaisedTicketLiveData = SingleLiveEvent<GetAllRaisedTicketResponse>()
+    suspend fun getAffiliateRaisedTicket(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.getAffiliateRaisedTicket(map)
+            },
+            responseLiveData = getAffiliateRaisedTicketLiveData
+        )
+    }
+
+    var affiliateRaiseTicketLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun affiliateRaiseTicket(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.affiliateRaiseTicket(map)
+            },
+            responseLiveData = affiliateRaiseTicketLiveData
+        )
+    }
 
 }
 class SingleLiveEvent<T> : MutableLiveData<T>() {

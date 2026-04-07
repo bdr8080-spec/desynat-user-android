@@ -1,5 +1,8 @@
 package com.desynatuser.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -7,8 +10,14 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.desynatuser.R
 import com.desynatuser.databinding.ItemStoryBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
+import com.desynatuser.utils.CommonMethod
 import kotlin.div
 import kotlin.text.compareTo
 import kotlin.text.toFloat
@@ -59,7 +68,7 @@ class StoryPagerAdapter(
             holder.binding.videoStory.setVideoPath(url)
 
             holder.binding.videoStory.setOnPreparedListener { mp ->
-
+                holder.binding.videoLoader.indeterminateTintList = ColorStateList.valueOf(Color.WHITE)
                 val videoWidth = mp.videoWidth
                 val videoHeight = mp.videoHeight
 
@@ -72,11 +81,9 @@ class StoryPagerAdapter(
                 val layoutParams = holder.binding.videoStory.layoutParams
 
                 if (videoRatio > viewRatio) {
-                    // 👉 video is wider → scale by HEIGHT (crop left/right)
                     layoutParams.height = viewHeight
                     layoutParams.width = (viewHeight * videoRatio).toInt()
                 } else {
-                    // 👉 video is taller → scale by WIDTH (crop top/bottom)
                     layoutParams.width = viewWidth
                     layoutParams.height = (viewWidth / videoRatio).toInt()
                 }
@@ -143,11 +150,12 @@ class StoryPagerAdapter(
             }
 
         } else {
-            holder.binding.videoLoader.isVisible = false
+            holder.binding.videoLoader.isVisible = true
+            holder.binding.videoLoader.indeterminateTintList = ColorStateList.valueOf(Color.BLACK)
             holder.binding.ivStory.isVisible = true
             holder.binding.videoStory.isVisible = false
 
-            if (isGif) {
+           /* if (isGif) {
                 Glide.with(holder.itemView.context)
                     .asGif()
                     .load(url)
@@ -155,6 +163,42 @@ class StoryPagerAdapter(
             } else {
                 Glide.with(holder.itemView.context)
                     .load(url)
+                    .into(holder.binding.ivStory)
+            }*/
+
+            val requestListener = object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    p2: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    holder.binding.videoLoader.isVisible = false
+                    return false
+                }
+
+                override fun onResourceReady(
+                    p0: Drawable,
+                    p1: Any,
+                    p2: Target<Drawable>,
+                    p3: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    holder.binding.videoLoader.isVisible = false
+                    return false
+                }
+            }
+
+            if (isGif) {
+                Glide.with(holder.itemView.context)
+                    .asGif()
+                    .load(url)
+                   // .listener(requestListener)
+                    .into(holder.binding.ivStory)
+            } else {
+                Glide.with(holder.itemView.context)
+                    .load(url)
+                    .listener(requestListener)
                     .into(holder.binding.ivStory)
             }
         }
@@ -167,12 +211,14 @@ class StoryPagerAdapter(
                 .load(nextUrl)
                 .preload()
         }
-
+        holder.binding.tvTime.text = CommonMethod.getTimeAgo(story.createdAt)
         if (!story.title.isNullOrEmpty() && story.title != "null") {
             holder.binding.tvTitle.isVisible = true
+            holder.binding.viewTitle.isVisible = true
             holder.binding.tvTitle.text = story.title
         } else {
             holder.binding.tvTitle.isVisible = false
+            holder.binding.viewTitle.isVisible = false
         }
 
         holder.binding.videoStory.setOnCompletionListener {

@@ -26,12 +26,18 @@ import com.desynatuser.ui.home.chat.response.ChatDetailResponse
 import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
+import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
+import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
+import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
 import com.desynatuser.ui.home.fragment.response.GetHomeSearchResponse
+import com.desynatuser.ui.home.fragment.response.GetNewestProductResponse
 import com.desynatuser.ui.home.fragment.response.GetNotificationCountResponse
 import com.desynatuser.ui.home.fragment.response.GetNotificationResponse
 import com.desynatuser.ui.home.fragment.response.GetRecentSearchListResponse
 import com.desynatuser.ui.home.fragment.response.GetRecommendedResponse
+import com.desynatuser.ui.home.fragment.response.GetTopRatedProductResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.ApplyGiftCardResponse
 import com.desynatuser.ui.home.giftCard.response.BuyGiftCardResponse
@@ -1089,6 +1095,87 @@ val defaultBankResult: LiveData<CommonResponse>
     fun getLiveStreamingRoom() {
         viewModelScope.launch {
             repository.getLiveStreamingRoom()
+        }
+    }
+
+    val getSuggestedStoreResult: LiveData<GetAllSuggestStoreResponse>
+        get() = repository.getSuggestedStoreLiveData
+
+    fun getSuggestedStore() {
+        viewModelScope.launch {
+            repository.getSuggestedStore()
+        }
+    }
+
+    val getNewestProductResult: LiveData<GetNewestProductResponse>
+        get() = repository.getNewestProductLiveData
+
+    fun getNewestProduct() {
+        viewModelScope.launch {
+            repository.getNewestProduct()
+        }
+    }
+
+    val getTopRatedProductResult: LiveData<GetTopRatedProductResponse>
+        get() = repository.getTopRatedProductLiveData
+
+    fun getTopRatedProduct() {
+        viewModelScope.launch {
+            repository.getTopRatedProduct()
+        }
+    }
+
+    val getBestSellingProductResult: LiveData<GetBestSellingProductResponse>
+        get() = repository.getBestSellingProductLiveData
+
+    fun getBestSellingProduct() {
+        viewModelScope.launch {
+            repository.getBestSellingProduct()
+        }
+    }
+
+    val getTicketTypeResult: LiveData<GetTicketTypeResponse>
+        get() = repository.getTicketTypeLiveData
+
+    fun getTicketType() {
+        viewModelScope.launch {
+            repository.getTicketType()
+        }
+    }
+
+    val getRaisedTicketResult: LiveData<GetAllRaisedTicketResponse>
+        get() = repository.getRaisedTicketLiveData
+
+    fun getRaisedTicket(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getRaisedTicket(map)
+        }
+    }
+
+    val raiseTicketResult: LiveData<CommonResponse>
+        get() = repository.raiseTicketLiveData
+
+    fun raiseTicket(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.raiseTicket(map)
+        }
+    }
+
+    val getAffiliateRaisedTicketResult: LiveData<GetAllRaisedTicketResponse>
+        get() = repository.getAffiliateRaisedTicketLiveData
+
+    fun getAffiliateRaisedTicket(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.getAffiliateRaisedTicket(map)
+        }
+    }
+
+    val affiliateRaiseTicketResult: LiveData<CommonResponse>
+        get() = repository.affiliateRaiseTicketLiveData
+
+    fun affiliateRaiseTicket(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.affiliateRaiseTicket(map)
         }
     }
 

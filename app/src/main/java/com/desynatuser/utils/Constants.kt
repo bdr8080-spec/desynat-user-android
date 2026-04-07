@@ -161,6 +161,16 @@ object Constants {
  const val READ_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
  const val AFFILIATE_USER_NOTIFICATION_COUNT = "/api/affiliate/CountaffiliateUserNotification"
  const val GET_LIVE_STREAMING_ROOM = "/api/user/show-all-live-streaming-request"
+ const val SUGGEST_STORE = "/api/user/suggest-store"
+ const val BEST_SELLING_PRODUCT = "/api/user/best-selling-product"
+ const val TOP_RATING_PRODUCT = "/api/user/top-rating-product"
+ const val NEWEST_PRODUCT = "/api/user/newest-product"
+ const val GET_RAISED_TICKET = "/api/user/get_raised_tickets"
+ const val RAISE_TICKET = "/api/user/raise_ticket"
+
+ const val GET_AFFILIATE_RAISED_TICKET = "/api/affiliate/get_raised_tickets"
+ const val AFFILIATE_RAISE_TICKET = "/api/affiliate/raise_ticket"
+ const val GET_TICKET_TYPE = "/api/ticket_types"
  const val GET_AGORA_TOKEN = "/api/agora/token"
 
 }

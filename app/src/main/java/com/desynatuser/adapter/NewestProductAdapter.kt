@@ -1,11 +1,12 @@
 package com.desynatuser.adapter
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemCategoriesBinding
 import com.desynatuser.databinding.ItemNewestProductBinding
 
-class NewestProductAdapter(private val newestProductList: List<String>) :
+class NewestProductAdapter(private val context: Context, private val newestProductList: List<String>) :
     RecyclerView.Adapter<NewestProductAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemNewestProductBinding) :

@@ -16,6 +16,7 @@ import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,11 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSupportBinding
 import com.desynatuser.databinding.RaiseTicketDialogBinding
+import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
+import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -37,11 +43,24 @@ class SupportFragment : BaseFragment() {
     private var binding: FragmentSupportBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
-    private var ticketList = ArrayList<String>()
+    private var isRaiseObserver = false
+    private var isRaised = false
+    private var isTicketTypeObserver = false
+    private var ticketList = ArrayList<GetAllRaisedTicketResponse.Data.Data>()
+    private var ticketTypeList = ArrayList<GetTicketTypeResponse.Data>()
     private var ticketAdapter: TicketAdapter?=null
     private var search: Job? = null
     private var lastQuery: String? = null
     private var type = 0
+
+    private var currentPage = 1
+    private var lastPage = 1
+    private var totalPage = 0
+    private var totalItem=0
+    private var pageLimit=10
+    private var pagination=false
+
+    private var selectedTicketType: GetTicketTypeResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,6 +108,24 @@ class SupportFragment : BaseFragment() {
 
             })
             rvTicket.adapter = ticketAdapter
+
+            nestedScrollView.setOnScrollChangeListener { nestedScrollView: NestedScrollView, _, scrollY, _, oldScrollY ->
+                val lastChild = nestedScrollView.getChildAt(nestedScrollView.childCount - 1)
+
+                if (lastChild != null) {
+                    val diff = lastChild.bottom - (nestedScrollView.height + scrollY)
+                    if (diff == 0 && scrollY > oldScrollY) {
+                        if(totalItem==0)
+                            return@setOnScrollChangeListener
+                        if (!isObserver && !pagination && currentPage < lastPage) {
+                            pagination = true
+                            currentPage += 1
+                            getRaisedTicket(false)
+                            binding?.progressBar?.isVisible = true
+                        }
+                    }
+                }
+            }
 
             when(type){
                 0->{
@@ -159,6 +196,122 @@ class SupportFragment : BaseFragment() {
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+                isObserver = false
+            }
+        }
+
+        viewModel.getRaisedTicketResult.observe(viewLifecycleOwner){response ->
+            if (isObserver){
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+
+                if (isRaised){
+                    isRaised = false
+                    CommonMethod.showSuccessDialog(requireActivity(),"Ticket Raised Successfully!")
+                }
+
+                currentPage = response.data.currentPage
+                totalItem = response.data.total
+
+                lastPage = response.data.lastPage
+
+                val oldSize = ticketList.size
+                if (!pagination){
+                    ticketList.clear()
+                }
+                val newItems = response.data.data ?: emptyList()
+
+                ticketList.addAll(newItems)
+                checkData()
+
+                if (pagination){
+
+                    response.data.data?.size?.let {
+                        ticketAdapter?.notifyItemRangeInserted(oldSize,
+                            it
+                        )
+                    }
+                }
+                else{
+                    ticketAdapter?.notifyDataSetChanged()
+                }
+
+                pagination = false
+                isObserver = false
+            }
+        }
+
+        viewModel.raiseTicketResult.observe(viewLifecycleOwner) { response ->
+            if (isRaiseObserver) {
+                isRaised = true
+                selectedTicketType = null
+                getRaisedTicket(false)
+                isRaiseObserver = false
+            }
+        }
+
+        viewModel.affiliateRaiseTicketResult.observe(viewLifecycleOwner) { response ->
+            if (isRaiseObserver) {
+                isRaised = true
+                selectedTicketType = null
+                getRaisedTicket(false)
+                isRaiseObserver = false
+            }
+        }
+
+        viewModel.getTicketTypeResult.observe(viewLifecycleOwner) { response ->
+            if (isTicketTypeObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+                ticketTypeList.clear()
+                ticketTypeList.addAll(response.data)
+                isTicketTypeObserver = false
+            }
+        }
+
+        viewModel.getAffiliateRaisedTicketResult.observe(viewLifecycleOwner){response ->
+            if (isObserver){
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+                if (isRaised){
+                    isRaised = false
+                    CommonMethod.showSuccessDialog(requireActivity(),"Ticket Raised Successfully!")
+                }
+                currentPage = response.data.currentPage
+                totalItem = response.data.total
+
+                lastPage = response.data.lastPage
+
+                val oldSize = ticketList.size
+                if (!pagination){
+                    ticketList.clear()
+                }
+                val newItems = response.data.data ?: emptyList()
+
+                ticketList.addAll(newItems)
+                checkData()
+
+                if (pagination){
+
+                    response.data.data?.size?.let {
+                        ticketAdapter?.notifyItemRangeInserted(oldSize,
+                            it
+                        )
+                    }
+                }
+                else{
+                    ticketAdapter?.notifyDataSetChanged()
+                }
+
+                pagination = false
+                isObserver = false
+            }
+        }
+
     }
 
     private fun ticketManagement(){
@@ -239,7 +392,17 @@ class SupportFragment : BaseFragment() {
                 dialog.dismiss()
             }
 
+            etTicketType.setOnClickListener {
+                showTicketTypePopup(dialogBinding)
+            }
+
             btnSubmit.setOnClickListener{
+                val map = HashMap<String,Any>()
+                map["ticket_type_id"] = selectedTicketType?.id.toString()
+                map["title"] = etTitle.text?.trim().toString()
+                map["description"] = etDescription.text?.trim().toString()
+                map["file"] = currentPage
+                raiseTicket(map)
                 dialog.dismiss()
             }
 
@@ -248,5 +411,64 @@ class SupportFragment : BaseFragment() {
         dialog.show()
     }
 
+    private fun getRaisedTicket(isLoading: Boolean=true){
+        val map = HashMap<String,Any>()
+        if (lastQuery!=null){
+            map["search"] = lastQuery.toString()
+        }
+        map["limit"] = "10"
+        map["page"] = currentPage
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            viewModel.getAffiliateRaisedTicket(map)
+        }
+        else{
+            viewModel.getRaisedTicket(map)
+        }
+        if (isLoading){
+            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        }
+        isObserver = true
+    }
+
+    private fun raiseTicket(map: HashMap<String, Any>) {
+
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            viewModel.affiliateRaiseTicket(map)
+        }
+        else{
+            viewModel.raiseTicket(map)
+        }
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isRaiseObserver = true
+    }
+
+
+    private fun getTicketType(){
+        viewModel.getTicketType()
+        isTicketTypeObserver = true
+    }
+
+    private fun checkData(){
+        binding?.tvNoDataFound?.isVisible = ticketList.isEmpty()
+    }
+
+    private fun showTicketTypePopup(dialogBinding: RaiseTicketDialogBinding) {
+
+        val popup = android.widget.PopupMenu(requireContext(), dialogBinding.etTicketType)
+
+        ticketTypeList.forEachIndexed { index, item ->
+            popup.menu.add(0, index, index, item.name) // use correct field name
+        }
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            selectedTicketType = ticketTypeList[menuItem.itemId]
+
+            dialogBinding.etTicketType.setText(selectedTicketType?.name)
+
+            true
+        }
+
+        popup.show()
+    }
 
 }

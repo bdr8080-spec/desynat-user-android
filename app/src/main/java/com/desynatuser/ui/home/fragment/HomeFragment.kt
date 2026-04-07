@@ -41,7 +41,6 @@ import com.desynatuser.adapter.NewestProductAdapter
 import com.desynatuser.adapter.PremiumStoreBannerViewPagerAdapter
 import com.desynatuser.adapter.SuggestedStoreAdapter
 import com.desynatuser.adapter.TopRatedAdapter
-import com.desynatuser.adapter.ViewPagerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.data.view_model.LocationViewModel
@@ -50,7 +49,11 @@ import com.desynatuser.databinding.HomeBannerDialogBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.HomeActivity
+import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
+import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
+import com.desynatuser.ui.home.fragment.response.GetNewestProductResponse
+import com.desynatuser.ui.home.fragment.response.GetTopRatedProductResponse
 import com.desynatuser.ui.home.imageDetector.AnnotateRequest
 import com.desynatuser.ui.home.imageDetector.Feature
 import com.desynatuser.ui.home.imageDetector.ImageContent
@@ -92,9 +95,19 @@ class HomeFragment : BaseFragment() {
     var isHomeCategoryBannerObserver = false
     var isCartObserver = false
     var isNotificationObserver = false
+    private var isSuggestedStoreObserver = false
+    private var isBestSellingObserver = false
+    private var isTopRatedObserver = false
+    private var isNewestObserver = false
+
+    private val topRatedList = ArrayList<GetTopRatedProductResponse.Data>()
+    private val bestSellingList = ArrayList<GetBestSellingProductResponse.Data>()
+    private val newestProductList = ArrayList<GetNewestProductResponse.Data>()
+    private val suggestedStoreList = ArrayList<GetAllSuggestStoreResponse.Data>()
+
+
     private var hasNavigatedFromML = false
 
-    private var adapter: ViewPagerAdapter?=null
     private var user: LoginResponse.Data?=null
 
     var isCategoryObserver = false
@@ -201,16 +214,16 @@ class HomeFragment : BaseFragment() {
                 viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
 
-                bestSellingAdapter = BestSellingAdapter(listOf("","","","",""))
+                bestSellingAdapter = BestSellingAdapter(requireActivity(),listOf("","","","",""))
                 rvBestSelling.adapter = bestSellingAdapter
 
-                topRatedAdapter = TopRatedAdapter(listOf("","","","",""))
+                topRatedAdapter = TopRatedAdapter(requireActivity(),listOf("","","","",""))
                 rvTopRated.adapter = topRatedAdapter
 
-                suggestedStoreAdapter = SuggestedStoreAdapter(listOf("","","","","","","","","",""))
+                suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),listOf("","","","","","","","","",""))
                 rvSuggestedStore.adapter = suggestedStoreAdapter
 
-                newestProductAdapter = NewestProductAdapter(listOf("","","","","","","","","",""))
+                newestProductAdapter = NewestProductAdapter(requireActivity(),listOf("","","","","","","","","",""))
                 rvNewestProducts.adapter = newestProductAdapter
 
                 categoryList.clear()
@@ -502,6 +515,55 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+        viewModel.getSuggestedStoreResult.observe(viewLifecycleOwner) { response ->
+            if (isSuggestedStoreObserver) {
+                response?.let {
+                    suggestedStoreList.clear()
+                    suggestedStoreList.addAll(response.data)
+                    suggestedStoreAdapter?.notifyDataSetChanged()
+
+                }
+                isSuggestedStoreObserver = false
+            }
+        }
+
+        viewModel.getNewestProductResult.observe(viewLifecycleOwner) { response ->
+            if (isNewestObserver) {
+                response?.let {
+                    newestProductList.clear()
+                    newestProductList.addAll(response.data)
+                    newestProductAdapter?.notifyDataSetChanged()
+
+                }
+                isNewestObserver = false
+            }
+        }
+
+        viewModel.getTopRatedProductResult.observe(viewLifecycleOwner) { response ->
+            if (isTopRatedObserver) {
+                response?.let {
+                    topRatedList.clear()
+                    topRatedList.addAll(response.data)
+                    topRatedAdapter?.notifyDataSetChanged()
+
+                }
+                isTopRatedObserver = false
+            }
+        }
+
+        viewModel.getBestSellingProductResult.observe(viewLifecycleOwner) { response ->
+            if (isBestSellingObserver) {
+                response?.let {
+                    bestSellingList.clear()
+                    bestSellingList.addAll(response.data)
+                    bestSellingAdapter?.notifyDataSetChanged()
+
+                }
+                isBestSellingObserver = false
+            }
+        }
+
+
     }
 
     private fun setAdminStory() {
@@ -617,6 +679,26 @@ class HomeFragment : BaseFragment() {
     private fun notificationCount(){
         viewModel.userNotificationCount()
         isNotificationObserver = true
+    }
+
+    private fun getSuggestedStore(){
+        viewModel.getSuggestedStore()
+        isSuggestedStoreObserver = true
+    }
+
+    private fun getTopRatedProduct(){
+        viewModel.getTopRatedProduct()
+        isTopRatedObserver = true
+    }
+
+    private fun getNewestProduct(){
+        viewModel.getNewestProduct()
+        isNewestObserver = true
+    }
+
+    private fun getBestSellingProduct(){
+        viewModel.getBestSellingProduct()
+        isBestSellingObserver = true
     }
 
     private fun openSpeechDialog() {

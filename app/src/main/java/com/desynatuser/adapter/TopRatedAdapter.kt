@@ -1,11 +1,12 @@
 package com.desynatuser.adapter
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemCategoriesBinding
 import com.desynatuser.databinding.ItemTopRatedBinding
 
-class TopRatedAdapter(private val topRatedList: List<String>) :
+class TopRatedAdapter(private val context: Context, private val topRatedList: List<String>) :
     RecyclerView.Adapter<TopRatedAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemTopRatedBinding) :

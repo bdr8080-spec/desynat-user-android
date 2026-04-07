@@ -1,11 +1,12 @@
 package com.desynatuser.adapter
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemCategoriesBinding
 import com.desynatuser.databinding.ItemTopRatedBinding
 
-class BestSellingAdapter(private val bestSellingList: List<String>) :
+class BestSellingAdapter(private val context: Context, private val bestSellingList: List<String>) :
     RecyclerView.Adapter<BestSellingAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemTopRatedBinding) :
