@@ -35,7 +35,6 @@ import com.desynatuser.R
 import com.desynatuser.adapter.BestSellingAdapter
 import com.desynatuser.adapter.CategoryAdapter
 import com.desynatuser.adapter.DiscountedDealBannerViewPagerAdapter
-import com.desynatuser.adapter.HomeFullScreenBannerAdapter
 import com.desynatuser.adapter.HomeWomenBannerViewPagerAdapter
 import com.desynatuser.adapter.NewestProductAdapter
 import com.desynatuser.adapter.PremiumStoreBannerViewPagerAdapter
@@ -45,7 +44,6 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.FragmentHomeBinding
-import com.desynatuser.databinding.HomeBannerDialogBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.HomeActivity
@@ -214,16 +212,20 @@ class HomeFragment : BaseFragment() {
                 viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
 
-                bestSellingAdapter = BestSellingAdapter(requireActivity(),listOf("","","","",""))
+             //   bestSellingAdapter = BestSellingAdapter(requireActivity(),listOf("","","","",""))
+                bestSellingAdapter = BestSellingAdapter(requireActivity(),bestSellingList)
                 rvBestSelling.adapter = bestSellingAdapter
 
-                topRatedAdapter = TopRatedAdapter(requireActivity(),listOf("","","","",""))
+           //     topRatedAdapter = TopRatedAdapter(requireActivity(),listOf("","","","",""))
+                topRatedAdapter = TopRatedAdapter(requireActivity(),topRatedList)
                 rvTopRated.adapter = topRatedAdapter
 
-                suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),listOf("","","","","","","","","",""))
+          //      suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),listOf("","","","","","","","","",""))
+                suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),suggestedStoreList)
                 rvSuggestedStore.adapter = suggestedStoreAdapter
 
-                newestProductAdapter = NewestProductAdapter(requireActivity(),listOf("","","","","","","","","",""))
+         //       newestProductAdapter = NewestProductAdapter(requireActivity(),listOf("","","","","","","","","",""))
+                newestProductAdapter = NewestProductAdapter(requireActivity(),newestProductList)
                 rvNewestProducts.adapter = newestProductAdapter
 
                 categoryList.clear()
@@ -282,6 +284,12 @@ class HomeFragment : BaseFragment() {
         getHomeScreenDealBanner()
       //  getHomeScreenCategoryBanner()
 
+        if (SharedPreference.get(requireActivity()).accessToken!="") {
+            getSuggestedStore()
+            getNewestProduct()
+            getBestSellingProduct()
+            getTopRatedProduct()
+        }
     }
 
     override fun initControl() {
@@ -521,6 +529,12 @@ class HomeFragment : BaseFragment() {
                     suggestedStoreList.clear()
                     suggestedStoreList.addAll(response.data)
                     suggestedStoreAdapter?.notifyDataSetChanged()
+                    if (suggestedStoreList.size==0){
+                        binding?.tvNoSuggested?.isVisible = true
+                    }
+                    else{
+                        binding?.tvNoSuggested?.isVisible = false
+                    }
 
                 }
                 isSuggestedStoreObserver = false
@@ -533,7 +547,12 @@ class HomeFragment : BaseFragment() {
                     newestProductList.clear()
                     newestProductList.addAll(response.data)
                     newestProductAdapter?.notifyDataSetChanged()
-
+                    if (newestProductList.size==0){
+                        binding?.tvNoNewest?.isVisible = true
+                    }
+                    else{
+                        binding?.tvNoNewest?.isVisible = false
+                    }
                 }
                 isNewestObserver = false
             }
@@ -545,7 +564,12 @@ class HomeFragment : BaseFragment() {
                     topRatedList.clear()
                     topRatedList.addAll(response.data)
                     topRatedAdapter?.notifyDataSetChanged()
-
+                    if (topRatedList.size==0){
+                        binding?.tvNoTopRated?.isVisible = true
+                    }
+                    else{
+                        binding?.tvNoTopRated?.isVisible = false
+                    }
                 }
                 isTopRatedObserver = false
             }
@@ -557,7 +581,12 @@ class HomeFragment : BaseFragment() {
                     bestSellingList.clear()
                     bestSellingList.addAll(response.data)
                     bestSellingAdapter?.notifyDataSetChanged()
-
+                    if (bestSellingList.size==0){
+                        binding?.tvNoBestSelling?.isVisible = true
+                    }
+                    else{
+                        binding?.tvNoBestSelling?.isVisible = false
+                    }
                 }
                 isBestSellingObserver = false
             }

@@ -123,7 +123,7 @@ class MainRepository @Inject constructor(
     ) {
         handleApiCall(
             api = {
-                api.uploadImage(imageFile?.toMultipartPart("image")
+                api.uploadImage(imageFile?.toMultipartPart("file")
                 )
             },
             responseLiveData = responseUploadImage

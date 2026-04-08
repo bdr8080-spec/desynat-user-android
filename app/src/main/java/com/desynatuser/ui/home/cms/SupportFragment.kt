@@ -29,13 +29,16 @@ import com.desynatuser.databinding.RaiseTicketDialogBinding
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 import kotlin.getValue
 
 @AndroidEntryPoint
@@ -59,6 +62,28 @@ class SupportFragment : BaseFragment() {
     private var totalItem=0
     private var pageLimit=10
     private var pagination=false
+
+    private var dialog: Dialog?=null
+    private var dialogBinding: RaiseTicketDialogBinding?=null
+
+    var isImageObserver = false
+    private lateinit var imagePicker: ImagePicker
+    private var imageFile: File? = null
+    private var imageUrl:String?=null
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            imagePicker.onCameraResult(success)
+        }
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            imagePicker.onGalleryResult(uri)
+        }
+
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            imagePicker.onPermissionResult(granted)
+        }
 
     private var selectedTicketType: GetTicketTypeResponse.Data?=null
 
@@ -94,7 +119,8 @@ class SupportFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver){
-
+                            currentPage = 1
+                            getRaisedTicket(false)
                         }
                     }
 
@@ -103,7 +129,10 @@ class SupportFragment : BaseFragment() {
 
             ticketAdapter = TicketAdapter(requireActivity(),ticketList,object : TicketAdapter.OnClick{
                 override fun click(position: Int, type: Int) {
-                    findNavController().navigate(R.id.action_supportFragment_to_ticketDetailFragment)
+                    val bundle = Bundle().apply {
+                        putString("ticketData", Gson().toJson(ticketList[position]))
+                    }
+                    findNavController().navigate(R.id.action_supportFragment_to_ticketDetailFragment,bundle)
                 }
 
             })
@@ -115,13 +144,15 @@ class SupportFragment : BaseFragment() {
                 if (lastChild != null) {
                     val diff = lastChild.bottom - (nestedScrollView.height + scrollY)
                     if (diff == 0 && scrollY > oldScrollY) {
-                        if(totalItem==0)
-                            return@setOnScrollChangeListener
-                        if (!isObserver && !pagination && currentPage < lastPage) {
-                            pagination = true
-                            currentPage += 1
-                            getRaisedTicket(false)
-                            binding?.progressBar?.isVisible = true
+                        if (type==2) {
+                            if (totalItem == 0)
+                                return@setOnScrollChangeListener
+                            if (!isObserver && !pagination && currentPage < lastPage) {
+                                pagination = true
+                                currentPage += 1
+                                getRaisedTicket(false)
+                                binding?.progressBar?.isVisible = true
+                            }
                         }
                     }
                 }
@@ -133,6 +164,18 @@ class SupportFragment : BaseFragment() {
                 }
                 1->{
                    ticketManagement()
+                }
+            }
+
+            imagePicker = ImagePicker(
+                requireActivity(),
+                cameraLauncher,
+                galleryLauncher,
+                permissionLauncher
+            ) { uri ->
+                uri?.let {
+                    imageFile = CommonMethod.uriToFile(requireActivity(), it)
+                    dialogBinding?.ivDoc?.setImageURI(it)
                 }
             }
         }
@@ -204,6 +247,19 @@ class SupportFragment : BaseFragment() {
             }
         }
 
+
+        viewModel.uploadImageResult.observe(viewLifecycleOwner) { response ->
+            if (isImageObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    imageUrl = response.data.url
+                    raiseTicket()
+
+                }
+                isImageObserver = false
+            }
+        }
+
         viewModel.getRaisedTicketResult.observe(viewLifecycleOwner){response ->
             if (isObserver){
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -249,6 +305,9 @@ class SupportFragment : BaseFragment() {
             if (isRaiseObserver) {
                 isRaised = true
                 selectedTicketType = null
+                imageUrl = null
+                imageFile = null
+                currentPage = 1
                 getRaisedTicket(false)
                 isRaiseObserver = false
             }
@@ -258,6 +317,9 @@ class SupportFragment : BaseFragment() {
             if (isRaiseObserver) {
                 isRaised = true
                 selectedTicketType = null
+                imageUrl = null
+                imageFile = null
+                currentPage = 1
                 getRaisedTicket(false)
                 isRaiseObserver = false
             }
@@ -317,6 +379,11 @@ class SupportFragment : BaseFragment() {
     private fun ticketManagement(){
         binding?.apply {
             type = 1
+            getRaisedTicket()
+            if (ticketList.isEmpty()){
+                getTicketType()
+            }
+
             llTicket.isVisible = true
             llContact.isVisible = false
             tvContact.background = null
@@ -370,26 +437,30 @@ class SupportFragment : BaseFragment() {
         }
 
     private fun raiseTicketDialog() {
-        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
-        val dialogBinding = RaiseTicketDialogBinding.inflate(LayoutInflater.from(context))
-        dialogBinding.root.let { dialog.setContentView(it) }
+        dialog = Dialog(requireActivity(), R.style.CustomDialog)
+        dialogBinding = RaiseTicketDialogBinding.inflate(LayoutInflater.from(context))
+        dialogBinding?.root.let { it?.let { it1 -> dialog?.setContentView(it1) } }
 
-        val window: Window = dialog.window!!
+        val window: Window = dialog?.window!!
         window.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.setCancelable(false)
+        dialog?.setCancelable(false)
 
         val params: WindowManager.LayoutParams = window.attributes
         params.gravity = Gravity.BOTTOM
         window.attributes = params
 
-        dialogBinding.apply {
+        dialogBinding?.apply {
+
+            ivDoc.setOnClickListener {
+                imagePicker.showImageSourceDialog()
+            }
 
             tvToolbar.setOnClickListener {
-                dialog.dismiss()
+                dialog?.dismiss()
             }
 
             etTicketType.setOnClickListener {
@@ -397,18 +468,21 @@ class SupportFragment : BaseFragment() {
             }
 
             btnSubmit.setOnClickListener{
-                val map = HashMap<String,Any>()
-                map["ticket_type_id"] = selectedTicketType?.id.toString()
-                map["title"] = etTitle.text?.trim().toString()
-                map["description"] = etDescription.text?.trim().toString()
-                map["file"] = currentPage
-                raiseTicket(map)
-                dialog.dismiss()
+
+                if (imageFile!=null){
+                    uploadFile(imageFile!!)
+                }
+                else{
+                    raiseTicket()
+                }
+
+
+                dialog?.dismiss()
             }
 
         }
 
-        dialog.show()
+        dialog?.show()
     }
 
     private fun getRaisedTicket(isLoading: Boolean=true){
@@ -430,7 +504,14 @@ class SupportFragment : BaseFragment() {
         isObserver = true
     }
 
-    private fun raiseTicket(map: HashMap<String, Any>) {
+    private fun raiseTicket() {
+        val map = HashMap<String,Any>()
+        map["ticket_type_id"] = selectedTicketType?.id.toString()
+        map["title"] = dialogBinding?.etTitle?.text?.trim().toString()
+        map["description"] = dialogBinding?.etDescription?.text?.trim().toString()
+        if (imageUrl!=null){
+            map["file"] = imageUrl.toString()
+        }
 
         if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
             viewModel.affiliateRaiseTicket(map)
@@ -442,6 +523,11 @@ class SupportFragment : BaseFragment() {
         isRaiseObserver = true
     }
 
+    fun uploadFile(image:File){
+        viewModel.uploadImage(image)
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
+        isImageObserver = true
+    }
 
     private fun getTicketType(){
         viewModel.getTicketType()
@@ -452,9 +538,9 @@ class SupportFragment : BaseFragment() {
         binding?.tvNoDataFound?.isVisible = ticketList.isEmpty()
     }
 
-    private fun showTicketTypePopup(dialogBinding: RaiseTicketDialogBinding) {
+    private fun showTicketTypePopup(dialogBinding: RaiseTicketDialogBinding?) {
 
-        val popup = android.widget.PopupMenu(requireContext(), dialogBinding.etTicketType)
+        val popup = android.widget.PopupMenu(requireContext(), dialogBinding?.etTicketType)
 
         ticketTypeList.forEachIndexed { index, item ->
             popup.menu.add(0, index, index, item.name) // use correct field name
@@ -463,7 +549,7 @@ class SupportFragment : BaseFragment() {
         popup.setOnMenuItemClickListener { menuItem ->
             selectedTicketType = ticketTypeList[menuItem.itemId]
 
-            dialogBinding.etTicketType.setText(selectedTicketType?.name)
+            dialogBinding?.etTicketType?.setText(selectedTicketType?.name)
 
             true
         }

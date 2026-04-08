@@ -112,6 +112,15 @@ class ProfileFragment : BaseFragment() {
                 }
             }
 
+            rlSupport.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    findNavController().navigate(R.id.action_profileFragment_to_supportFragment)
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+            }
+
           /*  rlLanguage.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("from", "profile")
@@ -122,15 +131,6 @@ class ProfileFragment : BaseFragment() {
             rlSetting.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
                 findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
-                }
-                else{
-                    CommonMethod.showLoginAlert(requireActivity())
-                }
-            }
-
-            rlSupport.setOnClickListener {
-                if (SharedPreference.get(requireActivity()).accessToken!="") {
-                    findNavController().navigate(R.id.action_profileFragment_to_supportFragment)
                 }
                 else{
                     CommonMethod.showLoginAlert(requireActivity())

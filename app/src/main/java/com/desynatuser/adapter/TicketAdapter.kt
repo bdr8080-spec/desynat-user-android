@@ -36,6 +36,10 @@ class TicketAdapter(var context:Context, var ticketList: ArrayList<GetAllRaisedT
                     tvStatusValue.setTextColor(Color.parseColor("#17854C"))
                 }
                 }
+
+            root.setOnClickListener {
+                onClick.click(position,1)
+            }
             }
         }
 

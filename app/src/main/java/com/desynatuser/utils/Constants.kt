@@ -23,7 +23,8 @@ object Constants {
     var cartItem=0
     var DEVICE_TYPE=2
 
-    const val UPLOAD = "/api/upload"
+   // const val UPLOAD = "/api/upload"
+    const val UPLOAD = "/api/uploadFile"
     const val REGISTER = "/api/register"
     const val LOGIN = "/api/login"
     const val OTP_VERIFY = "/api/verify_otp"
@@ -165,12 +166,12 @@ object Constants {
  const val BEST_SELLING_PRODUCT = "/api/user/best-selling-product"
  const val TOP_RATING_PRODUCT = "/api/user/top-rating-product"
  const val NEWEST_PRODUCT = "/api/user/newest-product"
+
+ const val GET_TICKET_TYPE = "/api/ticket_types"
  const val GET_RAISED_TICKET = "/api/user/get_raised_tickets"
  const val RAISE_TICKET = "/api/user/raise_ticket"
-
  const val GET_AFFILIATE_RAISED_TICKET = "/api/affiliate/get_raised_tickets"
  const val AFFILIATE_RAISE_TICKET = "/api/affiliate/raise_ticket"
- const val GET_TICKET_TYPE = "/api/ticket_types"
  const val GET_AGORA_TOKEN = "/api/agora/token"
 
 }

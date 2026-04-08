@@ -381,6 +381,19 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvNoSuggested"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Suggested Store Found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingVertical="@dimen/_30sdp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Best Selling"
@@ -402,6 +415,19 @@
                 app:spanCount="5"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvNoBestSelling"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Best Selling Product Found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingVertical="@dimen/_30sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvBrowseSomePremium"
@@ -470,6 +496,21 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvNoTopRated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Top Rated Product Found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingVertical="@dimen/_30sdp" />
+
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvDealDiscounted"
                 android:layout_width="wrap_content"
@@ -536,6 +577,19 @@
                 tools:itemCount="6"
                 app:spanCount="2"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvNoNewest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Newest Product Found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingVertical="@dimen/_30sdp" />
 
         </LinearLayout>
 

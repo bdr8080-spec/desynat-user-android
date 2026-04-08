@@ -3,25 +3,34 @@ package com.desynatuser.adapter
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.desynatuser.databinding.ItemCategoriesBinding
+import com.bumptech.glide.Glide
+import com.desynatuser.R
 import com.desynatuser.databinding.ItemSuggestedStoreBinding
+import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 
-class SuggestedStoreAdapter(private val context: Context, private val categoryList: List<String>) :
+class SuggestedStoreAdapter(private val context: Context, private val suggestedStoreList: List<GetAllSuggestStoreResponse.Data>) :
+//class SuggestedStoreAdapter(private val context: Context, private val suggestedStoreList: List<String>) :
     RecyclerView.Adapter<SuggestedStoreAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemSuggestedStoreBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(position: Int) = with(binding) {
+            val suggestedStoreData = suggestedStoreList[position]
+            Glide.with(context).load(suggestedStoreData?.storeImage).placeholder(R.drawable.ic_placeholder).into(ivStore)
+        }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
+    }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
         return ViewHolder(
             ItemSuggestedStoreBinding.inflate(
                 android.view.LayoutInflater.from(parent.context), parent, false)
         )
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.bind(position)
 
     }
 
-    override fun getItemCount(): Int = categoryList.size
+    override fun getItemCount(): Int = suggestedStoreList.size
 }

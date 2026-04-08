@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_45sdp"
-    android:layout_height="@dimen/_45sdp"
+    android:layout_width="@dimen/_46sdp"
+    android:layout_height="@dimen/_46sdp"
     android:layout_marginEnd="@dimen/_15sdp"
     android:layout_marginBottom="@dimen/_15sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="@dimen/_45sdp"
-        android:layout_height="@dimen/_45sdp"
+        android:id="@+id/ivStore"
+        android:layout_width="@dimen/_46sdp"
+        android:layout_height="@dimen/_46sdp"
         android:layout_margin="@dimen/_1sdp"
         android:src="@drawable/suggested"
         android:scaleType="centerCrop"
         app:strokeColor="@color/brown"
         app:strokeWidth="@dimen/_1sdp"
+        android:padding="@dimen/_1sdp"
+        android:layout_centerInParent="true"
         app:shapeAppearanceOverlay="@style/circle_image"/>
 
 </RelativeLayout>
