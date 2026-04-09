@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemCategoriesBinding
 import com.desynatuser.databinding.ItemNewestProductBinding
 import com.desynatuser.ui.home.fragment.response.GetNewestProductResponse
 import com.desynatuser.utils.CommonMethod
 
-class NewestProductAdapter(private val context: Context, private val newestProductList: List<GetNewestProductResponse.Data>) :
-//class NewestProductAdapter(private val context: Context, private val newestProductList: List<String>) :
+class NewestProductAdapter(private val context: Context, private val newestProductList: List<GetNewestProductResponse.Data>, var onClick: OnClick) :
     RecyclerView.Adapter<NewestProductAdapter.ViewHolder>() {
-
+    interface OnClick{
+        fun onItemClick(position: Int)
+    }
     inner class ViewHolder(val binding: ItemNewestProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) = with(binding) {
@@ -30,6 +30,9 @@ class NewestProductAdapter(private val context: Context, private val newestProdu
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
+            }
+            root.setOnClickListener {
+                onClick.onItemClick(position)
             }
         }
 

@@ -381,7 +381,7 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/tvNoSuggested"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -417,7 +417,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/tvNoBestSelling"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -498,7 +498,7 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/tvNoTopRated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -579,7 +579,7 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/tvNoNewest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import com.desynatuser.R
 import com.desynatuser.base.BaseActivity
 import com.desynatuser.databinding.ActivitySplashBinding
 import com.desynatuser.ui.affiliateUser.AffiliateHomeActivity
@@ -20,6 +23,12 @@ class SplashActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.black)
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightNavigationBars = false
+
+
         initView()
         initControl()
         observer()

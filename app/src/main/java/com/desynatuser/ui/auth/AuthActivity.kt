@@ -2,6 +2,8 @@ package com.desynatuser.ui.auth
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,11 @@ class AuthActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.black)
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightNavigationBars = false
+
         initView()
         initControl()
         observer()

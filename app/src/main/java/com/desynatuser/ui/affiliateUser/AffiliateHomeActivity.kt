@@ -2,7 +2,9 @@ package com.desynatuser.ui.affiliateUser
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -29,6 +31,11 @@ class AffiliateHomeActivity : BaseActivity() {
         binding = ActivityAffiliateHomeBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         CommonMethod.detectGestureMode(binding?.root!!, binding?.viewBottom!!)
+
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.black)
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightNavigationBars = false
+
 
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
 //            val imeInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom

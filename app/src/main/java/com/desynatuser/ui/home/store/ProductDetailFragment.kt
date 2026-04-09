@@ -116,8 +116,7 @@ class ProductDetailFragment : BaseFragment() {
         })
         binding?.rvSimilarProduct?.adapter = similarProductAdapter
 
-        colorList.clear()
-        colorList.addAll(productInfo)
+
         /*for(i in 0 until (productData?.productVariants?.size ?: 0)){
             productData?.productVariants?.get(i)?.color?.let { colorList.add(it) }
         }*/
@@ -177,6 +176,9 @@ class ProductDetailFragment : BaseFragment() {
            // ratingBar.rating = productDetailData?.reviewRating
             productInfo = productDetailData?.productVariants?.let { mapVariantsToProducts(it) }!!
 
+            colorList.clear()
+            colorList.addAll(productInfo)
+            colorAdapter?.notifyDataSetChanged()
             btnCustomOrder.isVisible = productDetailData?.customizedProduct=="1"
 
             if (productDetailData?.wishlist==1) {

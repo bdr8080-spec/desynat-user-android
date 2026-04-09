@@ -43,6 +43,11 @@
             android:id="@+id/action_homeFragment_to_viewStoryFragment"
             app:destination="@id/viewStory"/>
 
+        <action
+            android:id="@+id/action_homeFragment_to_productDetailFragment"
+            app:destination="@id/productDetail"/>
+
+
     </fragment>
 
     <fragment

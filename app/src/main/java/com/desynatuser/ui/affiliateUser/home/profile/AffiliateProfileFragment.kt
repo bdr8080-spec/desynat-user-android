@@ -79,6 +79,10 @@ class AffiliateProfileFragment : BaseFragment() {
                 requireActivity().finish()
             }
 
+            rlSupport.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_supportFragment)
+            }
+
 
            /* rlLanguage.setOnClickListener {
                 val bundle = Bundle().apply {
@@ -89,10 +93,6 @@ class AffiliateProfileFragment : BaseFragment() {
 
             rlSetting.setOnClickListener {
                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_settingFragment)
-            }
-
-            rlSupport.setOnClickListener {
-                findNavController().navigate(R.id.action_affiliateProfileFragment_to_supportFragment)
             }
 
             rlFaq.setOnClickListener {

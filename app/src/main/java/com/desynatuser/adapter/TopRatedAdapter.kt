@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
-import com.desynatuser.databinding.ItemCategoriesBinding
 import com.desynatuser.databinding.ItemTopRatedBinding
 import com.desynatuser.ui.home.fragment.response.GetTopRatedProductResponse
 import com.desynatuser.utils.CommonMethod
 
-class TopRatedAdapter(private val context: Context, private val topRatedList: List<GetTopRatedProductResponse.Data>) :
-//class TopRatedAdapter(private val context: Context, private val topRatedList: List<String>) :
+class TopRatedAdapter(private val context: Context, private val topRatedList: List<GetTopRatedProductResponse.Data>, var onClick: OnClick) :
     RecyclerView.Adapter<TopRatedAdapter.ViewHolder>() {
-
+    interface OnClick{
+        fun onItemClick(position: Int)
+    }
     inner class ViewHolder(val binding: ItemTopRatedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) = with(binding) {
@@ -31,6 +31,10 @@ class TopRatedAdapter(private val context: Context, private val topRatedList: Li
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
+            }
+
+            root.setOnClickListener {
+                onClick.onItemClick(position)
             }
         }
 

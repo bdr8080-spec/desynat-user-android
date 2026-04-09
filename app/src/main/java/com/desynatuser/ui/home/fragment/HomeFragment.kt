@@ -59,6 +59,7 @@ import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
+import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
@@ -212,20 +213,53 @@ class HomeFragment : BaseFragment() {
                 viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
             TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
 
-             //   bestSellingAdapter = BestSellingAdapter(requireActivity(),listOf("","","","",""))
-                bestSellingAdapter = BestSellingAdapter(requireActivity(),bestSellingList)
+                bestSellingAdapter = BestSellingAdapter(requireActivity(),bestSellingList,object :
+                    BestSellingAdapter.OnClick{
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString("productId", bestSellingList[position].id.toString())
+                        }
+                        findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
+                    }
+
+                })
                 rvBestSelling.adapter = bestSellingAdapter
 
-           //     topRatedAdapter = TopRatedAdapter(requireActivity(),listOf("","","","",""))
-                topRatedAdapter = TopRatedAdapter(requireActivity(),topRatedList)
+                topRatedAdapter = TopRatedAdapter(requireActivity(),topRatedList,object :
+                    TopRatedAdapter.OnClick{
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString("productId", topRatedList[position].id.toString())
+                        }
+                        findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
+
+                    }
+
+                })
                 rvTopRated.adapter = topRatedAdapter
 
-          //      suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),listOf("","","","","","","","","",""))
-                suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),suggestedStoreList)
+                suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),suggestedStoreList,object :
+                    SuggestedStoreAdapter.OnClick{
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString("storeId", suggestedStoreList[position]?.id.toString())
+                        }
+                        findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
+                    }
+
+                })
                 rvSuggestedStore.adapter = suggestedStoreAdapter
 
-         //       newestProductAdapter = NewestProductAdapter(requireActivity(),listOf("","","","","","","","","",""))
-                newestProductAdapter = NewestProductAdapter(requireActivity(),newestProductList)
+                newestProductAdapter = NewestProductAdapter(requireActivity(),newestProductList,object :
+                    NewestProductAdapter.OnClick{
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString("productId", topRatedList[position].id.toString())
+                        }
+                        findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
+                    }
+
+                })
                 rvNewestProducts.adapter = newestProductAdapter
 
                 categoryList.clear()
@@ -284,12 +318,11 @@ class HomeFragment : BaseFragment() {
         getHomeScreenDealBanner()
       //  getHomeScreenCategoryBanner()
 
-        if (SharedPreference.get(requireActivity()).accessToken!="") {
             getSuggestedStore()
             getNewestProduct()
             getBestSellingProduct()
             getTopRatedProduct()
-        }
+
     }
 
     override fun initControl() {
