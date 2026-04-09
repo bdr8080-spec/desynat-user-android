@@ -16,10 +16,12 @@ import com.desynatuser.utils.agora.AgoraManager
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentLiveEventBinding
+import com.desynatuser.ui.home.storyHighlights.response.GetLiveStreamingRoomResponse
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.vision.VisionRetrofit
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import io.agora.rtc2.ChannelMediaOptions
 import io.agora.rtc2.Constants
@@ -38,10 +40,10 @@ class LiveEventFragment : BaseFragment() {
     private var channelId = ""
     private var token = ""
     private var appId = ""
-    private var uid = 0
+    private var uidValue = 0
     private var isMuted = false
     private var isVideoSetup = false
-
+    private var eventData: GetLiveStreamingRoomResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +62,27 @@ class LiveEventFragment : BaseFragment() {
     }
 
     override fun initView() {
-        getLiveStreaming()
+        val itemJson = arguments?.getString("eventData")
+        if (!itemJson.isNullOrEmpty()) {
+            eventData = Gson().fromJson(itemJson, GetLiveStreamingRoomResponse.Data::class.java)
+            channelId = eventData?.channelId.toString()
+        }
+        binding?.apply {
+
+            if (eventData?.liveToken==null){
+                getAgoraToken(eventData?.id.toString())
+            }
+            else{
+
+                token = eventData?.liveToken.toString()
+                uidValue = eventData?.uid?.toIntOrNull() ?: 0
+
+                startLiveStreaming()
+            }
+        }
+
+
+      //  getLiveStreaming()
     }
 
     override fun initControl() {
@@ -115,8 +137,7 @@ class LiveEventFragment : BaseFragment() {
                         if (response?.data?.get(0)?.liveToken!=null&&response?.data?.get(0)?.liveToken!="null"&&response?.data?.get(0)?.liveToken!=""){
 
                             token = response?.data?.get(0)?.liveToken.toString()
-                            val uidValue = response?.data?.get(0)?.uid.toString()
-                            uid = uidValue.toIntOrNull() ?: 0
+                            uidValue = response?.data?.get(0)?.uid.toString().toIntOrNull() ?: 0
                             startLiveStreaming()
                         }
                         else{
@@ -137,7 +158,7 @@ class LiveEventFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 if (response.data!=null){
                         token = response.data.token
-                        uid = response.data.uid.toIntOrNull()?:0
+                    uidValue = response.data.uid.toIntOrNull()?:0
                         channelId = response.data.channel
                         appId = response.data.appId
                     startLiveStreaming()
@@ -201,7 +222,6 @@ class LiveEventFragment : BaseFragment() {
                 )
 
                 showNoDataUI(true)
-                checkForNextEvent()
 
             }
 
@@ -264,7 +284,7 @@ class LiveEventFragment : BaseFragment() {
         engine?.joinChannel(
                token,
             channelId,
-            uid,
+            uidValue,
             options
         )
     }
@@ -304,7 +324,7 @@ class LiveEventFragment : BaseFragment() {
     private fun getAgoraToken(id: String){
         val map = HashMap<String,Any>()
         map["id"] = id
-        map["role"] = 2
+        map["role"] = 1
         viewModel.getAgoraToken(SharedPreference.get(requireActivity()).accessToken,map)
         isTokenObserver = true
     }
@@ -315,7 +335,7 @@ class LiveEventFragment : BaseFragment() {
 
             Log.d("LIVE_TEST", "Checking for next event...")
 
-            getLiveStreaming()
+          //  getLiveStreaming()
 
         }, 5000)
     }

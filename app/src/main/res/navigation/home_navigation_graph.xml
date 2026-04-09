@@ -552,6 +552,18 @@
         tools:layout="@layout/fragment_view_reel"/>
 
     <fragment
+        android:id="@+id/event"
+        android:name="com.desynatuser.ui.home.storyHighlights.EventFragment"
+        android:label="Event Fragment"
+        tools:layout="@layout/fragment_event">
+
+        <action
+            android:id="@+id/action_eventFragment_to_liveEventFragment"
+            app:destination="@id/liveEvent"/>
+
+    </fragment>
+
+    <fragment
         android:id="@+id/liveEvent"
         android:name="com.desynatuser.ui.home.storyHighlights.LiveEventFragment"
         android:label="Live Event Fragment"
