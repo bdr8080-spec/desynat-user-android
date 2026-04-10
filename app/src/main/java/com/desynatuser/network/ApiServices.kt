@@ -82,6 +82,7 @@ import com.desynatuser.ui.home.store.response.PlaceOrderRequest
 import com.desynatuser.ui.home.store.response.PlaceOrderResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetAgoraTokenResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetLiveStreamingRoomResponse
+import com.desynatuser.ui.home.storyHighlights.response.GetLiveUserCountResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.CommonResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
@@ -671,5 +672,14 @@ interface ApiServices {
 
     @POST(Constants.AFFILIATE_RAISE_TICKET)
     suspend fun affiliateRaiseTicket(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+
+    @GET("channel/user/{appid}/{channelName}")
+    suspend fun getLiveUserCount(
+        @Header("Authorization") auth: String,
+        @Path("appid") appid: String,
+        @Path("channelName") channelName: String
+    )
+            : Response<GetLiveUserCountResponse>
 
 }

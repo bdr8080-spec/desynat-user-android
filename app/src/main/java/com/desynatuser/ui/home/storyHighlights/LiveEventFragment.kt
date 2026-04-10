@@ -3,6 +3,7 @@ package com.desynatuser.ui.home.storyHighlights
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +18,10 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentLiveEventBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetLiveStreamingRoomResponse
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
+import com.desynatuser.utils.agora.AgoraRetrofit
 import com.desynatuser.utils.showToast
 import com.desynatuser.vision.VisionRetrofit
 import com.google.gson.Gson
@@ -40,10 +43,19 @@ class LiveEventFragment : BaseFragment() {
     private var channelId = ""
     private var token = ""
     private var appId = ""
+    private var basicAuth = ""
     private var uidValue = 0
     private var isMuted = false
     private var isVideoSetup = false
     private var eventData: GetLiveStreamingRoomResponse.Data?=null
+
+    private val userCountHandler = Handler(Looper.getMainLooper())
+    private val userCountRunnable = object : Runnable {
+        override fun run() {
+            getLiveUserCount()
+            userCountHandler.postDelayed(this, 5000)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +74,7 @@ class LiveEventFragment : BaseFragment() {
     }
 
     override fun initView() {
+        convertBase64()
         val itemJson = arguments?.getString("eventData")
         if (!itemJson.isNullOrEmpty()) {
             eventData = Gson().fromJson(itemJson, GetLiveStreamingRoomResponse.Data::class.java)
@@ -220,8 +233,10 @@ class LiveEventFragment : BaseFragment() {
                 AgoraManager.getEngine()?.setupRemoteVideo(
                     VideoCanvas(null, VideoCanvas.RENDER_MODE_HIDDEN, uid)
                 )
-
-                showNoDataUI(true)
+                CommonMethod.showSuccessDialog(requireActivity(),"Host left"){
+                    findNavController().popBackStack()
+                }
+            //    showNoDataUI(true)
 
             }
 
@@ -287,6 +302,9 @@ class LiveEventFragment : BaseFragment() {
             uidValue,
             options
         )
+
+        userCountHandler.post(userCountRunnable)
+
     }
 
     private fun setupRemoteVideo(uid: Int) {
@@ -302,6 +320,7 @@ class LiveEventFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        userCountHandler.removeCallbacks(userCountRunnable)
 
         AgoraManager.getEngine()?.leaveChannel()
 
@@ -310,6 +329,7 @@ class LiveEventFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        userCountHandler.removeCallbacks(userCountRunnable)
 
         AgoraManager.getEngine()?.leaveChannel()
 
@@ -349,6 +369,50 @@ class LiveEventFragment : BaseFragment() {
         )
 
         joinChannel()
+    }
+
+    private fun getLiveUserCount() {
+        lifecycleScope.launch {
+            try {
+                val response = AgoraRetrofit.api.getLiveUserCount(
+                    basicAuth,
+                    appId,
+                    channelId
+                )
+
+                val count = response.body()?.data?.audienceTotal ?: 0
+
+                activity?.runOnUiThread {
+                    setUserCountData(count)
+                }
+
+            } catch (e: Exception) {
+                Log.e("LIVE_TEST", e.message ?: "Error")
+            }
+        }
+    }
+
+    private fun setUserCountData(audienceTotal: Int?) {
+        binding?.apply {
+            if ((audienceTotal ?: 0) > 0) {
+                tvAudienceCount.isVisible = true
+                tvAudienceCount.text = "Viewers : $audienceTotal"
+            } else {
+                //   tvAudienceCount.isVisible = false
+                tvAudienceCount.isVisible = true
+                tvAudienceCount.text = "Viewers : 0"
+            }
+        }
+    }
+
+    private fun convertBase64(){
+        val customerID = "0ddf0359302c4e3b995282b44470e25e"
+        val customerCertificate = "c258c2e0e578420fbdb0e43baf5b1ee3"
+        val credentials = "$customerID:$customerCertificate"
+        val base64Encoded = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
+        println(base64Encoded)
+        basicAuth = "Basic " + base64Encoded
+        Log.d("LIVE_TEST", "base64Encoded: $base64Encoded")
     }
 
 }
