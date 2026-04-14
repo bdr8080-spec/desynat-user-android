@@ -57,7 +57,12 @@ class StoryPagerAdapter(
         val story = stories[position]
         val url = story.file ?: ""
 
-        val isVideo = url.endsWith(".mp4") || url.endsWith(".mov") ||url.endsWith(".avi") || url.endsWith(".mkv")
+        val cleanUrl = url.substringBefore("?").lowercase()
+
+        val isVideo = cleanUrl.endsWith(".mp4") ||
+                cleanUrl.endsWith(".mov") ||
+                cleanUrl.endsWith(".avi") ||
+                cleanUrl.endsWith(".mkv")
         val isGif = url.endsWith(".gif")
 
         if (isVideo) {
@@ -65,7 +70,8 @@ class StoryPagerAdapter(
             holder.binding.ivStory.isVisible = false
             holder.binding.videoStory.isVisible = true
 
-            holder.binding.videoStory.setVideoPath(url)
+        //    holder.binding.videoStory.setVideoPath(url)
+            holder.binding.videoStory.setVideoURI(android.net.Uri.parse(url))
 
             holder.binding.videoStory.setOnPreparedListener { mp ->
                 holder.binding.videoLoader.indeterminateTintList = ColorStateList.valueOf(Color.WHITE)

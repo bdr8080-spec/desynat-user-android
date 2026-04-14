@@ -513,7 +513,18 @@
             android:id="@+id/action_supportFragment_to_ticketDetailFragment"
             app:destination="@id/ticketDetail"/>
 
+        <action
+            android:id="@+id/action_supportFragment_to_tidioChatFragment"
+            app:destination="@id/tidioChat"/>
+
     </fragment>
+
+    <fragment
+        android:id="@+id/tidioChat"
+        android:name="com.desynatuser.ui.home.cms.TidioChatFragment"
+        android:label="Tidio Fragment"
+        tools:layout="@layout/fragment_tidio_chat"/>
+
 
     <fragment
         android:id="@+id/setting"

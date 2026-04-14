@@ -309,7 +309,7 @@ class HomeFragment : BaseFragment() {
 
             }
 
-        if (SharedPreference.get(requireActivity()).accessToken!=""==false){
+        if (SharedPreference.get(requireActivity()).accessToken!=""){
             viewCartDetail()
         }
 
