@@ -65,6 +65,7 @@ class TicketDetailFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
+            tvTitle.text = ticketData?.title
             tvDescription.text = ticketData?.description
             tvTicketType.text = ticketData?.ticketTypeDetails?.name
             tvTicketIdValue.text = ticketData?.ticketId

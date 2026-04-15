@@ -47,7 +47,10 @@ data class GetStoreResponse(
         @SerializedName("store_phone")
         val storePhone: String,
         @SerializedName("updated_at")
-        val updatedAt: String
+        val updatedAt: String,
+        @SerializedName("average_store_rating")
+        val averageStoreRating: String
+
     ) {
         data class SellerInformation(
             @SerializedName("accept_terms")

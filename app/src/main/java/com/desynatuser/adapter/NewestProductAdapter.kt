@@ -12,7 +12,7 @@ import com.desynatuser.utils.CommonMethod
 class NewestProductAdapter(private val context: Context, private val newestProductList: List<GetNewestProductResponse.Data>, var onClick: OnClick) :
     RecyclerView.Adapter<NewestProductAdapter.ViewHolder>() {
     interface OnClick{
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int,type:Int)
     }
     inner class ViewHolder(val binding: ItemNewestProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -25,14 +25,34 @@ class NewestProductAdapter(private val context: Context, private val newestProdu
             val discountValue = variant?.discountValue ?: 0
             val discountType = if (variant?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
+            if (productData?.productAvgRating!=null){
+                tvRating.text = "(${productData?.productAvgRating})"
+            }
+            else{
+                tvRating.text = "(0)"
+            }
+
+            rating.rating = productData?.productAvgRating?.toFloatOrNull()?:0f
+            if (productData.wishlist == 1) {
+                ivLike.setImageResource(R.drawable.ic_like_filled)
+            } else {
+                ivLike.setImageResource(R.drawable.ic_like)
+            }
 
             ivProfile.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
+
+            ivLike.setOnClickListener {
+                onClick.onItemClick(position,1)
+            }
+            ivShare.setOnClickListener {
+                onClick.onItemClick(position,2)
+            }
             root.setOnClickListener {
-                onClick.onItemClick(position)
+                onClick.onItemClick(position,3)
             }
         }
 

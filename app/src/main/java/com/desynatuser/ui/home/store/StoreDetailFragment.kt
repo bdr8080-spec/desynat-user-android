@@ -253,7 +253,13 @@ class StoreDetailFragment : BaseFragment() {
             tvToolbar.text = storeDetailData?.store?.storeName
             tvBrand.text = storeDetailData?.store?.storeName
             tvDescription.text = storeDetailData?.store?.bio
-          //  ratingBar.rating = storeDetailData?.store?.
+            if (storeDetailData?.store?.averageStoreRating!=null){
+                tvRating.text = "(${storeDetailData?.store?.averageStoreRating})"
+            }
+            else{
+                tvRating.text = "(0)"
+            }
+            ratingBar.rating = storeDetailData?.store?.averageStoreRating?.toFloatOrNull()?:0f
             tvName.text = storeDetailData?.store?.sellerInformation?.firstName+" "+storeDetailData?.store?.sellerInformation?.lastName
 
             ivProfileImage.load(storeDetailData?.store?.sellerInformation?.profilePic) {

@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.store.response
 
 
+import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse.Data.AverageRating
 import com.google.gson.annotations.SerializedName
 
 data class GetSingleStoreResponse(
@@ -113,7 +114,9 @@ data class GetSingleStoreResponse(
                 @SerializedName("upload_size_chart")
                 val uploadSizeChart: String,
                 @SerializedName("wishlist")
-                var wishlist: Int
+                var wishlist: Int,
+                @SerializedName("average_rating")
+                val averageRating: String,
             ) {
                 data class Brand(
                     @SerializedName("created_at")
@@ -310,6 +313,8 @@ data class GetSingleStoreResponse(
             val updatedAt: String,
             @SerializedName("seller_information")
             val sellerInformation: SellerInformation,
+            @SerializedName("average_store_rating")
+            val averageStoreRating: String
         )
         {
             data class SellerInformation(

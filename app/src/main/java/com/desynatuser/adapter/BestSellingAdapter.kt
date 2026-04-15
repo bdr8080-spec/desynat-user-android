@@ -14,7 +14,7 @@ class BestSellingAdapter(private val context: Context, private val bestSellingLi
     RecyclerView.Adapter<BestSellingAdapter.ViewHolder>() {
 
     interface OnClick{
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int,type:Int)
     }
 
     inner class ViewHolder(val binding: ItemTopRatedBinding) :
@@ -34,8 +34,29 @@ class BestSellingAdapter(private val context: Context, private val bestSellingLi
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
+
+            if (productData?.productAvgRating!=null){
+                tvRating.text = "(${productData?.productAvgRating})"
+            }
+            else{
+                tvRating.text = "(0)"
+            }
+            rating.rating = productData?.productAvgRating?.toFloatOrNull()?:0f
+
+            if (productData.wishlist == 1) {
+                ivLike.setImageResource(R.drawable.ic_like_filled)
+            } else {
+                ivLike.setImageResource(R.drawable.ic_like)
+            }
+
+            ivLike.setOnClickListener {
+                onClick.onItemClick(position,1)
+            }
+            ivShare.setOnClickListener {
+                onClick.onItemClick(position,2)
+            }
             root.setOnClickListener {
-                onClick.onItemClick(position)
+                onClick.onItemClick(position,3)
             }
         }
 

@@ -172,8 +172,13 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
             tvTitle.text = productDetailData?.store?.storeName
             tvProductName.text =  productDetailData?.productNameEn+" (by ${productDetailData?.store?.storeName})"
-        //    tvRating.text = "(${ratingList.size})"
-           // ratingBar.rating = productDetailData?.reviewRating
+            if (productDetailData?.productAvgRating!=null){
+                tvRating.text = "(${productDetailData?.productAvgRating})"
+            }
+            else{
+                tvRating.text = "(0)"
+            }
+            ratingBar.rating = productDetailData?.productAvgRating?.toFloatOrNull()?:0f
             productInfo = productDetailData?.productVariants?.let { mapVariantsToProducts(it) }!!
 
             colorList.clear()

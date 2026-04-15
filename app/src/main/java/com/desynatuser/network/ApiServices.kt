@@ -32,6 +32,7 @@ import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
@@ -681,5 +682,8 @@ interface ApiServices {
         @Path("channelName") channelName: String
     )
             : Response<GetLiveUserCountResponse>
+
+    @GET(Constants.CONTACT_US)
+    suspend fun contactUs(@QueryMap map: HashMap<String, Any>): Response<GetContactResponse>
 
 }

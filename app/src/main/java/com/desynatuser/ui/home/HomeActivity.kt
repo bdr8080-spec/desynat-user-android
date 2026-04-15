@@ -8,6 +8,7 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.webkit.WebChromeClient
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -282,6 +283,12 @@ class HomeActivity : BaseActivity() {
                 EventBus.getDefault().post(PaymentResultEvent(requestCode, resultCode, data))
             }
 
+        }
+        else if (Constants.currentScreen=="tidio"){
+            if (requestCode == 100) {
+                EventBus.getDefault().post(PaymentResultEvent(requestCode, resultCode, data))
+
+            }
         }
         Log.d("test",requestCode.toString())
     }

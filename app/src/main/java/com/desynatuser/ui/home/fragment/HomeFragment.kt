@@ -144,6 +144,9 @@ class HomeFragment : BaseFragment() {
             imagePicker.onPermissionResult(granted)
         }
 
+    var selectedPos = -1
+    var selectedType = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -215,11 +218,34 @@ class HomeFragment : BaseFragment() {
 
                 bestSellingAdapter = BestSellingAdapter(requireActivity(),bestSellingList,object :
                     BestSellingAdapter.OnClick{
-                    override fun onItemClick(position: Int) {
-                        val bundle = Bundle().apply {
-                            putString("productId", bestSellingList[position].id.toString())
+                    override fun onItemClick(position: Int,type:Int) {
+                        when(type) {
+                            1 -> {
+                                selectedPos = position
+                                selectedType = 1
+                                addToWishList()
+                            }
+
+                            2 -> {
+                               val data = bestSellingList[position]
+                                CommonMethod.shareProductWithImage(requireActivity(),
+                                    "Product name: ${data?.productNameEn}",
+                                    "Description: ${data?.descriptionEn}",
+                                    data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
+                                    "https://desynat.com/user/product/detail-page/${data.id}"
+                                )
+                            }
+
+                            3 -> {
+                                val bundle = Bundle().apply {
+                                    putString("productId", bestSellingList[position].id.toString())
+                                }
+                                findNavController().navigate(
+                                    R.id.action_homeFragment_to_productDetailFragment,
+                                    bundle
+                                )
+                            }
                         }
-                        findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
                     }
 
                 })
@@ -227,11 +253,30 @@ class HomeFragment : BaseFragment() {
 
                 topRatedAdapter = TopRatedAdapter(requireActivity(),topRatedList,object :
                     TopRatedAdapter.OnClick{
-                    override fun onItemClick(position: Int) {
-                        val bundle = Bundle().apply {
-                            putString("productId", topRatedList[position].id.toString())
+                    override fun onItemClick(position: Int,type:Int) {
+                        when(type){
+                            1->{
+                                selectedPos = position
+                                selectedType = 2
+                                addToWishList()
+                            }
+                            2->{
+                                val data = topRatedList[position]
+                                CommonMethod.shareProductWithImage(requireActivity(),
+                                    "Product name: ${data?.productNameEn}",
+                                    "Description: ${data?.descriptionEn}",
+                                    data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
+                                    "https://desynat.com/user/product/detail-page/${data.id}"
+                                )
+                            }
+                            3->{
+                                val bundle = Bundle().apply {
+                                    putString("productId", topRatedList[position].id.toString())
+                                }
+                                findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
+                            }
                         }
-                        findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
+
 
                     }
 
@@ -252,13 +297,38 @@ class HomeFragment : BaseFragment() {
 
                 newestProductAdapter = NewestProductAdapter(requireActivity(),newestProductList,object :
                     NewestProductAdapter.OnClick{
-                    override fun onItemClick(position: Int) {
-                        val bundle = Bundle().apply {
-                            putString("productId", topRatedList[position].id.toString())
-                        }
-                        findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
-                    }
+                    override fun onItemClick(position: Int,type:Int) {
+                        when (type) {
+                            1 -> {
+                                selectedPos = position
+                                selectedType = 3
+                                addToWishList()
+                            }
 
+                            2 -> {
+                                val data = newestProductList[position]
+                                CommonMethod.shareProductWithImage(requireActivity(),
+                                    "Product name: ${data?.productNameEn}",
+                                    "Description: ${data?.descriptionEn}",
+                                    data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
+                                    "https://desynat.com/user/product/detail-page/${data.id}"
+                                )
+                            }
+
+                            3 -> {
+                                val bundle = Bundle().apply {
+                                    putString(
+                                        "productId",
+                                        newestProductList[position].id.toString()
+                                    )
+                                }
+                                findNavController().navigate(
+                                    R.id.action_homeFragment_to_productDetailFragment,
+                                    bundle
+                                )
+                            }
+                        }
+                    }
                 })
                 rvNewestProducts.adapter = newestProductAdapter
 
@@ -334,6 +404,10 @@ class HomeFragment : BaseFragment() {
 
             etSearch.setOnClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_searchProductFragment)
+            }
+
+            ivSupportBot.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_TidioChatFragment)
             }
 
             ivMic.setOnClickListener{
@@ -607,6 +681,57 @@ class HomeFragment : BaseFragment() {
                 isTopRatedObserver = false
             }
         }
+
+        viewModel.addToWishlistResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
+                when(selectedType){
+                    1->{
+                        if (bestSellingList[selectedPos].wishlist==1){
+                            showToast("Product removed from your wishlist successfully")
+                            bestSellingList[selectedPos].wishlist = 0
+                        }
+                        else{
+                            showToast("Product added to your wishlist successfully")
+                            bestSellingList[selectedPos].wishlist = 1
+                        }
+                        bestSellingAdapter?.notifyItemChanged(selectedPos)
+
+                    }
+                    2->{
+                        if (topRatedList[selectedPos].wishlist==1){
+                            showToast("Product removed from your wishlist successfully")
+                            topRatedList[selectedPos].wishlist = 0
+                        }
+                        else{
+                            showToast("Product added to your wishlist successfully")
+                            topRatedList[selectedPos].wishlist = 1
+                        }
+                        topRatedAdapter?.notifyItemChanged(selectedPos)
+
+                    }
+                    3->{
+                        if (newestProductList[selectedPos].wishlist==1){
+                            showToast("Product removed from your wishlist successfully")
+                            newestProductList[selectedPos].wishlist = 0
+                        }
+                        else{
+                            showToast("Product added to your wishlist successfully")
+                            newestProductList[selectedPos].wishlist = 1
+                        }
+                        newestProductAdapter?.notifyItemChanged(selectedPos)
+
+                    }
+                }
+
+                selectedPos = -1
+                selectedType = 0
+                isObserver = false
+            }
+
+        }
+
 
         viewModel.getBestSellingProductResult.observe(viewLifecycleOwner) { response ->
             if (isBestSellingObserver) {
@@ -983,6 +1108,25 @@ class HomeFragment : BaseFragment() {
         if (event!=null) {
             notificationCount()
         }
+    }
+
+    private fun addToWishList(){
+        val map = HashMap<String,Any>()
+        when(selectedType){
+            1->{
+                map["product_id"] = bestSellingList[selectedPos].id
+            }
+            2->{
+                map["product_id"] = topRatedList[selectedPos].id
+            }
+            3->{
+                map["product_id"] = newestProductList[selectedPos].id
+            }
+        }
+
+        viewModel.addToWishlist(map)
+        binding?.progressBar?.isVisible = true
+        isObserver = true
     }
 
 }

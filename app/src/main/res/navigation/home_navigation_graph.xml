@@ -24,6 +24,10 @@
             app:destination="@id/searchProduct"/>
 
         <action
+            android:id="@+id/action_homeFragment_to_TidioChatFragment"
+            app:destination="@id/tidioChat"/>
+
+        <action
             android:id="@+id/action_homeFragment_to_storeFragment"
             app:destination="@id/store"/>
 

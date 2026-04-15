@@ -27,6 +27,7 @@ import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
@@ -1176,6 +1177,14 @@ val defaultBankResult: LiveData<CommonResponse>
     fun affiliateRaiseTicket(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.affiliateRaiseTicket(map)
+        }
+    }
+    val contactUsResult: LiveData<GetContactResponse>
+        get() = repository.contactUsLiveData
+
+    fun contactUs(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.contactUs(map)
         }
     }
 

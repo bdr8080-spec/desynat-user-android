@@ -77,7 +77,11 @@ data class GetNewestProductResponse(
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("upload_size_chart")
-        val uploadSizeChart: String
+        val uploadSizeChart: String,
+        @SerializedName("wishlist")
+        var wishlist: Int,
+        @SerializedName("product_avg_rating")
+        val productAvgRating: String,
     ) {
         data class Brand(
             @SerializedName("created_at")

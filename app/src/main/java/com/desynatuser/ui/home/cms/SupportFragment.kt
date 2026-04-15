@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentSupportBinding
 import com.desynatuser.databinding.RaiseTicketDialogBinding
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ImagePicker
@@ -49,6 +51,9 @@ class SupportFragment : BaseFragment() {
     private var isRaiseObserver = false
     private var isRaised = false
     private var isTicketTypeObserver = false
+    private var isContactUs = false
+    private var whatsappNumber = ""
+
     private var ticketList = ArrayList<GetAllRaisedTicketResponse.Data.Data>()
     private var ticketTypeList = ArrayList<GetTicketTypeResponse.Data>()
     private var ticketAdapter: TicketAdapter?=null
@@ -208,7 +213,7 @@ class SupportFragment : BaseFragment() {
             }
 
             clWhatsapp.setOnClickListener {
-                val number = tvSupportMobileNumber.text.trim()
+                val number = whatsappNumber
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse("https://wa.me/${number}")
                 }
@@ -312,6 +317,13 @@ class SupportFragment : BaseFragment() {
                 isRaiseObserver = false
             }
         }
+        viewModel.contactUsResult.observe(viewLifecycleOwner) { response ->
+            if (isContactUs) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                setContactUsData(response.data.contentEnglish)
+                isContactUs = false
+            }
+        }
 
         viewModel.affiliateRaiseTicketResult.observe(viewLifecycleOwner) { response ->
             if (isRaiseObserver) {
@@ -376,6 +388,14 @@ class SupportFragment : BaseFragment() {
 
     }
 
+    private fun setContactUsData(contactData: GetContactResponse.Data.ContentEnglish) {
+            binding?.apply {
+                tvSupportEmailAddress.text = contactData?.email
+                tvSupportMobileNumber.text = contactData?.mobile
+                whatsappNumber = contactData?.whatsapp.toString()
+            }
+    }
+
     private fun ticketManagement(){
         binding?.apply {
             type = 1
@@ -396,6 +416,7 @@ class SupportFragment : BaseFragment() {
     private fun contact(){
         binding?.apply {
             type = 0
+            getContactUs()
             llTicket.isVisible = false
             llContact.isVisible = true
             tvContact.setBackgroundResource(R.drawable.selected_left_tab)
@@ -455,6 +476,9 @@ class SupportFragment : BaseFragment() {
 
         dialogBinding?.apply {
 
+            CommonMethod.removeSpace(etTitle)
+            CommonMethod.removeSpace(etDescription)
+
             ivDoc.setOnClickListener {
                 imagePicker.showImageSourceDialog()
             }
@@ -469,21 +493,44 @@ class SupportFragment : BaseFragment() {
 
             btnSubmit.setOnClickListener{
 
-                if (imageFile!=null){
-                    uploadFile(imageFile!!)
-                }
-                else{
-                    raiseTicket()
-                }
+                if (validation()){
+
+                    if (imageFile!=null){
+                        uploadFile(imageFile!!)
+                    }
+                    else{
+                        raiseTicket()
+                    }
 
 
-                dialog?.dismiss()
+                    dialog?.dismiss()
+                }
+
             }
 
         }
 
         dialog?.show()
     }
+
+    private fun validation():Boolean{
+
+        if (dialogBinding?.etTicketType?.text?.isEmpty() == true) {
+            showToast("Please select ticket type")
+            return false
+        }
+        else if (dialogBinding?.etTitle?.text?.isEmpty() == true) {
+            showToast("Please enter title")
+            return false
+        }
+        else if (dialogBinding?.etDescription?.text?.isEmpty() == true) {
+            showToast("Please enter description")
+            return false
+        }
+
+        return true
+    }
+
 
     private fun getRaisedTicket(isLoading: Boolean=true){
         val map = HashMap<String,Any>()
@@ -532,6 +579,13 @@ class SupportFragment : BaseFragment() {
     private fun getTicketType(){
         viewModel.getTicketType()
         isTicketTypeObserver = true
+    }
+
+    private fun getContactUs(){
+        val map = HashMap<String, Any>()
+        map["type"] = 1
+        viewModel.contactUs(map)
+        isContactUs = true
     }
 
     private fun checkData(){

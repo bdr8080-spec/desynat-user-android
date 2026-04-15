@@ -82,6 +82,8 @@ data class GetProductDetailResponse(
         val uploadSizeChart: String,
         @SerializedName("wishlist")
         var wishlist: Int,
+        @SerializedName("average_rating")
+        val productAvgRating: String,
         @SerializedName("review")
         val review: List<Review>,
     ) {

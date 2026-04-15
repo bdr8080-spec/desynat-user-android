@@ -61,12 +61,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
+        android:numStars="5"
+        android:progressBackgroundTint="#C7C7C7"
+        android:progressTint="#FFA41B"
+        android:rating="0"
+        android:secondaryProgressTint="#FFA41B"
+        android:stepSize="0.5"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"/>
 
     <TextView
         android:id="@+id/tvRating"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_2sdp"
         android:ellipsize="end"
@@ -81,8 +87,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/rating"/>
 
     <TextView
-        android:id="@+id/tvPrice"
-        android:layout_width="0dp"
+        android:id="@+id/tvDiscountPrice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/poppins_semi_bold"
@@ -95,8 +101,8 @@
         app:layout_constraintTop_toBottomOf="@+id/rating" />
 
     <TextView
-        android:id="@+id/tvDiscountPrice"
-        android:layout_width="0dp"
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/poppins_regular"
@@ -106,20 +112,20 @@
         android:textColor="#99000000"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:background="#99000000"
-        app:layout_constraintStart_toStartOf="@+id/tvDiscountPrice"
-        app:layout_constraintEnd_toEndOf="@+id/tvDiscountPrice"
-        app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDiscountPrice"/>
+        app:layout_constraintStart_toStartOf="@+id/tvPrice"
+        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
 
     <TextView
         android:id="@+id/tvDiscount"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_4sdp"
         android:ellipsize="end"
@@ -129,8 +135,8 @@
         android:text="20% off"
         android:textColor="#E70000"
         android:textSize="@dimen/_10sdp"
-        app:layout_constraintStart_toEndOf="@+id/tvDiscountPrice"
-        app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDiscountPrice"/>
+        app:layout_constraintStart_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

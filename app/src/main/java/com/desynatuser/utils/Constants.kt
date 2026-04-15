@@ -173,5 +173,6 @@ object Constants {
  const val GET_AFFILIATE_RAISED_TICKET = "/api/affiliate/get_raised_tickets"
  const val AFFILIATE_RAISE_TICKET = "/api/affiliate/raise_ticket"
  const val GET_AGORA_TOKEN = "/api/agora/token"
+ const val CONTACT_US = "/api/contact_us/"
 
 }

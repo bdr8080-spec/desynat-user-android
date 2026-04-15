@@ -36,6 +36,13 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
          //   tvName.text =  storeData.sellerInformation.firstName+" "+storeData.sellerInformation.lastName
             tvName.text =  storeData.storeName
            // tvRating.text = storeData
+            if (storeData?.averageStoreRating!=null){
+                tvRating.text = "(${storeData?.averageStoreRating})"
+            }
+            else{
+                tvRating.text = "(0)"
+            }
+            rating.rating = storeData?.averageStoreRating?.toFloatOrNull()?:0f
             ivProfile.load(storeData.sellerInformation.profilePic) {
                 crossfade(true)
                 placeholder(R.drawable.ic_user)

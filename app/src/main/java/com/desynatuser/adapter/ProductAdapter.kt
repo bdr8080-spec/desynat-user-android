@@ -51,6 +51,14 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
             val discountType = if (variant?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
 
+            if (productData?.averageRating!=null){
+                tvRating.text = "(${productData?.averageRating})"
+            }
+            else{
+                tvRating.text = "(0)"
+            }
+            rating.rating = productData?.averageRating?.toFloatOrNull()?:0f
+
             ivStore.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)

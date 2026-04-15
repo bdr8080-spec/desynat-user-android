@@ -38,6 +38,7 @@ import com.desynatuser.ui.home.chat.response.CreateCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.GetChatListResponse
 import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
+import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
@@ -1695,6 +1696,18 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
                 api.affiliateRaiseTicket(map)
             },
             responseLiveData = affiliateRaiseTicketLiveData
+        )
+    }
+
+    var contactUsLiveData = SingleLiveEvent<GetContactResponse>()
+    suspend fun contactUs(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.contactUs(map)
+            },
+            responseLiveData = contactUsLiveData
         )
     }
 
