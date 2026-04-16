@@ -23,6 +23,7 @@ import android.text.TextPaint
 import android.text.TextWatcher
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -39,14 +40,17 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.desynatuser.R
 import com.desynatuser.adapter.CountryPickerAdapter
+import com.desynatuser.adapter.ImagePreviewAdapter
 import com.desynatuser.adapter.SelectedCountryPickerAdapter
 import com.desynatuser.databinding.AlertDialogLayoutBinding
 import com.desynatuser.databinding.CustomCountryPickerBinding
 import com.desynatuser.databinding.DeleteDialogLayoutBinding
+import com.desynatuser.databinding.ImagePreviewDialogBinding
 import com.desynatuser.databinding.LoginAlertDialogLayoutBinding
 import com.desynatuser.databinding.SuccessDialogLayoutBinding
 import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -913,4 +917,43 @@ object CommonMethod {
                 localTime.format(DateTimeFormatter.ofPattern("dd MMM, hh:mm a"))
             }
         }
-    }}
+    }
+
+    fun imagePreviewDialog(context: Context,imageList: ArrayList<String>) {
+        val dialog = Dialog(context, R.style.CustomDialog)
+        val dialogBinding = ImagePreviewDialogBinding.inflate(LayoutInflater.from(context))
+        dialogBinding.root.let { dialog?.setContentView(it) }
+
+        val window: Window = dialog?.window!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.setCancelable(false)
+
+        val params: WindowManager.LayoutParams = window.attributes
+        params.gravity = Gravity.CENTER
+        window.attributes = params
+
+        dialogBinding.apply {
+
+            ivCross.setOnClickListener{
+                dialog?.dismiss()
+            }
+
+            val imagePreviewAdapter = ImagePreviewAdapter(context,imageList)
+            viewPager?.adapter = imagePreviewAdapter
+
+            if (imageList.size>1){
+                TabLayoutMediator(dotsIndicator, viewPager) { _, _ -> }.attach()
+
+            }
+
+        }
+
+        dialog?.show()
+    }
+
+
+}

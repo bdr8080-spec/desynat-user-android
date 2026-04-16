@@ -99,6 +99,10 @@ class AffiliateHomeFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_affiliateHomeFragment_to_notificationFragment)
             }
 
+            ivSupport.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateHomeFragment_to_tidioChatFragment)
+            }
+
             etFrom.setOnClickListener {
                 val initialDate = fromTimestamp ?: Calendar.getInstance().timeInMillis
 

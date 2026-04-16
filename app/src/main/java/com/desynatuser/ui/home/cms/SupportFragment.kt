@@ -221,7 +221,12 @@ class SupportFragment : BaseFragment() {
             }
 
             clSupportTeam.setOnClickListener {
-                findNavController().navigate(R.id.action_supportFragment_to_tidioChatFragment)
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    findNavController().navigate(R.id.action_supportFragment_to_tidioChatFragment)
+                }
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
             }
 
             tvContact.setOnClickListener {

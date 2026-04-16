@@ -15,7 +15,18 @@
             android:id="@+id/action_affiliateHomeFragment_to_notificationFragment"
             app:destination="@id/affiliateNotification"/>
 
+        <action
+            android:id="@+id/action_affiliateHomeFragment_to_tidioChatFragment"
+            app:destination="@id/tidioChat"/>
+
     </fragment>
+
+    <fragment
+        android:id="@+id/tidioChat"
+        android:name="com.desynatuser.ui.home.cms.TidioChatFragment"
+        android:label="Tidio Fragment"
+        tools:layout="@layout/fragment_tidio_chat"/>
+
 
     <fragment
         android:id="@+id/affiliateProfile"
@@ -232,7 +243,23 @@
         android:id="@+id/support"
         android:name="com.desynatuser.ui.home.cms.SupportFragment"
         android:label="Support Fragment"
-        tools:layout="@layout/fragment_support"/>
+        tools:layout="@layout/fragment_support">
+
+        <action
+            android:id="@+id/action_supportFragment_to_ticketDetailFragment"
+            app:destination="@id/ticketDetail"/>
+
+        <action
+            android:id="@+id/action_supportFragment_to_tidioChatFragment"
+            app:destination="@id/tidioChat"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/ticketDetail"
+        android:name="com.desynatuser.ui.home.cms.TicketDetailFragment"
+        android:label="Ticket Detail Fragment"
+        tools:layout="@layout/fragment_ticket_detail"/>
 
     <fragment
         android:id="@+id/setting"

@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.affiliateUser.home.AffiliateHomeFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,11 +26,13 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_user"
             android:clipToOutline="true"
-            app:shapeAppearanceOverlay="@style/circle_image" />
+            app:shapeAppearanceOverlay="@style/circle_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvName"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="Hi Will"
@@ -39,12 +41,13 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toLeftOf="@+id/ivNotification"
-            android:layout_toRightOf="@+id/ivProfile"/>
+            app:layout_constraintTop_toTopOf="@+id/ivProfile"
+            app:layout_constraintEnd_toStartOf="@+id/ivSupport"
+           app:layout_constraintStart_toEndOf="@+id/ivProfile"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvWelcome"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:hint="Welcome !"
@@ -52,9 +55,21 @@
             android:textSize="@dimen/_11sdp"
             android:layout_marginEnd="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_below="@+id/tvName"
-            android:layout_toLeftOf="@+id/ivNotification"
-            android:layout_toRightOf="@+id/ivProfile"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvName"
+            app:layout_constraintEnd_toStartOf="@+id/ivSupport"
+            app:layout_constraintStart_toEndOf="@+id/ivProfile"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSupport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_6sdp"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:src="@drawable/support_bot_icon"
+            app:layout_constraintTop_toTopOf="@+id/ivNotification"
+            app:layout_constraintBottom_toBottomOf="@+id/ivNotification"
+            app:layout_constraintEnd_toStartOf="@+id/ivNotification"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivNotification"
@@ -63,7 +78,9 @@
             android:padding="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:src="@drawable/ic_bell"
-            android:layout_alignParentEnd="true"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivProfile"
+            app:layout_constraintBottom_toBottomOf="@+id/ivProfile"/>
 
         <RelativeLayout
             android:visibility="gone"
@@ -73,7 +90,8 @@
             android:elevation="@dimen/_1sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_alignParentEnd="true">
+            app:layout_constraintTop_toTopOf="@+id/ivNotification"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/_12sdp"
@@ -96,7 +114,7 @@
         </RelativeLayout>
 
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

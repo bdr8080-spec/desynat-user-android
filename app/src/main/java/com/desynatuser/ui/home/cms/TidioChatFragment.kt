@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentTidioChatBinding
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.PaymentResultEvent
 import com.desynatuser.utils.CommonMethod
@@ -40,6 +41,7 @@ class TidioChatFragment : BaseFragment() {
     private val viewModel: HomeViewModel by viewModels()
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
     private var userInfo: LoginResponse.Data? = null
+    private var affiliateUserInfo: GetAffiliateUserProfileResponse.Data? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +53,12 @@ class TidioChatFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userInfo = SharedPreference.get(requireActivity()).getUser()
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            affiliateUserInfo = SharedPreference.get(requireActivity()).getAffiliateUser()
+        }
+        else{
+            userInfo = SharedPreference.get(requireActivity()).getUser()
+        }
         initView()
         initControl()
         observe()
@@ -156,15 +163,29 @@ class TidioChatFragment : BaseFragment() {
         }
     private fun injectUserData(view: WebView?) {
 
-        val name = userInfo?.fullName ?: ""
-        val email = userInfo?.email ?: ""
-        val userId = userInfo?.id.toString()
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            val name = affiliateUserInfo?.fullName ?: ""
+            val email = affiliateUserInfo?.email ?: ""
+            val userId = affiliateUserInfo?.id.toString()
+            val js = "javascript:setUserData('$name','$email','$userId','user')"
 
-        val js = "javascript:setUserData('$name','$email','$userId','user')"
-
-        view?.evaluateJavascript(js) {
-            Log.d("WEBVIEW", "User injected")
+            view?.evaluateJavascript(js) {
+                Log.d("WEBVIEW", "User injected")
+            }
         }
+        else{
+            val name = userInfo?.fullName ?: ""
+            val email = userInfo?.email ?: ""
+            val userId = userInfo?.id.toString()
+            val js = "javascript:setUserData('$name','$email','$userId','user')"
+
+            view?.evaluateJavascript(js) {
+                Log.d("WEBVIEW", "User injected")
+            }
+        }
+
+
+
     }
 
 
