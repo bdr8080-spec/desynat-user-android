@@ -91,7 +91,7 @@ class AffiliateProfileFragment : BaseFragment() {
             }
 
 
-            relAbout.setOnClickListener {
+           /* relAbout.setOnClickListener {
                 val bundle = Bundle().apply {
                     putInt("type", 3)
                 }
@@ -104,7 +104,7 @@ class AffiliateProfileFragment : BaseFragment() {
 
             rlSetting.setOnClickListener {
                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_settingFragment)
-            }
+            }*/
 
 
 
