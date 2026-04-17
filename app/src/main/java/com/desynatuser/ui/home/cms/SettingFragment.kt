@@ -14,14 +14,23 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.DeleteAccountDialogBinding
 import com.desynatuser.databinding.FragmentSettingBinding
+import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
+import com.desynatuser.ui.auth.response.LoginResponse
+import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
+import kotlin.text.get
 
 @AndroidEntryPoint
 class SettingFragment : BaseFragment() {
     private var binding: FragmentSettingBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    var userInfo: LoginResponse.Data?=null
+    private var affiliateUserInfo: GetAffiliateUserProfileResponse.Data? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +48,13 @@ class SettingFragment : BaseFragment() {
     }
 
     override fun initView() {
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            affiliateUserInfo = SharedPreference.get(requireActivity()).getAffiliateUser()
+        }
+        else{
+            userInfo = SharedPreference.get(requireActivity()).getUser()
+        }
+        setData()
         binding?.apply {
             toolbar.tvToolbar.text = "Settings"
         }
@@ -54,13 +70,81 @@ class SettingFragment : BaseFragment() {
                 deleteAlertDialog()
             }
 
-           // tvSwitch.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.switch_on,0, 0 )
 
+            tvInAppNotification.setOnClickListener {
+                appNotificationOnOff()
+            }
+
+            tvPushNotification.setOnClickListener {
+                notificationOnOff()
+            }
         }
 
     }
 
     override fun observe() {
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                isObserver = false
+            }
+        }
+
+        viewModel.notificationOnOffResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
+                    userInfo?.notification = response?.data?.notification?:0
+                    userInfo?.let { SharedPreference.get(requireActivity()).saveUser(it) }
+                    setData()
+                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.appNotificationOnOffResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
+                    userInfo?.appNotification = response?.data?.appNotification?:0
+                    userInfo?.let { SharedPreference.get(requireActivity()).saveUser(it) }
+                    setData()
+                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.notificationOnOffAffiliateResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
+                    affiliateUserInfo?.notification = response?.data?.notification?:0
+                    affiliateUserInfo?.let { SharedPreference.get(requireActivity()).saveAffiliateUser(it) }
+                    setData()
+                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.appNotificationOnOffAffiliateResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
+                    affiliateUserInfo?.appNotification = response?.data?.appNotification?:0
+                    affiliateUserInfo?.let { SharedPreference.get(requireActivity()).saveAffiliateUser(it) }
+                    setData()
+                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                }
+                isObserver = false
+            }
+        }
     }
 
     fun deleteAlertDialog(
@@ -86,6 +170,68 @@ class SettingFragment : BaseFragment() {
         }
 
         dialog.show()
+    }
+
+    fun notificationOnOff(){
+        val map = HashMap<String, Any>()
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            viewModel.notificationOnOffAffiliate(map)
+        }
+        else{
+            viewModel.notificationOnOff(map)
+        }
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
+        isObserver = true
+
+    }
+
+    fun appNotificationOnOff(){
+        val map = HashMap<String, Any>()
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            viewModel.appNotificationOnOffAffiliate(map)
+        }
+        else{
+            viewModel.appNotificationOnOff(map)
+        }
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
+        isObserver = true
+
+    }
+
+    fun setData(){
+        binding?.apply {
+            if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+                if(affiliateUserInfo?.appNotification==1){
+                    tvInAppNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_in_app_notification, 0,R.drawable.switch_on, 0 )
+                }
+                else{
+                    tvInAppNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_in_app_notification, 0,R.drawable.switch_off,0 )
+                }
+
+                if(affiliateUserInfo?.notification==1){
+                    tvPushNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_push_notification, 0,R.drawable.switch_on,0 )
+                }
+                else{
+                    tvPushNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_push_notification, 0,R.drawable.switch_off,0 )
+                }
+            }
+            else{
+                if(userInfo?.appNotification==1){
+                    tvInAppNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_in_app_notification, 0,R.drawable.switch_on, 0 )
+                }
+                else{
+                    tvInAppNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_in_app_notification, 0,R.drawable.switch_off,0 )
+                }
+
+                if(userInfo?.notification==1){
+                    tvPushNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_push_notification, 0,R.drawable.switch_on,0 )
+                }
+                else{
+                    tvPushNotification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_push_notification, 0,R.drawable.switch_off,0 )
+                }
+            }
+
+        }
     }
 
 }

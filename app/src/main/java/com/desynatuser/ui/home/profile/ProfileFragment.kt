@@ -121,28 +121,20 @@ class ProfileFragment : BaseFragment() {
                 }
             }
 
-          /*  rlLanguage.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("from", "profile")
-                }
-                findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
-            }
-
             rlSetting.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
-                findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
+                    findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
                 }
                 else{
                     CommonMethod.showLoginAlert(requireActivity())
                 }
             }
 
-            rlFaq.setOnClickListener {
-                if (SharedPreference.get(requireActivity()).accessToken!="") {
-                    findNavController().navigate(R.id.action_profileFragment_to_faqFragment)
-                } else{
-                    CommonMethod.showLoginAlert(requireActivity())
+          /*  rlLanguage.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("from", "profile")
                 }
+                findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
             }
 
             rlGoCurrency.setOnClickListener {
@@ -160,10 +152,49 @@ class ProfileFragment : BaseFragment() {
                     CommonMethod.showLoginAlert(requireActivity())
                 }
             }
+*/
+
+            rlTerms.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 1)
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_cmsContentFragment,bundle)
+            }
+
 
             relAbout.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 3)
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_cmsContentFragment,bundle)
+            }
 
-            }*/
+            rlReturnPolicy.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 4)
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_cmsContentFragment,bundle)
+            }
+
+
+            rlExchange.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 5)
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_cmsContentFragment,bundle)
+            }
+
+            rlCancellationPolicy.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 6)
+                }
+                findNavController().navigate(R.id.action_profileFragment_to_cmsContentFragment,bundle)
+            }
+
+
+            rlFaq.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_faqFragment)
+            }
 
             rlAffiliate.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {

@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.desynatdriver.ui.home.cms.response.GetCmsResponse
+import com.desynatdriver.ui.home.cms.response.GetFaqResponse
 import com.desynatuser.network.ApiServices
 import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserAddressResponse
 import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserBankDetail
@@ -1710,6 +1712,141 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
             responseLiveData = contactUsLiveData
         )
     }
+
+    var faqLiveData = SingleLiveEvent<GetFaqResponse>()
+    suspend fun faq(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.faq(map)
+            },
+            responseLiveData = faqLiveData
+        )
+    }
+
+    var termsAndConditionLiveData = SingleLiveEvent<GetCmsResponse>()
+    suspend fun termsAndCondition(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.termsAndCondition(map)
+            },
+            responseLiveData = termsAndConditionLiveData
+        )
+    }
+
+    var privacyPolicyLiveData = SingleLiveEvent<GetCmsResponse>()
+    suspend fun privacyPolicy(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.privacyPolicy(map)
+            },
+            responseLiveData = privacyPolicyLiveData
+        )
+    }
+
+    var aboutUsLiveData = SingleLiveEvent<GetCmsResponse>()
+    suspend fun aboutUs(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.aboutUs(map)
+            },
+            responseLiveData = aboutUsLiveData
+        )
+    }
+
+    var returnPolicyLiveData = SingleLiveEvent<GetCmsResponse>()
+    suspend fun returnPolicy(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.returnPolicy(map)
+            },
+            responseLiveData = returnPolicyLiveData
+        )
+    }
+
+    var exchangePolicyLiveData = SingleLiveEvent<GetCmsResponse>()
+    suspend fun exchangePolicy(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.exchangePolicy(map)
+            },
+            responseLiveData = exchangePolicyLiveData
+        )
+    }
+
+    var cancellationPolicyLiveData = SingleLiveEvent<GetCmsResponse>()
+    suspend fun cancellationPolicy(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.cancellationPolicy(map)
+            },
+            responseLiveData = cancellationPolicyLiveData
+        )
+    }
+
+    var notificationOnOffLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun notificationOnOff(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.notificationOnOff(map)
+            },
+            responseLiveData = notificationOnOffLiveData
+        )
+    }
+
+    var appNotificationOnOffLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun appNotificationOnOff(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.appNotificationOnOff(map)
+            },
+            responseLiveData = appNotificationOnOffLiveData
+        )
+    }
+
+ var notificationOnOffAffiliateLiveData = SingleLiveEvent<GetAffiliateUserProfileResponse>()
+    suspend fun notificationOnOffAffiliate(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.notificationOnOffAffiliate(map)
+            },
+            responseLiveData = notificationOnOffAffiliateLiveData
+        )
+    }
+
+    var appNotificationOnOffAffiliateLiveData = SingleLiveEvent<GetAffiliateUserProfileResponse>()
+    suspend fun appNotificationOnOffAffiliate(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.appNotificationOnOffAffiliate(map)
+            },
+            responseLiveData = appNotificationOnOffAffiliateLiveData
+        )
+    }
+
+
+
 
 }
 class SingleLiveEvent<T> : MutableLiveData<T>() {

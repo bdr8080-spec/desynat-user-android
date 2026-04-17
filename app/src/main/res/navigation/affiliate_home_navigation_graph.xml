@@ -67,7 +67,19 @@
             app:destination="@id/faq"/>
 
 
+        <action
+            android:id="@+id/action_affiliateProfileFragment_to_cmsContentFragment"
+            app:destination="@id/cmsContent"/>
+
+
     </fragment>
+
+
+    <fragment
+        android:id="@+id/cmsContent"
+        android:name="com.desynatuser.ui.home.cms.CmsContentFragment"
+        android:label="Cms Content Fragment"
+        tools:layout="@layout/fragment_cms_content"/>
 
     <fragment
         android:id="@+id/otp"

@@ -166,6 +166,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initView() {
+        Constants.language = SharedPreference.get(requireActivity()).language
         getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
@@ -180,6 +181,7 @@ class HomeFragment : BaseFragment() {
             homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(requireActivity(),homeBannerList,object :
                 HomeWomenBannerViewPagerAdapter.OnClick{
                 override fun onItemClick(position: Int) {
+                    Log.e("storeid", "onItemClick: ${homeBannerList[position]?.sellerDetails?.storeInfo?.id?.toString()}" )
                         val bundle = Bundle().apply {
                             putString("storeId", homeBannerList[position]?.sellerDetails?.storeInfo?.id?.toString())
                         }

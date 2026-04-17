@@ -1,5 +1,7 @@
 package com.desynatuser.network
 
+import com.desynatdriver.ui.home.cms.response.GetCmsResponse
+import com.desynatdriver.ui.home.cms.response.GetFaqResponse
 import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserAddressResponse
 import com.desynatuser.ui.affiliateUser.auth.response.AddAffiliateUserBankDetail
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
@@ -685,5 +687,38 @@ interface ApiServices {
 
     @GET(Constants.CONTACT_US)
     suspend fun contactUs(@QueryMap map: HashMap<String, Any>): Response<GetContactResponse>
+
+    @GET(Constants.FAQ)
+    suspend fun faq(@QueryMap map: HashMap<String, Any>): Response<GetFaqResponse>
+
+    @GET(Constants.ABOUT_US)
+    suspend fun aboutUs(@QueryMap map: HashMap<String, Any>): Response<GetCmsResponse>
+
+    @GET(Constants.TERMS_CONDITION)
+    suspend fun termsAndCondition(@QueryMap map: HashMap<String, Any>): Response<GetCmsResponse>
+
+    @GET(Constants.PRIVACY_POLICY)
+    suspend fun privacyPolicy(@QueryMap map: HashMap<String, Any>): Response<GetCmsResponse>
+
+    @GET(Constants.RETURN_POLICY)
+    suspend fun returnPolicy(@QueryMap map: HashMap<String, Any>): Response<GetCmsResponse>
+
+    @GET(Constants.CANCELLATION_POLICY)
+    suspend fun cancellationPolicy(@QueryMap map: HashMap<String, Any>): Response<GetCmsResponse>
+
+    @GET(Constants.EXCHANGE_POLICY)
+    suspend fun exchangePolicy(@QueryMap map: HashMap<String, Any>): Response<GetCmsResponse>
+
+    @POST(Constants.NOTIFICATION_ON_OFF)
+    suspend fun notificationOnOff(@QueryMap map: HashMap<String, Any>): Response<LoginResponse>
+
+    @POST(Constants.APP_NOTIFICATION_ON_OFF)
+    suspend fun appNotificationOnOff(@QueryMap map: HashMap<String, Any>): Response<LoginResponse>
+
+    @POST(Constants.NOTIFICATION_ON_OFF_AFFILIATE)
+    suspend fun notificationOnOffAffiliate(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateUserProfileResponse>
+
+    @POST(Constants.APP_NOTIFICATION_ON_OFF_AFFILIATE)
+    suspend fun appNotificationOnOffAffiliate(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateUserProfileResponse>
 
 }

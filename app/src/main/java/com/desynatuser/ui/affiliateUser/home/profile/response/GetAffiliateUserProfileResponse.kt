@@ -71,7 +71,11 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("user_id")
-        val userId: Int
+        val userId: Int,
+        @SerializedName("app_notification")
+        var appNotification: Int,
+        @SerializedName("notification")
+        var notification: Int
     ) {
         data class AddressDetails(
             @SerializedName("address1")

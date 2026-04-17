@@ -3,6 +3,8 @@ package com.desynatuser.data.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.desynatdriver.ui.home.cms.response.GetCmsResponse
+import com.desynatdriver.ui.home.cms.response.GetFaqResponse
 import com.desynatuser.data.repo.MainRepository
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressRequest
 import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
@@ -1185,6 +1187,105 @@ val defaultBankResult: LiveData<CommonResponse>
     fun contactUs(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.contactUs(map)
+        }
+    }
+
+    val faqResult: LiveData<GetFaqResponse>
+        get() = repository.faqLiveData
+
+    fun faq(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.faq(map)
+        }
+    }
+
+    val termsAndConditionResult: LiveData<GetCmsResponse>
+        get() = repository.termsAndConditionLiveData
+
+    fun termsAndCondition(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.termsAndCondition(map)
+        }
+    }
+
+    val privacyPolicyResult: LiveData<GetCmsResponse>
+        get() = repository.privacyPolicyLiveData
+
+    fun privacyPolicy(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.privacyPolicy(map)
+        }
+    }
+
+    val aboutUsResult: LiveData<GetCmsResponse>
+        get() = repository.aboutUsLiveData
+
+    fun aboutUs(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.aboutUs(map)
+        }
+    }
+
+    val returnPolicyResult: LiveData<GetCmsResponse>
+        get() = repository.returnPolicyLiveData
+
+    fun returnPolicy(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.returnPolicy(map)
+        }
+    }
+
+    val exchangePolicyResult: LiveData<GetCmsResponse>
+        get() = repository.exchangePolicyLiveData
+
+    fun exchangePolicy(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.exchangePolicy(map)
+        }
+    }
+
+    val cancellationPolicyResult: LiveData<GetCmsResponse>
+        get() = repository.cancellationPolicyLiveData
+
+    fun cancellationPolicy(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.cancellationPolicy(map)
+        }
+    }
+
+    val notificationOnOffResult: LiveData<LoginResponse>
+        get() = repository.notificationOnOffLiveData
+
+    fun notificationOnOff(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.notificationOnOff(map)
+        }
+    }
+
+    val appNotificationOnOffResult: LiveData<LoginResponse>
+        get() = repository.appNotificationOnOffLiveData
+
+    fun appNotificationOnOff(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.appNotificationOnOff(map)
+        }
+    }
+
+    val notificationOnOffAffiliateResult: LiveData<GetAffiliateUserProfileResponse>
+        get() = repository.notificationOnOffAffiliateLiveData
+
+    fun notificationOnOffAffiliate(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.notificationOnOffAffiliate(map)
+        }
+    }
+
+    val appNotificationOnOffAffiliateResult: LiveData<GetAffiliateUserProfileResponse>
+        get() = repository.appNotificationOnOffAffiliateLiveData
+
+    fun appNotificationOnOffAffiliate(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.appNotificationOnOffAffiliate(map)
         }
     }
 
