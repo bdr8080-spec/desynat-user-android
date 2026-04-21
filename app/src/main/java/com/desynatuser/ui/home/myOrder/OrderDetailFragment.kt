@@ -38,6 +38,7 @@ import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -592,7 +593,7 @@ class OrderDetailFragment : BaseFragment() {
             }
 
             btnInvoice.setOnClickListener {
-                CommonMethod.openPdfInBrowser(requireActivity(),"http://157.241.119.72/Invoice/${orderData?.order?.orderId.toString()}")
+                CommonMethod.openPdfInBrowser(requireActivity(),"${Constants.BASE_URL}/Invoice/${orderData?.order?.orderId.toString()}")
                // getInvoice()
             }
         }

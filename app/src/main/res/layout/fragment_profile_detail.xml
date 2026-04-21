@@ -25,23 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_15sdp">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvChangePassword"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="Change Your Password"
-                android:textColor="@color/brown"
-                android:textSize="@dimen/_12sdp"
-                android:background="@drawable/card_background"
-                android:backgroundTint="@color/light_pink"
-                android:drawableEnd="@drawable/ic_arrow_forward"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -54,7 +37,7 @@
                 app:shapeAppearanceOverlay="@style/circle_image"
                 android:clipToOutline="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvChangePassword"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvChangeImage"
