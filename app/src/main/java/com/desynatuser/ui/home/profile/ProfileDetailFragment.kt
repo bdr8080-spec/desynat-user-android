@@ -128,12 +128,12 @@ class ProfileDetailFragment : BaseFragment() {
                 changeMobileOrEmail(map)
             }
 
-            tvChangePassword.setOnClickListener {
+          /*  tvChangePassword.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("from","user")
                 }
                 findNavController().navigate(R.id.action_profileDetailsFragment_to_changePasswordFragment,bundle)
-            }
+            }*/
 
             btnSaveChange.setOnClickListener {
                     val map = HashMap<String,String>()

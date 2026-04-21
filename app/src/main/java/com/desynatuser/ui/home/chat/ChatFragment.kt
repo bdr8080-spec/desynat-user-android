@@ -328,12 +328,6 @@ class ChatFragment : BaseFragment() {
 
             }
             tvTotalQuantityValue.text = chatDetailData?.quantity.toString()
-           /* if (chatDetailData?.deliveryDetails?.address != "null" && chatDetailData?.deliveryDetails?.address != null && chatDetailData?.deliveryDetails?.address != "") {
-                tvAddressValue.text = chatDetailData?.deliveryDetails?.address.toString()
-            } else {
-                tvAddressValue.text = selectedAddress?.address.toString()
-            }*/
-
             tvCustomDetail.text = chatDetailData?.customDetails.toString()
             tvRequestId.text = "Request Id #${chatDetailData?.id}"
 
@@ -409,16 +403,6 @@ class ChatFragment : BaseFragment() {
                     }
                 }
 
-                /*if (hasText) {
-                    sendMessage(
-                        uniqueId = uniqueId,
-                        message = textMessage,
-                        messageAr = textMessage,
-                        type = "0"
-                    )
-                    etMessage.setText("")
-                }*/
-
                 if (hasImages) {
                     uploadImageList.forEach { image ->
                         sendMessage(
@@ -438,14 +422,6 @@ class ChatFragment : BaseFragment() {
             }
 
             btnPayNow.setOnClickListener {
-             /*   val bundle = Bundle().apply {
-                    putString("from", "chat")
-                    putString("chatData", Gson().toJson(chatDetailData))
-                }
-                findNavController().navigate(
-                    R.id.action_chatFragment_to_orderPaymentFragment,
-                    bundle
-                )*/
                 if(chatDetailData?.addToCartStatus != "1") {
                    addToCartCustomOrder()
                 }
@@ -559,17 +535,6 @@ class ChatFragment : BaseFragment() {
 
         addCustomRequestDialogBinding?.apply {
 
-           /* if (selectedAddress == null) {
-                if (SharedPreference.get(requireActivity()).getDefaultAddress() != null) {
-                    selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
-                    tvAddress.text = selectedAddress?.address
-                } else {
-                    getAddress()
-                }
-            } else {
-                addCustomRequestDialogBinding?.tvAddress?.text = selectedAddress?.address
-            }*/
-
             if (selectedQuantity != null) {
                 etAddQuantity.setText(selectedQuantity)
                 selectedQuantity = null
@@ -583,30 +548,10 @@ class ChatFragment : BaseFragment() {
                 addCustomRequestDialog?.dismiss()
             }
 
-           /* tvChange.setOnClickListener {
-                if (etAddQuantity.text?.trim().toString().isNotEmpty()) {
-                    selectedQuantity = etAddQuantity.text.toString()
-                }
-                if (etCustomDetails.text?.trim().toString().isNotEmpty()) {
-                    customDetail = etCustomDetails.text.toString()
-                }
-                val bundle = Bundle().apply {
-                    putString("from", "chat")
-                }
-                findNavController().navigate(
-                    R.id.action_chatFragment_to_savedAddressFragment,
-                    bundle
-                )
-                addCustomRequestDialog?.dismiss()
-            }*/
-
             btnSendRequest.setOnClickListener {
                 if (etAddQuantity.text?.trim()?.isEmpty() == true) {
                     showToast("Please enter quantity")
                 }
-              /*  else if (tvAddress.text?.trim()?.isEmpty() == true) {
-                    showToast("Please add delivery address")
-                }*/
                 else if (etCustomDetails.text?.trim()?.isEmpty() == true) {
                     showToast("Please enter custom detail")
                 } else {
@@ -694,27 +639,6 @@ class ChatFragment : BaseFragment() {
                 override fun onCancelled(error: DatabaseError) {}
             })
     }
-
-
-    /* fun listenMessages(
-         uniqueId: String,
-         onMessage: (ChatMessage) -> Unit
-     ) {
-         database.child("chats")
-             .child(uniqueId)
-             .addChildEventListener(object : ChildEventListener {
-
-                 override fun onChildAdded(snapshot: DataSnapshot, prev: String?) {
-                     snapshot.getValue(ChatMessage::class.java)
-                         ?.let { onMessage(it) }
-                 }
-
-                 override fun onChildChanged(snapshot: DataSnapshot, prev: String?) {}
-                 override fun onChildRemoved(snapshot: DataSnapshot) {}
-                 override fun onChildMoved(snapshot: DataSnapshot, prev: String?) {}
-                 override fun onCancelled(error: DatabaseError) {}
-             })
-     }*/
 
     fun markMessageRead(uniqueId: String, messageId: String) {
         val map = HashMap<String, Any>()
@@ -818,8 +742,6 @@ class ChatFragment : BaseFragment() {
             if (isCustomObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 chatDetailData?.action = response.data.action
-            //    chatDetailData?.deliveryAddress = response.data.deliveryAddress
-              //  chatDetailData?.deliveryDetails?.address = selectedAddress?.address.toString()
                 chatDetailData?.customDetails = response.data.customDetails
                 chatDetailData?.quantity = response.data.quantity
                 setQuotationData()
@@ -849,7 +771,6 @@ class ChatFragment : BaseFragment() {
         map["quantity"] = addCustomRequestDialogBinding?.etAddQuantity?.text?.trim().toString()
         map["custom_details"] =
             addCustomRequestDialogBinding?.etCustomDetails?.text?.trim().toString()
-        //map["delivery_address"] = selectedAddress?.id.toString()
         viewModel.sendCustomOrderRequest(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isCustomObserver = true
@@ -893,75 +814,6 @@ class ChatFragment : BaseFragment() {
         ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
         isImageObserver = true
     }
-
-    /*  private fun getChat(){
-          val map = HashMap<String, Any>()
-          map["unique_id"] = ""
-          viewModel.chatDetail(map)
-          ProgressDialogUtils.getInstance().showProgress(requireActivity())
-          isObserver = true
-      }
-
-      private fun sendMessage(){
-          val map = HashMap<String, Any>()
-          map["unique_id"] = ""
-          map["message"] = ""
-          map["type"] = "0" // 0 text 1 image ,
-          map["by"] = "user"
-          viewModel.sendMessage(map)
-          ProgressDialogUtils.getInstance().showProgress(requireActivity())
-          isObserver = true
-      }
-
-      private fun chatWithSeller(){
-          val map = HashMap<String, Any>()
-          map["seller_id"] = ""
-          viewModel.chatWithSeller(map)
-          ProgressDialogUtils.getInstance().showProgress(requireActivity())
-          isObserver = true
-      }
-
-      private fun createCustomOrder() {
-          val map = HashMap<String, Any>()
-          map["product_id"] = productId
-          map["variants_id"] = productVariant?.id.toString()
-          viewModel.createCustomOrder(map)
-          ProgressDialogUtils.getInstance().showProgress(requireActivity())
-          isObserver = true
-      }
-      */
-
-//    private fun sendCustomOrderRequest() {
-//        val map = HashMap<String, Any>()
-//        map["unique_id"] = productData?.id.toString()
-//        map["quantity"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
-//        map["custom_details"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
-//        map["delivery_address"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
-//        viewModel.sendCustomOrderRequest(map)
-//        ProgressDialogUtils.getInstance().showProgress(requireActivity())
-//        isObserver = true
-//    }
-//
-//    private fun customOrderApplyGiftCard() {
-//        val map = HashMap<String, Any>()
-//        map["unique_id"] = productData?.id.toString()
-//        map["giftcard_id"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
-//        map["giftcard_amount"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
-//        map["Payment_method"] = productInfo?.getOrNull(selectedPos)?.productVariation?.getOrNull(selectedSizePos)?.id.toString()
-//        viewModel.applyCustomOrderGiftCard(map)
-//        ProgressDialogUtils.getInstance().showProgress(requireActivity())
-//        isObserver = true
-//    }
-//
-//    private fun customOrderCompletePayment() {
-//        val map = HashMap<String, Any>()
-//        map["order_id"] = productData?.id.toString()
-//        map["Payment_method"] = 3 //1 myfatoorah 2 wallet 3 Cod
-//        map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
-//        viewModel.customOrderPayment(map)
-//        ProgressDialogUtils.getInstance().showProgress(requireActivity())
-//        isObserver = true
-//    }
 
     private fun imagePreviewDialog(image: String) {
         var imageList = arrayListOf(image)

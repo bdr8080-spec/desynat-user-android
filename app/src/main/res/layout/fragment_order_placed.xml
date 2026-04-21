@@ -21,11 +21,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#17854C"
-            android:orientation="vertical">
+            android:orientation="vertical">-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#B59974"
+                android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -82,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:background="#D1EFC7"
+                        android:background="#FFF7EA"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:gravity="center_horizontal"
@@ -91,6 +97,22 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
 
+
+                    <!-- <androidx.appcompat.widget.AppCompatTextView
+                         android:id="@+id/tvDeliveryDate"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_horizontal"
+                         android:layout_marginTop="@dimen/_10sdp"
+                         android:background="#D1EFC7"
+                         android:paddingHorizontal="@dimen/_10sdp"
+                         android:fontFamily="@font/poppins_medium"
+                         android:gravity="center_horizontal"
+                         android:paddingVertical="@dimen/_5sdp"
+                         android:text="Expected Delivery Date : 12 SEP 25"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_11sdp" />
+ -->
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -214,7 +236,7 @@
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:text="Continue Shopping"
         android:textColor="@color/brown"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:background="@drawable/button_stroke"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

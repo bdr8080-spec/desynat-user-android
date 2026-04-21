@@ -151,6 +151,9 @@
         <action
             android:id="@+id/action_profileFragment_to_faqFragment"
             app:destination="@id/faq"/>
+        <action
+            android:id="@+id/action_profileFragment_to_cmsContentFragment"
+            app:destination="@id/cmsContent"/>
 
     </fragment>
 
@@ -159,6 +162,12 @@
         android:name="com.desynatuser.ui.auth.fragment.LanguageFragment"
         android:label="Language Fragment"
         tools:layout="@layout/fragment_language"/>
+
+    <fragment
+        android:id="@+id/cmsContent"
+        android:name="com.desynatuser.ui.home.cms.CmsContentFragment"
+        android:label="Cms Content Fragment"
+        tools:layout="@layout/fragment_cms_content"/>
 
     <fragment
         android:id="@+id/profileDetails"

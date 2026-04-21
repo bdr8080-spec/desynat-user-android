@@ -47,7 +47,11 @@ data class LoginResponse(
         @SerializedName("otp_verify")
         val otpVerify: String,
         @SerializedName("updated_at")
-        val updatedAt: String
+        val updatedAt: String,
+        @SerializedName("app_notification")
+        var appNotification: Int,
+        @SerializedName("notification")
+        var notification: Int
     ){
         data class AffiliatedUserdetails(
             @SerializedName("address_update_status")

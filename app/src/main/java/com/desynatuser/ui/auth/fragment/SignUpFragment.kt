@@ -1,5 +1,6 @@
 package com.desynatuser.ui.auth.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -24,7 +25,9 @@ import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentSignUpBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.CustomTypefaceSpan
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
@@ -104,7 +107,9 @@ class SignUpFragment : BaseFragment() {
 
             etPassword.togglePasswordVisibility(ivPasswordVisible)
             etConfirmPassword.togglePasswordVisibility(ivConfirmPasswordVisible)
-            cbTermsPolicy.text = spannableText()
+            tvTermsPolicy.text = spannableText()
+            tvTermsPolicy?.movementMethod = LinkMovementMethod.getInstance()
+            tvTermsPolicy?.highlightColor = Color.TRANSPARENT
 
             imagePicker = ImagePicker(
                 requireActivity(),
@@ -150,7 +155,15 @@ class SignUpFragment : BaseFragment() {
             }
 
             tvGuest.setOnClickListener {
-
+                Constants.isGuest = true
+                CommonMethod.clearData(requireActivity())
+                CommonMethod.clearAffiliateData(requireActivity())
+                Constants.Category = "Women"
+                requireActivity().startActivity(
+                    Intent(requireActivity(),
+                        HomeActivity::class.java)
+                )
+                requireActivity().finish()
             }
         }
     }
@@ -336,7 +349,10 @@ class SignUpFragment : BaseFragment() {
         }
 
         applySpan(getString(R.string.terms_conditions)){
-
+            val bundle = Bundle().apply {
+                putInt("type", 1)
+            }
+            findNavController().navigate(R.id.action_signUpFragment_to_cmsContentFragment,bundle)
         }
         applySpan(getString(R.string.policies)){
 

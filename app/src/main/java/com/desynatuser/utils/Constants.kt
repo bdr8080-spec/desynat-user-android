@@ -2,28 +2,28 @@ package com.desynatuser.utils
 
 object Constants {
 
- // const val BASE_URL = "http://157.241.119.72" //old
- //const val BASE_URL = "http://65.2.12.223" //new
+    // const val BASE_URL = "http://157.241.119.72" //old
+    //const val BASE_URL = "http://65.2.12.223" //new
     const val BASE_URL = "https://desynat.com"
 
-   var MERCHANT_ID = "BCR2DN5TRCW73QI6"
+    var MERCHANT_ID = "BCR2DN5TRCW73QI6"
     var MERCHANT_NAME = "Desynat"
 
-    var language="en"
+    var language = "en"
     var currentScreen = ""
     const val ENGLISH = "en"
     const val ARABIC = "ar"
     var isGuest = false
     var Category = "Women"
 
-    var isLogout=false
-    var location=""
-    var latitude=0.0
-    var longitude=0.0
-    var cartItem=0
-    var DEVICE_TYPE=2
+    var isLogout = false
+    var location = ""
+    var latitude = 0.0
+    var longitude = 0.0
+    var cartItem = 0
+    var DEVICE_TYPE = 2
 
-   // const val UPLOAD = "/api/upload"
+    // const val UPLOAD = "/api/upload"
     const val UPLOAD = "/api/uploadFile"
     const val REGISTER = "/api/register"
     const val LOGIN = "/api/login"
@@ -156,23 +156,36 @@ object Constants {
     const val SHARE_REEL = "/api/user/share_reel"
     const val GET_WISHLISTED_REEL = "/api/user/get_whishlisted_reel"
 
- const val GET_AFFILIATE_DASHBOARD = "/api/affiliate/get_affiliate_dashboard_data"
+    const val GET_AFFILIATE_DASHBOARD = "/api/affiliate/get_affiliate_dashboard_data"
 
- const val GET_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
- const val READ_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
- const val AFFILIATE_USER_NOTIFICATION_COUNT = "/api/affiliate/CountaffiliateUserNotification"
- const val GET_LIVE_STREAMING_ROOM = "/api/user/show-all-live-streaming-request"
- const val SUGGEST_STORE = "/api/user/suggest-store"
- const val BEST_SELLING_PRODUCT = "/api/user/best-selling-product"
- const val TOP_RATING_PRODUCT = "/api/user/top-rating-product"
- const val NEWEST_PRODUCT = "/api/user/newest-product"
+    const val GET_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
+    const val READ_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
+    const val AFFILIATE_USER_NOTIFICATION_COUNT = "/api/affiliate/CountaffiliateUserNotification"
+    const val GET_LIVE_STREAMING_ROOM = "/api/user/show-all-live-streaming-request"
+    const val SUGGEST_STORE = "/api/user/suggest-store"
+    const val BEST_SELLING_PRODUCT = "/api/user/best-selling-product"
+    const val TOP_RATING_PRODUCT = "/api/user/top-rating-product"
+    const val NEWEST_PRODUCT = "/api/user/newest-product"
 
- const val GET_TICKET_TYPE = "/api/ticket_types"
- const val GET_RAISED_TICKET = "/api/user/get_raised_tickets"
- const val RAISE_TICKET = "/api/user/raise_ticket"
- const val GET_AFFILIATE_RAISED_TICKET = "/api/affiliate/get_raised_tickets"
- const val AFFILIATE_RAISE_TICKET = "/api/affiliate/raise_ticket"
- const val GET_AGORA_TOKEN = "/api/agora/token"
- const val CONTACT_US = "/api/contact_us/"
+    const val GET_TICKET_TYPE = "/api/ticket_types"
+    const val GET_RAISED_TICKET = "/api/user/get_raised_tickets"
+    const val RAISE_TICKET = "/api/user/raise_ticket"
+    const val GET_AFFILIATE_RAISED_TICKET = "/api/affiliate/get_raised_tickets"
+    const val AFFILIATE_RAISE_TICKET = "/api/affiliate/raise_ticket"
+    const val GET_AGORA_TOKEN = "/api/agora/token"
+
+    const val NOTIFICATION_ON_OFF = "/api/user/notification_on_off"
+    const val APP_NOTIFICATION_ON_OFF = "/api/user/app_notification_on_off"
+
+    const val NOTIFICATION_ON_OFF_AFFILIATE = "/api/affiliate/affiliate_notification_on_off"
+    const val APP_NOTIFICATION_ON_OFF_AFFILIATE = "/api/affiliate/affiliate_app_notification_on_off"
+    const val CONTACT_US = "/api/contact_us/"
+    const val FAQ = "/api/faqs"
+    const val TERMS_CONDITION = "/api/terms_conditions"
+    const val ABOUT_US = "/api/about_us"
+    const val PRIVACY_POLICY = "/api/terms_conditions"
+    const val RETURN_POLICY = "/api/return_policy"
+    const val EXCHANGE_POLICY = "/api/exchange_policy"
+    const val CANCELLATION_POLICY = "/api/cancellation_policy"
 
 }

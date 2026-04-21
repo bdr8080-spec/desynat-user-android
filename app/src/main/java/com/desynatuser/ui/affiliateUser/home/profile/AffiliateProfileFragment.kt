@@ -83,29 +83,45 @@ class AffiliateProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_supportFragment)
             }
 
-
-           /* rlLanguage.setOnClickListener {
+            rlTerms.setOnClickListener {
                 val bundle = Bundle().apply {
-                    putString("from", "profile")
+                    putInt("type", 1)
                 }
-                findNavController().navigate(R.id.action_affiliateProfileFragment_to_languageFragment,bundle)
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_cmsContentFragment,bundle)
             }
 
-            rlSetting.setOnClickListener {
-                findNavController().navigate(R.id.action_affiliateProfileFragment_to_settingFragment)
+
+           /* relAbout.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 3)
+                }
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_cmsContentFragment,bundle)
             }
 
             rlFaq.setOnClickListener {
                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_faqFragment)
             }
 
-            rlChangeCurrency.setOnClickListener {
-                findNavController().navigate(R.id.action_affiliateProfileFragment_to_changeCurrencyFragment)
-            }
-
-            rlChangeCountry.setOnClickListener {
-                findNavController().navigate(R.id.action_affiliateProfileFragment_to_changeCountryFragment)
+            rlSetting.setOnClickListener {
+                findNavController().navigate(R.id.action_affiliateProfileFragment_to_settingFragment)
             }*/
+
+
+
+            /* rlLanguage.setOnClickListener {
+                 val bundle = Bundle().apply {
+                     putString("from", "profile")
+                 }
+                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_languageFragment,bundle)
+             }
+
+             rlChangeCurrency.setOnClickListener {
+                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_changeCurrencyFragment)
+             }
+
+             rlChangeCountry.setOnClickListener {
+                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_changeCountryFragment)
+             }*/
         }
 
     }
