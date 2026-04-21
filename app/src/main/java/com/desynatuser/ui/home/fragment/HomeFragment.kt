@@ -1,7 +1,7 @@
 package com.desynatuser.ui.home.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,12 +15,9 @@ import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.util.Base64
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -59,10 +56,8 @@ import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
-import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
@@ -82,7 +77,7 @@ import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
-    private var binding: FragmentHomeBinding?=null
+    private var binding: FragmentHomeBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private val locationViewModel: LocationViewModel by activityViewModels()
     var isObserver = false
@@ -107,26 +102,26 @@ class HomeFragment : BaseFragment() {
 
     private var hasNavigatedFromML = false
 
-    private var user: LoginResponse.Data?=null
+    private var user: LoginResponse.Data? = null
 
     var isCategoryObserver = false
-    private var bestSellingAdapter: BestSellingAdapter?=null
+    private var bestSellingAdapter: BestSellingAdapter? = null
     private val myStories = ArrayList<GetSellerStoryResponse.Data>()
 
     private var mainCategoryList = ArrayList<GetCategoryResponse.Data>()
     private var categoryList = ArrayList<GetSubCategoryResponse.Data>()
-    private var categoryAdapter: CategoryAdapter?=null
-    private var newestProductAdapter: NewestProductAdapter?=null
-    private var suggestedStoreAdapter: SuggestedStoreAdapter?=null
-    private var topRatedAdapter: TopRatedAdapter?=null
+    private var categoryAdapter: CategoryAdapter? = null
+    private var newestProductAdapter: NewestProductAdapter? = null
+    private var suggestedStoreAdapter: SuggestedStoreAdapter? = null
+    private var topRatedAdapter: TopRatedAdapter? = null
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
     private var homeBannerList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
     private var premiumList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
     private var categoryBannerList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
     private var discountList = ArrayList<GetDealBannerResponse.Data>()
-    private var homeWomenBannerViewPagerAdapter : HomeWomenBannerViewPagerAdapter? =null
-    private var discountedDealBannerViewPagerAdapter : DiscountedDealBannerViewPagerAdapter? =null
-    private var premiumStoreBannerViewPagerAdapter : PremiumStoreBannerViewPagerAdapter? =null
+    private var homeWomenBannerViewPagerAdapter: HomeWomenBannerViewPagerAdapter? = null
+    private var discountedDealBannerViewPagerAdapter: DiscountedDealBannerViewPagerAdapter? = null
+    private var premiumStoreBannerViewPagerAdapter: PremiumStoreBannerViewPagerAdapter? = null
 
     private lateinit var imagePicker: ImagePicker
     private val cameraLauncher =
@@ -151,7 +146,7 @@ class HomeFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(layoutInflater,container,false)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -170,136 +165,175 @@ class HomeFragment : BaseFragment() {
         getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
-            if (SharedPreference.get(requireActivity()).accessToken!=""){
+            if (SharedPreference.get(requireActivity()).accessToken != "") {
                 tvDeliverTo.text = "Deliver to ${user?.fullName}"
                 notificationCount()
             }
-            if (Constants.location!=""){
+            if (Constants.location != "") {
                 tvLocation.text = Constants.location
             }
 
-            homeWomenBannerViewPagerAdapter = HomeWomenBannerViewPagerAdapter(requireActivity(),homeBannerList,object :
-                HomeWomenBannerViewPagerAdapter.OnClick{
-                override fun onItemClick(position: Int) {
-                    Log.e("storeid", "onItemClick: ${homeBannerList[position]?.sellerDetails?.storeInfo?.id?.toString()}" )
+            homeWomenBannerViewPagerAdapter =
+                HomeWomenBannerViewPagerAdapter(requireActivity(), homeBannerList, object :
+                    HomeWomenBannerViewPagerAdapter.OnClick {
+                    override fun onItemClick(position: Int) {
+                        Log.e(
+                            "storeid",
+                            "onItemClick: ${homeBannerList[position]?.sellerDetails?.storeInfo?.id?.toString()}"
+                        )
                         val bundle = Bundle().apply {
-                            putString("storeId", homeBannerList[position]?.sellerDetails?.storeInfo?.id?.toString())
+                            putString(
+                                "storeId",
+                                homeBannerList[position]?.sellerDetails?.storeInfo?.id?.toString()
+                            )
                         }
-                     findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_storeDetailFragment,
+                            bundle
+                        )
+                    }
+
+                })
+            viewPager.adapter = homeWomenBannerViewPagerAdapter
+            TabLayoutMediator(dotsIndicator, binding!!.viewPager) { _, _ -> }.attach()
+
+            discountedDealBannerViewPagerAdapter =
+                DiscountedDealBannerViewPagerAdapter(requireActivity(), discountList, object :
+                    DiscountedDealBannerViewPagerAdapter.OnClick {
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString(
+                                "storeId",
+                                discountList[position]?.sellerDealrecord?.get(0)?.productDetails?.storeId.toString()
+                            )
+                        }
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_storeDetailFragment,
+                            bundle
+                        )
+                    }
+
+                })
+            viewPagerDiscountedDeals.adapter = discountedDealBannerViewPagerAdapter
+            TabLayoutMediator(
+                dotsIndicatorDiscountedDeals,
+                binding!!.viewPagerDiscountedDeals
+            ) { _, _ -> }.attach()
+
+            premiumStoreBannerViewPagerAdapter =
+                PremiumStoreBannerViewPagerAdapter(requireActivity(), premiumList, object :
+                    PremiumStoreBannerViewPagerAdapter.OnClick {
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString(
+                                "storeId",
+                                premiumList[position]?.sellerDetails?.storeInfo?.id?.toString()
+                            )
+                        }
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_storeDetailFragment,
+                            bundle
+                        )
+                    }
+
+                })
+            viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
+            TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
+
+            bestSellingAdapter = BestSellingAdapter(requireActivity(), bestSellingList, object :
+                BestSellingAdapter.OnClick {
+                override fun onItemClick(position: Int, type: Int) {
+                    when (type) {
+                        1 -> {
+                            selectedPos = position
+                            selectedType = 1
+                            addToWishList()
+                        }
+
+                        2 -> {
+                            val data = bestSellingList[position]
+                            CommonMethod.shareProductWithImage(
+                                requireActivity(),
+                                "Product name: ${data?.productNameEn}",
+                                "Description: ${data?.descriptionEn}",
+                                data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
+                                "https://desynat.com/user/product/detail-page/${data.id}"
+                            )
+                        }
+
+                        3 -> {
+                            val bundle = Bundle().apply {
+                                putString("productId", bestSellingList[position].id.toString())
+                            }
+                            findNavController().navigate(
+                                R.id.action_homeFragment_to_productDetailFragment,
+                                bundle
+                            )
+                        }
+                    }
                 }
 
             })
-                viewPager.adapter = homeWomenBannerViewPagerAdapter
-            TabLayoutMediator(dotsIndicator, binding!!.viewPager) { _, _ -> }.attach()
+            rvBestSelling.adapter = bestSellingAdapter
 
-                discountedDealBannerViewPagerAdapter = DiscountedDealBannerViewPagerAdapter(requireActivity(),discountList,object :
-                    DiscountedDealBannerViewPagerAdapter.OnClick{
-                    override fun onItemClick(position: Int) {
-                        val bundle = Bundle().apply {
-                            putString("storeId", discountList[position]?.sellerDealrecord?.get(0)?.productDetails?.storeId.toString())
+            topRatedAdapter = TopRatedAdapter(requireActivity(), topRatedList, object :
+                TopRatedAdapter.OnClick {
+                override fun onItemClick(position: Int, type: Int) {
+                    when (type) {
+                        1 -> {
+                            selectedPos = position
+                            selectedType = 2
+                            addToWishList()
                         }
-                     findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
-                    }
 
-                })
-                viewPagerDiscountedDeals.adapter = discountedDealBannerViewPagerAdapter
-            TabLayoutMediator(dotsIndicatorDiscountedDeals, binding!!.viewPagerDiscountedDeals) { _, _ -> }.attach()
-
-                premiumStoreBannerViewPagerAdapter = PremiumStoreBannerViewPagerAdapter(requireActivity(),premiumList,object :
-                PremiumStoreBannerViewPagerAdapter.OnClick{
-                    override fun onItemClick(position: Int) {
-                        val bundle = Bundle().apply {
-                            putString("storeId", premiumList[position]?.sellerDetails?.storeInfo?.id?.toString())
+                        2 -> {
+                            val data = topRatedList[position]
+                            CommonMethod.shareProductWithImage(
+                                requireActivity(),
+                                "Product name: ${data?.productNameEn}",
+                                "Description: ${data?.descriptionEn}",
+                                data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
+                                "https://desynat.com/user/product/detail-page/${data.id}"
+                            )
                         }
-                     findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
-                    }
 
-                })
-                viewPagerPremium.adapter = premiumStoreBannerViewPagerAdapter
-            TabLayoutMediator(dotsIndicatorPremium, binding!!.viewPagerPremium) { _, _ -> }.attach()
-
-                bestSellingAdapter = BestSellingAdapter(requireActivity(),bestSellingList,object :
-                    BestSellingAdapter.OnClick{
-                    override fun onItemClick(position: Int,type:Int) {
-                        when(type) {
-                            1 -> {
-                                selectedPos = position
-                                selectedType = 1
-                                addToWishList()
+                        3 -> {
+                            val bundle = Bundle().apply {
+                                putString("productId", topRatedList[position].id.toString())
                             }
-
-                            2 -> {
-                               val data = bestSellingList[position]
-                                CommonMethod.shareProductWithImage(requireActivity(),
-                                    "Product name: ${data?.productNameEn}",
-                                    "Description: ${data?.descriptionEn}",
-                                    data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
-                                    "https://desynat.com/user/product/detail-page/${data.id}"
-                                )
-                            }
-
-                            3 -> {
-                                val bundle = Bundle().apply {
-                                    putString("productId", bestSellingList[position].id.toString())
-                                }
-                                findNavController().navigate(
-                                    R.id.action_homeFragment_to_productDetailFragment,
-                                    bundle
-                                )
-                            }
+                            findNavController().navigate(
+                                R.id.action_homeFragment_to_productDetailFragment,
+                                bundle
+                            )
                         }
                     }
 
-                })
-                rvBestSelling.adapter = bestSellingAdapter
 
-                topRatedAdapter = TopRatedAdapter(requireActivity(),topRatedList,object :
-                    TopRatedAdapter.OnClick{
-                    override fun onItemClick(position: Int,type:Int) {
-                        when(type){
-                            1->{
-                                selectedPos = position
-                                selectedType = 2
-                                addToWishList()
-                            }
-                            2->{
-                                val data = topRatedList[position]
-                                CommonMethod.shareProductWithImage(requireActivity(),
-                                    "Product name: ${data?.productNameEn}",
-                                    "Description: ${data?.descriptionEn}",
-                                    data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
-                                    "https://desynat.com/user/product/detail-page/${data.id}"
-                                )
-                            }
-                            3->{
-                                val bundle = Bundle().apply {
-                                    putString("productId", topRatedList[position].id.toString())
-                                }
-                                findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
-                            }
-                        }
+                }
 
+            })
+            rvTopRated.adapter = topRatedAdapter
 
-                    }
-
-                })
-                rvTopRated.adapter = topRatedAdapter
-
-                suggestedStoreAdapter = SuggestedStoreAdapter(requireActivity(),suggestedStoreList,object :
-                    SuggestedStoreAdapter.OnClick{
+            suggestedStoreAdapter =
+                SuggestedStoreAdapter(requireActivity(), suggestedStoreList, object :
+                    SuggestedStoreAdapter.OnClick {
                     override fun onItemClick(position: Int) {
                         val bundle = Bundle().apply {
                             putString("storeId", suggestedStoreList[position]?.id.toString())
                         }
-                        findNavController().navigate(R.id.action_homeFragment_to_storeDetailFragment,bundle)
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_storeDetailFragment,
+                            bundle
+                        )
                     }
 
                 })
-                rvSuggestedStore.adapter = suggestedStoreAdapter
+            rvSuggestedStore.adapter = suggestedStoreAdapter
 
-                newestProductAdapter = NewestProductAdapter(requireActivity(),newestProductList,object :
-                    NewestProductAdapter.OnClick{
-                    override fun onItemClick(position: Int,type:Int) {
+            newestProductAdapter =
+                NewestProductAdapter(requireActivity(), newestProductList, object :
+                    NewestProductAdapter.OnClick {
+                    override fun onItemClick(position: Int, type: Int) {
                         when (type) {
                             1 -> {
                                 selectedPos = position
@@ -309,7 +343,8 @@ class HomeFragment : BaseFragment() {
 
                             2 -> {
                                 val data = newestProductList[position]
-                                CommonMethod.shareProductWithImage(requireActivity(),
+                                CommonMethod.shareProductWithImage(
+                                    requireActivity(),
                                     "Product name: ${data?.productNameEn}",
                                     "Description: ${data?.descriptionEn}",
                                     data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
@@ -332,39 +367,46 @@ class HomeFragment : BaseFragment() {
                         }
                     }
                 })
-                rvNewestProducts.adapter = newestProductAdapter
+            rvNewestProducts.adapter = newestProductAdapter
 
-                categoryList.clear()
-                categoryAdapter = CategoryAdapter(requireActivity(),categoryList,object :CategoryAdapter.CategoryClick{
+            categoryList.clear()
+            categoryAdapter = CategoryAdapter(
+                requireActivity(),
+                categoryList,
+                object : CategoryAdapter.CategoryClick {
                     override fun onCategoryClick(position: Int) {
                         val bundle = Bundle().apply {
                             putString("subCategoryData", Gson().toJson(categoryList[position]))
                         }
-                        findNavController().navigate(R.id.action_homeFragment_to_storeFragment,bundle)
+                        findNavController().navigate(
+                            R.id.action_homeFragment_to_storeFragment,
+                            bundle
+                        )
                     }
 
                 })
-                rvCategory.adapter = categoryAdapter
+            rvCategory.adapter = categoryAdapter
 
-                getCategoryApi()
+            getCategoryApi()
 
-            when(Constants.Category){
-                "Men"-> {
+            when (Constants.Category) {
+                "Men" -> {
                     viewMen.isVisible = true
                     viewWomen.isInvisible = true
                     viewKids.isInvisible = true
                 }
 
-                "Women"-> {
-                viewWomen.isVisible = true
-                viewMen.isInvisible = true
-                viewKids.isInvisible = true
-            }
-                    "Kids"-> {
-                        viewKids.isVisible = true
-                viewMen.isInvisible = true
-                        viewWomen.isInvisible = true
-            }
+                "Women" -> {
+                    viewWomen.isVisible = true
+                    viewMen.isInvisible = true
+                    viewKids.isInvisible = true
+                }
+
+                "Kids" -> {
+                    viewKids.isVisible = true
+                    viewMen.isInvisible = true
+                    viewWomen.isInvisible = true
+                }
             }
 
             imagePicker = ImagePicker(
@@ -379,21 +421,21 @@ class HomeFragment : BaseFragment() {
                 }
             }
 
-            }
+        }
 
-        if (SharedPreference.get(requireActivity()).accessToken!=""){
+        if (SharedPreference.get(requireActivity()).accessToken != "") {
             viewCartDetail()
         }
 
         getHomeScreenAllBanner()
         getHomeScreenBottomBanner()
         getHomeScreenDealBanner()
-      //  getHomeScreenCategoryBanner()
+        //  getHomeScreenCategoryBanner()
 
-            getSuggestedStore()
-            getNewestProduct()
-            getBestSellingProduct()
-            getTopRatedProduct()
+        getSuggestedStore()
+        getNewestProduct()
+        getBestSellingProduct()
+        getTopRatedProduct()
 
     }
 
@@ -412,26 +454,26 @@ class HomeFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_homeFragment_to_TidioChatFragment)
             }
 
-            ivMic.setOnClickListener{
+            ivMic.setOnClickListener {
                 openSpeechDialog()
             }
 
-            ivCamera.setOnClickListener{
+            ivCamera.setOnClickListener {
                 imagePicker.showImageSourceDialog()
             }
 
-            ivChat.setOnClickListener{
-                if (SharedPreference.get(requireActivity()).accessToken!="") {
+            ivChat.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
                     findNavController().navigate(R.id.action_homeFragment_to_chatListFragment)
-                } else{
+                } else {
                     CommonMethod.showLoginAlert(requireActivity())
                 }
             }
 
-            ivWishlist.setOnClickListener{
-                if (SharedPreference.get(requireActivity()).accessToken!="") {
+            ivWishlist.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
                     findNavController().navigate(R.id.action_homeFragment_to_wishlistFragment)
-                } else{
+                } else {
                     CommonMethod.showLoginAlert(requireActivity())
                 }
             }
@@ -468,7 +510,7 @@ class HomeFragment : BaseFragment() {
             }
 
             ivAdminStory.setOnClickListener {
-                if (myStories.size!=0) {
+                if (myStories.size != 0) {
                     val bundle = Bundle().apply {
                         putString("from", "admin")
                         putString("storyData", Gson().toJson(myStories))
@@ -482,9 +524,10 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (isObserver||isNotificationObserver) {
+            if (isObserver || isNotificationObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 errorMessage?.let { showToast(it) }
                 binding?.clMain?.isVisible = true
@@ -498,12 +541,11 @@ class HomeFragment : BaseFragment() {
             if (isNotificationObserver) {
 
                 response?.let {
-                    if (response?.data!=null&&response?.data!=0){
+                    if (response?.data != null && response?.data != 0) {
                         setNotificationCount(response.data)
-                    }
-                    else{
+                    } else {
                         SharedPreference.get(requireActivity()).badgeCount = 0
-                     ShortcutBadger.removeCount(requireActivity())
+                        ShortcutBadger.removeCount(requireActivity())
 
                     }
                 }
@@ -529,7 +571,7 @@ class HomeFragment : BaseFragment() {
         viewModel.getHomeScreenAllBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeAllBannerObserver) {
                 response?.let {
-
+                    val list = response.data
                     homeBannerList.clear()
                     homeBannerList.addAll(response.data)
                     homeWomenBannerViewPagerAdapter?.notifyDataSetChanged()
@@ -543,6 +585,7 @@ class HomeFragment : BaseFragment() {
         viewModel.getDealBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeDealBannerObserver) {
                 response?.let {
+                    val list = response.data
                     discountList.clear()
                     discountList.addAll(response.data)
                     discountedDealBannerViewPagerAdapter?.notifyDataSetChanged()
@@ -555,6 +598,7 @@ class HomeFragment : BaseFragment() {
         viewModel.getHomeScreenBottomBannerResult.observe(viewLifecycleOwner) { response ->
             if (isHomeBottomBannerObserver) {
                 response?.let {
+
                     premiumList.clear()
                     premiumList.addAll(response.data)
                     premiumStoreBannerViewPagerAdapter?.notifyDataSetChanged()
@@ -621,10 +665,9 @@ class HomeFragment : BaseFragment() {
                     categoryList.clear()
                     categoryList.addAll(response.data)
                     categoryAdapter?.notifyDataSetChanged()
-                    if (categoryList.size==0){
+                    if (categoryList.size == 0) {
                         binding?.tvNoCategory?.isVisible = true
-                    }
-                    else{
+                    } else {
                         binding?.tvNoCategory?.isVisible = false
                     }
                 }
@@ -638,10 +681,9 @@ class HomeFragment : BaseFragment() {
                     suggestedStoreList.clear()
                     suggestedStoreList.addAll(response.data)
                     suggestedStoreAdapter?.notifyDataSetChanged()
-                    if (suggestedStoreList.size==0){
+                    if (suggestedStoreList.size == 0) {
                         binding?.tvNoSuggested?.isVisible = true
-                    }
-                    else{
+                    } else {
                         binding?.tvNoSuggested?.isVisible = false
                     }
 
@@ -656,10 +698,9 @@ class HomeFragment : BaseFragment() {
                     newestProductList.clear()
                     newestProductList.addAll(response.data)
                     newestProductAdapter?.notifyDataSetChanged()
-                    if (newestProductList.size==0){
+                    if (newestProductList.size == 0) {
                         binding?.tvNoNewest?.isVisible = true
-                    }
-                    else{
+                    } else {
                         binding?.tvNoNewest?.isVisible = false
                     }
                 }
@@ -673,10 +714,9 @@ class HomeFragment : BaseFragment() {
                     topRatedList.clear()
                     topRatedList.addAll(response.data)
                     topRatedAdapter?.notifyDataSetChanged()
-                    if (topRatedList.size==0){
+                    if (topRatedList.size == 0) {
                         binding?.tvNoTopRated?.isVisible = true
-                    }
-                    else{
+                    } else {
                         binding?.tvNoTopRated?.isVisible = false
                     }
                 }
@@ -688,37 +728,36 @@ class HomeFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
-                when(selectedType){
-                    1->{
-                        if (bestSellingList[selectedPos].wishlist==1){
+                when (selectedType) {
+                    1 -> {
+                        if (bestSellingList[selectedPos].wishlist == 1) {
                             showToast("Product removed from your wishlist successfully")
                             bestSellingList[selectedPos].wishlist = 0
-                        }
-                        else{
+                        } else {
                             showToast("Product added to your wishlist successfully")
                             bestSellingList[selectedPos].wishlist = 1
                         }
                         bestSellingAdapter?.notifyItemChanged(selectedPos)
 
                     }
-                    2->{
-                        if (topRatedList[selectedPos].wishlist==1){
+
+                    2 -> {
+                        if (topRatedList[selectedPos].wishlist == 1) {
                             showToast("Product removed from your wishlist successfully")
                             topRatedList[selectedPos].wishlist = 0
-                        }
-                        else{
+                        } else {
                             showToast("Product added to your wishlist successfully")
                             topRatedList[selectedPos].wishlist = 1
                         }
                         topRatedAdapter?.notifyItemChanged(selectedPos)
 
                     }
-                    3->{
-                        if (newestProductList[selectedPos].wishlist==1){
+
+                    3 -> {
+                        if (newestProductList[selectedPos].wishlist == 1) {
                             showToast("Product removed from your wishlist successfully")
                             newestProductList[selectedPos].wishlist = 0
-                        }
-                        else{
+                        } else {
                             showToast("Product added to your wishlist successfully")
                             newestProductList[selectedPos].wishlist = 1
                         }
@@ -741,10 +780,9 @@ class HomeFragment : BaseFragment() {
                     bestSellingList.clear()
                     bestSellingList.addAll(response.data)
                     bestSellingAdapter?.notifyDataSetChanged()
-                    if (bestSellingList.size==0){
+                    if (bestSellingList.size == 0) {
                         binding?.tvNoBestSelling?.isVisible = true
-                    }
-                    else{
+                    } else {
                         binding?.tvNoBestSelling?.isVisible = false
                     }
                 }
@@ -756,21 +794,21 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setAdminStory() {
-      /*  binding?.apply {
-        //    ivAdminStory.segmentCount = myStories.size
-            if (myStories.size!=0){
-                ivAdminStory.setImageResource(R.drawable.ic_admin_highlight_story)
-            }
-            else{
-                ivAdminStory.setImageResource(R.drawable.ic_admin_story)
-            }
-        }*/
+        /*  binding?.apply {
+          //    ivAdminStory.segmentCount = myStories.size
+              if (myStories.size!=0){
+                  ivAdminStory.setImageResource(R.drawable.ic_admin_highlight_story)
+              }
+              else{
+                  ivAdminStory.setImageResource(R.drawable.ic_admin_story)
+              }
+          }*/
 
         binding?.ivHighlightStory?.isVisible = myStories.isNotEmpty()
 
     }
 
-    private fun getAdminStory(){
+    private fun getAdminStory() {
         val map = HashMap<String, Any>()
         viewModel.getAdminStory(map)
         isAdminObserver = true
@@ -782,56 +820,56 @@ class HomeFragment : BaseFragment() {
         ShortcutBadger.applyCount(requireActivity(), data)
     }
 
-    private fun getDashboardApi(){
+    private fun getDashboardApi() {
         viewModel.getDashBoard()
         binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
-    private fun getCategoryApi(){
+    private fun getCategoryApi() {
         viewModel.getCategory()
         isCategoryObserver = true
     }
 
-    private fun getSubCategoryApi(id:String){
+    private fun getSubCategoryApi(id: String) {
         binding?.progressBar?.isVisible = true
         viewModel.getSubCategory(id)
         isObserver = true
     }
 
-    private fun getHomeScreenAllBanner(){
-        val map = HashMap<String,Any>()
+    private fun getHomeScreenAllBanner() {
+        val map = HashMap<String, Any>()
         map["type"] = "1"
         viewModel.getHomeScreenAllBanner(map)
         isHomeAllBannerObserver = true
     }
 
-    private fun getHomeScreenBottomBanner(){
-        val map = HashMap<String,Any>()
+    private fun getHomeScreenBottomBanner() {
+        val map = HashMap<String, Any>()
         map["type"] = "2"
         viewModel.getHomeScreenBottomBanner(map)
         isHomeBottomBannerObserver = true
     }
 
-    private fun getHomeScreenDealBanner(){
-        val map = HashMap<String,Any>()
-        map["category"] = when(Constants.Category){
-            "Men" ->  "1"
-            "Women" ->  "2"
-            "Kids" ->  "3"
+    private fun getHomeScreenDealBanner() {
+        val map = HashMap<String, Any>()
+        map["category"] = when (Constants.Category) {
+            "Men" -> "1"
+            "Women" -> "2"
+            "Kids" -> "3"
             else -> "2"
         }
         viewModel.getDealBanner(map)
         isHomeDealBannerObserver = true
     }
 
-    private fun getHomeScreenCategoryBanner(){
-        val map = HashMap<String,Any>()
+    private fun getHomeScreenCategoryBanner() {
+        val map = HashMap<String, Any>()
         map["type"] = "3"
-        map["category"] = when(Constants.Category){
-            "Men" ->  "1"
-            "Women" ->  "2"
-            "Kids" ->  "3"
+        map["category"] = when (Constants.Category) {
+            "Men" -> "1"
+            "Women" -> "2"
+            "Kids" -> "3"
             else -> "2"
         }
         viewModel.getHomeScreenCategoryBanner(map)
@@ -851,8 +889,8 @@ class HomeFragment : BaseFragment() {
             val addressH = data?.getStringExtra("addressH") ?: "N/A"
             val countryField = data?.getStringExtra("country") ?: "N/A"
 
-            val lat = data?.getDoubleExtra("lat", 0.0)?:0.0
-            val lng = data?.getDoubleExtra("lng", 0.0)?:0.0
+            val lat = data?.getDoubleExtra("lat", 0.0) ?: 0.0
+            val lng = data?.getDoubleExtra("lng", 0.0) ?: 0.0
             Constants.latitude = lat
             Constants.longitude = lng
             Constants.location = addressH
@@ -860,32 +898,32 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun viewCartDetail(){
+    private fun viewCartDetail() {
         viewModel.viewHomeCartDetail()
         isCartObserver = true
     }
 
-    private fun notificationCount(){
+    private fun notificationCount() {
         viewModel.userNotificationCount()
         isNotificationObserver = true
     }
 
-    private fun getSuggestedStore(){
+    private fun getSuggestedStore() {
         viewModel.getSuggestedStore()
         isSuggestedStoreObserver = true
     }
 
-    private fun getTopRatedProduct(){
+    private fun getTopRatedProduct() {
         viewModel.getTopRatedProduct()
         isTopRatedObserver = true
     }
 
-    private fun getNewestProduct(){
+    private fun getNewestProduct() {
         viewModel.getNewestProduct()
         isNewestObserver = true
     }
 
-    private fun getBestSellingProduct(){
+    private fun getBestSellingProduct() {
         viewModel.getBestSellingProduct()
         isBestSellingObserver = true
     }
@@ -1022,23 +1060,23 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun searchThroughImage(detectedLabel:List<String>){
-            val navController = findNavController()
-              if (
-                  !hasNavigatedFromML &&
-                  navController.currentDestination?.id == R.id.home
-              ) {
-                  hasNavigatedFromML = true
+    private fun searchThroughImage(detectedLabel: List<String>) {
+        val navController = findNavController()
+        if (
+            !hasNavigatedFromML &&
+            navController.currentDestination?.id == R.id.home
+        ) {
+            hasNavigatedFromML = true
 
-                  val bundle = Bundle().apply {
-                      putStringArrayList("searchList", ArrayList(detectedLabel))
-                  }
+            val bundle = Bundle().apply {
+                putStringArrayList("searchList", ArrayList(detectedLabel))
+            }
 
-                  navController.navigate(
-                      R.id.action_homeFragment_to_searchProductListFragment,
-                      bundle
-                  )
-              }
+            navController.navigate(
+                R.id.action_homeFragment_to_searchProductListFragment,
+                bundle
+            )
+        }
     }
 
     fun uriToBitmap(context: Context, uri: Uri): Bitmap {
@@ -1106,22 +1144,24 @@ class HomeFragment : BaseFragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: String?=null) {
-        if (event!=null) {
+    fun onMessageEvent(event: String? = null) {
+        if (event != null) {
             notificationCount()
         }
     }
 
-    private fun addToWishList(){
-        val map = HashMap<String,Any>()
-        when(selectedType){
-            1->{
+    private fun addToWishList() {
+        val map = HashMap<String, Any>()
+        when (selectedType) {
+            1 -> {
                 map["product_id"] = bestSellingList[selectedPos].id
             }
-            2->{
+
+            2 -> {
                 map["product_id"] = topRatedList[selectedPos].id
             }
-            3->{
+
+            3 -> {
                 map["product_id"] = newestProductList[selectedPos].id
             }
         }

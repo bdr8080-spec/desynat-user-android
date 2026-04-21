@@ -15,7 +15,6 @@ class HomeWomenBannerViewPagerAdapter(val context: Context, private val bannerLi
     }
     inner class ViewHolder(val binding: ItemHomeBannerBinding) :
         RecyclerView.ViewHolder(binding.root)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
         return ViewHolder(
             ItemHomeBannerBinding.inflate(
@@ -30,14 +29,11 @@ class HomeWomenBannerViewPagerAdapter(val context: Context, private val bannerLi
         else{
             holder.binding.ivBanner.setImageResource(R.drawable.home_banner)
         }
-
         holder.binding.ivBanner.setOnClickListener {
             if (bannerList[position].uploadBanner!=null&&bannerList[position].uploadBanner!="null"&&bannerList[position].uploadBanner!="") {
                 click.onItemClick(position)
             }
         }
-
     }
-
     override fun getItemCount(): Int = bannerList.size
 }
