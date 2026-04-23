@@ -121,14 +121,14 @@ class ProfileFragment : BaseFragment() {
                 }
             }
 
-        /*    rlSetting.setOnClickListener {
+            rlSetting.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
                 }
                 else{
                     CommonMethod.showLoginAlert(requireActivity())
                 }
-            }*/
+            }
 
           /*  rlLanguage.setOnClickListener {
                 val bundle = Bundle().apply {
@@ -154,7 +154,7 @@ class ProfileFragment : BaseFragment() {
             }
 */
 
-         /*   rlTerms.setOnClickListener {
+            rlTerms.setOnClickListener {
                 val bundle = Bundle().apply {
                     putInt("type", 1)
                 }
@@ -194,7 +194,7 @@ class ProfileFragment : BaseFragment() {
 
             rlFaq.setOnClickListener {
                 findNavController().navigate(R.id.action_profileFragment_to_faqFragment)
-            }*/
+            }
 
             rlAffiliate.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
