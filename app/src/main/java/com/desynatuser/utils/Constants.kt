@@ -187,5 +187,8 @@ object Constants {
     const val RETURN_POLICY = "/api/return_policy"
     const val EXCHANGE_POLICY = "/api/exchange_policy"
     const val CANCELLATION_POLICY = "/api/cancellation_policy"
+    const val SAVED_CARD = "/api/user/get_my_cards"
+    const val ADD_CARD = "/api/user/add_card"
+    const val DELETE_CARD = "/api/user/delete_card"
 
 }

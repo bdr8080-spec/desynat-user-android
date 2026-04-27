@@ -33,6 +33,7 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.card.response.GetSavedCardResponse
 import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
@@ -1842,6 +1843,45 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
                 api.appNotificationOnOffAffiliate(map)
             },
             responseLiveData = appNotificationOnOffAffiliateLiveData
+        )
+    }
+
+
+    var getSavedCardLiveData = SingleLiveEvent<GetSavedCardResponse>()
+    suspend fun getSavedCard(
+    ) {
+        handleApiCall(
+            api = {
+                api.getSavedCard()
+            },
+            responseLiveData = getSavedCardLiveData
+        )
+    }
+
+
+
+    var addCardLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun addCard(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.addCard(map)
+            },
+            responseLiveData = addCardLiveData
+        )
+    }
+
+
+var deleteCardLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun deleteCard(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.deleteCard(map)
+            },
+            responseLiveData = deleteCardLiveData
         )
     }
 

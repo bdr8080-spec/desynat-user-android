@@ -27,6 +27,7 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.auth.response.RegisterAccountResponse
 import com.desynatuser.ui.auth.response.RegisterRequest
+import com.desynatuser.ui.home.card.response.GetSavedCardResponse
 import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
@@ -710,15 +711,25 @@ interface ApiServices {
     suspend fun exchangePolicy(@QueryMap map: HashMap<String, Any>): Response<GetCmsResponse>
 
     @POST(Constants.NOTIFICATION_ON_OFF)
-    suspend fun notificationOnOff(@QueryMap map: HashMap<String, Any>): Response<LoginResponse>
+    suspend fun notificationOnOff(@Body map: HashMap<String, Any>): Response<LoginResponse>
 
     @POST(Constants.APP_NOTIFICATION_ON_OFF)
-    suspend fun appNotificationOnOff(@QueryMap map: HashMap<String, Any>): Response<LoginResponse>
+    suspend fun appNotificationOnOff(@Body map: HashMap<String, Any>): Response<LoginResponse>
 
     @POST(Constants.NOTIFICATION_ON_OFF_AFFILIATE)
-    suspend fun notificationOnOffAffiliate(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateUserProfileResponse>
+    suspend fun notificationOnOffAffiliate(@Body map: HashMap<String, Any>): Response<GetAffiliateUserProfileResponse>
 
     @POST(Constants.APP_NOTIFICATION_ON_OFF_AFFILIATE)
-    suspend fun appNotificationOnOffAffiliate(@QueryMap map: HashMap<String, Any>): Response<GetAffiliateUserProfileResponse>
+    suspend fun appNotificationOnOffAffiliate(@Body map: HashMap<String, Any>): Response<GetAffiliateUserProfileResponse>
+
+
+    @GET(Constants.SAVED_CARD)
+    suspend fun getSavedCard(): Response<GetSavedCardResponse>
+
+    @POST(Constants.ADD_CARD)
+    suspend fun addCard(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.DELETE_CARD)
+    suspend fun deleteCard(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
 }

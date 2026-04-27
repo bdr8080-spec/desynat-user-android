@@ -22,6 +22,7 @@ import com.desynatuser.ui.affiliateUser.home.response.GetHomeDashboardResponse
 import com.desynatuser.ui.auth.response.FileUploadResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
+import com.desynatuser.ui.home.card.response.GetSavedCardResponse
 import com.desynatuser.ui.home.chat.response.AcceptCustomOrderResponse
 import com.desynatuser.ui.home.chat.response.AcceptRejectQuotationRequestResponse
 import com.desynatuser.ui.home.chat.response.ChatDetailResponse
@@ -1288,5 +1289,35 @@ val defaultBankResult: LiveData<CommonResponse>
             repository.appNotificationOnOffAffiliate(map)
         }
     }
+
+    val getSavedCardResult: LiveData<GetSavedCardResponse>
+        get() = repository.getSavedCardLiveData
+
+    fun getSavedCard() {
+        viewModelScope.launch {
+            repository.getSavedCard()
+        }
+    }
+
+
+    val addCardResult: LiveData<CommonResponse>
+        get() = repository.addCardLiveData
+
+    fun addCard(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.addCard(map)
+        }
+    }
+
+
+    val deleteCardResult: LiveData<CommonResponse>
+        get() = repository.deleteCardLiveData
+
+    fun deleteCard(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.deleteCard(map)
+        }
+    }
+
 
 }

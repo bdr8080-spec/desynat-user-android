@@ -968,4 +968,15 @@ object CommonMethod {
         }
     }
 
+    fun maskCardNumber(cardNumber: String): String {
+        val clean = cardNumber.replace(" ", "")
+
+        return if (clean.length >= 4) {
+            val last4 = clean.takeLast(4)
+            "**** **** **** $last4"
+        } else {
+            clean
+        }
+    }
+
 }

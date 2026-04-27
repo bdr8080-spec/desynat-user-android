@@ -90,6 +90,21 @@ class ProfileFragment : BaseFragment() {
                 }
             }
 
+            tvSavedCard.setOnClickListener {
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    val bundle = Bundle().apply {
+                        putString("from", "profile")
+                    }
+                    findNavController().navigate(
+                        R.id.action_profileFragment_to_savedCardFragment,
+                        bundle
+                    )
+                } else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+
+            }
+
             tvGiftCard.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
                     val bundle = Bundle().apply {
