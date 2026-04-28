@@ -277,7 +277,8 @@ class OrderDetailFragment : BaseFragment() {
 
             tvPlacedDate.text = "Placed On "+CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mma")
 
-            tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.order?.totalMrp?.toDoubleOrNull()?:0.0)} KD"
+          //  tvTotalMRP.text = "${CommonMethod.formatPrice(orderData?.order?.totalMrp?.toDoubleOrNull()?:0.0)} KD"
+            tvTotalMRP.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.totalMrp?.toDoubleOrNull()?:0.0)}"
 
             val mainCustomPrice =
                 if (orderData?.orderType == "2") {
@@ -315,7 +316,8 @@ class OrderDetailFragment : BaseFragment() {
                 clBillingData.isVisible = true
                 tvCustomItem.isVisible = true
                 tvCustomItemPrice.isVisible = true
-                tvCustomItemPrice.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
+              //  tvCustomItemPrice.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
+                tvCustomItemPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),totalCustomPrice)}"
             }
             else {
                 clCustomBillingDetail.isVisible = false
@@ -324,7 +326,7 @@ class OrderDetailFragment : BaseFragment() {
                 if (isOtherCustom||mainIsCustom) {
                     tvCustomItem.isVisible = true
                     tvCustomItemPrice.isVisible = true
-                    tvCustomItemPrice.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
+                    tvCustomItemPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),totalCustomPrice)}"
                 } else {
                     tvCustomItem.isVisible = false
                     tvCustomItemPrice.isVisible = false
@@ -338,16 +340,19 @@ class OrderDetailFragment : BaseFragment() {
             else{
                 tvDiscountOnMrp.isVisible = true
                 tvDiscountOnMRP.isVisible = true
-                tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?.toDoubleOrNull()?:0.0)} KD"
+        //        tvDiscountOnMRP.text = "${CommonMethod.formatPrice(orderData?.order?.discountMrp?.toDoubleOrNull()?:0.0)} KD"
+                tvDiscountOnMRP.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.discountMrp?.toDoubleOrNull()?:0.0)}"
             }
 
             if (CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)=="0"){
                 tvShippingFee.text = "Free Delivery"
             }
             else{
-                tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)} KD"
+              //  tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)} KD"
+                tvShippingFee.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)}"
             }
-            tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?.toDoubleOrNull()?:0.0)} KD"
+           // tvTaxValue.text = "${CommonMethod.formatPrice(orderData?.order?.tax?.toDoubleOrNull()?:0.0)} KD"
+            tvTaxValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.tax?.toDoubleOrNull()?:0.0)}"
 
 
             val itemPrice = orderData?.amount?.toDoubleOrNull() ?: 0.0
@@ -362,31 +367,36 @@ class OrderDetailFragment : BaseFragment() {
                 tvPerItemPrice.text = "Custom Items Price"
             }
             else{
-                tvPerItemPrice.text = "Item Price (${CommonMethod.formatPrice(itemPrice)} KD X $quantity)"
+           //     tvPerItemPrice.text = "Item Price (${CommonMethod.formatPrice(itemPrice)} KD X $quantity)"
+                tvPerItemPrice.text = "Item Price (${CommonMethod.formatCurrencyAmount(requireActivity(),itemPrice)} X $quantity)"
             }
 
-            tvPerItemPriceValue.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
+         //   tvPerItemPriceValue.text = "${CommonMethod.formatPrice(totalCustomPrice)} KD"
+            tvPerItemPriceValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),totalCustomPrice)}"
 
             if (CommonMethod.formatPrice(shippingFees)=="0"){
                 tvShippingFeesValue.text = "Free Delivery"
             }
             else{
-                tvShippingFeesValue.text =
-                    "${CommonMethod.formatPrice(shippingFees)} KD"
+            //    tvShippingFeesValue.text = "${CommonMethod.formatPrice(shippingFees)} KD"
+                tvShippingFeesValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),shippingFees)}"
             }
 
-            tvCustomTaxValue.text =
-                "${CommonMethod.formatPrice(tax)} KD"
+//            tvCustomTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
+//
+//            tvCustomTotalAmountValue.text = "${CommonMethod.formatPrice(totalAmount)} KD"
 
-            tvCustomTotalAmountValue.text =
-                "${CommonMethod.formatPrice(totalAmount)} KD"
+            tvCustomTaxValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),tax)}"
+
+            tvCustomTotalAmountValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),totalAmount)}"
 
 
             if (orderData?.order?.promocodeStatus=="yes"){
                 tvPromoCode.isVisible = true
                 tvPromoCodeValue.isVisible = true
                 tvPromoCode.text = "Coupon Discount (${orderData?.order?.promocodeDetails?.nameEnglish})"
-                tvPromoCodeValue.text = "${CommonMethod.formatPrice(orderData?.order?.promocodeValue?.toDoubleOrNull()?:0.0)} KD"
+            //    tvPromoCodeValue.text = "${CommonMethod.formatPrice(orderData?.order?.promocodeValue?.toDoubleOrNull()?:0.0)} KD"
+                tvPromoCodeValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.promocodeValue?.toDoubleOrNull()?:0.0)}"
 
             }
             else{
@@ -396,16 +406,19 @@ class OrderDetailFragment : BaseFragment() {
 
             tvDeliveryAddress.text = orderData?.order?.deliveryDetails?.address+" "+orderData?.order?.deliveryDetails?.state
 
-            tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
+        //    tvTotalAmountValue.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
+            tvTotalAmountValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)}"
             var savedAmount = CommonMethod.formatPrice((orderData?.order?.discountMrp?.toDoubleOrNull() ?: 0.0) + (orderData?.order?.discountCoupon?.toDoubleOrNull() ?: 0.0))
             if (savedAmount!="0"){
-                tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.order?.discountMrp?.toDoubleOrNull() ?: 0.0) + (orderData?.order?.discountCoupon?.toDoubleOrNull() ?: 0.0))} KD on this"
+            //    tvSavePrice.text = "You will save ${CommonMethod.formatPrice((orderData?.order?.discountMrp?.toDoubleOrNull() ?: 0.0) + (orderData?.order?.discountCoupon?.toDoubleOrNull() ?: 0.0))} KD on this"
+                tvSavePrice.text = "You will save ${CommonMethod.formatCurrencyAmount(requireActivity(),(orderData?.order?.discountMrp?.toDoubleOrNull() ?: 0.0) + (orderData?.order?.discountCoupon?.toDoubleOrNull() ?: 0.0))} on this"
             }
             else{
                 tvSavePrice.isVisible = false
             }
 
-            tvAmount.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
+         //   tvAmount.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
+            tvAmount.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)}"
 
             tvTransaction.text = "Transaction Id: ${orderData?.order?.transactionId}"
             when(orderData?.order?.paymentMethod){

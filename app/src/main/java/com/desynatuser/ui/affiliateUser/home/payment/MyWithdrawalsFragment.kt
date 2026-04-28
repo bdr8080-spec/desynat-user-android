@@ -30,7 +30,7 @@ class MyWithdrawalsFragment : BaseFragment() {
     private var binding: FragmentMyWithdrawalsBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private var isObserver = false
-    private var withdrawalList = ArrayList<GetWithdrawalRequestResponse.Data.WithdrawRequest>()
+    private var withdrawalList = ArrayList<GetWithdrawalRequestResponse.Data.WithdrawRequests.WithdrawRequest>()
     private var withdrawalAdapter: AffiliateWithdrawalAdapter?=null
     private var type = 0
     private var search: Job? = null
@@ -152,7 +152,7 @@ class MyWithdrawalsFragment : BaseFragment() {
                     totalWithdrawals = response.data.totalWithdrawals
                     setData()
                     withdrawalList.clear()
-                    withdrawalList.addAll(response.data.withdrawRequests)
+                    withdrawalList.addAll(response.data.withdrawRequests.data)
                     withdrawalAdapter?.notifyDataSetChanged()
                     checkData()
                 }
@@ -167,7 +167,7 @@ class MyWithdrawalsFragment : BaseFragment() {
 
     private fun setData(){
         binding?.apply {
-            tvTotalWithdrawal.text = "${CommonMethod.formatPrice(totalWithdrawals.toDoubleOrNull()?:0.0)} KD"
+            tvTotalWithdrawal.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),totalWithdrawals.toDoubleOrNull()?:0.0)}"
         }
     }
 

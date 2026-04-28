@@ -63,7 +63,9 @@ data class GetChatListResponse(
         @SerializedName("user_id")
         val userId: Int,
         @SerializedName("variation_id")
-        val variationId: String
+        val variationId: String,
+        @SerializedName("unread_count")
+        val unreadCount: Int
     ) {
         data class OrderCreateStatus(
             @SerializedName("assign_date")

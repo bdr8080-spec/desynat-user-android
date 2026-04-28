@@ -87,8 +87,8 @@ class GiftCardDetailFragment : BaseFragment() {
             tvEmail.text = giftData?.receiverEmail
             tvName.text = giftData?.receiverName
             tvQuantity.text = "Total Quantity- 1"
-            tvPrice.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
-            tvAmount.text = "${CommonMethod.formatPrice(giftData?.amount?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),giftData?.amount?:0.0)}"
+            tvAmount.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),giftData?.amount?:0.0)}"
             tvTransaction.text = "Transaction Id: ${giftData?.transactionId}"
             if(giftData?.paymentMethod=="2") {
                 tvTransaction.isVisible = false

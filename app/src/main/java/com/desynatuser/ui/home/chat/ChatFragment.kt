@@ -76,6 +76,8 @@ class ChatFragment : BaseFragment() {
     var chatData: GetChatListResponse.Data? = null
 
     private var uniqueId = ""
+    var senderId = ""
+    var receiverId = ""
     var isFirstMessageLoaded = false
     private var selectedAddress: GetAddressResponse.Data? = null
     private var selectedQuantity: String? = null
@@ -140,6 +142,7 @@ class ChatFragment : BaseFragment() {
                     customOrderInfo =
                         Gson().fromJson(itemJson, CreateCustomOrderResponse.Data::class.java)
                     uniqueId = customOrderInfo?.uniqueId.toString()
+                    receiverId = customOrderInfo?.sellerId.toString()
                 }
 
             } else if (from == "store") {
@@ -147,12 +150,14 @@ class ChatFragment : BaseFragment() {
                 if (!itemJson.isNullOrEmpty()) {
                     normalChatData = Gson().fromJson(itemJson, NormalChatResponse.Data::class.java)
                     uniqueId = normalChatData?.uniqueId.toString()
+                    receiverId = normalChatData?.sellerId.toString()
                 }
             } else {
                 val itemJson = arguments?.getString("chatData")
                 if (!itemJson.isNullOrEmpty()) {
                     chatData = Gson().fromJson(itemJson, GetChatListResponse.Data::class.java)
                     uniqueId = chatData?.uniqueId.toString()
+                    receiverId = chatData?.sellerId.toString()
                 }
             }
 
@@ -163,6 +168,10 @@ class ChatFragment : BaseFragment() {
 
             })
             rvChat.adapter = chatAdapter
+
+            if (uniqueId!=""){
+            markAllRead()
+            }
 
             listenMessages(
                 uniqueId = uniqueId,
@@ -414,6 +423,16 @@ class ChatFragment : BaseFragment() {
                     }
                     uploadImageList.clear()
                     uploadMsgImageAdapter?.notifyDataSetChanged()
+                    val map = HashMap<String, Any>()
+                    map["sender_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+                    map["sender_type"] = 2
+                    map["receiver_id"] = receiverId
+                    map["receiver_type"] = 3
+                    map["title_english"] = "New Attachement"
+                    map["description_english"] = "You have a new message"
+                    map["notification_type"] = "chat_message"
+
+                    sendNotification(map)
                 }
             }
 
@@ -674,6 +693,10 @@ class ChatFragment : BaseFragment() {
             }
         }
 
+        viewModel.markAllReadResult.observe(viewLifecycleOwner) { response ->
+                ProgressDialogUtils.getInstance().hideProgress()
+        }
+
         viewModel.acceptRejectQuotationResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
 
@@ -815,6 +838,13 @@ class ChatFragment : BaseFragment() {
         isImageObserver = true
     }
 
+    fun markAllRead() {
+        val map = HashMap<String, Any>()
+        map["unique_id"] = uniqueId
+        viewModel.markAllRead(map)
+
+    }
+
     private fun imagePreviewDialog(image: String) {
         var imageList = arrayListOf(image)
         val dialog = Dialog(requireActivity(), R.style.CustomDialog)
@@ -879,6 +909,16 @@ class ChatFragment : BaseFragment() {
                             messageAr = input,          // Arabic
                             type = "0"
                         )
+                        val map = HashMap<String, Any>()
+                        map["sender_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+                        map["sender_type"] = 2
+                        map["receiver_id"] = receiverId
+                        map["receiver_type"] = 3
+                        map["title_english"] = translatedText.toString()
+                        map["description_english"] = "You have a new message"
+                        map["notification_type"] = "chat_message"
+
+                        sendNotification(map)
                     } else {
                         sendMessage(
                             uniqueId = uniqueId,
@@ -886,7 +926,19 @@ class ChatFragment : BaseFragment() {
                             messageAr = translatedText.toString(), // Arabic
                             type = "0"
                         )
+                        val map = HashMap<String, Any>()
+                        map["sender_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+                        map["sender_type"] = 2
+                        map["receiver_id"] = receiverId
+                        map["receiver_type"] = 3
+                        map["title_english"] = input
+                        map["description_english"] = "You have a new message"
+                        map["notification_type"] = "chat_message"
+
+                        sendNotification(map)
                     }
+
+
 
                     binding?.etMessage?.setText("")
                     Log.e("chat_response", translatedText ?: "No translation")
@@ -899,6 +951,13 @@ class ChatFragment : BaseFragment() {
                 Log.e("VISION_ERROR", e.message ?: "Error")
             }
         }
+    }
+    private fun sendNotification(map: HashMap<String,Any>){
+
+
+        viewModel.sendNotification(map)
+
+        isObserver = true
     }
 
 }

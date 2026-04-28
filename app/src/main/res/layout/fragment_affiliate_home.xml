@@ -286,7 +286,7 @@
                             android:layout_marginStart="@dimen/_15sdp"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:fontFamily="@font/poppins_bold"
-                            android:text="129 KD"
+                            tools:text="129 KD"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_18sdp"
                             app:layout_constraintStart_toStartOf="parent"

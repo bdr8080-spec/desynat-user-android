@@ -75,7 +75,11 @@ data class GetAffiliateUserProfileResponse(
         @SerializedName("app_notification")
         var appNotification: Int,
         @SerializedName("notification")
-        var notification: Int
+        var notification: Int,
+        @SerializedName("selected_country")
+        var selectedCountry: String,
+        @SerializedName("selected_currency")
+        var selectedCurrency: String
     ) {
         data class AddressDetails(
             @SerializedName("address1")

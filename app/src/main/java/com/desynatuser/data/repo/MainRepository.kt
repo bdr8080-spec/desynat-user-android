@@ -845,6 +845,28 @@ val sendCustomOrderRequestLiveData = SingleLiveEvent<CreateCustomOrderResponse>(
         )
     }
 
+    val markAllReadLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun markAllRead(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.markAllRead(map)
+            },
+            responseLiveData = markAllReadLiveData
+        )
+    }
+
+ val sendNotificationLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun sendNotification(map: HashMap<String,Any>)
+    {
+        handleApiCall(
+            api = {
+                api.sendNotification(map)
+            },
+            responseLiveData = sendNotificationLiveData
+        )
+    }
+
     val chatDetailLiveData = SingleLiveEvent<ChatDetailResponse>()
     suspend fun chatDetail(map: HashMap<String,Any>)
     {
@@ -1871,8 +1893,6 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
             responseLiveData = addCardLiveData
         )
     }
-
-
 var deleteCardLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun deleteCard(
         map: HashMap<String,Any>
@@ -1885,7 +1905,54 @@ var deleteCardLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
+    var changeCurrencyLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun changeCurrency(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.changeCurrency(map)
+            },
+            responseLiveData = changeCurrencyLiveData
+        )
+    }
 
+    var changeCountryLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun changeCountry(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.changeCountry(map)
+            },
+            responseLiveData = changeCountryLiveData
+        )
+    }
+
+
+    var affiliateChangeCurrencyLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun affiliateChangeCurrency(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.affiliateChangeCurrency(map)
+            },
+            responseLiveData = affiliateChangeCurrencyLiveData
+        )
+    }
+
+    var affiliateChangeCountryLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun affiliateChangeCountry(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.affiliateChangeCountry(map)
+            },
+            responseLiveData = affiliateChangeCountryLiveData
+        )
+    }
 
 
 }

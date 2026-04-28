@@ -119,7 +119,7 @@ class OrderPaymentFragment : BaseFragment() {
                 tvGiftCard.isVisible = true
                 tvGiftCardNumber.text = giftCardNumber
                 totalAmount = totalAmount - applyGiftCard?.giftCardAmount!!
-                tvGiftCard.text = "KD ${CommonMethod.formatPrice(applyGiftCard?.giftCardAmount?.toDouble()?:0.0)} Gift Card Amount Redeemed"
+                tvGiftCard.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),applyGiftCard?.giftCardAmount?.toDouble()?:0.0)} Gift Card Amount Redeemed"
             }
 
             toolbar.tvToolbar.text = "Payment Method"
@@ -262,7 +262,7 @@ class OrderPaymentFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 walletBalance = response.data.balance
                 lifecycleScope.launch(Dispatchers.Main) {
-                    binding?.tvBalance?.text = "Available Balance : ${CommonMethod.formatPrice(walletBalance?:0.0)} KD"
+                    binding?.tvBalance?.text = "Available Balance : ${CommonMethod.formatCurrencyAmount(requireActivity(),walletBalance?:0.0)}"
                 }
                 isObserver = false
             }

@@ -22,6 +22,9 @@ class CardAdapter(var context:Context, var cardList: ArrayList<GetSavedCardRespo
             tvCardNumber.text = CommonMethod.maskCardNumber(cardData?.cardNumber.toString())
             Glide.with(context).load(cardData?.cardImage).into(ivCard)
 
+            if (cardData.isFuture==1) {
+                selectedPos = position
+            }
             if (selectedPos==position){
                 ivRadio.setImageResource(R.drawable.ic_radio_selected)
             }

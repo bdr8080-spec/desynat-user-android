@@ -13,7 +13,9 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -35,6 +37,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.HashMap
 import kotlin.getValue
+import kotlin.math.abs
 import kotlin.toString
 
 @AndroidEntryPoint
@@ -44,7 +47,7 @@ class AffiliatePaymentFragment : BaseFragment() {
     private var isObserver = false
     private var paymentAdapter: AffiliatePaymentAdapter? = null
     private var paymentData: GetAllAffiliateOrderResponse.Data?=null
-    private var paymentList = ArrayList<GetAllAffiliateOrderResponse.Data.Order>()
+    private var paymentList = ArrayList<GetAllAffiliateOrderResponse.Data.Orders.Data>()
     private var animator: ObjectAnimator?=null
 
     private var search: Job? = null
@@ -56,6 +59,12 @@ class AffiliatePaymentFragment : BaseFragment() {
     private var fromDateText: String? = null
     private var toDateText: String? = null
 
+    private var currentPage = 1
+    private var lastPage = 1
+    private var totalPage = 0
+    private var totalItem=0
+    private var pageLimit=10
+    private var pagination=false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -108,6 +117,26 @@ class AffiliatePaymentFragment : BaseFragment() {
 
             })
             rvPayment.adapter = paymentAdapter
+
+
+        /*    nestedScrollView.setOnScrollChangeListener { nestedScrollView: NestedScrollView, _, scrollY, _, oldScrollY ->
+                val lastChild = nestedScrollView.getChildAt(nestedScrollView.childCount - 1)
+
+                if (lastChild != null) {
+                    val diff = lastChild.bottom - (nestedScrollView.height + scrollY)
+                    if (diff == 0 && scrollY > oldScrollY) {
+                        if(totalItem==0)
+                            return@setOnScrollChangeListener
+                        if (!isObserver && !pagination && currentPage < lastPage) {
+                            pagination = true
+                            currentPage += 1
+                            getAffiliatePayment(false)
+                            binding?.progressBar?.isVisible = true
+                        }
+                    }
+                }
+            }*/
+
         }
 
         getAffiliatePayment()
@@ -148,7 +177,7 @@ class AffiliatePaymentFragment : BaseFragment() {
                 response?.let {
                     paymentData = response.data
                     paymentList.clear()
-                    response.data?.orders?.let { c -> paymentList.addAll(c) }
+                    response.data?.orders?.data?.let { c -> paymentList.addAll(c) }
                     paymentAdapter?.notifyDataSetChanged()
                     checkData()
                     setData()
@@ -156,6 +185,7 @@ class AffiliatePaymentFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
     }
 
     private fun checkData() {
@@ -167,7 +197,6 @@ class AffiliatePaymentFragment : BaseFragment() {
         if (lastQuery!=null){
          map["search"] = lastQuery.toString()
         }
-
             if (filter!=null) {
                 map["filter"] = filter.toString()
             }
@@ -186,7 +215,12 @@ class AffiliatePaymentFragment : BaseFragment() {
 
     private fun setData(){
         binding?.apply {
-            tvAvailable.text =  "${CommonMethod.formatPrice(paymentData?.totalEarning?.toDoubleOrNull()?:0.0)} KD"
+            val amount = paymentData?.totalEarning?.toDoubleOrNull() ?: 0.0
+
+            tvAvailable.text = CommonMethod.formatCurrencyAmount(
+                requireActivity(),
+                abs(amount)
+            )
 
         }
     }

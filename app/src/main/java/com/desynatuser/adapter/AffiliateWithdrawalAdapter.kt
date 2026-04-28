@@ -10,7 +10,7 @@ import com.desynatuser.databinding.ItemWithdrawalBinding
 import com.desynatuser.ui.affiliateUser.home.payment.response.GetWithdrawalRequestResponse
 import com.desynatuser.utils.CommonMethod
 
-class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayList<GetWithdrawalRequestResponse.Data.WithdrawRequest>, var onClick:OnClick) : RecyclerView.Adapter<AffiliateWithdrawalAdapter.ViewHolder>() {
+class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayList<GetWithdrawalRequestResponse.Data.WithdrawRequests.WithdrawRequest>, var onClick:OnClick) : RecyclerView.Adapter<AffiliateWithdrawalAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemWithdrawalBinding) :
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
@@ -67,7 +67,7 @@ class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayL
      holder.bind(position)
     }
 
-    fun setData(newList: ArrayList<GetWithdrawalRequestResponse.Data.WithdrawRequest>) {
+    fun setData(newList: ArrayList<GetWithdrawalRequestResponse.Data.WithdrawRequests.WithdrawRequest>) {
         withdrawalList = newList
         notifyDataSetChanged()
     }

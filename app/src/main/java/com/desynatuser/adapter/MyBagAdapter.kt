@@ -12,6 +12,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 
 class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartResponse.Data.CartData>, var foodBagClick:FoodBagClick) : RecyclerView.Adapter<MyBagAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemBagBinding) :
@@ -58,9 +59,13 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             }
             tvTitle.text = cartData.product.productNameEn
 
-            tvPrice.text = "${cartData?.productVariants?.actualPrice} KD"
-            tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
 
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.actualPrice?.toDoubleOrNull()?:0.0)}"
+            tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.finalPrice?.toDoubleOrNull()?:0.0)}"
+
+            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,cartData?.productVariants?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+            val discountType = if (cartData?.productVariants?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
+            tvDiscount.text = "$discountValue$discountType"
 
             val returnDays = cartData?.product?.returnDays
             val exchangeDays = cartData?.product?.exchangableDays
@@ -82,7 +87,7 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             if (cartData?.orderType=="2"){
                 tvReturnPolicy.isVisible = false
                 tvReturnPolicy.setTextColor(Color.parseColor("#000000"))
-                tvReturnPolicy.text = "Per Item Price ${CommonMethod.formatPrice(cartData.chatroomData.price?.toDoubleOrNull()?:0.0)} KD"
+                tvReturnPolicy.text = "Per Item Price ${CommonMethod.formatCurrencyAmount(context,cartData.chatroomData.price?.toDoubleOrNull()?:0.0)}"
             }
             else{
                 tvReturnPolicy.setTextColor(Color.parseColor("#17854C"))
@@ -102,10 +107,6 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             ivColor.setColorFilter(android.graphics.Color.parseColor(cartData?.productVariants?.color?.hexCode))
             tvQuantity.text = cartData?.quantity.toString()
             tvCount.text = cartData?.quantity.toString()
-
-            val discountValue = cartData?.productVariants?.discountValue ?: 0
-            val discountType = if (cartData?.productVariants?.discountType == "1")"% off" else " KD off"
-            tvDiscount.text = "$discountValue$discountType"
 
             ivMinus.setOnClickListener {
                 if (cartList[position].orderType=="1") {

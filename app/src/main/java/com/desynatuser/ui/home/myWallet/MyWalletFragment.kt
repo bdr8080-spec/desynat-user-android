@@ -107,7 +107,7 @@ class MyWalletFragment : BaseFragment() {
             walletData?.history?.let { walletTransactionList.addAll(it) }
             walletTransactionAdapter?.notifyDataSetChanged()
             checkData()
-            tvAvailable.text = "${CommonMethod.formatPrice(walletData?.walletBalance?:0.0)} KD"
+            tvAvailable.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),walletData?.walletBalance?:0.0)}"
         }
     }
 

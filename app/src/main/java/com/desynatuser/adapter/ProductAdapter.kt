@@ -12,6 +12,7 @@ import com.desynatuser.databinding.ItemStoreBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 
 class ProductAdapter(var context:Context, private var productList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>,var storeName:String, var from:Int,var productClick:ProductClick) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemProductBinding) :
@@ -43,12 +44,12 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
                 tvTitle.text = productData.productNameEn
             }
 
-            tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?:0.0)} KD"
-            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?:0.0)}"
+            tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.finalPrice?:0.0)}"
 
             val variant = productData?.productVariants?.getOrNull(0)
-            val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1")"% off" else " KD off"
+            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+            val discountType = if (variant?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
             tvDiscount.text = "$discountValue$discountType"
 
             if (productData?.averageRating!=null){

@@ -10,7 +10,7 @@ import com.desynatuser.databinding.ItemPaymentBinding
 import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
 import com.desynatuser.utils.CommonMethod
 
-class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<GetAllAffiliateOrderResponse.Data.Order>, var onClick:OnClick) : RecyclerView.Adapter<AffiliatePaymentAdapter.ViewHolder>() {
+class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<GetAllAffiliateOrderResponse.Data.Orders.Data>, var onClick:OnClick) : RecyclerView.Adapter<AffiliatePaymentAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemPaymentBinding) :
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
@@ -21,8 +21,8 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
             tvProductName.text = paymentData?.productDetails?.productNameEn
             tvCategoryValue.text = paymentData?.productDetails?.category?.name
             tvQuantityValue.text = paymentData?.quantity.toString()
-            tvMyEarnings.text = "${CommonMethod.formatPrice(paymentData?.affiliateCommission?.toDoubleOrNull()?:0.0)} KD"
-            tvTotalAmount.text = "${CommonMethod.formatPrice(paymentData?.amount?.toDoubleOrNull()?:0.0)} KD"
+            tvMyEarnings.text = "${CommonMethod.formatCurrencyAmount(context,paymentData?.affiliateCommission?.toDoubleOrNull()?:0.0)}"
+            tvTotalAmount.text = "${CommonMethod.formatCurrencyAmount(context,paymentData?.amount?.toDoubleOrNull()?:0.0)}"
             tvReasonValue.text = paymentData?.cancelReason
             tvPurchaseOnValue.text = CommonMethod.customizeChangeDateFormat(paymentData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
 
@@ -161,7 +161,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
      holder.bind(position)
     }
 
-    fun setData(newList: ArrayList<GetAllAffiliateOrderResponse.Data.Order>) {
+    fun setData(newList: ArrayList<GetAllAffiliateOrderResponse.Data.Orders.Data>) {
         paymentList = newList
         notifyDataSetChanged()
     }

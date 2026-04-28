@@ -125,7 +125,7 @@ data class GetAffiliateMyProductResponse(
 
             data class Product(
                 @SerializedName("affiliated_commission")
-                val affiliatedCommission: Any,
+                val affiliatedCommission: String,
                 @SerializedName("affiliated_product")
                 val affiliatedProduct: String,
                 @SerializedName("brand")

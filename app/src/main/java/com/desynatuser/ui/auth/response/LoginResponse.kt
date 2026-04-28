@@ -51,7 +51,11 @@ data class LoginResponse(
         @SerializedName("app_notification")
         var appNotification: Int,
         @SerializedName("notification")
-        var notification: Int
+        var notification: Int,
+        @SerializedName("selected_country")
+        var selectedCountry: String,
+        @SerializedName("selected_currency")
+    var selectedCurrency: String
     ){
         data class AffiliatedUserdetails(
             @SerializedName("address_update_status")

@@ -979,4 +979,75 @@ object CommonMethod {
         }
     }
 
+    fun formatCurrencyAmount(
+        context: Context,
+        amountInKwd: Double
+    ): String {
+
+        val user = SharedPreference.get(context).getUser()
+        val countryList =   if (SharedPreference.get(context).affiliateAccessToken!=""){
+           SharedPreference.get(context).getSelectedCountryList()
+        }
+        else{
+           SharedPreference.get(context).getCountryList()
+        }
+
+
+
+        val currency = countryList?.find { it.id.toString() == user?.selectedCurrency }
+
+        val rate = currency?.exchangeRateToKwd?.toDoubleOrNull() ?: 1.0
+
+        val converted = if (rate == 0.0) amountInKwd else amountInKwd / rate
+
+        val code = when (currency?.currencyCode) {
+            "KWD" -> "KD"
+            "BHD" -> "BD"
+            else -> currency?.currencyCode ?: "KWD"
+        }
+
+      /*  val formatted = if (currency?.currencyCode == "KWD") {
+            String.format("%.3f", converted)
+        } else {
+            String.format("%.2f", converted)
+        }*/
+
+        val formatted = java.text.DecimalFormat("#.##").format(converted)
+
+        return "$formatted $code"
+    }
+
+    fun formatCurrencyAmountWithout(
+        context: Context,
+        amountInKwd: Double
+    ): String {
+
+        val user = SharedPreference.get(context).getUser()
+        val countryList = SharedPreference.get(context).getSelectedCountryList()
+
+        val currency = countryList?.find { it.id.toString() == user?.selectedCurrency }
+
+        val rate = currency?.exchangeRateToKwd?.toDoubleOrNull() ?: 1.0
+
+        val converted = if (rate == 0.0) amountInKwd else amountInKwd / rate
+
+        val code = when (currency?.currencyCode) {
+            "KWD" -> "KD"
+            "BHD" -> "BD"
+            else -> currency?.currencyCode ?: "KWD"
+        }
+
+       /* val formatted = if (currency?.currencyCode == "KWD") {
+            String.format("%.3f", converted)
+        } else {
+            String.format("%.2f", converted)
+        }*/
+
+        val formatted = java.text.DecimalFormat("#.##").format(converted)
+
+
+        return "$formatted"
+    }
+
+
 }

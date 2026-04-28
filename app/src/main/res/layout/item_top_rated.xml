@@ -110,7 +110,7 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:text="KD 239"
         android:textColor="#99000000"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
 
@@ -134,7 +134,7 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:text="20% off"
         android:textColor="#E70000"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toEndOf="@+id/tvPrice"
         app:layout_constraintTop_toTopOf="@+id/tvPrice"
         app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>

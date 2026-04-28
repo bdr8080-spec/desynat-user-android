@@ -14,7 +14,10 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateHomeBinding
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.affiliateUser.home.response.GetHomeDashboardResponse
+import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.openCustomPreSelectedDatePickerWithReset
@@ -28,6 +31,7 @@ class AffiliateHomeFragment : BaseFragment() {
     private var binding: FragmentAffiliateHomeBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
+    var isCountryObserver = false
     var isDashboardObserver = false
     var isNotificationObserver = false
     var profileData : GetAffiliateUserProfileResponse.Data?=null
@@ -38,6 +42,8 @@ class AffiliateHomeFragment : BaseFragment() {
     private var toTimestamp: Long? = null
     private var fromDateText: String? = null
     private var toDateText: String? = null
+    private var countryList= ArrayList<GetCountryResponse.Data>()
+    private var user: LoginResponse.Data? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +61,8 @@ class AffiliateHomeFragment : BaseFragment() {
     }
 
     override fun initView() {
-
+        user = SharedPreference.get(requireActivity()).getUser()
+        getCurrency()
         if (SharedPreference.get(requireActivity()).getAffiliateUser()==null){
             getAffiliateUserProfile()
         }
@@ -197,6 +204,36 @@ class AffiliateHomeFragment : BaseFragment() {
             }
         }
 
+        viewModel.getSelectedCountryResult.observe(viewLifecycleOwner) { response ->
+            if (isCountryObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
+                    countryList.clear()
+                    response.data?.let { countryList.addAll(it) }
+                    for (i in 0 until countryList.size) {
+                        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+
+                            if (countryList[i].id.toString() == user?.selectedCurrency) {
+                                getCurrencyData(countryList[i].currencyCode)
+                                break
+                            }
+                        }
+                        else{
+                            if (countryList[i].id.toString() == user?.selectedCurrency) {
+                                getCurrencyData(countryList[i].currencyCode)
+
+                                break
+                            }
+                        }
+                    }
+
+                }
+                isCountryObserver = false
+            }
+        }
+
+
         viewModel.getAffiliateDashboardResult.observe(viewLifecycleOwner) { response ->
             if (isDashboardObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -261,7 +298,8 @@ class AffiliateHomeFragment : BaseFragment() {
 
     private fun setDashBoardDate(){
         binding?.apply {
-            ivAmount.text = "${ CommonMethod.formatPrice(dashboardData?.totalRevenue?.toDoubleOrNull()?:0.0)} KD"
+          //  ivAmount.text = "${ CommonMethod.formatPrice(dashboardData?.totalRevenue?.toDoubleOrNull()?:0.0)} KD"
+            ivAmount.text = "${ CommonMethod.formatCurrencyAmount(requireActivity(),dashboardData?.totalRevenue?.toDoubleOrNull()?:0.0)}"
             tvActiveProduct.text = dashboardData?.totalProducts.toString()
             tvInActiveProduct.text = dashboardData?.totalProducts.toString()
             tvNewOrder.text = dashboardData?.totalOrders.toString()
@@ -269,5 +307,43 @@ class AffiliateHomeFragment : BaseFragment() {
             tvCompleteOrder.text = dashboardData?.totalCompleted.toString()
             tvCancelledOrder.text = dashboardData?.totalCancelled.toString()
         }
+    }
+
+    private fun getCurrency() {
+        countryList.clear()
+        if (SharedPreference.get(requireActivity()).getSelectedCountryList()?.isNotEmpty() == true) {
+            val data = SharedPreference.get(requireActivity()).getSelectedCountryList()
+            countryList.clear()
+            data?.let { countryList.addAll(it) }
+            for (i in 0 until countryList.size) {
+                if (SharedPreference.get(requireActivity()).affiliateAccessToken != "") {
+
+                    if (countryList[i].id.toString() == user?.selectedCurrency) {
+                        getCurrencyData(countryList[i].currencyCode)
+                        break
+                    }
+                } else {
+                    if (countryList[i].id.toString() == user?.selectedCurrency) {
+                        getCurrencyData(countryList[i].currencyCode)
+                        break
+                    }
+                }
+
+            }
+        }
+        else{
+            getSelectedCountry()
+        }
+    }
+
+    private fun getSelectedCountry() {
+        viewModel.getSelectedCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isCountryObserver = true
+    }
+
+
+    fun getCurrencyData(code: String) {
+        Constants.CURRENCY = if (code == "KWD") "KD" else code
     }
 }

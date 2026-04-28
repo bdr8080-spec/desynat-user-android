@@ -8,6 +8,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemTopRatedBinding
 import com.desynatuser.ui.home.fragment.response.GetTopRatedProductResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 
 class TopRatedAdapter(private val context: Context, private val topRatedList: List<GetTopRatedProductResponse.Data>, var onClick: OnClick) :
     RecyclerView.Adapter<TopRatedAdapter.ViewHolder>() {
@@ -20,11 +21,12 @@ class TopRatedAdapter(private val context: Context, private val topRatedList: Li
 
             val productData = topRatedList[position]
             tvTitle.text = productData?.productNameEn
-            tvPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
-            tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)}"
+            tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)}"
+
             val variant = productData?.productVariants?.getOrNull(0)
-            val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1")"% off" else " KD off"
+            val discountValue =  "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+            val discountType = if (variant?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
             tvDiscount.text = "$discountValue$discountType"
 
             ivProfile.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {

@@ -52,6 +52,14 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
                 ) )
             }
 
+            if (chatData?.unreadCount!=0){
+                relCount.isVisible = true
+                tvCount.text = chatData?.unreadCount.toString()
+            }
+            else{
+                relCount.isVisible = false
+            }
+
           if(chatData.type=="2") {
               tvStatus.isVisible = true
 

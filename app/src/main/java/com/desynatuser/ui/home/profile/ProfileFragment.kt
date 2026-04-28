@@ -152,6 +152,8 @@ class ProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
             }
 
+*/
+
             rlGoCurrency.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
                     findNavController().navigate(R.id.action_profileFragment_to_changeCurrencyFragment)
@@ -167,7 +169,6 @@ class ProfileFragment : BaseFragment() {
                     CommonMethod.showLoginAlert(requireActivity())
                 }
             }
-*/
 
             rlTerms.setOnClickListener {
                 val bundle = Bundle().apply {

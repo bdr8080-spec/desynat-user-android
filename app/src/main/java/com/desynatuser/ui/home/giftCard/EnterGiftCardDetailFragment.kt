@@ -20,6 +20,7 @@ import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.home.giftCard.response.AddGiftCardRequest
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -64,6 +65,9 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                 occasionData =
                     Gson().fromJson(itemJson, GetGiftCardOccasionTypeResponse.Data::class.java)
             }
+
+            tv100.text = "100 ${Constants.CURRENCY}"
+            tv200.text = "200 ${Constants.CURRENCY}"
 
             etAmount.addTextChangedListener(object : TextWatcher {
                 private var isEditing = false

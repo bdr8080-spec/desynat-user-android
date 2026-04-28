@@ -116,7 +116,7 @@ class AddCardFragment : BaseFragment() {
                 return false
             }
 
-            if (cardNumber.length < 10) {
+            if (cardNumber.length < 16) {
                 showToast("Please enter a valid card number")
                 return false
             }
@@ -128,6 +128,10 @@ class AddCardFragment : BaseFragment() {
 
             if (cvv.isEmpty()) {
                 showToast("Please enter cvv")
+                return false
+            }
+            if (cvv.length != 3 || cvv == "000") {
+                showToast("Please enter a valid CVV")
                 return false
             }
         }

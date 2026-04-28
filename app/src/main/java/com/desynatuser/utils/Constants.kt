@@ -8,6 +8,7 @@ object Constants {
 
     var MERCHANT_ID = "BCR2DN5TRCW73QI6"
     var MERCHANT_NAME = "Desynat"
+    var CURRENCY = "KD"
 
     var language = "en"
     var currentScreen = ""
@@ -92,6 +93,8 @@ object Constants {
     const val CUSTOM_ORDER_COMPLETE_PAYMENT = "/api/user/product-order-complete-payment"
 
     const val USER_ALL_CHAT = "/api/user/user-all-chats"
+    const val MARK_ALL_READ_MSG = "/api/user/mark_all_chat_msg_as_read"
+    const val SEND_PUSH_NOTIFICATION = "/api/sendPushNotificationApp"
     const val USER_SINGLE_CHAT = "/api/user/user-Single-chats"
     const val SEND_MESSAGE = "/api/user/send-message-in-chats"
     const val CHAT_WITH_SELLER = "/api/user/user-normal-chat-with-seller"
@@ -190,5 +193,9 @@ object Constants {
     const val SAVED_CARD = "/api/user/get_my_cards"
     const val ADD_CARD = "/api/user/add_card"
     const val DELETE_CARD = "/api/user/delete_card"
+    const val CHANGE_CURRENCY = "/api/user/update-user-selected-currency"
+    const val CHANGE_COUNTRY = "/api/user/update-user-selected-country"
 
+    const val AFFILIATE_CHANGE_CURRENCY = "/api/affiliate/update-user-selected-currency"
+    const val AFFILIATE_CHANGE_COUNTRY = "/api/affiliate/update-user-selected-country"
 }

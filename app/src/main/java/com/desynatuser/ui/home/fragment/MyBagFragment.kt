@@ -221,7 +221,7 @@ class MyBagFragment : BaseFragment() {
                 tvCouponDiscountValue.isVisible = false
                 promoCode = null
                 tvPromoCode.text = ""
-                tvCouponDiscountValue.text = "0 KD"
+                tvCouponDiscountValue.text = "0 ${Constants.CURRENCY}"
                 setData()
             }
 
@@ -413,7 +413,7 @@ class MyBagFragment : BaseFragment() {
             if (customPrice!=0.0){
                 tvCustomPrice.isVisible = true
                 tvCustomPriceValue.isVisible = true
-                tvCustomPriceValue.text = "${CommonMethod.formatPrice(customPrice)} KD"
+                tvCustomPriceValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),customPrice)}"
             }
             else{
                 tvCustomPrice.isVisible = false
@@ -424,13 +424,15 @@ class MyBagFragment : BaseFragment() {
             if (CommonMethod.formatPrice(totalMrp)!="0"){
                 tvTotalMRP.isVisible = true
                 tvMrp.isVisible = true
-                tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
+              //  tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
+                tvTotalMRP.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),totalMrp)}"
             }
             else{
                 tvTotalMRP.isVisible = false
                 tvMrp.isVisible = false
                 if (myCartList.size==1){
-                    tvCustomPrice.text = "Item Price (${CommonMethod.formatPrice(myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} KD X ${myCartList[0]?.chatroomData?.quantity})"
+                //    tvCustomPrice.text = "Item Price (${CommonMethod.formatPrice(myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} KD X ${myCartList[0]?.chatroomData?.quantity})"
+                    tvCustomPrice.text = "Item Price (${CommonMethod.formatCurrencyAmount(requireActivity(),myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} X ${myCartList[0]?.chatroomData?.quantity})"
                 }
                 else{
                     tvCustomPrice.text = "Custom Items Price"
@@ -440,7 +442,9 @@ class MyBagFragment : BaseFragment() {
             if (CommonMethod.formatPrice(discountOnMrp)!="0"){
                 tvDiscountOnMrp.isVisible = true
                 tvDiscountOnMRP.isVisible = true
-                tvDiscountOnMRP.text = "${CommonMethod.formatPrice(discountOnMrp)} KD"
+             //   tvDiscountOnMRP.text = "${CommonMethod.formatPrice(discountOnMrp)} KD"
+                tvDiscountOnMRP.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),discountOnMrp)}"
+
             }
             else{
                 tvDiscountOnMrp.isVisible = false
@@ -451,23 +455,33 @@ class MyBagFragment : BaseFragment() {
                 tvShippingFee.text = "Free Delivery"
             }
             else{
-                tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
+               // tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
+                tvShippingFee.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),shippingFees)}"
             }
-            tvTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
+        //    tvTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
+            tvTaxValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),tax)}"
 
             // Coupon discount (if any)
-            tvCouponDiscountValue.text = "${CommonMethod.formatPrice(couponDiscount)} KD"
+      //      tvCouponDiscountValue.text = "${CommonMethod.formatPrice(couponDiscount)} KD"
+            tvCouponDiscountValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),couponDiscount)}"
 
             // Final payable amount
-            tvTotalAmountValue.text = "${CommonMethod.formatPrice(finalAmount)} KD"
-            tvDiscountedPrice.text = "${CommonMethod.formatPrice(finalAmount)} KD"
+//            tvTotalAmountValue.text = "${CommonMethod.formatPrice(finalAmount)} KD"
+//            tvDiscountedPrice.text = "${CommonMethod.formatPrice(finalAmount)} KD"
+
+            tvTotalAmountValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),finalAmount)}"
+            tvDiscountedPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),finalAmount)}"
 
             // Show summary text
-            tvPrice.text = "${CommonMethod.formatPrice(finalAmount+discountOnMrp+couponDiscount)} KD"
+          //  tvPrice.text = "${CommonMethod.formatPrice(finalAmount+discountOnMrp+couponDiscount)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),finalAmount+discountOnMrp+couponDiscount)}"
             if (CommonMethod.formatPrice(discountOnMrp + couponDiscount)!="0"){
+//                tvSavePrice.text = "You will save ${
+//                    CommonMethod.formatPrice(discountOnMrp + couponDiscount)
+//                } KD on this"
                 tvSavePrice.text = "You will save ${
-                    CommonMethod.formatPrice(discountOnMrp + couponDiscount)
-                } KD on this"
+                    CommonMethod.formatCurrencyAmount(requireActivity(),discountOnMrp + couponDiscount)
+                } on this"
                 tvSavePrice.isVisible = true
             }
             else{

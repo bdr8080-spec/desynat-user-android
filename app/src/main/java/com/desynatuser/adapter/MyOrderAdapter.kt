@@ -40,7 +40,8 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
             tvOrderId.text = "Order ID: #${orderData?.id}"
             tvTitle.text = orderData?.productDetails?.productNameEn
 
-            tvPrice.text = "${CommonMethod.formatPrice(orderData?.amount?.toDoubleOrNull()?:0.0)} KD"
+         //   tvPrice.text = "${CommonMethod.formatPrice(orderData?.amount?.toDoubleOrNull()?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,orderData?.amount?.toDoubleOrNull()?:0.0)}"
 
             ivProduct.load(orderData?.variationDetails?.variantImage?.get(0)) {
                 crossfade(true)

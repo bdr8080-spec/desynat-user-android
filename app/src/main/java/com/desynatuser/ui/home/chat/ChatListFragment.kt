@@ -244,6 +244,7 @@ class ChatListFragment : BaseFragment() {
         isObserver = true
     }
 
+
     private fun checkData() {
         binding?.tvNoDataFound?.isVisible = chatList.isEmpty()
     }

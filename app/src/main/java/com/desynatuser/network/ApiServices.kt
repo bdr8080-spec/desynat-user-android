@@ -378,6 +378,16 @@ interface ApiServices {
         @Body map: HashMap<String, Any>
     ): Response<GetChatListResponse>
 
+    @POST(Constants.MARK_ALL_READ_MSG)
+    suspend fun markAllRead(
+        @Body map: HashMap<String, Any>
+    ): Response<CommonResponse>
+
+    @POST(Constants.SEND_PUSH_NOTIFICATION)
+    suspend fun sendNotification(
+        @Body map: HashMap<String, Any>
+    ): Response<CommonResponse>
+
     @POST(Constants.USER_SINGLE_CHAT)
     suspend fun chatDetail(
         @Body map: HashMap<String, Any>
@@ -731,5 +741,17 @@ interface ApiServices {
 
     @POST(Constants.DELETE_CARD)
     suspend fun deleteCard(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.CHANGE_CURRENCY)
+    suspend fun changeCurrency(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.CHANGE_COUNTRY)
+    suspend fun changeCountry(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.AFFILIATE_CHANGE_CURRENCY)
+    suspend fun affiliateChangeCurrency(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.AFFILIATE_CHANGE_COUNTRY)
+    suspend fun affiliateChangeCountry(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
 }

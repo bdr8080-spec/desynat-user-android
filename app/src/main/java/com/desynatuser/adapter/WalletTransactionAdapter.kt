@@ -25,7 +25,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvType.text = "Credit"
                     tvType.setTextColor(Color.parseColor("#17854C"))
                     tvTransactionId.text = walletData?.transactionId
-                    tvAmount.text = "+${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
+                    tvAmount.text = "+${CommonMethod.formatCurrencyAmount(context,walletData?.amount?:0.0)}"
                 }
                 "2"->{
                     tvOrder.isVisible = true
@@ -34,7 +34,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvType.setTextColor(Color.parseColor("#D72E04"))
                     tvTransactionId.text = walletData?.transactionId
                     tvOrderId.text = walletData?.orderId
-                    tvAmount.text = "-${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
+                    tvAmount.text = "-${CommonMethod.formatCurrencyAmount(context,walletData?.amount?:0.0)}"
                 }
                 "3"->{
                     tvOrder.isVisible = false
@@ -44,7 +44,7 @@ class WalletTransactionAdapter(var context:Context, var walletTransactionList: A
                     tvType.text = "Redeemed Gift Card"
                     tvType.setTextColor(Color.parseColor("#17854C"))
                     tvTransactionId.text = walletData?.giftCardNo
-                    tvAmount.text = "+${CommonMethod.formatPrice(walletData?.amount?:0.0)}KD"
+                    tvAmount.text = "+${CommonMethod.formatCurrencyAmount(context,walletData?.amount?:0.0)}"
 
                 }
             }

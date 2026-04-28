@@ -56,7 +56,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
               //  tvAddressValue.text = productData?.order?.deliveryDetails?.address
               //  tvPerItemPriceValue.text = "${CommonMethod.formatPrice(productData?.amount?.toDoubleOrNull()?:0.0)} KD"
             //    tvPerItemPriceValue.text = "(${CommonMethod.formatPrice(productData?.chatroomRecordtable?.price?.toDoubleOrNull()?:0.0)} KD X ${productData?.chatroomRecordtable?.quantity} = ${CommonMethod.formatPrice(productData?.chatroomRecordtable?.totalAmount?.toDoubleOrNull()?:0.0) } KD)"
-                tvPerItemPriceValue.text = "${CommonMethod.formatPrice(productData?.chatroomRecordtable?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
+                tvPerItemPriceValue.text = "${CommonMethod.formatCurrencyAmount(context,productData?.chatroomRecordtable?.totalAmount?.toDoubleOrNull()?:0.0)}"
 
                 ivCustomStore.load(productData?.variationDetails?.variantImage?.get(0)) {
                     crossfade(true)
@@ -143,8 +143,11 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 }
                 tvTitle.text = productData?.productDetails?.productNameEn
 
-                tvPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
-                tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+//                tvPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
+//                tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+
+                tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)}"
+                tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
                 val returnDays = productData?.productDetails?.returnDays
                 val exchangeDays = productData?.productDetails?.exchangableDays
@@ -181,7 +184,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 }
                 tvQuantity.text = productData?.quantity.toString()
 
-                val discountValue = productData?.variationDetails?.discountValue ?: 0
+                val discountValue = CommonMethod.formatCurrencyAmountWithout(context,productData?.variationDetails?.discountValue?.toDoubleOrNull() ?: 0.0)
                 val discountType =
                     if (productData?.variationDetails?.discountType == "1") "% off" else " KD off"
                 tvDiscount.text = "$discountValue$discountType"

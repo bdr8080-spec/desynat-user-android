@@ -627,6 +627,23 @@ val placeOrderResult: LiveData<PlaceOrderResponse>
             repository.getAllChatList(map)
         }
     }
+    val markAllReadResult: LiveData<CommonResponse>
+        get() = repository.markAllReadLiveData
+
+    fun markAllRead(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.markAllRead(map)
+        }
+    }
+
+    val sendNotificationResult: LiveData<CommonResponse>
+        get() = repository.sendNotificationLiveData
+
+    fun sendNotification(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.sendNotification(map)
+        }
+    }
     val chatDetailResult: LiveData<ChatDetailResponse>
         get() = repository.chatDetailLiveData
 
@@ -1308,8 +1325,6 @@ val defaultBankResult: LiveData<CommonResponse>
             repository.addCard(map)
         }
     }
-
-
     val deleteCardResult: LiveData<CommonResponse>
         get() = repository.deleteCardLiveData
 
@@ -1319,5 +1334,40 @@ val defaultBankResult: LiveData<CommonResponse>
         }
     }
 
+    val changeCurrencyResult: LiveData<CommonResponse>
+        get() = repository.changeCurrencyLiveData
+
+    fun changeCurrency(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.changeCurrency(map)
+        }
+    }
+
+    val changeCountryResult: LiveData<CommonResponse>
+        get() = repository.changeCountryLiveData
+
+    fun changeCountry(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.changeCountry(map)
+        }
+    }
+
+    val affiliateChangeCurrencyResult: LiveData<CommonResponse>
+        get() = repository.affiliateChangeCurrencyLiveData
+
+    fun affiliateChangeCurrency(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.affiliateChangeCurrency(map)
+        }
+    }
+
+    val affiliateChangeCountryResult: LiveData<CommonResponse>
+        get() = repository.affiliateChangeCountryLiveData
+
+    fun affiliateChangeCountry(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.affiliateChangeCountry(map)
+        }
+    }
 
 }

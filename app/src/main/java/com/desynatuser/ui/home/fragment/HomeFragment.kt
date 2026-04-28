@@ -42,6 +42,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.data.view_model.LocationViewModel
 import com.desynatuser.databinding.FragmentHomeBinding
 import com.desynatuser.ui.UpdateLocationActivity
+import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
@@ -83,6 +84,7 @@ class HomeFragment : BaseFragment() {
     var isObserver = false
     var isAdminObserver = false
     var isHomeBannerObserver = false
+    var isCountryObserver = false
     var isHomeAllBannerObserver = false
     var isHomeBottomBannerObserver = false
     var isHomeDealBannerObserver = false
@@ -142,6 +144,9 @@ class HomeFragment : BaseFragment() {
     var selectedPos = -1
     var selectedType = 0
 
+    private var countryList= ArrayList<GetCountryResponse.Data>()
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -164,6 +169,7 @@ class HomeFragment : BaseFragment() {
         Constants.language = SharedPreference.get(requireActivity()).language
         getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
+        getCurrency()
         binding?.apply {
             if (SharedPreference.get(requireActivity()).accessToken != "") {
                 tvDeliverTo.text = "Deliver to ${user?.fullName}"
@@ -439,6 +445,38 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    private fun getCurrency() {
+        countryList.clear()
+        if (SharedPreference.get(requireActivity()).getCountryList()?.isNotEmpty() == true) {
+            val data = SharedPreference.get(requireActivity()).getCountryList()
+            countryList.clear()
+            data?.let { countryList.addAll(it) }
+            for (i in 0 until countryList.size) {
+                if (SharedPreference.get(requireActivity()).affiliateAccessToken != "") {
+
+                    if (countryList[i].id.toString() == user?.selectedCurrency) {
+                        getCurrencyData(countryList[i].currencyCode)
+                        break
+                    }
+                } else {
+                    if (countryList[i].id.toString() == user?.selectedCurrency) {
+                        getCurrencyData(countryList[i].currencyCode)
+                        break
+                    }
+                }
+
+            }
+        }
+        else{
+            getCountry()
+        }
+    }
+
+    private fun getCountry() {
+        viewModel.getCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isCountryObserver = true
+    }
     override fun initControl() {
         binding?.apply {
             tvLocation.setOnClickListener {
@@ -536,6 +574,36 @@ class HomeFragment : BaseFragment() {
                 isNotificationObserver = false
             }
         }
+
+        viewModel.countryResult.observe(viewLifecycleOwner) { response ->
+            if (isCountryObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
+                    countryList.clear()
+                    response.data?.let { countryList.addAll(it) }
+                    for (i in 0 until countryList.size) {
+                        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+
+                            if (countryList[i].id.toString() == user?.selectedCurrency) {
+                                getCurrencyData(countryList[i].currencyCode)
+                                break
+                            }
+                        }
+                        else{
+                            if (countryList[i].id.toString() == user?.selectedCurrency) {
+                               getCurrencyData(countryList[i].currencyCode)
+
+                                break
+                            }
+                        }
+                    }
+
+                }
+                isCountryObserver = false
+            }
+        }
+
 
         viewModel.userNotificationCountResult.observe(viewLifecycleOwner) { response ->
             if (isNotificationObserver) {
@@ -1171,4 +1239,7 @@ class HomeFragment : BaseFragment() {
         isObserver = true
     }
 
+    fun getCurrencyData(code: String) {
+        Constants.CURRENCY = if (code == "KWD") "KD" else code
+    }
 }

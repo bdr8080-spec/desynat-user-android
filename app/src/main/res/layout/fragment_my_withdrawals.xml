@@ -37,7 +37,7 @@
                     android:fontFamily="@font/poppins_semi_bold"
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    android:text="678900 KD"
+                    tools:text="678900 KD"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_18sdp" />
 

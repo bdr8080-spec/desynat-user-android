@@ -217,11 +217,11 @@ class ProductDetailFragment : BaseFragment() {
                 viewBottom.isVisible = false
             }
 
-            tvPrice.text = "${CommonMethod.formatPrice(variant?.productVariation?.get(selectedSizePos)?.actualPrice?:0.0)} KD"
-            tvDiscountedPrice.text = "${CommonMethod.formatPrice(variant?.productVariation?.get(selectedSizePos)?.finalPrice?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.actualPrice?:0.0)}"
+            tvDiscountedPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.finalPrice?:0.0)}"
 
-            val discountValue =variant?.productVariation?.get(selectedSizePos)?.discountValue ?: 0
-            val discountType = if (variant?.productVariation?.get(selectedSizePos)?.discountType == "1")"% off" else " KD off"
+            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+            val discountType = if (variant?.productVariation?.get(selectedSizePos)?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
             tvOffer.text = "$discountValue$discountType"
 
             tvDescription.text = productDetailData?.descriptionEn

@@ -44,9 +44,9 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
             }
             tvTitle.text = cartData.product.productNameEn
 
-            tvPrice.text = "${cartData?.productVariants?.actualPrice} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.actualPrice?.toDoubleOrNull()?:0.0)}"
          //   tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
-            tvDiscountPrice.text = "${CommonMethod.formatPrice(cartData?.chatroomData?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
+            tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.chatroomData?.totalAmount?.toDoubleOrNull()?:0.0)}"
             val returnDays = cartData?.product?.returnDays
             val exchangeDays = cartData?.product?.exchangableDays
 

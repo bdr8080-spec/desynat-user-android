@@ -12,6 +12,7 @@ import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.AuthViewModel
 import com.desynatuser.databinding.FragmentAddMoneyInWalletBinding
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +41,10 @@ class AddMoneyInWalletFragment : BaseFragment() {
     override fun initView() {
         binding?.apply {
             toolbar.tvToolbar.text = "Add Money"
+
+            tv10.text = "10 ${Constants.CURRENCY}"
+            tv100.text = "100 ${Constants.CURRENCY}"
+            tv500.text = "500 ${Constants.CURRENCY}"
 
             etAmount.addTextChangedListener(object : TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {

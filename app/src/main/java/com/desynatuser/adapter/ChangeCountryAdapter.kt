@@ -12,7 +12,7 @@ import com.desynatuser.utils.SharedPreference
 
 class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCountryResponse.Data>, var clickOnItem:ClickOnItem) : RecyclerView.Adapter<ChangeCountryAdapter.ViewHolder>() {
 
-    var selectedPos = 0
+    var selectedPos = -1
     inner class ViewHolder(val binding: ItemChangeCountryBinding) :
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
@@ -33,10 +33,16 @@ class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCo
                 clMain.setBackgroundResource(R.drawable.notification_unread_background)
             }
 
-            clMain.setOnClickListener {
+            root.setOnClickListener {
+                val previousPos = selectedPos
                 selectedPos = position
+
                 clickOnItem.onClickItem(position)
-                notifyDataSetChanged()
+
+                if (previousPos != -1) {
+                    notifyItemChanged(previousPos)
+                }
+                notifyItemChanged(selectedPos)
             }
         }
         }
