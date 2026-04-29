@@ -341,25 +341,25 @@ class ChatFragment : BaseFragment() {
             tvRequestId.text = "Request Id #${chatDetailData?.id}"
 
 
-            tvPerItemPrice.text = "Item Price (${CommonMethod.formatPrice(chatDetailData?.price ?: 0.0)} KD X ${chatDetailData?.quantity})"
+            tvPerItemPrice.text = "Item Price (${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.price ?: 0.0)} X ${chatDetailData?.quantity})"
             val itemPrice = chatDetailData?.price ?: 0.0
             val quantity = chatDetailData?.quantity?.toIntOrNull() ?: 1
             val subTotal = itemPrice * quantity
-            tvPerItemPriceValue.text = "${CommonMethod.formatPrice(subTotal)} KD"
+            tvPerItemPriceValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),subTotal)}"
             tvShippingFeesValue.text =
-                "${CommonMethod.formatPrice(chatDetailData?.shipping ?: 0.0)} KD"
-            tvTaxValue.text = "${CommonMethod.formatPrice(chatDetailData?.tax ?: 0.0)} KD"
+                "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.shipping ?: 0.0)}"
+            tvTaxValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.tax ?: 0.0)}"
             tvTotalAmountValue.text =
-                "${CommonMethod.formatPrice(chatDetailData?.totalAmount ?: 0.0)} KD"
+                "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.totalAmount ?: 0.0)}"
 
             tvProductName.text = chatDetailData?.productVariation?.productDetails?.productNameEn
             tvSizeValue.text = chatDetailData?.productVariation?.size?.name.toString()
             ivColor.setColorFilter(Color.parseColor(chatDetailData?.productVariation?.color?.hexCode))
 
             tvPrice.text =
-                "${CommonMethod.formatPrice(chatDetailData?.productVariation?.actualPrice ?: 0.0)} KD"
+                "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.productVariation?.actualPrice ?: 0.0)}"
             tvDiscountPrice.text =
-                "${CommonMethod.formatPrice(chatDetailData?.productVariation?.finalPrice ?: 0.0)} KD"
+                "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.productVariation?.finalPrice ?: 0.0)}"
 
             ivProduct.load(chatDetailData?.productVariation?.variantImage?.get(0)) {
                 crossfade(true)

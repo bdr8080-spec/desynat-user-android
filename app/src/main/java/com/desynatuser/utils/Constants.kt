@@ -21,7 +21,6 @@ object Constants {
     var location = ""
     var latitude = 0.0
     var longitude = 0.0
-    var cartItem = 0
     var DEVICE_TYPE = 2
 
     // const val UPLOAD = "/api/upload"
@@ -198,4 +197,8 @@ object Constants {
 
     const val AFFILIATE_CHANGE_CURRENCY = "/api/affiliate/update-user-selected-currency"
     const val AFFILIATE_CHANGE_COUNTRY = "/api/affiliate/update-user-selected-country"
+
+    const val DELETE_ACCOUNT = "/api/user/delete_account"
+
+    const val AFFILIATE_DELETE_ACCOUNT = "/api/affiliate/delete_account"
 }

@@ -32,6 +32,7 @@ import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
 import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
+import com.desynatuser.ui.home.fragment.response.GetAffiliateNotificationCountResponse
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
@@ -1029,7 +1030,7 @@ val defaultBankResult: LiveData<CommonResponse>
             repository.userNotificationCount()
         }
     }
-    val affiliateUserNotificationCountResult: LiveData<GetNotificationCountResponse>
+    val affiliateUserNotificationCountResult: LiveData<GetAffiliateNotificationCountResponse>
         get() = repository.affiliateUserNotificationCountLiveData
 
     fun affiliateUserNotificationCount() {
@@ -1367,6 +1368,24 @@ val defaultBankResult: LiveData<CommonResponse>
     fun affiliateChangeCountry(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.affiliateChangeCountry(map)
+        }
+    }
+
+    val deleteAccountResult: LiveData<CommonResponse>
+        get() = repository.deleteAccountLiveData
+
+    fun deleteAccount(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.deleteAccount(map)
+        }
+    }
+
+    val affiliateDeleteAccountResult: LiveData<CommonResponse>
+        get() = repository.affiliateDeleteAccountLiveData
+
+    fun affiliateDeleteAccount(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.affiliateDeleteAccount(map)
         }
     }
 

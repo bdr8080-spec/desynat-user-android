@@ -37,6 +37,7 @@ import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
 import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
+import com.desynatuser.ui.home.fragment.response.GetAffiliateNotificationCountResponse
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
@@ -628,7 +629,7 @@ interface ApiServices {
     suspend fun readAffiliateUserNotification(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
     @GET(Constants.AFFILIATE_USER_NOTIFICATION_COUNT)
-    suspend fun affiliateUserNotificationCount(): Response<GetNotificationCountResponse>
+    suspend fun affiliateUserNotificationCount(): Response<GetAffiliateNotificationCountResponse>
 
     @GET(Constants.GET_SELLER_STORY)
     suspend fun getSellerStory(@QueryMap map: HashMap<String, Any>): Response<GetSellerStoryResponse>
@@ -732,7 +733,6 @@ interface ApiServices {
     @POST(Constants.APP_NOTIFICATION_ON_OFF_AFFILIATE)
     suspend fun appNotificationOnOffAffiliate(@Body map: HashMap<String, Any>): Response<GetAffiliateUserProfileResponse>
 
-
     @GET(Constants.SAVED_CARD)
     suspend fun getSavedCard(): Response<GetSavedCardResponse>
 
@@ -753,5 +753,11 @@ interface ApiServices {
 
     @POST(Constants.AFFILIATE_CHANGE_COUNTRY)
     suspend fun affiliateChangeCountry(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.DELETE_ACCOUNT)
+    suspend fun deleteAccount(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @POST(Constants.AFFILIATE_DELETE_ACCOUNT)
+    suspend fun affiliateDeleteAccount(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
 }

@@ -67,11 +67,25 @@ class ChangeCurrencyFragment : BaseFragment() {
                     val data =  SharedPreference.get(requireActivity()).getSelectedCountryList()
                     countryList.clear()
                     data?.let { countryList.addAll(it) }
+                    selectedPos = -1
                     for (i in 0 until countryList.size) {
                         if (countryList[i].id.toString() == userInfo?.selectedCurrency) {
                             selectedPos = i
                             break
                         }
+                    }
+
+                    if (selectedPos == -1) {
+                        for (i in 0 until countryList.size) {
+                            if (countryList[i].currencyCode == "KWD") {
+                                selectedPos = i
+                                break
+                            }
+                        }
+                    }
+
+                    if (selectedPos == -1 && countryList.isNotEmpty()) {
+                        selectedPos = 0
                     }
 
                     currencyAdapter?.selectedPos = selectedPos

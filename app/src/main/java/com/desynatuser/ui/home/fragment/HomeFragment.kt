@@ -609,12 +609,15 @@ class HomeFragment : BaseFragment() {
             if (isNotificationObserver) {
 
                 response?.let {
-                    if (response?.data != null && response?.data != 0) {
-                        setNotificationCount(response.data)
+                    if (response?.data != null && response?.data?.notificationCount != 0) {
+                        setNotificationCount(response.data.notificationCount)
                     } else {
                         SharedPreference.get(requireActivity()).badgeCount = 0
                         ShortcutBadger.removeCount(requireActivity())
+                    }
 
+                    if (response?.data != null && response?.data?.chatUnreadCount != 0) {
+                        setChatCount(response.data.chatUnreadCount)
                     }
                 }
                 isNotificationObserver = false
@@ -693,8 +696,7 @@ class HomeFragment : BaseFragment() {
                 binding?.progressBar?.isVisible = false
                 myBagList.clear()
                 response?.data?.cartData?.let { myBagList.addAll(it) }
-                Constants.cartItem = myBagList.size
-                (requireActivity() as HomeActivity).updateAdapterCount()
+                (requireActivity() as HomeActivity).updateAdapterCount(myBagList.size)
                 isCartObserver = false
             }
         }
@@ -887,6 +889,12 @@ class HomeFragment : BaseFragment() {
         binding?.tvCount?.text = data.toString()
         ShortcutBadger.applyCount(requireActivity(), data)
     }
+
+    private fun setChatCount(data: Int) {
+        binding?.relChatCount?.isVisible = true
+        binding?.tvChatCount?.text = data.toString()
+    }
+
 
     private fun getDashboardApi() {
         viewModel.getDashBoard()

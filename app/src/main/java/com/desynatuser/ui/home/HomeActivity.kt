@@ -293,8 +293,8 @@ class HomeActivity : BaseActivity() {
         Log.d("test",requestCode.toString())
     }
 
-    fun updateAdapterCount(){
-       bottomAdapter?.setCartCount(Constants.cartItem)
+    fun updateAdapterCount(count: Int){
+       bottomAdapter?.setCartCount(count)
     }
 
     private fun handleDeepLink(intent: Intent?) {

@@ -39,7 +39,6 @@ class UpdateLocationActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
     private var mMap: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    // Location variables
     private var latitude = 28.6210
     private var longitude = 77.3812
 

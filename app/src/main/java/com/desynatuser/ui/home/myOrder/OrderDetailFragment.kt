@@ -606,7 +606,7 @@ class OrderDetailFragment : BaseFragment() {
             }
 
             btnInvoice.setOnClickListener {
-                CommonMethod.openPdfInBrowser(requireActivity(),"${Constants.BASE_URL}/Invoice/${orderData?.order?.orderId.toString()}")
+                CommonMethod.openPdfInBrowser(requireActivity(),"${Constants.BASE_URL}/InvoiceUser/${orderData?.order?.orderId.toString()}")
                // getInvoice()
             }
         }

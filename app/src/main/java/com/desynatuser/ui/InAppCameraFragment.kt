@@ -109,7 +109,6 @@ class InAppCameraFragment : Fragment() {
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                 //   Toast.makeText(requireContext(), "Capture failed", Toast.LENGTH_SHORT).show()
                 }
             }
         )

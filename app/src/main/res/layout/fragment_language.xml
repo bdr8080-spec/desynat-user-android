@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/_25sdp"
         android:fontFamily="@font/poppins_medium"
         android:padding="@dimen/_15sdp"
-        android:text="Change Language"
+        android:text="@string/change_language"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="@dimen/_13sdp" />
@@ -29,7 +29,7 @@
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_30sdp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Select language"
+        android:text="@string/select_language"
         android:textColor="@color/black"
         android:textSize="@dimen/_13sdp" />
 
@@ -40,7 +40,7 @@
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Choose the language and continue to get the experience the app in your preferred language."
+        android:text="@string/choose_the_language_and_continue_to_get_the_experience_the_app_in_your_preferred_language"
         android:textColor="#80000000"
         android:textSize="@dimen/_10sdp" />
 

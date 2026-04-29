@@ -104,10 +104,10 @@ class LoginFragment : BaseFragment() {
             etPassword.togglePasswordVisibility(ivPasswordVisible)
 
             if (SharedPreference.get(requireActivity()).userType==2){
-                tvGuest.text = "Switch to User"
+                tvGuest.text = getString(R.string.switch_to_user)
             }
             else{
-                tvGuest.text = "Continue As a Guest"
+                tvGuest.text = getString(R.string.continue_as_a_guest)
             }
         }
     }
@@ -141,7 +141,7 @@ class LoginFragment : BaseFragment() {
 
             btnLogin.setOnClickListener {
                 if (validation()) {
-                    if (btnLoginViaOtp.text == "Login via Password") {
+                    if (btnLoginViaOtp.text == getString(R.string.login_via_password)) {
                         loginWithEMailOrMobile()
                     } else {
                         loginWithPassword()
@@ -150,21 +150,21 @@ class LoginFragment : BaseFragment() {
             }
 
             btnLoginViaOtp.setOnClickListener {
-                if(btnLoginViaOtp.text == "Login via Password"){
+                if(btnLoginViaOtp.text == getString(R.string.login_via_password)){
                     clearInputField()
                     tvPassword.isVisible = true
                     relPassword.isVisible = true
                     tvForgotPassword.isVisible = true
-                    btnLogin.text = "Login"
-                    btnLoginViaOtp.text = "Login via OTP"
+                    btnLogin.text = getString(R.string.login)
+                    btnLoginViaOtp.text = getString(R.string.login_via_otp)
                 }
                 else {
                     clearInputField()
                     tvPassword.isVisible = false
                     relPassword.isVisible = false
                     tvForgotPassword.isVisible = false
-                    btnLogin.text = "Continue"
-                    btnLoginViaOtp.text = "Login via Password"
+                    btnLogin.text = getString(R.string.continue_text)
+                    btnLoginViaOtp.text = getString(R.string.login_via_password)
                 }
             }
 

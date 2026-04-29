@@ -17,9 +17,7 @@
     <string name="google_translator_api_key">AIzaSyB4mtISC8aJQl8DkwEd8DAIpBvuHCleO7s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="continue_text">Continue</string>
-    <string name="arabic">Arabic</string>
-    <string name="english">English</string>
+
     <string name="resend_otp">Resend OTP</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
     <string name="enter_email_address">Enter Email Address</string>
@@ -31,6 +29,41 @@
     <string name="i_accept_the_terms_conditions_and_policies"><![CDATA[I accept the Terms & Conditions and Policies]]></string>
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="policies">Policies</string>
+
+    //language
+    <string name="continue_text">Continue</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="change_language">Change Language</string>
+    <string name="select_language">Select language</string>
+    <string name="choose_the_language_and_continue_to_get_the_experience_the_app_in_your_preferred_language">Choose the language and continue to get the experience the app in your preferred language.</string>
+    <string name="please_select_language">Please select language</string>
+    <string name="language_changed_successfully">Language changed successfully</string>
+
+   //onboarding
+    <string name="earn_money">Earn Money</string>
+    <string name="track_commission">Track Commission</string>
+    <string name="share_product_link">Share Product Link</string>
+    <string name="order_item">Order Item</string>
+    <string name="product_delivery">Product Delivery</string>
+    <string name="item_tracking">Item Tracking</string>
+    <string name="skip">Skip</string>
+
+    //login
+    <string name="sign_in_title">Sign In</string>
+    <string name="welcome_back">Welcome back !</string>
+    <string name="continue_as_a_guest">Continue As a Guest</string>
+    <string name="mobile_number_or_email_address">Mobile Number or Email Address</string>
+    <string name="enter_mobile_number_or_email_address">Enter Mobile Number or Email Address</string>
+    <string name="enter_password">Enter password</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="login_via_otp">Login Via OTP</string>
+    <string name="login">Login</string>
+    <string name="or_sign_in_with">Or Sign in with</string>
+    <string name="don_t_have_an_account_sign_up">Don’t have an account? Sign up</string>
+    <string name="switch_to_user">Switch to User</string>
+    <string name="login_via_password">Login via Password</string>
 
     <array name="initial_price_values">
         <item>0</item>

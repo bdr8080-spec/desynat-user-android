@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.cms
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +16,10 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.DeleteAccountDialogBinding
 import com.desynatuser.databinding.FragmentSettingBinding
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
+import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,7 +70,7 @@ class SettingFragment : BaseFragment() {
             }
 
             btnDeleteAccount.setOnClickListener {
-                deleteAlertDialog()
+           //     deleteAlertDialog()
             }
 
 
@@ -145,6 +148,48 @@ class SettingFragment : BaseFragment() {
                 isObserver = false
             }
         }
+
+        viewModel.affiliateDeleteAccountResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+
+                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString()){
+                        Constants.isLogout = true
+                        CommonMethod.clearAffiliateData(requireActivity())
+                        requireActivity().startActivity(
+                            Intent(
+                                requireActivity(),
+                                AuthActivity::class.java
+                            )
+                        )
+                        requireActivity().finish()
+                    }
+                }
+                isObserver = false
+            }
+        }
+
+
+        viewModel.deleteAccountResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString()){
+                        Constants.isGuest = false
+                        Constants.isLogout = true
+                        Constants.Category = "Women"
+                        requireActivity().startActivity(
+                            Intent(requireActivity(),
+                                AuthActivity::class.java)
+                        )
+                        requireActivity().finish()
+                    }
+                    }
+                isObserver = false
+            }
+        }
+
     }
 
     fun deleteAlertDialog(
@@ -166,6 +211,7 @@ class SettingFragment : BaseFragment() {
             dialog.dismiss()
         }
         dialogBinding.btnYes.setOnClickListener {
+            deleteAccount()
             dialog.dismiss()
         }
 
@@ -179,6 +225,19 @@ class SettingFragment : BaseFragment() {
         }
         else{
             viewModel.notificationOnOff(map)
+        }
+        ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
+        isObserver = true
+
+    }
+
+    fun deleteAccount(){
+        val map = HashMap<String, Any>()
+        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+            viewModel.deleteAccount(map)
+        }
+        else{
+            viewModel.deleteAccount(map)
         }
         ProgressDialogUtils.getInstance().showProgress(requireActivity(), false)
         isObserver = true

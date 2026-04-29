@@ -43,6 +43,7 @@ import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
 import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
+import com.desynatuser.ui.home.fragment.response.GetAffiliateNotificationCountResponse
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
 import com.desynatuser.ui.home.fragment.response.GetDealBannerResponse
@@ -1451,7 +1452,7 @@ val userNotificationCountLiveData = SingleLiveEvent<GetNotificationCountResponse
         )
     }
 
-val affiliateUserNotificationCountLiveData = SingleLiveEvent<GetNotificationCountResponse>()
+val affiliateUserNotificationCountLiveData = SingleLiveEvent<GetAffiliateNotificationCountResponse>()
     suspend fun affiliateUserNotificationCount(
     ) {
         handleApiCall(
@@ -1951,6 +1952,30 @@ var deleteCardLiveData = SingleLiveEvent<CommonResponse>()
                 api.affiliateChangeCountry(map)
             },
             responseLiveData = affiliateChangeCountryLiveData
+        )
+    }
+
+    var deleteAccountLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun deleteAccount(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.deleteAccount(map)
+            },
+            responseLiveData = deleteAccountLiveData
+        )
+    }
+
+    var affiliateDeleteAccountLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun affiliateDeleteAccount(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.affiliateDeleteAccount(map)
+            },
+            responseLiveData = affiliateDeleteAccountLiveData
         )
     }
 

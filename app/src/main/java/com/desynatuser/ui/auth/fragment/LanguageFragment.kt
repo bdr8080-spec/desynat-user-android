@@ -99,12 +99,13 @@ class LanguageFragment : BaseFragment() {
 
             btnContinue.setOnClickListener {
                 if (Constants.language==""){
-                    showToast("Please select language")
+                    showToast(getString(R.string.please_select_language))
                 }
                 else{
                     SharedPreference.get(requireActivity()).language = Constants.language
                     if (from=="profile"){
-                        CommonMethod.showSuccessDialog(requireActivity(),"Language changed successfully"){
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.language_changed_successfully)){
                             findNavController().popBackStack()
                         }
                     }

@@ -290,9 +290,7 @@ class MyBagFragment : BaseFragment() {
                     setData()
                 }
 
-
-                Constants.cartItem = myCartList.size
-                (requireActivity() as HomeActivity).updateAdapterCount()
+                (requireActivity() as HomeActivity).updateAdapterCount(myCartList.size)
                 checkData()
                 isCartObserver = false
             }

@@ -51,16 +51,6 @@ class SplashActivity : BaseActivity() {
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()
             }
-
-//            if (SharedPreference.get(this).accessToken.isNotEmpty()) {
-//                startActivity(Intent(this, HomeActivity::class.java))
-//                finish()
-//            }
-//            else{
-//                startActivity(Intent(this, AuthActivity::class.java))
-//                finish()
-//            }
-
         },1000)
     }
 
