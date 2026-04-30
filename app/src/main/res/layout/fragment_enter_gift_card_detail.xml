@@ -25,7 +25,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Choose Amount"
+            android:text="@string/choose_amount"
             android:textSize="@dimen/_13sdp"
             android:fontFamily="@font/poppins_medium"/>
 
@@ -83,7 +83,7 @@
             android:id="@+id/etAmount"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Enter Amount"
+            android:hint="@string/enter_amount"
             android:layout_marginTop="@dimen/_10sdp"
             android:inputType="numberDecimal"
             android:maxLength="10"
@@ -99,13 +99,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="Name"/>
+            android:text="@string/name"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Enter name"
+            android:hint="@string/enter_name"
             android:layout_marginTop="@dimen/_5sdp"
             android:inputType="textCapSentences"
             android:maxLength="30"
@@ -115,13 +115,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Email ID"/>
+            android:text="@string/email_id"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Enter email id"
+            android:hint="@string/enter_email_id"
             android:layout_marginTop="@dimen/_5sdp"
             android:inputType="textEmailAddress"
             android:background="@drawable/edit_back"/>
@@ -129,7 +129,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="WhatsApp Number"/>
+            android:text="@string/whatsapp_number"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMobile"
@@ -177,20 +177,20 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="From"
+            android:text="@string/from"
             android:textSize="@dimen/_13sdp"
             android:fontFamily="@font/poppins_medium"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="Name"/>
+            android:text="@string/name"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etFromName"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Enter name"
+            android:hint="@string/enter_name"
             android:layout_marginTop="@dimen/_5sdp"
             android:inputType="textCapSentences"
             android:maxLength="30"
@@ -200,13 +200,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Wish Message"/>
+            android:text="@string/wish_message"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etWishMsg"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Wish Message"
+            android:hint="@string/wish_message"
             android:layout_marginTop="@dimen/_5sdp"
             android:inputType="textMultiLine"
             android:gravity="start"
@@ -217,13 +217,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Note"/>
+            android:text="@string/note"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etNote"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Note"
+            android:hint="@string/note"
             android:layout_marginTop="@dimen/_5sdp"
             android:inputType="textMultiLine"
             android:gravity="start"
@@ -235,7 +235,7 @@
             android:id="@+id/btnPay"
             style="@style/button"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="Pay"/>
+            android:text="@string/pay"/>
 
         <View
             android:layout_width="match_parent"

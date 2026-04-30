@@ -57,7 +57,7 @@ class WishListFragment : BaseFragment() {
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
         binding?.apply {
-            toolbar.tvToolbar.text = "Favourite"
+            toolbar.tvToolbar.text = getString(R.string.favourite)
 
             productAdapter = ProductAdapter(requireActivity(),productList,storeName,1,object: ProductAdapter.ProductClick{
                 override fun onProductClick(position: Int,type:Int) {

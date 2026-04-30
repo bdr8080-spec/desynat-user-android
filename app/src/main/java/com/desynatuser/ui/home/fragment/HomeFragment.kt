@@ -172,7 +172,7 @@ class HomeFragment : BaseFragment() {
         getCurrency()
         binding?.apply {
             if (SharedPreference.get(requireActivity()).accessToken != "") {
-                tvDeliverTo.text = "Deliver to ${user?.fullName}"
+                tvDeliverTo.text = "${getString(R.string.deliver_to)} ${user?.fullName}"
                 notificationCount()
             }
             if (Constants.location != "") {
@@ -801,10 +801,10 @@ class HomeFragment : BaseFragment() {
                 when (selectedType) {
                     1 -> {
                         if (bestSellingList[selectedPos].wishlist == 1) {
-                            showToast("Product removed from your wishlist successfully")
+                            showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
                             bestSellingList[selectedPos].wishlist = 0
                         } else {
-                            showToast("Product added to your wishlist successfully")
+                            showToast(getString(R.string.product_added_to_your_wishlist_successfully))
                             bestSellingList[selectedPos].wishlist = 1
                         }
                         bestSellingAdapter?.notifyItemChanged(selectedPos)
@@ -813,10 +813,10 @@ class HomeFragment : BaseFragment() {
 
                     2 -> {
                         if (topRatedList[selectedPos].wishlist == 1) {
-                            showToast("Product removed from your wishlist successfully")
+                            showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
                             topRatedList[selectedPos].wishlist = 0
                         } else {
-                            showToast("Product added to your wishlist successfully")
+                            showToast(getString(R.string.product_added_to_your_wishlist_successfully))
                             topRatedList[selectedPos].wishlist = 1
                         }
                         topRatedAdapter?.notifyItemChanged(selectedPos)
@@ -825,10 +825,10 @@ class HomeFragment : BaseFragment() {
 
                     3 -> {
                         if (newestProductList[selectedPos].wishlist == 1) {
-                            showToast("Product removed from your wishlist successfully")
+                            showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
                             newestProductList[selectedPos].wishlist = 0
                         } else {
-                            showToast("Product added to your wishlist successfully")
+                            showToast(getString(R.string.product_added_to_your_wishlist_successfully))
                             newestProductList[selectedPos].wishlist = 1
                         }
                         newestProductAdapter?.notifyItemChanged(selectedPos)
@@ -1017,7 +1017,7 @@ class HomeFragment : BaseFragment() {
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast("Speech recognition not supported")
+            showToast(getString(R.string.speech_recognition_not_supported))
         }
     }
 

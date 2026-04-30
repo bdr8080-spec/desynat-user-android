@@ -96,16 +96,16 @@ class PaymentMethodFragment : BaseFragment() {
                     if (!itemGiftCardJson.isNullOrEmpty()) {
                         giftCardData = Gson().fromJson(itemGiftCardJson, BuyGiftCardResponse.Data::class.java)
                     }
-                    btnProceed.text = "Proceed"
+                    btnProceed.text = getString(R.string.proceed)
                 }
                 "wallet"->{
                     amount = arguments?.getDouble("amount")?:0.0
                     llWallet.isVisible = false
-                    btnProceed.text = "Confirm & Add Money"
+                    btnProceed.text = getString(R.string.confirm_add_money)
                 }
             }
 
-            toolbar.tvToolbar.text = "Payment Method"
+            toolbar.tvToolbar.text = getString(R.string.payment_method)
 
         }
         getWalletBalance()
@@ -175,7 +175,7 @@ class PaymentMethodFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 walletBalance = response.data.balance
                 lifecycleScope.launch(Dispatchers.Main) {
-                    binding?.tvBalance?.text = "Available Balance : ${CommonMethod.formatPrice(walletBalance?:0.0)} KD"
+                    binding?.tvBalance?.text = "${getString(R.string.available_balance)} : ${CommonMethod.formatPrice(walletBalance?:0.0)} KD"
                 }
                 isObserver = false
             }
@@ -184,7 +184,8 @@ class PaymentMethodFragment : BaseFragment() {
             viewModel.buyGiftCardPaymentResult.observe(viewLifecycleOwner) { response ->
                 if (isObserver) {
                     ProgressDialogUtils.getInstance().hideProgress()
-                    CommonMethod.showSuccessDialog(requireActivity(),"Gift card purchased successfully!"){
+                    CommonMethod.showSuccessDialog(requireActivity(),
+                        getString(R.string.gift_card_purchased_successfully)){
 
                         findNavController().popBackStack(
                             R.id.giftCard,
@@ -206,7 +207,8 @@ class PaymentMethodFragment : BaseFragment() {
             viewModel.addMoneyInWalletPaymentResult.observe(viewLifecycleOwner) { response ->
                 if (isPaymentObserver) {
                     ProgressDialogUtils.getInstance().hideProgress()
-                    CommonMethod.showSuccessDialog(requireActivity(),"Amount added successfully!"){
+                    CommonMethod.showSuccessDialog(requireActivity(),
+                        getString(R.string.amount_added_successfully)){
 
                         findNavController().popBackStack(
                             R.id.wallet,
@@ -594,11 +596,11 @@ class PaymentMethodFragment : BaseFragment() {
                     Log.d("PaymentFlow", "Payment Success!")
                 }
                 Activity.RESULT_CANCELED -> {
-                    showToast("Payment Cancelled")
+                    showToast(getString(R.string.payment_cancelled))
                     Log.d("PaymentFlow", "Payment Cancelled")
                 }
                 else -> {
-                    showToast("Payment Failed or Unknown")
+                    showToast(getString(R.string.payment_failed_or_unknown))
                     Log.d("PaymentFlow", "Payment Failed or Unknown")
                 }
             }

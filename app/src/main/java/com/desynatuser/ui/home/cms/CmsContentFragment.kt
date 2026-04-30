@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.desynatdriver.ui.home.cms.response.GetCmsResponse
+import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentCmsContentBinding
@@ -44,13 +45,13 @@ class CmsContentFragment : BaseFragment() {
         type = arguments?.getInt("type")?: 1
         binding?.apply {
             toolbar.tvToolbar.text =  when(type){
-                1-> "Terms & Conditions"
-                2-> "Privacy Policy"
-                3-> "About Us"
-                4-> "Return Policy"
-                5-> "Exchange Policy"
-                6-> "Cancellation Policy"
-                else -> "Terms & Conditions"
+                1-> getString(R.string.terms_conditions)
+                2-> getString(R.string.privacy_policy)
+                3-> getString(R.string.about_us)
+                4-> getString(R.string.return_policy)
+                5-> getString(R.string.exchange_policy)
+                6-> getString(R.string.cancellation_policy)
+                else -> getString(R.string.terms_conditions)
             }
 
             getContent()

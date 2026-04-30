@@ -286,7 +286,7 @@ class ViewReelFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 if (reelData?.wishlist==1){
                     reelData?.wishlist = 0
-                    showToast("Reel removed from your wishlist successfully")
+                    showToast(getString(R.string.reel_removed_from_your_wishlist_successfully))
                 }
                 else{
                     reelData?.wishlist = 1

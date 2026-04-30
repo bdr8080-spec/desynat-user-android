@@ -86,19 +86,19 @@ class GiftCardDetailFragment : BaseFragment() {
             tvNoteMsg.text = giftData?.notes
             tvEmail.text = giftData?.receiverEmail
             tvName.text = giftData?.receiverName
-            tvQuantity.text = "Total Quantity- 1"
+            tvQuantity.text = "${getString(R.string.total_quantity)}- 1"
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),giftData?.amount?:0.0)}"
             tvAmount.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),giftData?.amount?:0.0)}"
-            tvTransaction.text = "Transaction Id: ${giftData?.transactionId}"
+            tvTransaction.text = "${getString(R.string.transaction_id)}: ${giftData?.transactionId}"
             if(giftData?.paymentMethod=="2") {
                 tvTransaction.isVisible = false
                 ivPay.setImageResource(R.drawable.ic_wallet)
-                tvPayBy.text = "Paid by Wallet"
+                tvPayBy.text = getString(R.string.paid_by_wallet)
             }
             if(giftData?.transactionId=="wallet") {
                 tvTransaction.isVisible = false
                 ivPay.setImageResource(R.drawable.ic_wallet)
-                tvPayBy.text = "Paid by Wallet"
+                tvPayBy.text = getString(R.string.paid_by_wallet)
             }
         }
     }

@@ -15,8 +15,6 @@
     <string name="fatoorah">SK_KWT_vVZlnnAqu8jRByOWaRPNId4ShzEDNt256dvnjebuyzo52dXjAfRx2ixW5umjWSUx</string>
     <string name="google_vision_api_key">AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18</string>
     <string name="google_translator_api_key">AIzaSyB4mtISC8aJQl8DkwEd8DAIpBvuHCleO7s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="resend_otp">Resend OTP</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
@@ -65,7 +63,464 @@
     <string name="switch_to_user">Switch to User</string>
     <string name="login_via_password">Login via Password</string>
 
-    <array name="initial_price_values">
+    //signup
+    <string name="sign_up">Sign Up</string>
+    <string name="full_name">Full Name</string>
+    <string name="enter_full_name">Enter Full Name</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="email_address">Email Address</string>
+    <string name="create_password">Create Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_confirm_password">Enter confirm password</string>
+    <string name="otp_sent_successfully_to_your_mobile_number">OTP sent successfully to your mobile number</string>
+    <string name="please_enter_your_full_name">Please enter your full name</string>
+    <string name="please_enter_your_mobile_number">Please enter your mobile number</string>
+    <string name="please_enter_a_valid_mobile_number">Please enter a valid mobile number</string>
+    <string name="please_enter_your_email_address">Please enter your email address</string>
+    <string name="please_enter_a_valid_email_address">Please enter a valid email address</string>
+    <string name="please_enter_a_password">Please enter a password</string>
+    <string name="password_must_be_at_least_8_characters_long_and_include_letters_and_digits">Password must be at least 8 characters long and include letters and digits</string>
+    <string name="please_enter_confirm_password">Please enter confirm password</string>
+    <string name="password_and_confirm_password_didn_t_match">Password and confirm password didn\'t match</string>
+    <string name="please_accept_terms_policies_to_continue"><![CDATA[Please accept Terms & Policies to continue]]></string>
+
+   //forget password
+    <string name="forgot_password">Forgot Password</string>
+    <string name="please_enter_mobile_number">Please enter mobile number</string>
+    <string name="please_enter_valid_mobile_number_between_7_to_15_digits">Please enter valid mobile number between 7 to 15 digits</string>
+    <string name="please_enter_email">Please enter email</string>
+    <string name="please_enter_valid_email">Please enter valid email</string>
+    <string name="please_select_an_option_to_get_verified_then_we_ll_send_an_otp_to_verify_that_it_s_you">Please select an option to get verified then we’ll send an OTP to verify that it’s you</string>
+
+    //otp
+    <string name="otp_verification">OTP Verification</string>
+    <string name="please_enter_otp">Please enter OTP</string>
+    <string name="please_enter_a_valid_6_digit_otp">Please enter a valid 6-digit OTP</string>
+    <string name="your_profile_is_under_review">Your profile is under review</string>
+    <string name="your_profile_is_rejected_by_admin">Your profile is rejected by admin</string>
+    <string name="document_rejected_please_reupload_it">Document Rejected. Please Reupload it</string>
+    <string name="otp_verified_successfully">OTP verified successfully</string>
+    <string name="thank_you_for_sinning_up_with_desynat">Thank you for sinning up with DESYNAT</string>
+    <string name="email_address_changed_successfully">Email Address Changed successfully !</string>
+    <string name="mobile_number_changed_successfully">Mobile Number Changed successfully !</string>
+    <string name="otp_sent_to_mobile_number_successfully">OTP sent to mobile number successfully</string>
+    <string name="otp_sent_to_email_address_successfully">OTP sent to email address successfully</string>
+    <string name="a_verification_code_has_been_sent_to">A verification code has been sent to</string>
+    <string name="resend_otp_in">Resend OTP in</string>
+    <string name="verify">Verify</string>
+
+   //reset
+    <string name="reset_password">Reset Password</string>
+    <string name="please_enter_password">Please enter password</string>
+    <string name="great_now_you_can_create_your_new_password">Great! Now you can create your new password</string>
+    <string name="your_password_must_be_at_least_8_characters_and_should_include_a_combination_of_numbers_and_letters">Your password must be at least 8 characters and should include a combination of numbers and letters.</string>
+    <string name="done">Done</string>
+
+    //Home
+    <string name="deliver_to">Deliver to</string>
+    <string name="fetching_location">Fetching Location...</string>
+    <string name="search_product_or_brand">Search Product or Brand</string>
+    <string name="men">Men</string>
+    <string name="women">Women</string>
+    <string name="kids">Kids</string>
+    <string name="categories">Categories</string>
+    <string name="suggested_stores">Suggested Stores</string>
+    <string name="no_category_found">No Category Found</string>
+    <string name="no_suggested_store_found">No Suggested Store Found</string>
+    <string name="best_selling">Best Selling</string>
+    <string name="no_best_selling_product_found">No Best Selling Product Found</string>
+    <string name="browse_some_premium_stores">Browse some Premium stores</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="no_top_rated_product_found">No Top Rated Product Found</string>
+    <string name="browse_some_discounted_deals">Browse some discounted deals</string>
+    <string name="newest_products">Newest Products</string>
+    <string name="no_newest_product_found">No Newest Product Found</string>
+    <string name="product_removed_from_your_wishlist_successfully">Product removed from your wishlist successfully</string>
+    <string name="product_added_to_your_wishlist_successfully">Product added to your wishlist successfully</string>
+    <string name="speech_recognition_not_supported">Speech recognition not supported</string>
+
+   //notification
+    <string name="notifications">Notifications</string>
+    <string name="no_notification_found">No notification found</string>
+
+   //chat
+    <string name="chat">Chat</string>
+    <string name="please_select_chat_status">Please select chat status</string>
+    <string name="no_chat_found">No chat found</string>
+    <string name="search">Search</string>
+    <string name="item_price">Item Price</string>
+    <string name="request_id">Request Id</string>
+    <string name="please_enter_message">Please enter message</string>
+    <string name="you_have_a_new_message">You have a new message</string>
+    <string name="new_attachment">New Attachment</string>
+    <string name="please_enter_quantity">Please enter quantity</string>
+    <string name="please_enter_custom_detail">Please enter custom detail</string>
+    <string name="quotation_rejected_successfully">Quotation rejected Successfully</string>
+    <string name="quotation_accepted_successfully">Quotation accepted Successfully</string>
+    <string name="request_sent_successfully">Request Sent successfully!</string>
+    <string name="type_here">Type Here...</string>
+    <string name="order_placed">Order Placed</string>
+    <string name="size">Size :</string>
+    <string name="color">Color</string>
+    <string name="total_quantity">Total Quantity</string>
+    <string name="address">Address</string>
+    <string name="custom_details">Custom Details</string>
+    <string name="delivery_fees">Delivery Fees</string>
+    <string name="tax">Tax</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
+    <string name="buy_now">Buy Now</string>
+
+   //profile
+    <string name="guest_user">Guest User</string>
+    <string name="gift_cards">Gift Cards</string>
+    <string name="my_orders">My Orders</string>
+    <string name="my_saved_cards">My Saved Cards</string>
+    <string name="saved_addresses">Saved Addresses</string>
+    <string name="my_wallet">My Wallet</string>
+    <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
+    <string name="return_policy">Return Policy</string>
+    <string name="about_us">About Us</string>
+    <string name="faq">Faq</string>
+    <string name="change_currency">Change Currency</string>
+    <string name="change_country">Change Country</string>
+    <string name="cancellation_policy">Cancellation Policy</string>
+    <string name="exchange_policy">Exchange Policy</string>
+    <string name="support">Support</string>
+    <string name="become_an_affiliate">Become An Affiliate</string>
+    <string name="setting">Setting</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="my_withdrawals">My Withdrawals</string>
+    <string name="app_version_1_0">App Version 1.0</string>
+ <string name="profile_details">Profile Details</string>
+ <string name="profile_updated_successfully">Profile updated successfully!</string>
+
+    <string name="change_image">Change Image</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="change_your_password">Change Your Password</string>
+    <string name="email_id">Email Id</string>
+    <string name="add_another_account">Add another account</string>
+    <string name="enter_city_name">Enter City Name</string>
+    <string name="city">City</string>
+    <string name="enter_state_name">Enter State Name</string>
+    <string name="state">State</string>
+    <string name="enter_locality_town">Enter Locality Town</string>
+    <string name="locality_town">Locality Town</string>
+    <string name="enter_pin_code">Enter Pin Code</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="enter_street_name_block_apartment_flat_name">Enter Street Name, Block, Apartment, Flat Name</string>
+    <string name="address_line_2">Address Line 2</string>
+    <string name="enter_house_no_flat_no">Enter House no., flat no...</string>
+    <string name="address_line_1">Address Line 1</string>
+    <string name="location">Location</string>
+    <string name="country">Country</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="faq_s">FAQ\'s</string>
+    <string name="in_app_notifications">In-app notifications</string>
+    <string name="push_notifications">Push notifications</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="notification">Notification</string>
+
+   //support
+    <string name="please_select_ticket_type">Please select ticket type</string>
+    <string name="please_enter_title">Please enter title</string>
+    <string name="please_enter_description">Please enter description</string>
+    <string name="raise_ticket">Raise Ticket</string>
+    <string name="ticket_type">Ticket Type</string>
+    <string name="select_ticket_type">Select Ticket Type</string>
+    <string name="title">Title</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="description">Description</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="upload_attachment_if_any">Upload attachment(if any)</string>
+    <string name="submit">Submit</string>
+    <string name="contact">Contact</string>
+    <string name="ticket_management">Ticket Management</string>
+    <string name="support_email_address">Support Email Address</string>
+    <string name="support_contact_number">Support Contact Number</string>
+    <string name="chat_on_whatsapp">Chat on Whatsapp</string>
+    <string name="chat_with_the_support_team">Chat with the Support Team</string>
+    <string name="no_ticket_found">No ticket found</string>
+    <string name="in_progress">In Progress</string>
+    <string name="resolved">Resolved</string>
+    <string name="details">Details</string>
+    <string name="ticket_id">Ticket Id</string>
+    <string name="raised_on">Raised on</string>
+    <string name="attachment">Attachment</string>
+    <string name="status">Status</string>
+    <string name="resolved_on">Resolved On</string>
+    <string name="save">Save</string>
+    <string name="no_data_found">No data found</string>
+    <string name="catalog">Catalog</string>
+    <string name="sub_category">Sub-Category</string>
+    <string name="speak_clearly_or_try_again">Speak clearly or try again</string>
+
+   //Add card
+    <string name="add_card">Add Card</string>
+    <string name="card_added_successfully">Card added successfully!</string>
+    <string name="please_enter_card_holder_name">Please enter card holder name</string>
+    <string name="please_enter_card_number">Please enter card number</string>
+    <string name="please_enter_a_valid_card_number">Please enter a valid card number</string>
+    <string name="please_select_expiry_date">Please select expiry date</string>
+    <string name="please_enter_cvv">Please enter cvv</string>
+    <string name="please_enter_a_valid_cvv">Please enter a valid CVV</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="cvv">CVV</string>
+    <string name="check_card_for_future">Check Card for Future</string>
+    <string name="card_deleted_successfully">Card deleted successfully!</string>
+
+    //Gift Card
+    <string name="gift_card">Gift Card</string>
+    <string name="gift_card_apply_successfully">Gift card apply successfully</string>
+    <string name="gift_card_redeemed_successfully">Gift Card Redeemed successfully!</string>
+    <string name="please_enter_16_digit_gift_card_number">Please enter 16 Digit Gift Card Number</string>
+    <string name="gift_card_number_must_be_16_digit">Gift Card Number must be 16 digit</string>
+    <string name="please_enter_pin">Please enter pin</string>
+    <string name="enter_gift_card_details">Enter Gift Card Details</string>
+    <string name="_16_digit_gift_card_number">16 Digit Gift Card Number</string>
+    <string name="enter_pin">Enter PIN</string>
+    <string name="redeem">Redeem</string>
+    <string name="enter_details">Enter Details</string>
+    <string name="please_enter_amount">Please enter amount</string>
+    <string name="please_choose_amount">Please choose amount</string>
+    <string name="please_enter_recipient_name">Please enter recipient name</string>
+    <string name="please_enter_email_id">Please enter email id</string>
+    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="please_enter_a_valid_email_id">Please enter a valid email id</string>
+    <string name="please_enter_wish_message">Please enter wish message</string>
+    <string name="choose_amount">Choose Amount</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="name">Name</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_email_id">Enter email id</string>
+    <string name="whatsapp_number">WhatsApp Number</string>
+    <string name="from">From</string>
+    <string name="wish_message">Wish Message</string>
+    <string name="note">Note</string>
+    <string name="pay">Pay</string>
+    <string name="paid_by_wallet">Paid by Wallet</string>
+    <string name="recepient_details">Recepient Details</string>
+    <string name="paid_by">Paid by</string>
+    <string name="paid_by_card">Paid by Card</string>
+    <string name="confirm_add_money"><![CDATA[Confirm & Add Money]]></string>
+    <string name="proceed">Proceed</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="gift_card_purchased_successfully">Gift card purchased successfully!</string>
+    <string name="amount_added_successfully">Amount added successfully!</string>
+    <string name="payment_cancelled">Payment Cancelled</string>
+    <string name="payment_failed_or_unknown">Payment Failed or Unknown</string>
+    <string name="available_balance">Available Balance</string>
+    <string name="transaction_id">Transaction Id</string>
+    <string name="select_gift_card_category">Select Gift Card Category</string>
+    <string name="please_select_gift_card_category">Please select gift card category</string>
+
+ //address
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="please_enable_gps_to_fetch_your_current_location">Please enable GPS to fetch your current location.</string>
+    <string name="enable_gps">Enable GPS</string>
+    <string name="no_address_found">No address found</string>
+ <string name="error_fetching_address">Error fetching address</string>
+ <string name="add_new_address">Add New Address</string>
+ <string name="edit_address">Edit Address</string>
+ <string name="update_address">Update Address</string>
+ <string name="please_enter_name">Please enter name</string>
+ <string name="please_select_address">Please select address</string>
+ <string name="please_enter_house_building_area">Please enter house/building/area</string>
+ <string name="please_enter_city">Please enter city</string>
+ <string name="please_enter_state">Please enter state</string>
+ <string name="please_select_address_type_home_or_office">Please select address type (Home or Office)</string>
+
+ //change mobile and email
+ <string name="change_email_address">Change Email Address</string>
+ <string name="great_now_enter_the_email_address_that_you_want_to_continue_with">Great! now enter the email address that you want to continue with</string>
+ <string name="enter_new_email_address">Enter New Email Address</string>
+ <string name="change_mobile_number">Change Mobile Number</string>
+ <string name="great_now_enter_the_mobile_number_that_you_want_to_continue_with">Great! now enter the mobile number that you want to continue with</string>
+ <string name="enter_new_mobile_number">Enter New Mobile Number</string>
+ <string name="otp_sent_successfully_to_new_email_address">OTP sent successfully to new email address</string>
+ <string name="otp_sent_successfully">OTP sent successfully</string>
+ <string name="please_enter_new_mobile_number">Please enter new mobile number</string>
+ <string name="please_enter_a_valid_new_mobile_number">Please enter a valid new mobile number</string>
+ <string name="please_enter_new_email_address">Please enter new email address</string>
+ <string name="please_enter_a_valid_new_email_address">Please enter a valid new email address</string>
+
+ //change password
+ <string name="change_password">Change Password</string>
+ <string name="password_changed_successfully">Password changed successfully!</string>
+ <string name="please_enter_old_password">Please enter old password</string>
+ <string name="please_enter_new_password">Please enter new password</string>
+ <string name="new_password_and_confirm_password_didn_t_match">New password and confirm password didn\'t match</string>
+ <string name="old_password">Old Password</string>
+ <string name="enter_old_password">Enter old password</string>
+ <string name="create_new_password">Create New Password</string>
+ <string name="enter_new_password">Enter new password</string>
+
+ //add address
+ <string name="house_no_building_no_area">House no./Building no/Area</string>
+ <string name="block_street">Block/Street</string>
+ <string name="postal_code_optional">Postal Code (optional)</string>
+ <string name="postal_code">Postal Code</string>
+ <string name="city_district">City/District</string>
+ <string name="landmark">Landmark</string>
+ <string name="saved_address_as">Saved Address As</string>
+ <string name="home">Home</string>
+ <string name="office">Office</string>
+ <string name="add_address">Add Address</string>
+ <string name="saved_address">Saved Address</string>
+ <string name="are_you_sure_you_want_to_delete_the_address">Are you sure you want to delete the address?</string>
+ <string name="add_new_address_with_plus">+ Add New Address</string>
+
+
+ //promocode
+ <string name="promocode">Promocode</string>
+ <string name="invalid_promocode">Invalid Promocode</string>
+ <string name="please_enter_promocode">Please enter promocode</string>
+ <string name="enter_promocode">Enter promocode</string>
+ <string name="apply">Apply</string>
+ <string name="no_promocode_found">No Promocode Found</string>
+
+
+ //event
+ <string name="youtube_events">Youtube Events</string>
+ <string name="no_event_found">No event found</string>
+ <string name="viewers">Viewers</string>
+ <string name="watch_live">Watch Live</string>
+ <string name="unmute">Unmute</string>
+ <string name="mute">Mute</string>
+ <string name="waiting_for_next_live_event">Waiting for next live event...</string>
+ <string name="waiting_for_host_to_join">Waiting for host to join...</string>
+ <string name="live_event">Live Event</string>
+ <string name="live">Live</string>
+ <string name="no_live_event_available">No live event available</string>
+ <string name="leave">Leave</string>
+ <string name="reel">Reel</string>
+ <string name="reel_removed_from_your_wishlist_successfully">Reel removed from your wishlist successfully</string>
+
+
+ <string name="favourite">Favourite</string>
+
+ <string name="inclusive_of_all_taxes">inclusive of all taxes</string>
+ <string name="available_size">Available Size</string>
+ <string name="more_color">More Color</string>
+ <string name="size_guide">Size Guide</string>
+ <string name="custom_order">Custom Order</string>
+ <string name="specification">Specification</string>
+ <string name="check_delivery">Check delivery</string>
+ <string name="select_location">Select Location</string>
+ <string name="change">Change</string>
+ <string name="cash_on_delivery_available">Cash on Delivery Available</string>
+ <string name="view_all">View All</string>
+ <string name="simillar_products">Simillar Products</string>
+ <string name="view_my_bag">View My Bag</string>
+ <string name="add_to_bag">Add to Bag</string>
+ <string name="get_it_by">Get it by</string>
+ <string name="days_return">Days Return</string>
+ <string name="says_exchange">Days Exchange</string>
+ <string name="item">Item</string>
+ <string name="cash_on_delivery_not_available">Cash on Delivery not Available</string>
+ <string name="this_product_is_sold_under_a_no_return_policy">This product is sold under a No Return Policy</string>
+ <string name="please_select_size">Please select size</string>
+ <string name="go">Go</string>
+ <string name="latest_search_result">Latest Search Result</string>
+ <string name="recommended">Recommended</string>
+ <string name="recent_searches">Recent Searches</string>
+ <string name="filter">Filter</string>
+ <string name="sort">Sort</string>
+ <string name="please_select">Please select</string>
+ <string name="busy">Busy</string>
+ <string name="available">Available</string>
+ <string name="product">Product</string>
+ <string name="reels">Reels</string>
+ <string name="reel_added_to_your_wishlist_successfully">Reel added to your wishlist successfully</string>
+
+ <string name="my_order">My Order</string>
+ <string name="other_item">Other Item</string>
+ <string name="billing_details">Billing Details</string>
+ <string name="total_mrp">Total MRP</string>
+ <string name="discount_on_mrp">Discount on MRP</string>
+ <string name="custom_items_price">Custom Items Price</string>
+ <string name="delivery_fee">Delivery Fee</string>
+ <string name="coupon_discount">Coupon Discount</string>
+ <string name="tax_if_any">TAX (if any)</string>
+ <string name="order_status">Order Status</string>
+ <string name="confirmed">Confirmed</string>
+ <string name="shipped">Shipped</string>
+ <string name="on_the_way">On the Way</string>
+ <string name="delivered">Delivered</string>
+ <string name="download_invoice">Download Invoice</string>
+ <string name="delivery_address">Delivery Address</string>
+ <string name="select_payment_method">SELECT PAYMENT METHOD</string>
+ <string name="pay_by_knet">Pay by KNET</string>
+ <string name="visapay">Visapay</string>
+ <string name="google_pay">Google Pay</string>
+ <string name="samsung_pay">Samsung Pay</string>
+ <string name="credit_debit_card">Credit/ Debit Card</string>
+ <string name="add_new_card">+ Add new card</string>
+ <string name="cash_on_delivery">Cash On Delivery</string>
+ <string name="in_app_wallet">In -App Wallet</string>
+ <string name="have_a_gift_card">Have a gift card</string>
+ <string name="place_order">Place Order</string>
+ <string name="order_placed_successfully">Order Placed Successfully !</string>
+ <string name="amount_paid">Amount Paid</string>
+ <string name="items_will_be_delivered_to">Items will be delivered to</string>
+ <string name="track_your_order">Track your Order</string>
+ <string name="continue_shopping">Continue Shopping</string>
+ <string name="expected_delivery_date">Expected Delivery Date</string>
+ <string name="amount_paid_with_wallet">Amount Paid with Wallet</string>
+ <string name="working_days">working days</string>
+ <string name="placed_on">Placed On</string>
+ <string name="free_delivery">Free Delivery</string>
+ <string name="coupon_discount">Coupon Discount</string>
+ <string name="you_will_save">You will save</string>
+ <string name="on_this">on this</string>
+ <string name="cancelled">Cancelled</string>
+ <string name="in_process">In Process</string>
+ <string name="cancel_status">Cancel Status</string>
+ <string name="ongoing">Ongoing</string>
+ <string name="delivery_date">Delivery Date</string>
+ <string name="not_delivered">Not Delivered</string>
+ <string name="order_cancelled_successfully">Order cancelled successfully!</string>
+ <string name="order_return_request_sent_successfully">Order Return Request Sent successfully!</string>
+ <string name="order_exchange_request_sent_successfully">Order Exchange Request Sent successfully!</string>
+ <string name="review_submitted_successfully">Review Submitted successfully!</string>
+ <string name="please_enter_reason">Please enter reason</string>
+ <string name="please_select_reason">Please select reason</string>
+ <string name="cancelled_on">Cancelled on</string>
+ <string name="cancellation_details">Cancellation details</string>
+ <string name="cancelled_request_id">Cancelled Request ID</string>
+ <string name="return_req">Return Req..</string>
+ <string name="returned">Returned</string>
+ <string name="return_status">Return Status</string>
+ <string name="picked_up">Picked Up</string>
+ <string name="completed">Completed</string>
+ <string name="exchanged">Exchanged</string>
+ <string name="exchange_req">Exchange Req..</string>
+ <string name="exchange_status">Exchange Status</string>
+ <string name="exchange_details">Exchange Details</string>
+ <string name="exchange_on">Exchange on</string>
+ <string name="exchange_request_id">Exchange Request ID</string>
+ <string name="pick_exchange"><![CDATA[Pick & \n Exchange]]></string>
+ <string name="cancelled_date">Cancelled  Date</string>
+ <string name="pickup_date">Pickup Date </string>
+ <string name="return_date">Return Date</string>
+ <string name="out_for_picked">Out for Picked</string>
+ <string name="exchange_date">Exchange Date</string>
+ <string name="delivered_on">Delivered On</string>
+ <string name="exchanged_on">Exchanged On</string>
+ <string name="order_id">Order ID</string>
+ <string name="clear">Clear</string>
+ <string name="all">All</string>
+ <string name="return_text">Return</string>
+ <string name="no_order_found">No order found</string>
+ <string name="qnt">"Qnt: "</string>
+ <string name="placed">Placed</string>
+
+
+ <array name="initial_price_values">
         <item>0</item>
         <item>500</item>
     </array>

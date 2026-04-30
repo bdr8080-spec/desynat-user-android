@@ -48,7 +48,7 @@ class SavedAddressFragment : BaseFragment() {
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
         binding?.apply {
-            toolbar.tvToolbar.text = "Saved Address"
+            toolbar.tvToolbar.text = getString(R.string.saved_address)
 
             from = arguments?.getString("from").toString()
             if (from=="myBag"||from=="productDetail"||from=="chat"){
@@ -72,7 +72,7 @@ class SavedAddressFragment : BaseFragment() {
                         2->{
                             CommonMethod.deleteAlertDialog(
                                 requireActivity(),
-                                "Are you sure you want to delete the address?"
+                                getString(R.string.are_you_sure_you_want_to_delete_the_address)
                             ) { action ->
                                 when (action) {
                                     CommonMethod.DialogAction.DELETE -> {

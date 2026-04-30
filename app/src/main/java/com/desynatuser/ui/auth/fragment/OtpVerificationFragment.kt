@@ -73,7 +73,7 @@ class OtpVerificationFragment : BaseFragment() {
             "affiliateForgot" -> screenType = 2
         }
         binding?.apply {
-            toolbar.tvToolbar.text = "OTP Verification"
+            toolbar.tvToolbar.text = getString(R.string.otp_verification)
               if (email!=""&&email!="null"){
                 type = 1
                   tvMobile.text = email
@@ -100,10 +100,10 @@ class OtpVerificationFragment : BaseFragment() {
 
                 when {
                     otp.isEmpty() -> {
-                        showToast("Please enter OTP")
+                        showToast(getString(R.string.please_enter_otp))
                     }
                     otp.length < 6 -> {
-                        showToast("Please enter a valid 6-digit OTP")
+                        showToast(getString(R.string.please_enter_a_valid_6_digit_otp))
                     }
                     else -> {
                         if (screenType == -1) {
@@ -231,7 +231,10 @@ class OtpVerificationFragment : BaseFragment() {
                                     }
                                 }
                                 "1"->{
-                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is under review", time = 2000){
+                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),
+                                        getString(
+                                            R.string.your_profile_is_under_review
+                                        ), time = 2000){
                                     }
                                 }
                                 "2"->{
@@ -245,12 +248,18 @@ class OtpVerificationFragment : BaseFragment() {
                                     requireActivity().finish()
                                 }
                                 "3"->{
-                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason}).", time = 3000){
+                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),
+                                        "${getString(
+                                            R.string.your_profile_is_rejected_by_admin)} (${response.data.rejectReason})"
+                                        , time = 3000){
 
                                     }
                                 }
                                 "4"->{
-                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Document Rejected. Please Reupload it (${response.data.rejectReason})", time = 3000){
+                                    CommonMethod.showSuccessWithTimeDialog(requireActivity(),
+                                        "${getString(
+                                            R.string.document_rejected_please_reupload_it)} (${response.data.rejectReason})"
+                                       , time = 3000){
                                         val bundle = Bundle().apply {
                                             putString("signUpData", Gson().toJson(response.data))
                                            // putString("password",binding?.etPassword?.text?.toString())
@@ -271,7 +280,7 @@ class OtpVerificationFragment : BaseFragment() {
                             findNavController().navigate(R.id.action_otpFragment_to_affiliateAddAddressFragment,bundle)
                         }
                         "affiliateForgot" -> {
-                            showToast("OTP verified successfully")
+                            showToast(getString(R.string.otp_verified_successfully))
                             val bundle = Bundle().apply {
                                 putString("userId", response.data.id)
                                 putString("from", from)
@@ -279,7 +288,7 @@ class OtpVerificationFragment : BaseFragment() {
                             findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment,bundle)
                         }
                         "affiliateEdit" -> {
-                            showToast("OTP verified successfully")
+                            showToast(getString(R.string.otp_verified_successfully))
                             val bundle = Bundle().apply {
                                 putString("from", if (type==1)"email" else "mobile")
                             }
@@ -300,7 +309,7 @@ class OtpVerificationFragment : BaseFragment() {
                         "login" -> {
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
-                            showToast("OTP verified successfully")
+                            showToast(getString(R.string.otp_verified_successfully))
                             requireActivity().startActivity(
                                 Intent(requireActivity(),
                                     HomeActivity::class.java)
@@ -310,7 +319,8 @@ class OtpVerificationFragment : BaseFragment() {
                         "signUp" -> {
                             SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                             SharedPreference.get(requireActivity()).saveUser(response.data)
-                            CommonMethod.showSuccessDialog(requireActivity(),"Thank you for sinning up with DESYNAT"){
+                            CommonMethod.showSuccessDialog(requireActivity(),
+                                getString(R.string.thank_you_for_sinning_up_with_desynat)){
                                findNavController().navigate(R.id.action_otpFragment_to_bannerFragment)
 //                                requireActivity().startActivity(
 //                                    Intent(requireActivity(),
@@ -320,14 +330,14 @@ class OtpVerificationFragment : BaseFragment() {
                             }
                         }
                         "forgot" -> {
-                            showToast("OTP verified successfully")
+                            showToast(getString(R.string.otp_verified_successfully))
                             val bundle = Bundle().apply {
                                 putString("userId", response.data.id)
                             }
                             findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment,bundle)
                         }
                         "edit" -> {
-                            showToast("OTP verified successfully")
+                            showToast(getString(R.string.otp_verified_successfully))
                             val bundle = Bundle().apply {
                                 putString("from", if (type==1)"email" else "mobile")
                             }
@@ -353,12 +363,14 @@ class OtpVerificationFragment : BaseFragment() {
                             if (data != null) {
                                 SharedPreference.get(requireActivity()).saveUser(data)
                             }
-                            CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email")"Email Address Changed successfully !" else "Mobile Number Changed successfully !"){
+                            CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email") getString(
+                                R.string.email_address_changed_successfully
+                            ) else getString(R.string.mobile_number_changed_successfully)){
                                 findNavController().popBackStack(R.id.profileDetails, false)
                             }
                         }
                         "edit" -> {
-                            showToast("OTP verified successfully")
+                            showToast(getString(R.string.otp_verified_successfully))
                             val bundle = Bundle().apply {
                                 putString("from", if (type==1)"email" else "mobile")
                             }
@@ -384,12 +396,12 @@ class OtpVerificationFragment : BaseFragment() {
                             if (data != null) {
                                 SharedPreference.get(requireActivity()).saveAffiliateUser(data)
                             }
-                            CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email")"Email Address Changed successfully !" else "Mobile Number Changed successfully !"){
+                            CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email")getString(R.string.email_address_changed_successfully) else getString(R.string.mobile_number_changed_successfully)){
                                 findNavController().popBackStack(R.id.affiliateProfileDetail, false)
                             }
                         }
                         "affiliateEdit" -> {
-                            showToast("OTP verified successfully")
+                            showToast(getString(R.string.otp_verified_successfully))
                             val bundle = Bundle().apply {
                                 putString("from", if (type==1)"email" else "mobile")
                             }
@@ -407,10 +419,10 @@ class OtpVerificationFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 if (type==0){
-                    showToast("OTP sent to mobile number successfully")
+                    showToast(getString(R.string.otp_sent_to_mobile_number_successfully))
                 }
                 else{
-                    showToast("OTP sent to email address successfully")
+                    showToast(getString(R.string.otp_sent_to_email_address_successfully))
                 }
                 response?.let {
                     startTimer()
@@ -424,10 +436,10 @@ class OtpVerificationFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 if (type==0){
-                    showToast("OTP sent to mobile number successfully")
+                    showToast(getString(R.string.otp_sent_to_mobile_number_successfully))
                 }
                 else{
-                    showToast("OTP sent to email address successfully")
+                    showToast(getString(R.string.otp_sent_to_email_address_successfully))
                 }
                 response?.let {
                     startTimer()

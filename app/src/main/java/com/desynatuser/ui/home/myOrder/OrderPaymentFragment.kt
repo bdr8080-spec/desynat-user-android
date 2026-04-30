@@ -122,7 +122,7 @@ class OrderPaymentFragment : BaseFragment() {
                 tvGiftCard.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),applyGiftCard?.giftCardAmount?.toDouble()?:0.0)} Gift Card Amount Redeemed"
             }
 
-            toolbar.tvToolbar.text = "Payment Method"
+            toolbar.tvToolbar.text = getString(R.string.payment_method)
             if(from=="gift"){
                 relGiftCard.isVisible = false
                 tvGiftCard.isVisible = false
@@ -671,12 +671,12 @@ class OrderPaymentFragment : BaseFragment() {
                     Log.d("PaymentFlow", "Payment Success!")
                 }
                 Activity.RESULT_CANCELED -> {
-                    showToast("Payment Cancelled")
+                    showToast(getString(R.string.payment_cancelled))
                     Log.d("PaymentFlow", "Payment Cancelled")
                 }
                 else -> {
                     showToast("Payment Failed or Unknown")
-                    Log.d("PaymentFlow", "Payment Failed or Unknown")
+                    Log.d("PaymentFlow", getString(R.string.payment_failed_or_unknown))
                 }
             }
         }

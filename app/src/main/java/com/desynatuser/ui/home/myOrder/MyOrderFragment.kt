@@ -66,7 +66,7 @@ class MyOrderFragment : BaseFragment() {
                 orderType = arguments?.getInt("orderType", 1) ?: 1
                 isFirstLoad = false
             }
-            toolbar.tvToolbar.text = "My Order"
+            toolbar.tvToolbar.text = getString(R.string.my_order)
 
             myOrderAdapter = MyOrderAdapter(requireActivity(),myOrderList,object :MyOrderAdapter.OrderClick{
                 override fun onOrderClick(position: Int) {

@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semi_bold"
-            android:text="Guest User"
+            android:text="@string/guest_user"
             android:textSize="@dimen/_12sdp"
             android:textColor="@color/black"
             android:layout_marginHorizontal="@dimen/_10sdp"
@@ -92,7 +92,7 @@
                     android:id="@+id/tvGiftCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Gift Cards"
+                    android:text="@string/gift_cards"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     android:paddingVertical="@dimen/_8sdp"
@@ -107,7 +107,7 @@
                     android:id="@+id/tvMyOrder"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:text="My Orders"
+                    android:text="@string/my_orders"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     android:paddingVertical="@dimen/_8sdp"
@@ -123,7 +123,7 @@
                     android:id="@+id/tvSavedCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="My Saved Cards"
+                    android:text="@string/my_saved_cards"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     android:paddingVertical="@dimen/_8sdp"
@@ -139,7 +139,7 @@
                     android:id="@+id/tvSaveAddress"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:text="Saved Addresses"
+                    android:text="@string/saved_addresses"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     android:paddingVertical="@dimen/_8sdp"
@@ -171,7 +171,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoWallet"
                     android:layout_toEndOf="@id/ivWallet"
-                    android:text="My Wallet" />
+                    android:text="@string/my_wallet" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoWallet"
@@ -197,7 +197,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoTerms"
                     android:layout_toEndOf="@id/ivTerms"
-                    android:text="Terms &amp; Condition" />
+                    android:text="@string/terms_amp_condition" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoTerms"
@@ -224,7 +224,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoReturnPolicy"
                     android:layout_toEndOf="@id/ivReturnPolicy"
-                    android:text="Return Policy" />
+                    android:text="@string/return_policy" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoReturnPolicy"
@@ -251,7 +251,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoAbout"
                     android:layout_toEndOf="@id/ivAbout"
-                    android:text="About Us" />
+                    android:text="@string/about_us" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoAbout"
@@ -277,7 +277,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoFaq"
                     android:layout_toEndOf="@id/ivFaq"
-                    android:text="Faq" />
+                    android:text="@string/faq" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoFaq"
@@ -304,7 +304,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoLanguage"
                     android:layout_toEndOf="@id/ivLanguage"
-                    android:text="Change Language" />
+                    android:text="@string/change_language" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoLanguage"
@@ -330,7 +330,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoCurrency"
                     android:layout_toEndOf="@id/ivCurrency"
-                    android:text="Change Currency" />
+                    android:text="@string/change_currency" />
 
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -357,7 +357,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoChangeCountry"
                     android:layout_toEndOf="@id/ivChangeCountry"
-                    android:text="Change Country" />
+                    android:text="@string/change_country" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoChangeCountry"
@@ -383,7 +383,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toLeftOf="@+id/ivGoCancellationPolicy"
                     android:layout_toEndOf="@id/ivCancellationPolicy"
-                    android:text="Cancellation Policy"
+                    android:text="@string/cancellation_policy"
                     tools:ignore="RtlHardcoded" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -410,7 +410,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoExchange"
                     android:layout_toEndOf="@id/ivExchange"
-                    android:text="Exchange Policy" />
+                    android:text="@string/exchange_policy" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoExchange"
@@ -436,7 +436,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoSupport"
                     android:layout_toEndOf="@id/ivSupport"
-                    android:text="Support" />
+                    android:text="@string/support" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoSupport"
@@ -462,7 +462,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoAffiliate"
                     android:layout_toEndOf="@id/ivAffiliate"
-                    android:text="Become An Affiliate" />
+                    android:text="@string/become_an_affiliate" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoAffiliate"
@@ -488,7 +488,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoSetting"
                     android:layout_toEndOf="@id/ivSetting"
-                    android:text="Setting" />
+                    android:text="@string/setting" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoSetting"
@@ -509,7 +509,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Logout"
+                    android:text="@string/logout"
                     android:drawablePadding="@dimen/_5sdp"
                     android:layout_centerInParent="true"
                     android:textColor="@color/brown"
@@ -518,6 +518,17 @@
                     android:drawableStart="@drawable/ic_logout" />
 
             </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_version_1_0"
+                android:textColor="#66000000"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingVertical="@dimen/_10sdp" />
 
         </LinearLayout>
 

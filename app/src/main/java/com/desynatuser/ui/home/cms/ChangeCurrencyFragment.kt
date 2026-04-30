@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
 import com.desynatuser.adapter.CurrencyAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentChangeCurrencyBinding
-import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
 import com.desynatuser.utils.CommonMethod
@@ -47,7 +47,7 @@ class ChangeCurrencyFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Change Currency"
+            toolbar.tvToolbar.text = getString(R.string.change_currency)
           userInfo = SharedPreference.get(requireActivity()).getUser()
 
             currencyAdapter = CurrencyAdapter(requireActivity(),countryList,object :

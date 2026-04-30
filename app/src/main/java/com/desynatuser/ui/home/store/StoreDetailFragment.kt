@@ -286,12 +286,12 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             if (storeDetailData?.store?.storeAvailability==1){
-                tvStatus.text = "Busy"
+                tvStatus.text = getString(R.string.busy)
                 tvStatus.isVisible = true
             }
             else{
                 tvStatus.isVisible = false
-                tvStatus.text = "Available"
+                tvStatus.text = getString(R.string.available)
             }
         }
     }
@@ -591,11 +591,11 @@ class StoreDetailFragment : BaseFragment() {
             binding?.progressBar?.isVisible = false
 
             if (productList[selectedPos].wishlist==1){
-                showToast("Product removed from your wishlist successfully")
+                showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
                 productList[selectedPos].wishlist = 0
             }
             else{
-                showToast("Product added to your wishlist successfully")
+                showToast(getString(R.string.product_added_to_your_wishlist_successfully))
                 productList[selectedPos].wishlist = 1
             }
 
@@ -611,11 +611,11 @@ class StoreDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
                 if (reelList[selectedReelPos].wishlist==1){
-                    showToast("Reel removed from your wishlist successfully")
+                    showToast(getString(R.string.reel_removed_from_your_wishlist_successfully))
                     reelList[selectedReelPos].wishlist = 0
                 }
                 else{
-                    showToast("Reel added to your wishlist successfully")
+                    showToast(getString(R.string.reel_added_to_your_wishlist_successfully))
                     reelList[selectedReelPos].wishlist = 1
                 }
 

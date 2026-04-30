@@ -24,7 +24,7 @@
         android:id="@+id/btnApply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Apply"
+        android:text="@string/apply"
         android:paddingVertical="@dimen/_3sdp"
         android:textAlignment="center"
         android:textColor="@color/brown"

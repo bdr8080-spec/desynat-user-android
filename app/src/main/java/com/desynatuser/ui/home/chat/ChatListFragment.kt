@@ -59,7 +59,7 @@ class ChatListFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Chat"
+            toolbar.tvToolbar.text = getString(R.string.chat)
 
             chatAdapter = ChatListAdapter(requireActivity(),chatList,object :ChatListAdapter.ChatClick{
                 override fun onChatClick(position: Int) {
@@ -213,7 +213,7 @@ class ChatListFragment : BaseFragment() {
 
                 chatFilter = filter
                 if (chatFilter==null) {
-                    showToast("Please select chat status")
+                    showToast(getString(R.string.please_select_chat_status))
                     return@setOnClickListener
                 }
                 else{

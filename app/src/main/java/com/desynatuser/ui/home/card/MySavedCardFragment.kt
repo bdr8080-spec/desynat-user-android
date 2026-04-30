@@ -46,7 +46,7 @@ class MySavedCardFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "My Saved Cards"
+            toolbar.tvToolbar.text = getString(R.string.my_saved_cards)
 
             cardAdapter = CardAdapter(requireActivity(),cardList,object :
                 CardAdapter.ClickOnItem{
@@ -104,7 +104,8 @@ class MySavedCardFragment : BaseFragment() {
         viewModel.deleteCardResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(requireActivity(),"Card deleted successfully!"){
+                CommonMethod.showSuccessDialog(requireActivity(),
+                    getString(R.string.card_deleted_successfully)){
                     cardList.removeAt(selectedPos)
                     cardAdapter?.notifyItemRemoved(selectedPos)
                     cardAdapter?.notifyItemRangeChanged(selectedPos, cardList.size - selectedPos)

@@ -309,11 +309,11 @@ class SearchProductListFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
 
                 if (productList[selectedPos].wishlist==1){
-                    showToast("Product removed from your wishlist successfully")
+                    showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
                     productList[selectedPos].wishlist = 0
                 }
                 else{
-                    showToast("Product added to your wishlist successfully")
+                    showToast(getString(R.string.product_added_to_your_wishlist_successfully))
                     productList[selectedPos].wishlist = 1
                 }
 
@@ -444,10 +444,8 @@ class SearchProductListFragment : BaseFragment() {
                     dialog.dismiss()
                 }
                 else{
-                    showToast("Please select")
+                    showToast(getString(R.string.please_select))
                 }
-
-
             }
 
         }
@@ -746,7 +744,7 @@ class SearchProductListFragment : BaseFragment() {
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast("Speech recognition not supported")
+            showToast(getString(R.string.speech_recognition_not_supported))
         }
     }
 

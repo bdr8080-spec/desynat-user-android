@@ -231,25 +231,25 @@ class ProductDetailFragment : BaseFragment() {
             productDetailData?.productSpecifications?.let { specificationList.addAll(it) }
             specificationAdapter?.notifyDataSetChanged()
 
-            tvDeliveryDate.text = "Get it by 30/11/2025"
+            tvDeliveryDate.text = "${getString(R.string.get_it_by)} 30/11/2025"
             tvCashOnDelivery.text = if (productDetailData?.cashOnDelivery=="1")
             {
-                "Cash on Delivery Available"
+               getString(R.string.cash_on_delivery_available)
             }
                 else {
-                    "Cash on Delivery not Available"
+                getString(R.string.cash_on_delivery_not_available)
                 }
 
             val returnDays = productDetailData?.returnDays
             val exchangeDays = productDetailData?.exchangableDays
 
-            val returnText = returnDays?.let { "$it Days Return" }
-            val exchangeText = exchangeDays?.let { "$it Days Exchange" }
+            val returnText = returnDays?.let { "$it ${getString(R.string.days_return)}" }
+            val exchangeText = exchangeDays?.let { "$it ${getString(R.string.says_exchange)}" }
 
             val finalText = listOfNotNull(returnText, exchangeText).joinToString(" & ")
 
             if (finalText.isEmpty()) {
-                tvExchange.text = "This product is sold under a No Return Policy"
+                tvExchange.text = getString(R.string.this_product_is_sold_under_a_no_return_policy)
             } else {
                 tvExchange.visibility = View.VISIBLE
                 tvExchange.text = finalText
@@ -309,7 +309,7 @@ class ProductDetailFragment : BaseFragment() {
             btnAddToBag.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
                     if (selectedSizePos == -1) {
-                        showToast("Please select size")
+                        showToast(getString(R.string.please_select_size))
                     } else {
                         addToBag()
                     }
@@ -349,7 +349,7 @@ class ProductDetailFragment : BaseFragment() {
             btnBuyNow.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {
                     if (selectedSizePos == -1) {
-                        showToast("Please select size")
+                        showToast(getString(R.string.please_select_size))
                     } else {
                         if (cartId != null) {
                             findNavController().navigate(R.id.action_productDetailFragment_to_myBagFragment)
@@ -485,12 +485,12 @@ class ProductDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
                 if (productDetailData?.wishlist==1) {
-                    showToast("Product removed from your wishlist successfully")
+                    showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
                     productDetailData?.wishlist=0
                     binding?.ivLike?.setImageResource(R.drawable.ic_heart)
                 }
                 else{
-                    showToast("Product added to your wishlist successfully")
+                    showToast(getString(R.string.product_added_to_your_wishlist_successfully))
                     productDetailData?.wishlist=1
                     binding?.ivLike?.setImageResource(R.drawable.ic_heart_filled)
                 }
@@ -549,7 +549,7 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
             if (quantity > 0) {
                 tvCount.text = quantity.toString()
-                tvItemCount.text = "(${quantity} Item)"
+                tvItemCount.text = "(${quantity} ${getString(R.string.item)})"
                 btnAddToBag.isVisible = false
                 clCartQuantity.isVisible = true
                 relCartItem.isVisible = true

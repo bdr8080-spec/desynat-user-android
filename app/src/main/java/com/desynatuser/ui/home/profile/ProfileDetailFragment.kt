@@ -218,7 +218,8 @@ class ProfileDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                   //  SharedPreference.get(requireActivity()).saveUser(response.data)
-                    CommonMethod.showSuccessDialog(requireActivity(),"Profile updated successfully!"){
+                    CommonMethod.showSuccessDialog(requireActivity(),
+                        getString(R.string.profile_updated_successfully)){
                         findNavController().popBackStack()
                     }
                 }
@@ -231,7 +232,7 @@ class ProfileDetailFragment : BaseFragment() {
         super.onResume()
         user = SharedPreference.get(requireActivity()).getUser()
         binding?.apply {
-            toolbar.tvToolbar.text = "Profile Details"
+            toolbar.tvToolbar.text = getString(R.string.profile_details)
             etFullName.setText(user?.fullName)
             etEmail.setText(user?.email)
             etMobile.setText(user?.countryCode+" | "+user?.mobile)

@@ -109,7 +109,7 @@ class SupportFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Support"
+            toolbar.tvToolbar.text = getString(R.string.support)
 
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -521,15 +521,15 @@ class SupportFragment : BaseFragment() {
     private fun validation():Boolean{
 
         if (dialogBinding?.etTicketType?.text?.isEmpty() == true) {
-            showToast("Please select ticket type")
+            showToast(getString(R.string.please_select_ticket_type))
             return false
         }
         else if (dialogBinding?.etTitle?.text?.isEmpty() == true) {
-            showToast("Please enter title")
+            showToast(getString(R.string.please_enter_title))
             return false
         }
         else if (dialogBinding?.etDescription?.text?.isEmpty() == true) {
-            showToast("Please enter description")
+            showToast(getString(R.string.please_enter_description))
             return false
         }
 

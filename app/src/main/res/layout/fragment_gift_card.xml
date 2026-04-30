@@ -38,7 +38,7 @@
                 android:background="@drawable/edit_search"
                 android:layout_margin="1dp"
                 android:drawablePadding="@dimen/_10sdp"
-                android:hint="Search"
+                android:hint="@string/search"
                 android:layout_centerVertical="true"
                 android:drawableStart="@drawable/ic_search"
                 android:layout_toLeftOf="@+id/ivAdd"/>

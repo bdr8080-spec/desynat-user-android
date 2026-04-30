@@ -80,7 +80,7 @@ class SubCategoryFragment : BaseFragment() {
         }
         binding?.apply {
             CommonMethod.removeSpace(etSearch)
-            toolbar.tvToolbar.text = "Sub-Category"
+            toolbar.tvToolbar.text = getString(R.string.sub_category)
 
             swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(requireActivity(), R.color.brown)
@@ -280,7 +280,7 @@ class SubCategoryFragment : BaseFragment() {
                     return
                 }
 
-                showToast("Speak clearly or try again")
+                showToast(getString(R.string.speak_clearly_or_try_again))
                 dialog.dismiss()
             }
 
@@ -345,7 +345,7 @@ class SubCategoryFragment : BaseFragment() {
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast("Speech recognition not supported")
+            showToast(getString(R.string.speech_recognition_not_supported))
         }
     }
 

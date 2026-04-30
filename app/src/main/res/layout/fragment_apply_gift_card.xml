@@ -25,7 +25,7 @@
         <androidx.appcompat.widget.AppCompatTextView
         style="@style/edit_text_title"
         android:layout_marginTop="@dimen/_15sdp"
-        android:text="Enter Gift Card Details"
+        android:text="@string/enter_gift_card_details"
         android:textSize="@dimen/_13sdp"
         android:textColor="@color/black"
         android:fontFamily="@font/poppins_medium"/>
@@ -40,13 +40,13 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
-                android:text="16 Digit Gift Card Number"/>
+                android:text="@string/_16_digit_gift_card_number"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etGiftCardNumber"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="16 Digit Gift Card Number"
+                android:hint="@string/_16_digit_gift_card_number"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="number"
                 android:maxLength="16"
@@ -55,13 +55,13 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="Enter PIN"/>
+                android:text="@string/enter_pin"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etPin"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Enter PIN"
+                android:hint="@string/enter_pin"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="number"
                 android:background="@drawable/edit_back"/>
@@ -79,7 +79,7 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_40sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:text="Redeem"
+        android:text="@string/redeem"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

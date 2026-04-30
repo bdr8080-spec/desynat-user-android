@@ -98,7 +98,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:paddingHorizontal="@dimen/_15sdp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="Change Your Password"
+                    android:text="@string/change_your_password"
                     android:textColor="@color/brown"
                     android:textSize="@dimen/_12sdp"
                     android:background="@drawable/card_background"
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/stroke_cards"
-                    android:text="Change Image"
+                    android:text="@string/change_image"
                     android:paddingVertical="@dimen/_7sdp"
                     android:paddingHorizontal="@dimen/_7sdp"
                     android:fontFamily="@font/poppins_semi_bold"
@@ -139,7 +139,7 @@
                     android:id="@+id/tvFullName"
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:text="Full Name"
+                    android:text="@string/full_name"
                     app:layout_constraintTop_toBottomOf="@+id/ivProfileImage"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -148,7 +148,7 @@
                     android:id="@+id/etFullName"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Enter Full Name"
+                    android:hint="@string/enter_full_name"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:inputType="textCapSentences"
                     android:maxLength="30"
@@ -160,7 +160,7 @@
                     android:id="@+id/tvMobile"
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Mobile Number"
+                    android:text="@string/mobile_number"
                     app:layout_constraintTop_toBottomOf="@+id/etFullName"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -169,7 +169,7 @@
                     android:id="@+id/etMobile"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Mobile Number"
+                    android:hint="@string/mobile_number"
                     android:drawableEnd="@drawable/ic_change"
                     android:drawablePadding="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -184,7 +184,7 @@
                     android:id="@+id/tvEmail"
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Email Id"
+                    android:text="@string/email_id"
                     app:layout_constraintTop_toBottomOf="@+id/etMobile"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -193,7 +193,7 @@
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Email Address"
+                    android:hint="@string/email_address"
                     android:drawableEnd="@drawable/ic_change"
                     android:drawablePadding="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -247,7 +247,7 @@
                     android:id="@+id/tvCountry"
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:text="Country"
+                    android:text="@string/country"
                     android:layout_marginHorizontal="@dimen/_15sdp"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -260,7 +260,7 @@
                     android:clickable="true"
                     android:editable="false"
                     android:focusable="false"
-                    android:hint="Country"
+                    android:hint="@string/country"
                     android:inputType="text"
                     android:drawableEnd="@drawable/ic_drop_down"/>
 
@@ -268,13 +268,13 @@
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:text="Location"/>
+                    android:text="@string/location"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etChooseLocation"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Location"
+                    android:hint="@string/location"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:drawableEnd="@drawable/ic_current"
@@ -289,14 +289,14 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Address Line 1"
+                    android:text="@string/address_line_1"
                     android:layout_marginHorizontal="@dimen/_15sdp"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etAddressLine1"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Enter House no., flat no..."
+                    android:hint="@string/enter_house_no_flat_no"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:inputType="text"
@@ -309,13 +309,13 @@
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:text="Address Line 2"/>
+                    android:text="@string/address_line_2"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etAddressLine2"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Enter Street Name, Block, Apartment, Flat Name"
+                    android:hint="@string/enter_street_name_block_apartment_flat_name"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:inputType="text"
@@ -328,13 +328,13 @@
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:text="Pin Code"/>
+                    android:text="@string/pin_code"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etPinCode"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Enter Pin Code"
+                    android:hint="@string/enter_pin_code"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:inputType="text"
@@ -345,14 +345,14 @@
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:text="Locality Town"/>
+                    android:text="@string/locality_town"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:visibility="gone"
                     android:id="@+id/etLocalityTown"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Enter Locality Town"
+                    android:hint="@string/enter_locality_town"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:inputType="text"
@@ -369,7 +369,7 @@
                         android:layout_width="0dp"
                         style="@style/edit_text_title"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:text="State"
+                        android:text="@string/state"
                         android:layout_marginEnd="@dimen/_8sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -380,7 +380,7 @@
                         android:id="@+id/etState"
                         android:layout_width="0dp"
                         style="@style/edit_text"
-                        android:hint="Enter State Name"
+                        android:hint="@string/enter_state_name"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:inputType="text"
                         android:background="@drawable/edit_back"
@@ -393,7 +393,7 @@
                         android:id="@+id/tvCity"
                         android:layout_width="0dp"
                         style="@style/edit_text_title"
-                        android:text="City"
+                        android:text="@string/city"
                         android:layout_marginStart="@dimen/_7sdp"
                         app:layout_constraintTop_toTopOf="@+id/tvState"
                         app:layout_constraintStart_toEndOf="@+id/tvState"
@@ -404,7 +404,7 @@
                         android:id="@+id/etCity"
                         android:layout_width="0dp"
                         style="@style/edit_text"
-                        android:hint="Enter City Name"
+                        android:hint="@string/enter_city_name"
                         android:inputType="text"
                         android:background="@drawable/edit_back"
                         app:layout_constraintTop_toTopOf="@+id/etState"
@@ -456,7 +456,7 @@
                         android:id="@+id/tvAddNewBank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add another account"
+                        android:text="@string/add_another_account"
                         android:gravity="center"
                         android:textColor="#6F4628"
                         android:textSize="@dimen/_12sdp"
@@ -477,7 +477,7 @@
                 style="@style/button"
                 android:layout_marginBottom="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:text="Save Changes"
+                android:text="@string/save_changes"
                 android:layout_marginHorizontal="@dimen/_15sdp"/>
 
         </LinearLayout>

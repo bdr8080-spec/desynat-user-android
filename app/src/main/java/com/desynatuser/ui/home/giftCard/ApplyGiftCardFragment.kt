@@ -41,7 +41,7 @@ class ApplyGiftCardFragment : BaseFragment() {
     override fun initView() {
         from = arguments?.getString("from").toString()
         binding?.apply {
-            toolbar.tvToolbar.text = "Gift Card"
+            toolbar.tvToolbar.text = getString(R.string.gift_card)
             }
         }
 
@@ -72,7 +72,7 @@ class ApplyGiftCardFragment : BaseFragment() {
         viewModel.applyGiftCardResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                showToast("Gift card apply successfully")
+                showToast(getString(R.string.gift_card_apply_successfully))
                 val bundle = Bundle().apply {
                     putString("giftCard", Gson().toJson(response.data))
                     putString("giftCardNumber", binding?.etGiftCardNumber?.text?.trim().toString())
@@ -87,7 +87,8 @@ class ApplyGiftCardFragment : BaseFragment() {
         viewModel.redeemGiftCardInWalletResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(requireActivity(),"Gift Card Redeemed successfully!"){
+                CommonMethod.showSuccessDialog(requireActivity(),
+                    getString(R.string.gift_card_redeemed_successfully)){
                     findNavController().popBackStack()
                 }
                 isObserver = false
@@ -100,16 +101,16 @@ class ApplyGiftCardFragment : BaseFragment() {
         val pin = binding?.etPin?.text.toString().trim()
 
         if (cardNumber.isEmpty()) {
-            showToast("Please enter 16 Digit Gift Card Number")
+            showToast(getString(R.string.please_enter_16_digit_gift_card_number))
             return false
         }
         if (cardNumber.length<16) {
-            showToast("Gift Card Number must be 16 digit")
+            showToast(getString(R.string.gift_card_number_must_be_16_digit))
             return false
         }
 
         else if (pin.isEmpty() ) {
-            showToast("Please enter pin")
+            showToast(getString(R.string.please_enter_pin))
             return false
         }
         return true

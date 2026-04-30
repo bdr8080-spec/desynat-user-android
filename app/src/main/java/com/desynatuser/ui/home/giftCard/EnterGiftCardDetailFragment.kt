@@ -54,7 +54,7 @@ class EnterGiftCardDetailFragment : BaseFragment() {
     override fun initView() {
         setCountry()
         binding?.apply {
-            toolbar.tvToolbar.text = "Enter Details"
+            toolbar.tvToolbar.text = getString(R.string.enter_details)
             CommonMethod.removeSpace(etName)
             CommonMethod.removeSpace(etNote)
             CommonMethod.removeSpace(etWishMsg)
@@ -215,11 +215,11 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             if (amount == "") {
                 if (etAmount.isVisible) {
                     if (etAmount.text?.trim()?.isEmpty() == true) {
-                        showToast("Please enter amount")
+                        showToast(getString(R.string.please_enter_amount))
                         return false
                     }
                 } else {
-                    showToast("Please choose amount")
+                    showToast(getString(R.string.please_choose_amount))
                     return false
                 }
             }
@@ -229,40 +229,40 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             val mobile = etMobile.text.toString().trim()
 
             if (name.isEmpty()) {
-                showToast("Please enter recipient name")
+                showToast(getString(R.string.please_enter_recipient_name))
                 return false
             }
 
             if (email.isEmpty()) {
-                showToast("Please enter email id")
+                showToast(getString(R.string.please_enter_email_id))
                 return false
             }
 
             val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
             if (!emailRegex.matches(email)) {
-                showToast("Please enter a valid email id")
+                showToast(getString(R.string.please_enter_a_valid_email_id))
                 return false
             }
 
             if (mobile.isEmpty()) {
-                showToast("Please enter mobile number")
+                showToast(getString(R.string.please_enter_mobile_number))
                 return false
             }
 
             if (mobile.length < 7) {
-                showToast("Please enter a valid mobile number")
+                showToast(getString(R.string.please_enter_a_valid_mobile_number))
                 return false
             }
 
             val fromName = etFromName.text.toString().trim()
             if (fromName.isEmpty()) {
-                showToast("Please enter your name")
+                showToast(getString(R.string.please_enter_your_name))
                 return false
             }
 
             val wishMsg = etWishMsg.text.toString().trim()
             if (wishMsg.isEmpty()) {
-                showToast("Please enter wish message")
+                showToast(getString(R.string.please_enter_wish_message))
                 return false
             }
 //

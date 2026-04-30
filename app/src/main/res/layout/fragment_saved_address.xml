@@ -27,7 +27,7 @@
                 android:id="@+id/tvAddNewAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+ Add New Address"
+                android:text="@string/add_new_address_with_plus"
                 android:textSize="@dimen/_12sdp"
                 android:paddingVertical="@dimen/_8sdp"
                 android:fontFamily="@font/poppins_medium"

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAddCardBinding
@@ -40,7 +41,7 @@ class AddCardFragment : BaseFragment() {
 
         override fun initView() {
             binding?.apply {
-                toolbar.tvToolbar.text = "Add Card"
+                toolbar.tvToolbar.text = getString(R.string.add_card)
 
             }
         }
@@ -78,7 +79,8 @@ class AddCardFragment : BaseFragment() {
             viewModel.addCardResult.observe(viewLifecycleOwner) { response ->
                 if (isObserver) {
                     ProgressDialogUtils.getInstance().hideProgress()
-                    CommonMethod.showSuccessDialog(requireActivity(),"Card added successfully!"){
+                    CommonMethod.showSuccessDialog(requireActivity(),
+                        getString(R.string.card_added_successfully)){
                         findNavController().popBackStack()
                     }
                     isObserver = false
@@ -107,31 +109,31 @@ class AddCardFragment : BaseFragment() {
             val cvv = etCvv.text.toString().trim()
 
             if (name.isEmpty()) {
-                showToast("Please enter card holder name")
+                showToast(getString(R.string.please_enter_card_holder_name))
                 return false
             }
 
             if (cardNumber.isEmpty()) {
-                showToast("Please enter card number")
+                showToast(getString(R.string.please_enter_card_number))
                 return false
             }
 
             if (cardNumber.length < 16) {
-                showToast("Please enter a valid card number")
+                showToast(getString(R.string.please_enter_a_valid_card_number))
                 return false
             }
 
             if (expiryDate.isEmpty()) {
-                showToast("Please select expiry date")
+                showToast(getString(R.string.please_select_expiry_date))
                 return false
             }
 
             if (cvv.isEmpty()) {
-                showToast("Please enter cvv")
+                showToast(getString(R.string.please_enter_cvv))
                 return false
             }
             if (cvv.length != 3 || cvv == "000") {
-                showToast("Please enter a valid CVV")
+                showToast(getString(R.string.please_enter_a_valid_cvv))
                 return false
             }
         }

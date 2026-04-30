@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.desynatuser.R
 import com.desynatuser.adapter.PromoCodeAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
@@ -44,7 +45,7 @@ class PromoCodeFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Promocode"
+            toolbar.tvToolbar.text = getString(R.string.promocode)
 
             amount = arguments?.getString("amount").toString()
             deliveryid = arguments?.getString("deliveryid").toString()
@@ -89,11 +90,11 @@ class PromoCodeFragment : BaseFragment() {
                     }
 
                     if (!isMatched) {
-                        showToast("Invalid Promocode")
+                        showToast(getString(R.string.invalid_promocode))
                     }
 
                 } else {
-                    showToast("Please enter promocode")
+                    showToast(getString(R.string.please_enter_promocode))
                 }
             }
 

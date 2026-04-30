@@ -175,7 +175,7 @@ class UpdateLocationActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
                 getLastKnownLocation()
             }
         } else {
-            Toast.makeText(this, "Location permission denied", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.location_permission_denied), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -206,8 +206,8 @@ class UpdateLocationActivity : AppCompatActivity(), OnMapReadyCallback, View.OnC
 
     private fun showGPSEnableDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Enable GPS")
-            .setMessage("Please enable GPS to fetch your current location.")
+            .setTitle(getString(R.string.enable_gps))
+            .setMessage(getString(R.string.please_enable_gps_to_fetch_your_current_location))
             .setPositiveButton("Settings") { _, _ ->
                 startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }.setNegativeButton("Cancel", null)

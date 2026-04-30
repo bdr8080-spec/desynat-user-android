@@ -55,21 +55,21 @@ class OrderPlacedFragment : BaseFragment() {
             if (!chatData.isNullOrEmpty()) {
                 chatDataDetail = Gson().fromJson(chatData, ChatDetailResponse.Data.Record::class.java)
             }
-             tvDeliveryDate.text = "Expected Delivery Date : 3 to 5 working days"
+             tvDeliveryDate.text = "${getString(R.string.expected_delivery_date)} : 3 to 5 ${getString(R.string.working_days)}"
 //             tvDeliveryDate.text = "Expected Delivery Date : ${CommonMethod.getExpectedDeliveryDate(output = "dd MMM yy")}"
-            tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),amount?.toDouble()?:0.0)}"
             if (payment=="COD") {
-                tvPrice.text = "Cash on Delivery"
+                tvPrice.text = getString(R.string.cash_on_delivery)
                 tvPaid.isVisible = false
             }
             else if(payment =="WALLET"){
-                tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} KD"
+                tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),amount?.toDouble()?:0.0)}"
                 tvPaid.isVisible = true
-                tvPaid.text = "Amount Paid with Wallet"
+                tvPaid.text = getString(R.string.amount_paid_with_wallet)
             }
             else{
-                tvPaid.text = "Amount Paid"
-                tvPrice.text = "${CommonMethod.formatPrice(amount?.toDouble()?:0.0)} KD"
+                tvPaid.text = getString(R.string.amount_paid)
+                tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),amount?.toDouble()?:0.0)}"
                 tvPaid.isVisible = true
             }
 

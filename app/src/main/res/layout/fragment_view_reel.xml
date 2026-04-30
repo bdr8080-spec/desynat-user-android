@@ -14,7 +14,7 @@
         android:paddingHorizontal="@dimen/_20sdp"
         android:paddingTop="@dimen/_35sdp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Reel"
+        android:text="@string/reel"
         android:textColor="@color/black"
         android:textSize="@dimen/_13sdp"
         android:elevation="@dimen/_4sdp"

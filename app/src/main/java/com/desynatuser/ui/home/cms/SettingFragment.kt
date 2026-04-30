@@ -59,7 +59,7 @@ class SettingFragment : BaseFragment() {
         }
         setData()
         binding?.apply {
-            toolbar.tvToolbar.text = "Settings"
+            toolbar.tvToolbar.text = getString(R.string.settings)
         }
     }
 

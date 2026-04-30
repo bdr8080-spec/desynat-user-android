@@ -26,7 +26,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="SELECT PAYMENT METHOD"
+                android:text="@string/select_payment_method"
                 android:textSize="@dimen/_13sdp"
                 android:fontFamily="@font/poppins_medium"/>
 
@@ -62,7 +62,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/edit_text_title"
-                            android:text="Pay by KNET"
+                            android:text="@string/pay_by_knet"
                             android:textSize="@dimen/_12sdp"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/poppins_medium"/>
@@ -93,7 +93,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/edit_text_title"
-                        android:text="Google Pay"
+                        android:text="@string/google_pay"
                         android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_medium"/>
@@ -124,7 +124,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/edit_text_title"
-                        android:text="Visapay"
+                        android:text="@string/visapay"
                         android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_medium"/>
@@ -156,7 +156,7 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/edit_text_title"
-                            android:text="Samsung Pay"
+                            android:text="@string/samsung_pay"
                             android:textSize="@dimen/_12sdp"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/poppins_medium"/>
@@ -187,7 +187,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/edit_text_title"
-                        android:text="Credit/ Debit Card"
+                        android:text="@string/credit_debit_card"
                         android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_medium"/>
@@ -210,7 +210,7 @@
                         android:visibility="gone"
                         style="@style/edit_text_title"
                         android:layout_marginTop="@dimen/_15sdp"
-                        android:text="+ Add new card"
+                        android:text="@string/add_new_card"
                         android:textSize="@dimen/_12sdp"
                         android:fontFamily="@font/poppins_medium"/>
 
@@ -240,7 +240,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/edit_text_title"
-                        android:text="In -App Wallet"
+                        android:text="@string/in_app_wallet"
                         android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@+id/tvWallet"
@@ -285,7 +285,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/edit_text_title"
-                        android:text="Cash On Delivery"
+                        android:text="@string/cash_on_delivery"
                         android:textSize="@dimen/_12sdp"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/poppins_medium"/>
@@ -330,7 +330,7 @@
                     android:id="@+id/tvHaveGiftCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Have a gift card"
+                    android:text="@string/have_a_gift_card"
                     android:textSize="@dimen/_11sdp"
                     android:textColor="@color/black"
                     android:layout_marginTop="@dimen/_2sdp"
@@ -372,7 +372,7 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_30sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:text="Place Order"
+        android:text="@string/place_order"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

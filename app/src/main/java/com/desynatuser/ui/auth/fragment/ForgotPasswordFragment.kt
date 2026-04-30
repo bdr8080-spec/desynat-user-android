@@ -51,7 +51,7 @@ class ForgotPasswordFragment : BaseFragment() {
         }
         binding?.apply {
             CommonMethod.removeAllTextSpaces(etEmail)
-            toolbar.tvToolbar.text = "Forgot Password"
+            toolbar.tvToolbar.text = getString(R.string.forgot_password)
         }
     }
 
@@ -88,7 +88,7 @@ class ForgotPasswordFragment : BaseFragment() {
                     clearData()
                     cbMobile.isChecked = false
                     clMobile.isVisible = false
-                    tvInputTitle.text = "Email Address"
+                    tvInputTitle.text = getString(R.string.email_address)
                     etEmail.isVisible = true
                 }
             }
@@ -100,7 +100,7 @@ class ForgotPasswordFragment : BaseFragment() {
                     cbEmail.isChecked = false
                     clMobile.isVisible = true
                     etEmail.isVisible = false
-                    tvInputTitle.text = "Mobile Number"
+                    tvInputTitle.text = getString(R.string.mobile_number)
                 }
             }
 
@@ -188,19 +188,19 @@ class ForgotPasswordFragment : BaseFragment() {
         val email = binding?.etEmail?.text.toString().trim()
 
         if (binding?.etMobile?.text?.isEmpty() == true&&binding?.cbMobile?.isChecked==true) {
-            showToast("Please enter mobile number")
+            showToast(getString(R.string.please_enter_mobile_number))
             return false
         }
         else if (binding?.etMobile?.text?.length!! < 7&&binding?.cbMobile?.isChecked==true) {
-            showToast("Please enter valid mobile number between 7 to 15 digits")
+            showToast(getString(R.string.please_enter_valid_mobile_number_between_7_to_15_digits))
             return false
         }
         else if (email.isBlank()&&binding?.cbEmail?.isChecked==true) {
-            showToast("Please enter email")
+            showToast(getString(R.string.please_enter_email))
             return false
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches() && !email.all { it.isDigit() }&&binding?.cbEmail?.isChecked==true) {
-            showToast("Please enter valid email")
+            showToast(getString(R.string.please_enter_valid_email))
             return false
         }
         return true

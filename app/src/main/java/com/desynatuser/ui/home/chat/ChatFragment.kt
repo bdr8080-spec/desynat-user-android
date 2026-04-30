@@ -338,10 +338,10 @@ class ChatFragment : BaseFragment() {
             }
             tvTotalQuantityValue.text = chatDetailData?.quantity.toString()
             tvCustomDetail.text = chatDetailData?.customDetails.toString()
-            tvRequestId.text = "Request Id #${chatDetailData?.id}"
+            tvRequestId.text = "${getString(R.string.request_id)} #${chatDetailData?.id}"
 
 
-            tvPerItemPrice.text = "Item Price (${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.price ?: 0.0)} X ${chatDetailData?.quantity})"
+            tvPerItemPrice.text = "${getString(R.string.item_price)} (${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.price ?: 0.0)} X ${chatDetailData?.quantity})"
             val itemPrice = chatDetailData?.price ?: 0.0
             val quantity = chatDetailData?.quantity?.toIntOrNull() ?: 1
             val subTotal = itemPrice * quantity
@@ -388,7 +388,7 @@ class ChatFragment : BaseFragment() {
                 val hasImages = uploadImageList.isNotEmpty()
 
                 if (!hasText && !hasImages) {
-                    showToast("Please enter message")
+                    showToast(getString(R.string.please_enter_message))
                     return@setOnClickListener
                 }
 
@@ -428,8 +428,8 @@ class ChatFragment : BaseFragment() {
                     map["sender_type"] = 2
                     map["receiver_id"] = receiverId
                     map["receiver_type"] = 3
-                    map["title_english"] = "New Attachement"
-                    map["description_english"] = "You have a new message"
+                    map["title_english"] = getString(R.string.new_attachment)
+                    map["description_english"] = getString(R.string.you_have_a_new_message)
                     map["notification_type"] = "chat_message"
 
                     sendNotification(map)
@@ -569,10 +569,10 @@ class ChatFragment : BaseFragment() {
 
             btnSendRequest.setOnClickListener {
                 if (etAddQuantity.text?.trim()?.isEmpty() == true) {
-                    showToast("Please enter quantity")
+                    showToast(getString(R.string.please_enter_quantity))
                 }
                 else if (etCustomDetails.text?.trim()?.isEmpty() == true) {
-                    showToast("Please enter custom detail")
+                    showToast(getString(R.string.please_enter_custom_detail))
                 } else {
                     sendCustomOrderRequest()
                 }
@@ -706,7 +706,7 @@ class ChatFragment : BaseFragment() {
                     ProgressDialogUtils.getInstance().hideProgress()
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        "Quotation rejected Successfully"
+                        getString(R.string.quotation_rejected_successfully)
                     ) {
 
                     }
@@ -726,7 +726,7 @@ class ChatFragment : BaseFragment() {
                 if (isAccept){
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        "Quotation accepted Successfully"
+                        getString(R.string.quotation_accepted_successfully)
                     ) {
                         findNavController().navigate(R.id.action_chatFragment_to_myBagFragment)
                     }
@@ -768,7 +768,8 @@ class ChatFragment : BaseFragment() {
                 chatDetailData?.customDetails = response.data.customDetails
                 chatDetailData?.quantity = response.data.quantity
                 setQuotationData()
-                CommonMethod.showSuccessDialog(requireActivity(), "Request Sent successfully!") {
+                CommonMethod.showSuccessDialog(requireActivity(),
+                    getString(R.string.request_sent_successfully)) {
 
                     addCustomRequestDialog?.dismiss()
                 }
@@ -932,7 +933,7 @@ class ChatFragment : BaseFragment() {
                         map["receiver_id"] = receiverId
                         map["receiver_type"] = 3
                         map["title_english"] = input
-                        map["description_english"] = "You have a new message"
+                        map["description_english"] = getString(R.string.you_have_a_new_message)
                         map["notification_type"] = "chat_message"
 
                         sendNotification(map)

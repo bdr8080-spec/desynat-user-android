@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Save"/>
+        android:text="@string/save"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

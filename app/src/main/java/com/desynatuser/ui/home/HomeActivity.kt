@@ -267,11 +267,11 @@ class HomeActivity : BaseActivity() {
                 locationViewModel.setLocation(this.latitude, this.longitude)
 
             } else {
-                Constants.location  = "No address found"
+                Constants.location  = getString(R.string.no_address_found)
             }
         } catch (e: IOException) {
             Log.e("MapsDebug", "Geocoder failed: ${e.message}")
-            Constants.location = "Error fetching address"
+            Constants.location = getString(R.string.error_fetching_address)
         }
     }
 

@@ -219,7 +219,7 @@ class SignUpFragment : BaseFragment() {
                 response?.let {
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        "OTP sent successfully to your mobile number "
+                        getString(R.string.otp_sent_successfully_to_your_mobile_number)
                     ) {
                     val bundle = Bundle().apply {
                         putString("countryCode", binding?.tvCountryPicker?.text.toString())
@@ -248,53 +248,54 @@ class SignUpFragment : BaseFragment() {
 
             return when {
                 fullName.isEmpty() -> {
-                    showToast("Please enter your full name")
+                    showToast(getString(R.string.please_enter_your_full_name))
                     false
                 }
 
                 mobile.isEmpty() -> {
-                    showToast("Please enter your mobile number")
+                    showToast(getString(R.string.please_enter_your_mobile_number))
                     false
                 }
 
                 mobile.length < 7 -> {
-                    showToast("Please enter a valid mobile number")
+                    showToast(getString(R.string.please_enter_a_valid_mobile_number))
                     false
                 }
 
                 email.isEmpty() -> {
-                    showToast("Please enter your email address")
+                    showToast(getString(R.string.please_enter_your_email_address))
                     false
                 }
 
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                    showToast("Please enter a valid email address")
+                    showToast(getString(R.string.please_enter_a_valid_email_address))
                     false
                 }
 
                 password.isEmpty() -> {
-                    showToast("Please enter a password")
+                    showToast(getString(R.string.please_enter_a_password))
                     false
                 }
 
                 !CommonMethod.isValidPassword(password) -> {
-                    CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include letters and digits")
+                    CommonMethod.showAlertDialog(requireActivity(),
+                        getString(R.string.password_must_be_at_least_8_characters_long_and_include_letters_and_digits))
                     //  showToast("Password must be at least 8 characters long and include one uppercase letter, one lowercase letter, one number, and one special character.")
                     false
                 }
 
                 confirmPassword.isEmpty() -> {
-                    showToast("Please enter confirm password")
+                    showToast(getString(R.string.please_enter_confirm_password))
                     false
                 }
 
                 confirmPassword != password -> {
-                    showToast("Password and confirm password didn't match")
+                    showToast(getString(R.string.password_and_confirm_password_didn_t_match))
                     false
                 }
 
                 !cbTermsPolicy.isChecked -> {
-                    showToast("Please accept Terms & Policies to continue")
+                    showToast(getString(R.string.please_accept_terms_policies_to_continue))
                     false
                 }
 

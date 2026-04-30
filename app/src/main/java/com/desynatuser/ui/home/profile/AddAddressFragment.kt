@@ -76,7 +76,7 @@ class AddAddressFragment : BaseFragment() {
         }
         else{
             binding?.apply {
-                toolbar.tvToolbar.text = "ADD NEW ADDRESS"
+                toolbar.tvToolbar.text = getString(R.string.add_new_address)
             }
         }
         setCountry()
@@ -86,8 +86,8 @@ class AddAddressFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Edit Address"
-            btnAdd.text = "Update Address"
+            toolbar.tvToolbar.text = getString(R.string.edit_address)
+            btnAdd.text = getString(R.string.update_address)
 
             etName.setText(addressData?.name)
             etAddress.setText(addressData?.address)
@@ -326,27 +326,27 @@ class AddAddressFragment : BaseFragment() {
             val landmark = etLandmark.text.toString().trim()
 
             if (name.isEmpty()) {
-                showToast("Please enter name")
+                showToast(getString(R.string.please_enter_name))
                 return false
             }
 
             if (mobile.isEmpty()) {
-                showToast("Please enter mobile number")
+                showToast(getString(R.string.please_enter_mobile_number))
                 return false
             }
 
             if (mobile.length < 7) {
-                showToast("Please enter a valid mobile number")
+                showToast(getString(R.string.please_enter_a_valid_mobile_number))
                 return false
             }
 
             if (address.isEmpty()) {
-                showToast("Please select address")
+                showToast(getString(R.string.please_select_address))
                 return false
             }
 
             if (houseNo.isEmpty()) {
-                showToast("Please enter house/building/area")
+                showToast(getString(R.string.please_enter_house_building_area))
                 return false
             }
 
@@ -356,12 +356,12 @@ class AddAddressFragment : BaseFragment() {
 //            }
 
             if (city.isEmpty()) {
-                showToast("Please enter city")
+                showToast(getString(R.string.please_enter_city))
                 return false
             }
 
             if (state.isEmpty()) {
-                showToast("Please enter state")
+                showToast(getString(R.string.please_enter_state))
                 return false
             }
 
@@ -381,7 +381,7 @@ class AddAddressFragment : BaseFragment() {
             }*/
 
             if (type==-1) {
-                showToast("Please select address type (Home or Office)")
+                showToast(getString(R.string.please_select_address_type_home_or_office))
                 return false
             }
 

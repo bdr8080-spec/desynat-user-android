@@ -52,7 +52,7 @@ class GiftCardFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Gift Cards"
+            toolbar.tvToolbar.text = getString(R.string.gift_cards)
 
             from = arguments?.getString("from").toString()
 
