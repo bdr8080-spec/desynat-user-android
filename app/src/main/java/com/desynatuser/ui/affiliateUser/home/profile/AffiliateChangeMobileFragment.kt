@@ -54,15 +54,15 @@ class AffiliateChangeMobileFragment : BaseFragment() {
             binding?.apply {
                 CommonMethod.removeAllTextSpaces(etEmail)
                 if (from=="email"){
-                    toolbar.tvToolbar.text = "Change Email Address"
-                    tvInputTitle.text = "Enter New Email Address"
+                    toolbar.tvToolbar.text = getString(R.string.change_email_address)
+                    tvInputTitle.text = getString(R.string.enter_new_email_address)
                     clMobile.isVisible = false
                     etEmail.isVisible = true
                   //  etEmail.setText(profileData?.email)
                 }
                 else{
-                    toolbar.tvToolbar.text = "Change Mobile Number"
-                    tvInputTitle.text = "Enter New Mobile Number"
+                    toolbar.tvToolbar.text = getString(R.string.change_mobile_number)
+                    tvInputTitle.text = getString(R.string.enter_new_mobile_number)
                     clMobile.isVisible = true
                     etEmail.isVisible = false
                   //  etMobile.setText(profileData?.mobile)
@@ -110,10 +110,10 @@ class AffiliateChangeMobileFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     if (from=="email") {
-                        showToast("OTP sent successfully to new email address")
+                        showToast(getString(R.string.otp_sent_successfully_to_new_email_address))
                     }
                     else{
-                        showToast("OTP sent successfully")
+                        showToast(getString(R.string.otp_sent_successfully))
                     }
                     val bundle = Bundle().apply {
                         if (from=="email"){
@@ -165,22 +165,22 @@ class AffiliateChangeMobileFragment : BaseFragment() {
 
             return when {
                 mobile.isEmpty()&&from=="mobile" -> {
-                    showToast("Please enter new mobile number")
+                    showToast(getString(R.string.please_enter_new_mobile_number))
                     false
                 }
 
                 mobile.length < 7 &&from=="mobile"-> {
-                    showToast("Please enter a valid new mobile number")
+                    showToast(getString(R.string.please_enter_a_valid_new_mobile_number))
                     false
                 }
 
                 email.isEmpty() &&from=="email"-> {
-                    showToast("Please enter new email address")
+                    showToast(getString(R.string.please_enter_new_email_address))
                     false
                 }
 
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches() &&from=="email"-> {
-                    showToast("Please enter a valid new email address")
+                    showToast(getString(R.string.please_enter_a_valid_email_address))
                     false
                 }
 

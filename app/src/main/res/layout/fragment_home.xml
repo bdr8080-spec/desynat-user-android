@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.fragment.HomeFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,9 @@
             android:layout_height="@dimen/_40sdp"
             android:src="@drawable/ic_admin_story"
             android:layout_marginStart="@dimen/_1sdp"
-            android:layout_centerVertical="true"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:visibility="gone"
@@ -34,11 +36,13 @@
             android:clipToOutline="true"
             android:padding="@dimen/_2sdp"
             app:shapeAppearanceOverlay="@style/circle_image"
-            android:layout_centerVertical="true"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDeliverTo"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:text="@string/deliver_to"
@@ -47,12 +51,12 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toLeftOf="@+id/ivChat"
-            android:layout_toRightOf="@+id/ivAdminStory"/>
+            app:layout_constraintEnd_toStartOf="@+id/ivChat"
+           app:layout_constraintStart_toEndOf="@+id/ivAdminStory"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLocation"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:hint="@string/fetching_location"
@@ -64,9 +68,9 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:drawableStart="@drawable/ic_loc"
             android:drawablePadding="@dimen/_2sdp"
-            android:layout_below="@+id/tvDeliverTo"
-            android:layout_toLeftOf="@+id/ivChat"
-            android:layout_toRightOf="@+id/ivAdminStory"/>
+           app:layout_constraintTop_toBottomOf="@+id/tvDeliverTo"
+           app:layout_constraintEnd_toStartOf="@+id/ivChat"
+            app:layout_constraintStart_toEndOf="@+id/ivAdminStory"/>
 
         <ImageView
             android:id="@+id/ivNotification"
@@ -74,8 +78,9 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_8sdp"
             android:src="@drawable/ic_notification"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <RelativeLayout
             android:visibility="gone"
@@ -85,7 +90,7 @@
             android:elevation="@dimen/_1sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_alignParentEnd="true">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/_12sdp"
@@ -113,8 +118,9 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_8sdp"
             android:src="@drawable/ic_wishlist"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ivNotification"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivNotification"/>
 
         <ImageView
             android:id="@+id/ivChat"
@@ -122,8 +128,9 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_8sdp"
             android:src="@drawable/chat_icon"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ivWishlist"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivWishlist"/>
 
         <RelativeLayout
             android:visibility="gone"
@@ -133,7 +140,7 @@
             android:elevation="@dimen/_1sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginStart="-18dp"
-           android:layout_toEndOf="@+id/ivChat">
+           app:layout_constraintStart_toEndOf="@+id/ivChat">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/_12sdp"
@@ -155,9 +162,9 @@
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -168,7 +175,7 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etSearch"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/edit_text"
             android:paddingVertical="@dimen/_9sdp"
@@ -183,7 +190,10 @@
             android:textColorHint="@color/black"
             android:layout_centerVertical="true"
             android:drawableStart="@drawable/ic_search"
-            android:layout_toLeftOf="@+id/ivCamera"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivCamera"/>
 
         <ImageView
             android:id="@+id/ivMic"
@@ -191,8 +201,9 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_mic"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
             android:id="@+id/ivCamera"
@@ -201,10 +212,11 @@
             android:padding="@dimen/_10sdp"
             android:background="@color/white"
             android:src="@drawable/ic_camera"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ivMic"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivMic"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
    <!-- <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

@@ -88,6 +88,7 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initView() {
+        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         SharedPreference.get(this).affiliateAccessToken = ""
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -101,8 +102,15 @@ class HomeActivity : BaseActivity() {
         controller.graph = navGraph
 
         val openScreen = intent.getStringExtra("open_screen")
-        if (openScreen == "profile") {
-            controller.navigate(R.id.profile)
+        binding?.root?.post {
+            when (openScreen) {
+                "profile" -> {
+                    controller.navigate(R.id.profile)
+                }
+                "home" -> {
+                    controller.navigate(R.id.home)
+                }
+            }
         }
 
         bottonNavItemList.clear()

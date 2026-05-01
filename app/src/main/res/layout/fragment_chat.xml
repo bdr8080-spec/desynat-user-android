@@ -130,24 +130,42 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:visibility="gone"
                         android:id="@+id/ivViewRequest"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/view_request_txt" />
+                        android:text="@string/view_request"
+                        android:textColor="@color/brown"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_2sdp"
+                        android:gravity="center" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/ivWaiting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_waiting_txt"/>
+                        android:text="@string/waiting"
+                        android:textColor="#FFA41B"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_2sdp"
+                        android:gravity="center"
+                        android:background="@drawable/ic_waiting_txt"
+                        />
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/ivSendReq"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/iv_send_request_txt"/>
+                        android:text="@string/send_req"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_2sdp"
+                        android:gravity="center"
+                        android:background="@drawable/iv_send_request_txt"/>
 
                 </RelativeLayout>
 
@@ -369,7 +387,7 @@
                     android:text="400 KD"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
-                    android:textAlignment="textEnd"
+                    android:textAlignment="viewEnd"
                     android:layout_marginStart="@dimen/_15sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvPerItemPrice"
@@ -397,7 +415,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="20 KD"
                     android:textColor="@color/black"
-                    android:textAlignment="textEnd"
+                    android:textAlignment="viewEnd"
                     android:textSize="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_15sdp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -425,7 +443,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="0 KD"
                     android:textColor="@color/black"
-                    android:textAlignment="textEnd"
+                    android:textAlignment="viewEnd"
                     android:textSize="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_15sdp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -460,7 +478,7 @@
                     android:text="480 KD"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
-                    android:textAlignment="textEnd"
+                    android:textAlignment="viewEnd"
                     android:layout_marginStart="@dimen/_15sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvTotalAmount"

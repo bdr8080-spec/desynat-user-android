@@ -15,6 +15,7 @@ import com.desynatuser.base.BaseActivity
 import com.desynatuser.databinding.ActivityAffiliateHomeBinding
 import com.desynatuser.ui.response.BottomNavItem
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.SharedPreference
 import com.myfatoorah.sdk.views.MFSDK
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -87,12 +88,24 @@ class AffiliateHomeActivity : BaseActivity() {
     }
 
     override fun initView() {
-
+        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         controller = navHostFragment.navController
         val navGraph = controller.navInflater.inflate(R.navigation.affiliate_home_navigation_graph)
         controller.graph = navGraph
+
+        val openScreen = intent.getStringExtra("open_screen")
+        binding?.root?.post {
+            when (openScreen) {
+                "profile" -> {
+                    controller.navigate(R.id.affiliateProfile)
+                }
+                "home" -> {
+                    controller.navigate(R.id.affiliateHome)
+                }
+            }
+        }
 
         bottonNavItemList.clear()
         bottonNavItemList.add(

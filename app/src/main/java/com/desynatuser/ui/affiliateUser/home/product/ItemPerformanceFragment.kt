@@ -58,7 +58,7 @@ class ItemPerformanceFragment : BaseFragment() {
             getAffiliateMyProductDetail()
         }
         binding?.apply {
-            toolbar.tvToolbar.text = "Item Performance"
+            toolbar.tvToolbar.text = getString(R.string.item_performance)
         }
     }
 
@@ -206,7 +206,7 @@ class ItemPerformanceFragment : BaseFragment() {
             val discountValue = variant?.discountValue ?: 0
             val discountType = if (variant?.discountType == "1")"% off" else " KD off"
             tvDiscount.text = "$discountValue$discountType"
-            tvCommission.text = "${productDetailData?.product?.affiliatedCommission?:0}% Commission"
+            tvCommission.text = "${productDetailData?.product?.affiliatedCommission?:0}% ${getString(R.string.commission)}"
             if (productDetailData?.affiliateProductLink!=null){
                 tvLink.isVisible = true
                 ivCopy.isVisible = true

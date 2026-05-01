@@ -16,7 +16,7 @@
         android:background="@drawable/bottom_sheet"
         android:backgroundTint="#FFF7EA"
         android:fontFamily="@font/poppins_medium"
-        android:text="Custom Order"
+        android:text="@string/custom_order"
         android:textColor="@color/black"
         android:drawableEnd="@drawable/close_icon"
         android:textSize="@dimen/_13sdp"
@@ -36,7 +36,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="Add Quantity"/>
+            android:text="@string/add_quantity"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etAddQuantity"
@@ -47,14 +47,14 @@
             android:textSize="@dimen/_10sdp"
             android:inputType="number"
             android:background="@drawable/edit_back"
-            android:hint="Add Quantity"
+            android:hint="@string/add_quantity"
             android:gravity="start"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:visibility="gone"
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Delivering Address"
+            android:text="@string/delivering_address"
             android:textSize="@dimen/_13sdp" />
 
         <RelativeLayout
@@ -74,7 +74,7 @@
                 android:background="@null"
                 android:paddingVertical="@dimen/_10sdp"
                 android:layout_marginVertical="1dp"
-                android:hint="Select Address"
+                android:hint="@string/select_address"
                 android:textSize="@dimen/_11sdp"
                 android:singleLine="true"
                 android:layout_centerVertical="true"
@@ -95,7 +95,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Custom details" />
+            android:text="@string/custom_details" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etCustomDetails"
@@ -108,7 +108,7 @@
             android:maxLines="4"
             android:lines="3"
             android:background="@drawable/edit_back"
-            android:hint="Write Here"
+            android:hint="@string/write_here"
             android:gravity="start"/>
 
         <TextView
@@ -117,7 +117,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_gradient"
         android:gravity="center"
-        android:text="Send Request"
+        android:text="@string/send_request"
         android:fontFamily="@font/poppins_medium"
         android:paddingVertical="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_15sdp"

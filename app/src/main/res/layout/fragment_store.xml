@@ -51,7 +51,7 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/relSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,18 +63,21 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etSearch"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/edit_text"
                     android:paddingVertical="@dimen/_10sdp"
                     android:background="@drawable/edit_search"
                     android:layout_margin="1dp"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:hint="Search"
+                    android:hint="@string/search"
                     android:textSize="@dimen/_11sdp"
                     android:layout_centerVertical="true"
                     android:drawableStart="@drawable/ic_search"
-                    android:layout_toLeftOf="@+id/ivMic"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ivMic"/>
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivMic"
@@ -84,10 +87,11 @@
                     android:background="@color/light_pink"
                     app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
                     android:src="@drawable/ic_mic"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivFilter"

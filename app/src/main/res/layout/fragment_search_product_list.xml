@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etSearch"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/_11sdp"
             android:paddingStart="@dimen/_10sdp"
@@ -44,9 +44,11 @@
             android:hint="@string/search"
             android:singleLine="true"
             android:textColorHint="@color/black"
-            android:layout_centerVertical="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:drawableStart="@drawable/ic_search"
-            android:layout_toLeftOf="@+id/ivCamera"/>
+            app:layout_constraintEnd_toStartOf="@+id/ivCamera"/>
 
         <ImageView
             android:id="@+id/ivMic"
@@ -55,8 +57,9 @@
             android:paddingVertical="@dimen/_10sdp"
             android:paddingHorizontal="@dimen/_15sdp"
             android:src="@drawable/ic_mic"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
             android:id="@+id/ivCamera"
@@ -65,10 +68,11 @@
             android:padding="@dimen/_10sdp"
             android:background="@color/white"
             android:src="@drawable/ic_camera"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ivMic"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivMic"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
   <!--  <RelativeLayout
         android:id="@+id/relSearch"

@@ -192,12 +192,14 @@ object Constants {
     const val SAVED_CARD = "/api/user/get_my_cards"
     const val ADD_CARD = "/api/user/add_card"
     const val DELETE_CARD = "/api/user/delete_card"
+    const val GET_CURRENCY_LIST = "/api/all_country_unique_currency"
     const val CHANGE_CURRENCY = "/api/user/update-user-selected-currency"
     const val CHANGE_COUNTRY = "/api/user/update-user-selected-country"
 
     const val AFFILIATE_CHANGE_CURRENCY = "/api/affiliate/update-user-selected-currency"
     const val AFFILIATE_CHANGE_COUNTRY = "/api/affiliate/update-user-selected-country"
 
+    const val CAPTURE_SELLER_STORE_VISITORS = "/api/CaptureSellerStoreVisitor"
     const val DELETE_ACCOUNT = "/api/user/delete_account"
 
     const val AFFILIATE_DELETE_ACCOUNT = "/api/affiliate/delete_account"

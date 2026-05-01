@@ -171,7 +171,7 @@ class LoginFragment : BaseFragment() {
             tvGuest.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).userType==2){
                     SharedPreference.get(requireActivity()).userType = 1
-                    tvGuest.text = "Continue As a Guest"
+                    tvGuest.text = getString(R.string.continue_as_a_guest)
                     clearInputField()
                     val intent = Intent(requireActivity(), HomeActivity::class.java).apply {
                         putExtra("open_screen", "profile")
@@ -347,7 +347,7 @@ class LoginFragment : BaseFragment() {
                         }
                         "1"->{
                             SharedPreference.get(requireActivity()).affiliateAccessToken = ""
-                                CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is under review", time = 2000){
+                                CommonMethod.showSuccessWithTimeDialog(requireActivity(),getString(R.string.your_profile_is_under_review), time = 2000){
                             }
                         }
                         "2"->{
@@ -365,13 +365,13 @@ class LoginFragment : BaseFragment() {
                         "3"->{
                             SharedPreference.get(requireActivity()).affiliateAccessToken = ""
                             clearInputField()
-                            CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Your profile is rejected by admin (${response.data.rejectReason}).", time = 3000){
+                            CommonMethod.showSuccessWithTimeDialog(requireActivity(),"${getString(R.string.your_profile_is_rejected_by_admin)} (${response.data.rejectReason}).", time = 3000){
 
                             }
                         }
                         "4"->{
                             SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.accessToken
-                            CommonMethod.showSuccessWithTimeDialog(requireActivity(),"Document Rejected. Please Reupload it (${response.data.rejectReason})", time = 3000){
+                            CommonMethod.showSuccessWithTimeDialog(requireActivity(),"${getString(R.string.document_rejected_please_reupload_it)} (${response.data.rejectReason})", time = 3000){
                                 val bundle = Bundle().apply {
                                     putString("signUpData", Gson().toJson(response.data))
                                 }
@@ -455,19 +455,19 @@ class LoginFragment : BaseFragment() {
     private fun validation():Boolean{
 
         if (binding?.etEmailMobile?.text?.isEmpty() == true) {
-            showToast("Please enter mobile number or email address")
+            showToast(getString(R.string.please_enter_mobile_number_or_email_address))
             return false
         }
         else if (binding?.etEmailMobile?.text?.length!! < 7&&type==0) {
-            showToast("Number must be at least 7 digits long")
+            showToast(getString(R.string.number_must_be_at_least_7_digits_long))
             return false
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(binding?.etEmailMobile?.text.toString()).matches() && type==1) {
-            showToast("Please enter valid email")
+            showToast(getString(R.string.please_enter_valid_email))
             return false
         }
-        else if (binding?.etPassword?.text?.isEmpty() == true&&binding?.btnLoginViaOtp?.text != "Login via Password") {
-            showToast("Please enter password")
+        else if (binding?.etPassword?.text?.isEmpty() == true&&binding?.btnLoginViaOtp?.text != getString(R.string.login_via_password)) {
+            showToast(getString(R.string.please_enter_password))
             return false
         }
         return true

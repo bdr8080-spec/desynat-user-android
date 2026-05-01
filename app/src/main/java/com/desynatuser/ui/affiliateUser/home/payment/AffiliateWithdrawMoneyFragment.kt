@@ -13,6 +13,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentAffiliateWithdrawMoneyBinding
 import com.desynatuser.ui.affiliateUser.home.profile.response.GetAffiliateUserProfileResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -46,7 +47,7 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Withdraw Money"
+            toolbar.tvToolbar.text = getString(R.string.withdraw_money)
             profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
             bankList.clear()
             profileData?.bankDetails?.let { bankList.addAll(it) }
@@ -72,6 +73,8 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
                     selectedBank = bankList[i]
                 }
             }
+
+            tvCurrency.text = Constants.CURRENCY
         }
     }
 
@@ -83,10 +86,10 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
 
             btnSubmit.setOnClickListener {
                 if (etAmount.text.toString().isEmpty()){
-                    showToast("Please enter amount")
+                    showToast(getString(R.string.please_enter_amount))
                 }
                 else if (selectedBank==null){
-                    showToast("Please select bank account")
+                    showToast(getString(R.string.please_select_bank_account))
                 }
                 else{
                     withdrawAffiliateAmount()
@@ -120,7 +123,7 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    CommonMethod.showSuccessWithTimeDialog(requireActivity(), "Request sent successfully!", time = 1500) {
+                    CommonMethod.showSuccessWithTimeDialog(requireActivity(), getString(R.string.request_sent_successfully), time = 1500) {
                         findNavController().popBackStack()
                     }
                 }

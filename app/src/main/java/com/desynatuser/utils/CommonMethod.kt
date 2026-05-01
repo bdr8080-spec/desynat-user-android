@@ -8,6 +8,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -1003,7 +1004,7 @@ object CommonMethod {
         val code = when (currency?.currencyCode) {
             "KWD" -> "KD"
             "BHD" -> "BD"
-            else -> currency?.currencyCode ?: "KWD"
+            else -> currency?.currencyCode ?: "KD"
         }
 
       /*  val formatted = if (currency?.currencyCode == "KWD") {
@@ -1049,5 +1050,18 @@ object CommonMethod {
         return "$formatted"
     }
 
+    fun setLocale(context: Context, languageCode: String) {
+        /*val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+        config.setLocale(locale)
+        config.setLayoutDirection(locale)
+
+        context.resources.updateConfiguration(
+            config,
+            context.resources.displayMetrics
+        )*/
+    }
 
 }

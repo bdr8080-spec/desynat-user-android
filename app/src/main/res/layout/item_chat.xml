@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
             android:background="@drawable/my_msg"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewEnd"
             android:fontFamily="@font/poppins_regular"
             android:textColor="@color/white"
             android:textSize="@dimen/_11sdp"

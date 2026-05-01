@@ -88,7 +88,7 @@ class StoreFragment : BaseFragment() {
             subCategoryData = Gson().fromJson(itemJson, GetSubCategoryResponse.Data::class.java)
         }
         binding?.apply {
-            toolbar.tvToolbar.text = "Stores"
+            toolbar.tvToolbar.text = getString(R.string.stores)
 
             storeAdapter = StoreAdapter(requireActivity(),storeList,object: StoreAdapter.StoreClick{
                 override fun onStoreClick(position: Int) {

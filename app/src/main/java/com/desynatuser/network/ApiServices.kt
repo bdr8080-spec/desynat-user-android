@@ -754,10 +754,16 @@ interface ApiServices {
     @POST(Constants.AFFILIATE_CHANGE_COUNTRY)
     suspend fun affiliateChangeCountry(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
+    @POST(Constants.CAPTURE_SELLER_STORE_VISITORS)
+    suspend fun captureSellerStoreVisitor(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
     @POST(Constants.DELETE_ACCOUNT)
     suspend fun deleteAccount(@Body map: HashMap<String, Any>): Response<CommonResponse>
 
     @POST(Constants.AFFILIATE_DELETE_ACCOUNT)
     suspend fun affiliateDeleteAccount(@Body map: HashMap<String, Any>): Response<CommonResponse>
+
+    @GET(Constants.GET_CURRENCY_LIST)
+    suspend fun getCurrencyList(): Response<GetCountryResponse>
 
 }

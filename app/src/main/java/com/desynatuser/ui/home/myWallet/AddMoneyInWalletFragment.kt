@@ -40,7 +40,7 @@ class AddMoneyInWalletFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Add Money"
+            toolbar.tvToolbar.text = getString(R.string.add_money)
 
             tv10.text = "10 ${Constants.CURRENCY}"
             tv100.text = "100 ${Constants.CURRENCY}"
@@ -105,7 +105,7 @@ class AddMoneyInWalletFragment : BaseFragment() {
 
             btnContinue.setOnClickListener {
                 if (amount <= 0) {
-                    showToast("Please enter amount")
+                    showToast(getString(R.string.please_enter_amount))
                     return@setOnClickListener
                 }
 

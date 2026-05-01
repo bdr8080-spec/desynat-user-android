@@ -129,8 +129,8 @@ fun Fragment.pickImageFromCameraOrGallery(onImagePicked: (File) -> Unit) {
     }
 
     AlertDialog.Builder(requireContext())
-        .setTitle("Select Image Source")
-        .setItems(arrayOf("Camera", "Gallery")) { _, which ->
+        .setTitle(getString(R.string.select_image_source))
+        .setItems(arrayOf(getString(R.string.camera), getString(R.string.gallery))) { _, which ->
             when (which) {
                 0 -> checkCameraPermissionAndOpen()
                 1 -> checkGalleryPermissionAndOpen()
@@ -202,8 +202,8 @@ fun ComponentActivity.pickImageFromCameraOrGallery(onImagePicked: (File) -> Unit
     }
 
     AlertDialog.Builder(this)
-        .setTitle("Select Image Source")
-        .setItems(arrayOf("Camera", "Gallery")) { _, which ->
+        .setTitle(getString(R.string.select_image_source))
+        .setItems(arrayOf(getString(R.string.camera), getString(R.string.gallery))) { _, which ->
             when (which) {
                 0 -> checkCameraPermissionAndOpen()
                 1 -> checkGalleryPermissionAndOpen()

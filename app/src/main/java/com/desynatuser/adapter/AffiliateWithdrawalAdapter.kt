@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.desynatuser.R
 import com.desynatuser.databinding.ItemWithdrawalBinding
 import com.desynatuser.ui.affiliateUser.home.payment.response.GetWithdrawalRequestResponse
 import com.desynatuser.utils.CommonMethod
@@ -24,12 +25,12 @@ class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayL
 
                 when(withdrawalData?.adminVerify){
                     0->{
-                        tvStatusValue.text = "Pending"
+                        tvStatusValue.text = context.getString(R.string.pending)
                         tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
                     }
                     1->{
                       //  tvStatusValue.text = "Completed"
-                        tvStatusValue.text = "Credit"
+                        tvStatusValue.text = context.getString(R.string.credit)
                         tvStatusValue.setTextColor(Color.parseColor("#17854C"))
                         tvCredited.isVisible = true
                         tvTransaction.isVisible = true
@@ -39,7 +40,7 @@ class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayL
 
                     }
                     2->{
-                        tvStatusValue.text = "Rejected"
+                        tvStatusValue.text = context.getString(R.string.rejected)
                         tvStatusValue.setTextColor(Color.parseColor("#D53B36"))
                         tvReason.isVisible = true
                         tvReasonValue.isVisible = true

@@ -145,14 +145,13 @@ class ProfileFragment : BaseFragment() {
                 }
             }
 
-          /*  rlLanguage.setOnClickListener {
+           /* rlLanguage.setOnClickListener {
                 val bundle = Bundle().apply {
                     putString("from", "profile")
                 }
                 findNavController().navigate(R.id.action_profileFragment_to_languageFragment,bundle)
-            }
+            }*/
 
-*/
 
             rlGoCurrency.setOnClickListener {
                 if (SharedPreference.get(requireActivity()).accessToken!="") {

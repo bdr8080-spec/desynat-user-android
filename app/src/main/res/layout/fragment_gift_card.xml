@@ -22,7 +22,7 @@
         android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/_15sdp">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etSearch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/edit_text"
                 android:paddingVertical="@dimen/_8sdp"
@@ -39,9 +39,11 @@
                 android:layout_margin="1dp"
                 android:drawablePadding="@dimen/_10sdp"
                 android:hint="@string/search"
-                android:layout_centerVertical="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:drawableStart="@drawable/ic_search"
-                android:layout_toLeftOf="@+id/ivAdd"/>
+               app:layout_constraintEnd_toStartOf="@+id/ivAdd"/>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivAdd"
@@ -52,10 +54,12 @@
                 android:background="@color/light_pink"
                 app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
                 android:src="@drawable/add_card"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGiftCard"

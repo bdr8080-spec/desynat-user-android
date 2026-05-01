@@ -28,7 +28,7 @@
         android:background="@drawable/bottom_sheet"
         android:backgroundTint="#FFF7EA"
         android:fontFamily="@font/poppins_medium"
-        android:text="Affiliate link"
+        android:text="@string/affiliate_link"
         android:textColor="@color/black"
         android:drawableEnd="@drawable/close_icon"
         android:textSize="@dimen/_13sdp"/>
@@ -43,20 +43,25 @@
         android:background="@drawable/button_stroke"
         android:layout_marginHorizontal="@dimen/_10sdp"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/tvCopyLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_copy_link"
-        android:layout_gravity="end"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCopyLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_copy_link"
+            android:text="@string/copy_link"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnAdd"
         style="@style/button"
         android:layout_marginTop="@dimen/_30sdp"
-        android:text="Add to Products"
+        android:text="@string/add_to_products"
         android:padding="@dimen/_8sdp"
         android:textSize="@dimen/_11sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"/>

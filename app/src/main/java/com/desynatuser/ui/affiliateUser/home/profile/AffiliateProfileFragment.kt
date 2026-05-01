@@ -118,14 +118,13 @@ class AffiliateProfileFragment : BaseFragment() {
                 findNavController().navigate(R.id.action_affiliateProfileFragment_to_changeCountryFragment)
             }
 
-            /* rlLanguage.setOnClickListener {
+          /*   rlLanguage.setOnClickListener {
                  val bundle = Bundle().apply {
                      putString("from", "profile")
                  }
                  findNavController().navigate(R.id.action_affiliateProfileFragment_to_languageFragment,bundle)
-             }
+             }*/
 
-            */
         }
 
     }

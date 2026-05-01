@@ -282,7 +282,7 @@ class AffiliatePaymentFragment : BaseFragment() {
 
             etTo.setOnClickListener {
                 if (fromTemp == null) {
-                    showToast("Please select From date first")
+                    showToast(getString(R.string.please_select_from_date_first))
                     return@setOnClickListener
                 }
 

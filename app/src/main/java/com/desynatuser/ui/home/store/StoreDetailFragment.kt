@@ -491,6 +491,16 @@ class StoreDetailFragment : BaseFragment() {
         isHighlightObserver = true
     }
 
+    private fun captureSellerStoreVisitor(sellerId: String){
+        val map = HashMap<String,Any>()
+        map["seller_id"] = sellerId
+        map["store_id"] = storeId
+        if (!Constants.isGuest) {
+            map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+        }
+        viewModel.captureSellerStoreVisitor(map)
+    }
+
     override fun observe() {
 
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
@@ -567,9 +577,14 @@ class StoreDetailFragment : BaseFragment() {
                 getSellerStory()
                 getSellerReel()
                 setData()
+                captureSellerStoreVisitor(response?.data?.store?.sellerId.toString())
                 setProductData()
                 isObserver = false
             }
+        }
+
+        viewModel.captureSellerStoreVisitorResult.observe(viewLifecycleOwner) { response ->
+
         }
 
         viewModel.chatWithSellerResult.observe(viewLifecycleOwner) { response ->

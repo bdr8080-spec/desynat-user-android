@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:text="Busy"
+        android:text="@string/busy"
         android:textSize="@dimen/_9sdp"
         android:paddingHorizontal="@dimen/_5sdp"
         android:background="@drawable/btn_gradient"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.desynatuser.R
 import com.desynatuser.databinding.ItemPaymentBinding
 import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
 import com.desynatuser.utils.CommonMethod
@@ -27,7 +28,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
             tvPurchaseOnValue.text = CommonMethod.customizeChangeDateFormat(paymentData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
 
             if (paymentData?.paymentStatus=="2"||paymentData?.paymentStatus=="3"){
-                tvStatusValue.text = "Cancelled"
+                tvStatusValue.text = context.getString(R.string.cancelled)
                 tvStatusValue.setTextColor(Color.parseColor("#D53B36"))
                 tvReason.isVisible = true
                 tvReasonValue.isVisible = true
@@ -42,7 +43,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
 //                    }
 
                     "3"->{
-                        tvStatusValue.text = "Completed"
+                        tvStatusValue.text = context.getString(R.string.completed)
                         tvStatusValue.setTextColor(Color.parseColor("#17854C"))
                         tvReason.isVisible = false
                         tvReasonValue.isVisible = false
@@ -120,13 +121,13 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
                     }*/
 
                     "4" -> {
-                        tvStatusValue.text = "Cancelled"
+                        tvStatusValue.text = context.getString(R.string.cancelled)
                         tvStatusValue.setTextColor(Color.parseColor("#D53B36"))
                         tvReason.isVisible = true
                         tvReasonValue.isVisible = true
                     }
                     else ->{
-                        tvStatusValue.text = "Pending"
+                        tvStatusValue.text = context.getString(R.string.pending)
                         tvStatusValue.setTextColor(Color.parseColor("#FE7D49"))
                         tvReason.isVisible = false
                         tvReasonValue.isVisible = false

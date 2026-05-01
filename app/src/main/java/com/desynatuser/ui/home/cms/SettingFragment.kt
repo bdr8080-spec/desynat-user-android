@@ -70,7 +70,7 @@ class SettingFragment : BaseFragment() {
             }
 
             btnDeleteAccount.setOnClickListener {
-           //     deleteAlertDialog()
+                deleteAlertDialog()
             }
 
 

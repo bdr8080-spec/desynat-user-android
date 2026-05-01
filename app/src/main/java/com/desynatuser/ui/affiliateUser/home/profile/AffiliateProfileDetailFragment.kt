@@ -89,7 +89,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Profile Details"
+            toolbar.tvToolbar.text = getString(R.string.profile_details)
 
             if (SharedPreference.get(requireActivity()).getSelectedCountryList()==null){
                 getSelectedCountry()
@@ -178,7 +178,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                         2->{
                             CommonMethod.deleteAlertDialog(
                                 requireActivity(),
-                                "Are you sure you want to delete the bank detail?"
+                                getString(R.string.are_you_sure_you_want_to_delete_the_bank_detail)
                             ) { action ->
                                 when (action) {
                                     CommonMethod.DialogAction.DELETE -> {
@@ -460,17 +460,19 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                     SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                     when(updatedType){
                         1->{
-                            CommonMethod.showSuccessDialog(requireActivity(),"Profile updated successfully!"){
+                            CommonMethod.showSuccessDialog(requireActivity(),getString(R.string.profile_updated_successfully)){
                                 findNavController().popBackStack()
                             }
                         }
                         2->{
-                            CommonMethod.showSuccessDialog(requireActivity(),"Address updated successfully!"){
+                            CommonMethod.showSuccessDialog(requireActivity(),
+                                getString(R.string.address_updated_successfully)){
                                 findNavController().popBackStack()
                             }
                         }
                         3->{
-                            CommonMethod.showSuccessDialog(requireActivity(),"Bank details deleted successfully!"){
+                            CommonMethod.showSuccessDialog(requireActivity(),
+                                getString(R.string.bank_details_deleted_successfully)){
                                 profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
                                 bankList.clear()
                                 profileData?.bankDetails?.let { bankList.addAll(it) }
@@ -478,7 +480,8 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                             }
                         }
                         4->{
-                            CommonMethod.showSuccessDialog(requireActivity(),"Bank account changed successfully!"){
+                            CommonMethod.showSuccessDialog(requireActivity(),
+                                getString(R.string.bank_account_changed_successfully)){
                                 profileData = SharedPreference.get(requireActivity()).getAffiliateUser()
                                 bankList.clear()
                                 profileData?.bankDetails?.let { bankList.addAll(it) }

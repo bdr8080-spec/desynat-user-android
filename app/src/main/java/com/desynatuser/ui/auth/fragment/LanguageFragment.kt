@@ -52,13 +52,13 @@ class LanguageFragment : BaseFragment() {
             }
 
             if (from=="profile"){
-                btnContinue.text = "Save"
+                btnContinue.text = getString(R.string.save)
                 tvToolbar.isVisible = true
                 tvSelectLanguage.isVisible = false
                 tvInfo.isVisible = false
             }
             else{
-                btnContinue.text = "Continue"
+                btnContinue.text = getString(R.string.continue_text)
                 tvToolbar.isVisible = false
                 tvSelectLanguage.isVisible = true
                 tvInfo.isVisible = true
@@ -103,7 +103,14 @@ class LanguageFragment : BaseFragment() {
                 }
                 else{
                     SharedPreference.get(requireActivity()).language = Constants.language
-                    if (from=="profile"){
+                    CommonMethod.setLocale(requireActivity(), Constants.language)
+
+                    val intent = requireActivity().intent
+                    intent.putExtra("open_screen", from)
+                    requireActivity().finish()
+                    startActivity(intent)
+
+                    /*if (from=="profile"){
                         CommonMethod.showSuccessDialog(requireActivity(),
                             getString(R.string.language_changed_successfully)){
                             findNavController().popBackStack()
@@ -116,7 +123,7 @@ class LanguageFragment : BaseFragment() {
                         else{
                             findNavController().navigate(R.id.action_languageFragment_to_onBoardingFragment)
                         }
-                    }
+                    }*/
                 }
             }
         }

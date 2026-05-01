@@ -128,6 +128,14 @@ class HomeViewModel @Inject constructor(
             repository.getCountry()
         }
     }
+   val getCurrencyListResult: LiveData<GetCountryResponse>
+        get() = repository.getCurrencyListLiveData
+
+    fun getCurrencyList() {
+        viewModelScope.launch {
+            repository.getCurrencyList()
+        }
+    }
 
     val changePasswordResult: LiveData<CommonResponse>
         get() = repository.changePasswordLiveData
@@ -1368,6 +1376,15 @@ val defaultBankResult: LiveData<CommonResponse>
     fun affiliateChangeCountry(map: HashMap<String,Any>) {
         viewModelScope.launch {
             repository.affiliateChangeCountry(map)
+        }
+    }
+
+    val captureSellerStoreVisitorResult: LiveData<CommonResponse>
+        get() = repository.captureSellerStoreVisitorLiveData
+
+    fun captureSellerStoreVisitor(map: HashMap<String,Any>) {
+        viewModelScope.launch {
+            repository.captureSellerStoreVisitor(map)
         }
     }
 

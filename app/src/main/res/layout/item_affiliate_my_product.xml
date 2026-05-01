@@ -134,7 +134,7 @@
         android:id="@+id/tvTrackPerformance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Track Performance"
+        android:text="@string/track_performance"
         android:background="@drawable/btn_gradient"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"

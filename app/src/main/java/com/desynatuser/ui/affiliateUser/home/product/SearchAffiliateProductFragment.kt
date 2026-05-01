@@ -99,7 +99,7 @@ class SearchAffiliateProductFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "Search"
+            toolbar.tvToolbar.text = getString(R.string.search)
 
             imagePicker = ImagePicker(
                 requireActivity(),
@@ -343,7 +343,7 @@ class SearchAffiliateProductFragment : BaseFragment() {
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast("Speech recognition not supported")
+            showToast(getString(R.string.speech_recognition_not_supported))
         }
     }
 

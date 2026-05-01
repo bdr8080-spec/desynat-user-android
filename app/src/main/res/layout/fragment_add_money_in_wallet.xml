@@ -16,7 +16,7 @@
         style="@style/edit_text_title"
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Amount"
+        android:text="@string/amount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -27,7 +27,7 @@
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/edit_back"
-        android:hint="Enter amount"
+        android:hint="@string/enter_amount"
         android:inputType="numberDecimal"
         app:layout_constraintTop_toBottomOf="@+id/tvAmount" />
 
@@ -92,7 +92,7 @@
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_30sdp"
-        android:text="Continue"
+        android:text="@string/continue_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

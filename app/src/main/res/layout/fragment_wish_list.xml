@@ -28,7 +28,7 @@
             android:paddingVertical="@dimen/_8sdp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_medium"
-            android:text="Product"
+            android:text="@string/product"
             android:textSize="@dimen/_12sdp"
             android:gravity="center"
             android:textColor="@color/white"
@@ -41,7 +41,7 @@
             android:paddingVertical="@dimen/_8sdp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_medium"
-            android:text="Reels"
+            android:text="@string/reels"
             android:textSize="@dimen/_12sdp"
             android:gravity="center"
             android:textColor="@color/black" />

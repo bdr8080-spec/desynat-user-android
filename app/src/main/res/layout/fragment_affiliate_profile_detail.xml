@@ -41,7 +41,7 @@
                     android:paddingVertical="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Personal Info"
+                    android:text="@string/personal_info"
                     android:textSize="@dimen/_11sdp"
                     android:gravity="center"
                     android:textColor="@color/white"
@@ -59,7 +59,7 @@
                     android:paddingVertical="@dimen/_8sdp"
                     android:layout_weight="0.9"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Address"
+                    android:text="@string/address"
                     android:textSize="@dimen/_11sdp"
                     android:gravity="center"
                     android:textColor="@color/black"/>
@@ -76,7 +76,7 @@
                     android:paddingVertical="@dimen/_8sdp"
                     android:layout_weight="1.1"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Bank Account"
+                    android:text="@string/bank_account"
                     android:textSize="@dimen/_11sdp"
                     android:gravity="center"
                     android:textColor="@color/black"/>

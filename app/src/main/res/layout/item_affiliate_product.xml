@@ -133,7 +133,7 @@
         android:id="@+id/tvGetLink"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Get Link"
+        android:text="@string/get_link"
         android:background="@drawable/btn_gradient"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"

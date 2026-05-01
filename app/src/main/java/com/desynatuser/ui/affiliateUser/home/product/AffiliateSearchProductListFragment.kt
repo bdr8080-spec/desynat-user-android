@@ -51,6 +51,7 @@ import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -649,8 +650,8 @@ class AffiliateSearchProductListFragment : BaseFragment() {
                 min = values[0].toInt()
                 max = values[1].toInt()
 
-                tvMinPrice.text = "$min KD"
-                tvCentrePrice.text = "$max KD"
+                tvMinPrice.text = "$min ${Constants.CURRENCY}"
+                tvCentrePrice.text = "$max ${Constants.CURRENCY}"
 
                 slider.post {
                     //  moveLabel(tvMinPrice, slider, 0)

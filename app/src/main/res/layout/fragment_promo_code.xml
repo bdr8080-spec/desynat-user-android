@@ -14,15 +14,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etPromoCode"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/enter_promocode"
             android:layout_marginTop="@dimen/_15sdp"
@@ -37,13 +36,13 @@
             android:paddingEnd="@dimen/_10sdp"
             android:singleLine="true"
             android:imeOptions="actionDone"
-            android:layout_toLeftOf="@+id/btnApply"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnApply"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnApply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:text="@string/apply"
             android:paddingVertical="@dimen/_11sdp"
@@ -54,12 +53,15 @@
             android:background="@drawable/btn_gradient"
             android:fontFamily="@font/poppins_medium"
             android:layout_alignTop="@+id/etPromoCode"
-            android:layout_alignParentEnd="true"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etPromoCode"
+            app:layout_constraintBottom_toBottomOf="@+id/etPromoCode"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnApply">
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/etPromoCode">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,7 +85,7 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:visibility="gone"

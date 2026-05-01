@@ -35,31 +35,44 @@ class AuthActivity : BaseActivity() {
     }
 
     override fun initView() {
+        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         CommonMethod.detectGestureMode(binding?.root!!,binding?.viewBottom!!)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         controller = navHostFragment.navController
 
         val navGraph = controller.navInflater.inflate(R.navigation.auth_navigation_graph)
+        val fromLanguage = intent.getStringExtra("open_screen")
 
-        val destination = if (SharedPreference.get(this).userType==2){
-                if (SharedPreference.get(this).getUser()?.affiliatedUserdetails?.adminVerify!=null){
+        val destination = if (fromLanguage != null) {
+
+            if (fromLanguage == "profile") {
+                R.id.login
+            } else {
+                if (SharedPreference.get(this).isTutorial) {
+                    R.id.login
+                } else {
+                    R.id.onBoarding
+                }
+            }
+
+        } else {
+            if (SharedPreference.get(this).userType == 2) {
+                if (SharedPreference.get(this).getUser()?.affiliatedUserdetails?.adminVerify != null) {
+                    R.id.login
+                } else if (SharedPreference.get(this).isAffiliateTutorial == false) {
+                    R.id.onBoarding
+                } else {
                     R.id.login
                 }
-                else if(SharedPreference.get(this).isAffiliateTutorial==false) {
-                        R.id.onBoarding
-                    }
-                else{
-                    R.id.login
-                }
+            } else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
+                R.id.banner
+            } else {
+                if (Constants.isLogout) R.id.login
+                else R.id.language
+            }
         }
-        else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
-            R.id.banner
-        }
-        else {
-            if (Constants.isLogout) R.id.login
-            else R.id.language
-        }
+
 
         navGraph.setStartDestination(
             destination

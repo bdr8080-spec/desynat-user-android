@@ -253,6 +253,17 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
+    val getCurrencyListLiveData = SingleLiveEvent<GetCountryResponse>()
+    suspend fun getCurrencyList(
+    ) {
+        handleApiCall(
+            api = {
+                api.getCurrencyList()
+            },
+            responseLiveData = getCurrencyListLiveData
+        )
+    }
+
     val getSelectedCountryLiveData = SingleLiveEvent<GetCountryResponse>()
     suspend fun getSelectedCountry(
     ) {
@@ -1955,7 +1966,19 @@ var deleteCardLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    var deleteAccountLiveData = SingleLiveEvent<CommonResponse>()
+    var captureSellerStoreVisitorLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun captureSellerStoreVisitor(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.captureSellerStoreVisitor(map)
+            },
+            responseLiveData = captureSellerStoreVisitorLiveData
+        )
+    }
+
+var deleteAccountLiveData = SingleLiveEvent<CommonResponse>()
     suspend fun deleteAccount(
         map: HashMap<String,Any>
     ) {

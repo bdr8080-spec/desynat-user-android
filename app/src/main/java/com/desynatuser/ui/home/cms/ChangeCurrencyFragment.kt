@@ -97,8 +97,8 @@ class ChangeCurrencyFragment : BaseFragment() {
             }
             else{
                 countryList.clear()
-                if (SharedPreference.get(requireActivity()).getCountryList()?.isNotEmpty() == true){
-                    val data =  SharedPreference.get(requireActivity()).getCountryList()
+                if (SharedPreference.get(requireActivity()).getCurrencyList()?.isNotEmpty() == true){
+                    val data =  SharedPreference.get(requireActivity()).getCurrencyList()
                     countryList.clear()
                     data?.let { countryList.addAll(it) }
 
@@ -132,6 +132,9 @@ class ChangeCurrencyFragment : BaseFragment() {
                     currencyAdapter?.selectedPos = selectedPos
                     currencyAdapter?.notifyDataSetChanged()
                 }
+                else{
+                    getCurrencyList()
+                }
 
             }
 
@@ -163,6 +166,27 @@ class ChangeCurrencyFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
+                    countryList.clear()
+                    response.data?.let { countryList.addAll(it) }
+                    for (i in 0 until countryList.size) {
+                        if (countryList[i].id.toString() == userInfo?.selectedCurrency) {
+                            selectedPos = i
+                            break
+                        }
+                    }
+
+                    currencyAdapter?.selectedPos = selectedPos
+                    currencyAdapter?.notifyDataSetChanged()
+                }
+                isObserver = false
+            }
+        }
+
+        viewModel.getCurrencyListResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    SharedPreference.get(requireActivity()).saveCurrencyList(response.data)
                     countryList.clear()
                     response.data?.let { countryList.addAll(it) }
                     for (i in 0 until countryList.size) {
@@ -221,6 +245,11 @@ class ChangeCurrencyFragment : BaseFragment() {
 
     private fun getSelectedCountry() {
         viewModel.getSelectedCountry()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
+    }
+    private fun getCurrencyList() {
+        viewModel.getCurrencyList()
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }

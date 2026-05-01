@@ -222,7 +222,7 @@
             android:text="124359526"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewEnd"
             android:layout_marginStart="@dimen/_10sdp"
             app:layout_constraintTop_toTopOf="@+id/tvPaid"
             app:layout_constraintBottom_toBottomOf="@+id/tvPaid"

@@ -48,7 +48,7 @@
                     android:layout_centerHorizontal="true"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
-                    android:text="Total Withdrawals"
+                    android:text="@string/total_withdrawals"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
@@ -74,7 +74,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="center"
                     android:paddingVertical="@dimen/_8sdp"
-                    android:text="Upcoming"
+                    android:text="@string/upcoming"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
@@ -86,7 +86,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="center"
                     android:paddingVertical="@dimen/_8sdp"
-                    android:text="Completed"
+                    android:text="@string/completed"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
@@ -101,7 +101,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_5sdp"
-                android:hint="Search"
+                android:hint="@string/search"
                 android:singleLine="true"
                 android:textSize="@dimen/_11sdp" />
 
@@ -121,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="No withdrawals found"
+                android:text="@string/no_withdrawals_found"
                 android:textSize="@dimen/_13sdp"
                 android:textColor="@color/black"
                 android:textAlignment="center"

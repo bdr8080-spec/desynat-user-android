@@ -27,7 +27,7 @@
                 android:id="@+id/tvAddNewCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+ Add New Card"
+                android:text="@string/add_new_card"
                 android:textSize="@dimen/_12sdp"
                 android:paddingVertical="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_10sdp"

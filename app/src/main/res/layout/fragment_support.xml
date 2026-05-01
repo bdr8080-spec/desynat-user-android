@@ -228,29 +228,32 @@
             </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/llTicket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/relSearch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_back"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_toLeftOf="@+id/ivAddTicket">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toStartOf="@+id/ivAddTicket">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etSearch"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     style="@style/edit_text"
                     android:paddingVertical="@dimen/_6sdp"
@@ -259,9 +262,11 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:hint="@string/search"
                     android:textSize="@dimen/_11sdp"
-                    android:layout_centerVertical="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:drawableStart="@drawable/ic_search"
-                    android:layout_toLeftOf="@+id/ivMic"/>
+                    app:layout_constraintEnd_toStartOf="@+id/ivMic"/>
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivMic"
@@ -272,10 +277,11 @@
                     android:background="@color/light_pink"
                     app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
                     android:src="@drawable/ic_mic"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivAddTicket"
@@ -284,10 +290,11 @@
                     android:paddingEnd="@dimen/_15sdp"
                     android:paddingStart="@dimen/_10sdp"
                     android:src="@drawable/ic_add_ticket"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTicket"

@@ -24,7 +24,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:textAlignment="center"
             android:fontFamily="@font/poppins_medium"
-            android:text="Login Required"
+            android:text="@string/login_required"
             android:textColor="#CC000000"
             android:textSize="@dimen/_12sdp" />
 
@@ -35,7 +35,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:textAlignment="center"
             android:fontFamily="@font/poppins_regular"
-            android:text="Please login to access this feature."
+            android:text="@string/please_login_to_access_this_feature"
             android:textColor="#CC000000"
             android:textSize="@dimen/_11sdp" />
 
@@ -54,7 +54,7 @@
                 android:textColor="#D53B36"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:padding="@dimen/_8sdp"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -63,7 +63,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:text="Login"
+                android:text="@string/login"
                 android:background="@drawable/btn_background"
                 android:padding="@dimen/_8sdp"/>
 

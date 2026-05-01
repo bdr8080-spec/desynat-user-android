@@ -168,7 +168,7 @@ class AffiliateAllProductFragment : BaseFragment() {
 
     override fun initView() {
         binding?.apply {
-            toolbar.tvToolbar.text = "All Products"
+            toolbar.tvToolbar.text = getString(R.string.all_products)
 
             val itemSubCategoryDataJson = arguments?.getString("subCategoryData")
             if (!itemSubCategoryDataJson.isNullOrEmpty()) {
@@ -472,7 +472,7 @@ class AffiliateAllProductFragment : BaseFragment() {
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast("Speech recognition not supported")
+            showToast(getString(R.string.speech_recognition_not_supported))
         }
     }
 
@@ -881,11 +881,11 @@ class AffiliateAllProductFragment : BaseFragment() {
             }
 
             tvShowMoreColor.setOnClickListener {
-                if(tvShowMoreColor.text=="Show More Color"){
+                if(tvShowMoreColor.text==getString(R.string.show_more_color)){
                     newColorList.clear()
                     newColorList.addAll(colorList)
                     filterColorAdapter?.notifyDataSetChanged()
-                    tvShowMoreColor.text = "Show Less Color"
+                    tvShowMoreColor.text = getString(R.string.show_less_color)
                 }
                 else{
                     newColorList.clear()
@@ -895,7 +895,7 @@ class AffiliateAllProductFragment : BaseFragment() {
                         newColorList.addAll(colorList)
                     }
                     filterColorAdapter?.notifyDataSetChanged()
-                    tvShowMoreColor.text = "Show More Color"
+                    tvShowMoreColor.text = getString(R.string.show_more_color)
                 }
             }
         }
