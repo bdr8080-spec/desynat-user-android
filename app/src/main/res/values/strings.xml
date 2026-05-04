@@ -620,7 +620,8 @@
  <string name="welcome">Welcome !</string>
  <string name="active">Active</string>
  <string name="in_active">In-Active</string>
-
+ <string name="from_date_hint">From  //  //</string>
+ <string name="to_date_hint">To  //  //</string>
 
  <array name="initial_price_values">
         <item>0</item>

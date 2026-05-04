@@ -35,7 +35,6 @@ class AuthActivity : BaseActivity() {
     }
 
     override fun initView() {
-        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         CommonMethod.detectGestureMode(binding?.root!!,binding?.viewBottom!!)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment

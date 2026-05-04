@@ -161,7 +161,7 @@ object Constants {
     const val GET_AFFILIATE_DASHBOARD = "/api/affiliate/get_affiliate_dashboard_data"
 
     const val GET_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
-    const val READ_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/affiliateUserNotification"
+    const val READ_AFFILIATE_USER_NOTIFICATION = "/api/affiliate/ReadAffiliateUserNotification"
     const val AFFILIATE_USER_NOTIFICATION_COUNT = "/api/affiliate/CountaffiliateUserNotification"
     const val GET_LIVE_STREAMING_ROOM = "/api/user/show-all-live-streaming-request"
     const val SUGGEST_STORE = "/api/user/suggest-store"
@@ -202,5 +202,5 @@ object Constants {
     const val CAPTURE_SELLER_STORE_VISITORS = "/api/CaptureSellerStoreVisitor"
     const val DELETE_ACCOUNT = "/api/user/delete_account"
 
-    const val AFFILIATE_DELETE_ACCOUNT = "/api/affiliate/delete_account"
+    const val AFFILIATE_DELETE_ACCOUNT = "/api/affiliate/delete_affiliate_account"
 }

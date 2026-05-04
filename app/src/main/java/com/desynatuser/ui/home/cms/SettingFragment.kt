@@ -234,7 +234,7 @@ class SettingFragment : BaseFragment() {
     fun deleteAccount(){
         val map = HashMap<String, Any>()
         if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
-            viewModel.deleteAccount(map)
+            viewModel.affiliateDeleteAccount(map)
         }
         else{
             viewModel.deleteAccount(map)

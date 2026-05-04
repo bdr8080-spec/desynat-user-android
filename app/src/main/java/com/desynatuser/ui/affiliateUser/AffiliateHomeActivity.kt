@@ -88,7 +88,6 @@ class AffiliateHomeActivity : BaseActivity() {
     }
 
     override fun initView() {
-        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         controller = navHostFragment.navController

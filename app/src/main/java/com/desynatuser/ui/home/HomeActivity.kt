@@ -88,7 +88,6 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun initView() {
-        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         SharedPreference.get(this).affiliateAccessToken = ""
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 

@@ -602,5 +602,9 @@
     <string name="cancel">إلغاء</string>
     <string name="please_login_to_access_this_feature">يرجى تسجيل الدخول للوصول إلى هذه الميزة</string>
     <string name="login_required">تسجيل الدخول مطلوب</string>
-
+    <string name="welcome">مرحبًا!</string>
+    <string name="active">نشط</string>
+    <string name="in_active">غير نشط</string>
+    <string name="from_date_hint">من  //  //</string>
+    <string name="to_date_hint">إلى  //  //</string>
 </resources>

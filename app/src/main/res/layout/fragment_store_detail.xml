@@ -340,7 +340,7 @@
                     android:textColor="@color/black"
                     android:fontFamily="@font/poppins_medium"
                     android:textSize="@dimen/_13sdp"
-                    android:text="No product found"
+                    android:text="@string/no_product_found"
                     android:paddingVertical="@dimen/_30sdp"
                     app:layout_constraintTop_toBottomOf="@+id/rvProduct"
                     app:layout_constraintStart_toStartOf="parent"

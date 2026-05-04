@@ -1051,7 +1051,7 @@ object CommonMethod {
     }
 
     fun setLocale(context: Context, languageCode: String) {
-        /*val locale = Locale(languageCode)
+        val locale = Locale(languageCode)
         Locale.setDefault(locale)
 
         val config = Configuration()
@@ -1061,7 +1061,7 @@ object CommonMethod {
         context.resources.updateConfiguration(
             config,
             context.resources.displayMetrics
-        )*/
+        )
     }
 
 }

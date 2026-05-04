@@ -65,7 +65,7 @@ class CatalogFragment : BaseFragment() {
 
     private fun getAllCategory(){
         viewModel.getCategory()
-            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
@@ -79,6 +79,7 @@ class CatalogFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
             }
@@ -88,6 +89,7 @@ class CatalogFragment : BaseFragment() {
         viewModel.categoryResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 catalogList.clear()
                 catalogList.addAll(response.data)
                 checkData()

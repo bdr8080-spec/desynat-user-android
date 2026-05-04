@@ -234,7 +234,7 @@ class MyBagFragment : BaseFragment() {
         map["cart_id"] = myBagList[selectedPos].id.toString()
         map["type"] = type//// increment,decrement
         viewModel.addCartQuantity(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
@@ -242,13 +242,13 @@ class MyBagFragment : BaseFragment() {
         val map = HashMap<String, Any>()
         map["id"] = id
         viewModel.removeFromCartCustomOrder(map)
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
     private fun viewCartDetail() {
         viewModel.viewCartDetail()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isCartObserver = true
     }
 
@@ -256,6 +256,7 @@ class MyBagFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
             }
@@ -264,6 +265,7 @@ class MyBagFragment : BaseFragment() {
         viewModel.cartDetailLiveDataResult.observe(viewLifecycleOwner) { response ->
             if (isCartObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 cartData = response.data
                 myBagList.clear()
                 myCartList.clear()
@@ -312,6 +314,7 @@ class MyBagFragment : BaseFragment() {
 
         viewModel.addressResult.observe(viewLifecycleOwner) { response ->
             if (isAddressObserver) {
+                binding?.progressBar?.isVisible = false
                 ProgressDialogUtils.getInstance().hideProgress()
                 val savedAddressList = ArrayList<GetAddressResponse.Data>()
                 savedAddressList.clear()
