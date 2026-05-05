@@ -72,22 +72,26 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
 
             val finalText = when {
                 returnDays != null && exchangeDays != null ->
-                    "${returnDays} Days Return & ${exchangeDays} Days Exchange"
+                    "${returnDays} ${context.getString(R.string.days_return_and)} ${exchangeDays} ${
+                        context.getString(
+                            R.string.days_exchange
+                        )
+                    }"
 
                 returnDays != null ->
-                    "${returnDays} Days Return & No Exchange"
+                    "${returnDays} ${context.getString(R.string.days_return)} ${context.getString(R.string.no_exchange)}"
 
                 exchangeDays != null ->
-                    "No Return & ${exchangeDays} Days Exchange"
+                    "${context.getString(R.string.no_return)} ${exchangeDays} ${context.getString(R.string.days_exchange)}"
 
                 else ->
-                    "No Return & No Exchange"
+                    "${context.getString(R.string.no_return)} ${context.getString(R.string.days_return)}"
             }
 
             if (cartData?.orderType=="2"){
                 tvReturnPolicy.isVisible = false
                 tvReturnPolicy.setTextColor(Color.parseColor("#000000"))
-                tvReturnPolicy.text = "Per Item Price ${CommonMethod.formatCurrencyAmount(context,cartData.chatroomData.price?.toDoubleOrNull()?:0.0)}"
+                tvReturnPolicy.text = "${context.getString(R.string.per_item_price)} ${CommonMethod.formatCurrencyAmount(context,cartData.chatroomData.price?.toDoubleOrNull()?:0.0)}"
             }
             else{
                 tvReturnPolicy.setTextColor(Color.parseColor("#17854C"))

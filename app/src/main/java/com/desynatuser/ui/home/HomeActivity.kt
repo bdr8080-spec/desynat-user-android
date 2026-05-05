@@ -113,11 +113,11 @@ class HomeActivity : BaseActivity() {
         }
 
         bottonNavItemList.clear()
-        bottonNavItemList.add(BottomNavItem("Home",R.drawable.ic_home,R.drawable.ic_selected_home))
-        bottonNavItemList.add(BottomNavItem("Catalog",R.drawable.ic_catalog,R.drawable.ic_selected_catalog))
-        bottonNavItemList.add(BottomNavItem("Streaming",R.drawable.ic_streaming,R.drawable.ic_streaming))
-        bottonNavItemList.add(BottomNavItem("My Bag",R.drawable.ic_bag,R.drawable.ic_slected_bag))
-        bottonNavItemList.add(BottomNavItem("Profile",R.drawable.ic_profile,R.drawable.ic_selected_profile))
+        bottonNavItemList.add(BottomNavItem(getString(R.string.home),R.drawable.ic_home,R.drawable.ic_selected_home))
+        bottonNavItemList.add(BottomNavItem(getString(R.string.catalog),R.drawable.ic_catalog,R.drawable.ic_selected_catalog))
+        bottonNavItemList.add(BottomNavItem(getString(R.string.streaming),R.drawable.ic_streaming,R.drawable.ic_streaming))
+        bottonNavItemList.add(BottomNavItem(getString(R.string.my_bag),R.drawable.ic_bag,R.drawable.ic_slected_bag))
+        bottonNavItemList.add(BottomNavItem(getString(R.string.profile),R.drawable.ic_profile,R.drawable.ic_selected_profile))
 
         setBottomAdapter()
 

@@ -8,6 +8,8 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemSubCategoryBinding
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
+import com.desynatuser.utils.Constants
+
 class AffiliateSubCategoryAdapter(var context:Context, private var subCategoryList: ArrayList<GetSubCategoryResponse.Data>, var subCategoryClick:SubCategoryClick) : RecyclerView.Adapter<AffiliateSubCategoryAdapter.ViewHolder>() {
 
     private var filteredList: ArrayList<GetSubCategoryResponse.Data> = ArrayList(subCategoryList)
@@ -34,7 +36,7 @@ class AffiliateSubCategoryAdapter(var context:Context, private var subCategoryLi
         var subCategoryData = filteredList[position]
 
         holder.binding.apply {
-            tvBrandName.text = subCategoryData.nameEnglish
+            tvBrandName.text = if (Constants.language=="ar") subCategoryData.nameArabic else  subCategoryData.nameEnglish
             ivSubCategory.load(subCategoryData.image) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)

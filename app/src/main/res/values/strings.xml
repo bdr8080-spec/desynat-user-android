@@ -622,6 +622,33 @@
  <string name="in_active">In-Active</string>
  <string name="from_date_hint">From  //  //</string>
  <string name="to_date_hint">To  //  //</string>
+ <string name="you_will_save_0_kd_on_this">You will save 0 KD on this</string>
+ <string name="remove">Remove</string>
+ <string name="delivery_by">Delivery by</string>
+ <string name="seller">Seller</string>
+ <string name="custom_detail">Custom Detail</string>
+ <string name="size_sign">"Size: "</string>
+ <string name="qnt_sign">Qnt:</string>
+ <string name="days_return_and">"Days Return &amp;"</string>
+ <string name="days_exchange">"Days Exchange"</string>
+ <string name="no_exchange">"No Exchange"</string>
+ <string name="no_return">"No Return &amp;"</string>
+ <string name="per_item_price">Per Item Price</string>
+ <string name="cancel_order">Cancel Order</string>
+ <string name="rate_this_product">Rate this product</string>
+ <string name="exchange">Exchange</string>
+ <string name="price">Price</string>
+ <string name="no_product_found_in_wishlist">No product found in wishlist</string>
+ <string name="no_reel_found_in_wishlist">No reel found in wishlist</string>
+ <string name="streaming">Streaming</string>
+ <string name="profile">Profile</string>
+ <string name="products">Products</string>
+ <string name="product_added_successfully">Product added successfully !</string>
+    <string name="account_deleted_successfully">Account Deleted Successfully !</string>
+ <string name="flat">Flat</string>
+ <string name="off_on_minimum_order">off on minimum order</string>
+ <string name="no_store_found">No store found</string>
+ <string name="create_your_account">Create Your Account !</string>
 
  <array name="initial_price_values">
         <item>0</item>

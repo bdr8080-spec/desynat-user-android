@@ -38,11 +38,11 @@ class SavedAddressAdapter(var context:Context, private var addressList: ArrayLis
         holder.binding.apply {
             // 0 for office 1 for home
             if (addressData.saveAddressAs==0){
-                tvAddressType.text = "Office"
+                tvAddressType.text = context.getString(R.string.office)
                 tvAddressType.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_office,  0,0,0)
             }
             else{
-                tvAddressType.text = "Home"
+                tvAddressType.text = context.getString(R.string.home)
                 tvAddressType.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_home,  0,0,0)
             }
 

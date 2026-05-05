@@ -109,35 +109,35 @@ class AffiliateHomeActivity : BaseActivity() {
         bottonNavItemList.clear()
         bottonNavItemList.add(
             BottomNavItem(
-                "Home",
+                getString(R.string.home),
                 R.drawable.ic_home,
                 R.drawable.ic_selected_home
             )
         )
         bottonNavItemList.add(
             BottomNavItem(
-                "Products",
+                getString(R.string.products),
                 R.drawable.products_ic,
                 R.drawable.ic_selected_products
             )
         )
         bottonNavItemList.add(
             BottomNavItem(
-                "Category",
+                getString(R.string.category),
                 R.drawable.icon_affiliate,
                 R.drawable.icon_affiliate
             )
         )
         bottonNavItemList.add(
             BottomNavItem(
-                "Payments",
+                getString(R.string.payments),
                 R.drawable.payments_ic,
                 R.drawable.ic_selected_payment
             )
         )
         bottonNavItemList.add(
             BottomNavItem(
-                "Profile",
+                getString(R.string.profile),
                 R.drawable.ic_profile,
                 R.drawable.ic_selected_profile
             )

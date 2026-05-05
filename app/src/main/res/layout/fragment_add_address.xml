@@ -118,7 +118,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="House no./Building no/Area"/>
+                android:text="@string/house_no_building_no_area"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etHouseNo"

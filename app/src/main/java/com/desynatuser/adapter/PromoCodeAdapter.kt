@@ -10,6 +10,7 @@ import com.desynatuser.databinding.ItemGiftCardBinding
 import com.desynatuser.databinding.ItemPromoCodeBinding
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.ui.home.profile.response.GetPromoCodeResponse
+import com.desynatuser.utils.Constants
 
 class PromoCodeAdapter(var context:Context, var promoCodeList: ArrayList<GetPromoCodeResponse.Data>, var promoCodeClick:PromoCodeClick) : RecyclerView.Adapter<PromoCodeAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemPromoCodeBinding) :
@@ -33,9 +34,9 @@ class PromoCodeAdapter(var context:Context, var promoCodeList: ArrayList<GetProm
         var promoCodeData = promoCodeList[position]
 
         holder.binding.apply {
-            tvName.text = promoCodeData.nameEnglish
-            tvFeature.text = "Flat ${promoCodeData.discountPercent}% off on minimum order ${promoCodeData.minOrderValue} KD"
-            tvDescription.text = promoCodeData.descriptionEnglish
+            tvName.text = if (Constants.language=="ar") promoCodeData.nameArabic else  promoCodeData.nameEnglish
+            tvFeature.text = "${context.getString(R.string.flat)} ${promoCodeData.discountPercent}% ${context.getString(R.string.off_on_minimum_order)} ${promoCodeData.minOrderValue} KD"
+            tvDescription.text = if (Constants.language=="ar")  promoCodeData.descriptionArabic else promoCodeData.descriptionEnglish
         }
 
         holder.itemView.setOnClickListener {

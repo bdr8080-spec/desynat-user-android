@@ -219,7 +219,7 @@ class WishListFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
 
-                    showToast("Product removed from your wishlist successfully")
+                    showToast( getString(R.string.product_removed_from_your_wishlist_successfully))
                     productList.removeAt(selectedPos)
 
 
@@ -238,7 +238,7 @@ class WishListFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
 
-                    showToast("Reel removed from your wishlist successfully")
+                    showToast( getString(R.string.reel_removed_from_your_wishlist_successfully))
                 reelList.removeAt(selectedReelPos)
 
 
@@ -304,12 +304,12 @@ class WishListFragment : BaseFragment() {
 
     fun checkData(){
         binding?.tvNoDataFound?.isVisible = productList.isEmpty()
-        binding?.tvNoDataFound?.text = "No product found in wishlist"
+        binding?.tvNoDataFound?.text = getString(R.string.no_product_found_in_wishlist)
     }
 
     fun checkReelData(){
         binding?.tvNoDataFound?.isVisible = reelList.isEmpty()
-        binding?.tvNoDataFound?.text = "No reel found in wishlist"
+        binding?.tvNoDataFound?.text = getString(R.string.no_reel_found_in_wishlist)
     }
 
 

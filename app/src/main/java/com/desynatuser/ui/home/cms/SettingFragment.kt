@@ -154,7 +154,8 @@ class SettingFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
 
-                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString()){
+                    CommonMethod.showSuccessDialog(requireActivity(),
+                        getString(R.string.account_deleted_successfully)){
                         Constants.isLogout = true
                         CommonMethod.clearAffiliateData(requireActivity())
                         requireActivity().startActivity(
@@ -175,7 +176,7 @@ class SettingFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString()){
+                    CommonMethod.showSuccessDialog(requireActivity(),getString(R.string.account_deleted_successfully)){
                         Constants.isGuest = false
                         Constants.isLogout = true
                         Constants.Category = "Women"

@@ -36,6 +36,7 @@
             android:paddingEnd="@dimen/_10sdp"
             android:singleLine="true"
             android:imeOptions="actionDone"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnApply"/>
 

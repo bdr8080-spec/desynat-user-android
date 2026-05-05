@@ -152,7 +152,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 val returnDays = productData?.productDetails?.returnDays
                 val exchangeDays = productData?.productDetails?.exchangableDays
 
-                val finalText = when {
+                /*val finalText = when {
                     returnDays != null && exchangeDays != null ->
                         "${returnDays} Days Return & ${exchangeDays} Days Exchange"
 
@@ -164,6 +164,24 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
 
                     else ->
                         "No Return & No Exchange"
+                }*/
+
+                val finalText = when {
+                    returnDays != null && exchangeDays != null ->
+                        "${returnDays} ${context.getString(R.string.days_return_and)} ${exchangeDays} ${
+                            context.getString(
+                                R.string.days_exchange
+                            )
+                        }"
+
+                    returnDays != null ->
+                        "${returnDays} ${context.getString(R.string.days_return_and)} ${context.getString(R.string.no_exchange)}"
+
+                    exchangeDays != null ->
+                        "${context.getString(R.string.no_return)} ${exchangeDays} ${context.getString(R.string.days_exchange)}"
+
+                    else ->
+                        "${context.getString(R.string.no_return)} ${context.getString(R.string.no_exchange)}"
                 }
 
                 if (productData?.order?.orderType == "2") {

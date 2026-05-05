@@ -453,7 +453,7 @@ class MyBagFragment : BaseFragment() {
             }
 
             if (CommonMethod.formatPrice(shippingFees)=="0"){
-                tvShippingFee.text = "Free Delivery"
+                tvShippingFee.text = getString(R.string.free_delivery)
             }
             else{
                // tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"

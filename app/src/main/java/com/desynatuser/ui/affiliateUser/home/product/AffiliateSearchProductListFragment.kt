@@ -280,7 +280,7 @@ class AffiliateSearchProductListFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     linkDialog?.dismiss()
-                    CommonMethod.showSuccessDialog(requireActivity(),"Product added successfully !")
+                    CommonMethod.showSuccessDialog(requireActivity(),getString(R.string.product_added_successfully))
                     productList.removeAt(selectedPos)
                     productAdapter?.notifyItemRemoved(selectedPos)
                     productAdapter?.notifyItemRangeChanged(selectedPos, productList.size - selectedPos)

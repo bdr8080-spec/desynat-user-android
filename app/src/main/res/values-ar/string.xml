@@ -6,7 +6,7 @@
     <string name="enter_mobile_number">أدخل رقم الهاتف المحمول</string>
     <string name="enter_email_address">أدخل عنوان البريد الإلكتروني</string>
     <string name="password_reset_successfully">تم إعادة تعيين كلمة المرور بنجاح!</string>
-    <string name="don_t_have_an_account_create_new">ليس لديك حساب؟ قم بالتسجيل</string>
+    <string name="don_t_have_an_account_create_new">ليس لديك حساب؟ سجل الآن</string>
     <string name="signUp">إنشاء حساب</string>
     <string name="already_have_an_account_sign_in">لديك حساب بالفعل؟ تسجيل الدخول</string>
     <string name="sign_in">تسجيل الدخول</string>
@@ -607,4 +607,32 @@
     <string name="in_active">غير نشط</string>
     <string name="from_date_hint">من  //  //</string>
     <string name="to_date_hint">إلى  //  //</string>
+
+    <string name="you_will_save_0_kd_on_this">ستوفر 0 د.ك على هذا</string>
+    <string name="remove">إزالة</string>
+    <string name="delivery_by">التوصيل بواسطة</string>
+    <string name="seller">البائع</string>
+    <string name="custom_detail">تفاصيل مخصصة</string>
+    <string name="size_sign">المقاس: </string>
+    <string name="qnt_sign">الكمية:</string>
+    <string name="days_return_and">أيام الإرجاع و</string>
+    <string name="days_exchange">أيام الاستبدال</string>
+    <string name="no_exchange">لا يوجد استبدال</string>
+    <string name="no_return">لا يوجد إرجاع و</string>
+    <string name="per_item_price">سعر القطعة الواحدة</string>
+    <string name="cancel_order">إلغاء الطلب</string>
+    <string name="rate_this_product">قيّم هذا المنتج</string>
+    <string name="exchange">استبدال</string>
+    <string name="price">السعر</string>
+    <string name="no_product_found_in_wishlist">لا يوجد منتج في قائمة الأمنيات</string>
+    <string name="no_reel_found_in_wishlist">لا يوجد ريل في قائمة الأمنيات</string>
+    <string name="streaming">بث مباشر</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="products">المنتجات</string>
+    <string name="product_added_successfully">تمت إضافة المنتج بنجاح!</string>
+    <string name="account_deleted_successfully">تم حذف الحساب بنجاح!</string>
+    <string name="flat">ثابت</string>
+    <string name="off_on_minimum_order">خصم على الحد الأدنى للطلب</string>
+    <string name="no_store_found">لم يتم العثور على متجر</string>
+    <string name="create_your_account">أنشئ حسابك!</string>
 </resources>

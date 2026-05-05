@@ -69,7 +69,7 @@
         style="@style/button"
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_20sdp"
-        android:text="Proceed"
+        android:text="@string/proceed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

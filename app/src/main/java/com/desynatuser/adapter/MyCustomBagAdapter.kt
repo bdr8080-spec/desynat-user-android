@@ -52,16 +52,20 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
 
             val finalText = when {
                 returnDays != null && exchangeDays != null ->
-                    "${returnDays} Days Return & ${exchangeDays} Days Exchange"
+                    "${returnDays} ${context.getString(R.string.days_return_and)} ${exchangeDays} ${
+                        context.getString(
+                            R.string.days_exchange
+                        )
+                    }"
 
                 returnDays != null ->
-                    "${returnDays} Days Return & No Exchange"
+                    "${returnDays} ${context.getString(R.string.days_return)} ${context.getString(R.string.no_exchange)}"
 
                 exchangeDays != null ->
-                    "No Return & ${exchangeDays} Days Exchange"
+                    "${context.getString(R.string.no_return)} ${exchangeDays} ${context.getString(R.string.days_exchange)}"
 
                 else ->
-                    "No Return & No Exchange"
+                    "${context.getString(R.string.no_return)} ${context.getString(R.string.days_return)}"
             }
 
             tvReturnPolicy.text = finalText

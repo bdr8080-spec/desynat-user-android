@@ -50,7 +50,11 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
 
             val discountType = if (variant?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
             tvDiscount.text = "$discountValue$discountType"
-            tvCommission.text = "${CommonMethod.formatCurrencyAmountWithout(context,productData?.affiliatedCommission?.toDoubleOrNull() ?: 0.0)}% Commission"
+            tvCommission.text = "${CommonMethod.formatCurrencyAmountWithout(context,productData?.affiliatedCommission?.toDoubleOrNull() ?: 0.0)}% ${
+                context.getString(
+                    R.string.commission
+                )
+            }"
 
 
             tvRating.text = "(${productData?.storeAvgRating?:0})"

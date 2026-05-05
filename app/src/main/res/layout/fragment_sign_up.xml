@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:text="Create Your Account ! "
+            android:text="@string/create_your_account"
             android:textColor="@color/brown"
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/_18sdp"

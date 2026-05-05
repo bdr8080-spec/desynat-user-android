@@ -345,7 +345,7 @@ class OrderDetailFragment : BaseFragment() {
             }
 
             if (CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)=="0"){
-                tvShippingFee.text = "Free Delivery"
+                tvShippingFee.text = getString(R.string.free_delivery)
             }
             else{
               //  tvShippingFee.text = "${CommonMethod.formatPrice(orderData?.order?.shippingFees?.toDoubleOrNull()?:0.0)} KD"

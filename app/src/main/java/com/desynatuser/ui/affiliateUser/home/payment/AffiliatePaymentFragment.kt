@@ -156,6 +156,10 @@ class AffiliatePaymentFragment : BaseFragment() {
             ivFilter.setOnClickListener {
                 paymentFilterDialog()
             }
+
+            tvExport.setOnClickListener {
+
+            }
         }
 
     }

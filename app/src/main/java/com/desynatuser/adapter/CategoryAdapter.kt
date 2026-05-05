@@ -8,6 +8,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemCategoriesBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
+import com.desynatuser.utils.Constants
 
 class CategoryAdapter(var context: Context, private val categoryList: List<GetSubCategoryResponse.Data>, var categoryClick:CategoryClick) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
@@ -27,7 +28,7 @@ class CategoryAdapter(var context: Context, private val categoryList: List<GetSu
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            tvCategory.text = categoryList[position].nameEnglish
+            tvCategory.text = if(Constants.language=="ar") categoryList[position].nameArabic else categoryList[position].nameEnglish
 
             ivCategory.load(categoryList[position].image) {
                 crossfade(true)
