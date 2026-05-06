@@ -109,7 +109,7 @@ class ProfileDetailFragment : BaseFragment() {
                 imagePicker.showImageSourceDialog()
             }
 
-            etMobile.setOnClickListener {
+            tvChangeMobile.setOnClickListener {
                 val map = HashMap<String,Any>()
                 map["for"] = "mobile" //mobile,email
                 map["country_code"] = user?.countryCode.toString()
@@ -119,7 +119,7 @@ class ProfileDetailFragment : BaseFragment() {
                 changeMobileOrEmail(map)
             }
 
-            etEmail.setOnClickListener {
+            tvChangeEmail.setOnClickListener {
                 val map = HashMap<String,Any>()
                 map["for"] = "email" //mobile,email
                 map["email"] = binding?.etEmail?.text?.trim().toString()

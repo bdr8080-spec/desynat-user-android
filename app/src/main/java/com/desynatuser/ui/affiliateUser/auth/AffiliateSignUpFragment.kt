@@ -16,6 +16,7 @@ import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -146,14 +147,17 @@ class AffiliateSignUpFragment : BaseFragment() {
                         "1"->{
                             ivProfile.setImageURI(it)
                             uploadFile(CommonMethod.uriToFile(requireActivity(), it))
+                            clPlaceholder.isVisible = false
                         }
                         "2"->{
                             ivDoc1.setImageURI(it)
                             uploadFile(CommonMethod.uriToFile(requireActivity(), it))
+                            clDocument1Placeholder.isVisible = false
                         }
                         "3"->{
                             ivDoc2.setImageURI(it)
                             uploadFile(CommonMethod.uriToFile(requireActivity(), it))
+                            clDocument2Placeholder.isVisible = false
                         }
                     }
 
@@ -282,7 +286,8 @@ class AffiliateSignUpFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                  CommonMethod.showSuccessDialog(requireActivity(),"Document submitted successfully"){
+                  CommonMethod.showSuccessDialog(requireActivity(),
+                      getString(R.string.document_submitted_successfully)){
                       findNavController().navigate(
                           R.id.action_affiliateSignUpFragment_to_underReviewFragment
                       )
@@ -348,67 +353,69 @@ class AffiliateSignUpFragment : BaseFragment() {
 
             return when {
                 profileImageUrl==null -> {
-                    showToast("Please upload profile image")
+                    showToast(getString(R.string.please_upload_profile_image))
                     false
                 }
                 fullName.isEmpty() -> {
-                    showToast("Please enter your full name")
+                    showToast(getString(R.string.please_enter_your_full_name))
                     false
                 }
 
                 mobile.isEmpty() -> {
-                    showToast("Please enter your mobile number")
+                    showToast(getString(R.string.please_enter_your_mobile_number))
                     false
                 }
 
                 mobile.length < 7 -> {
-                    showToast("Please enter a valid mobile number")
+                    showToast(getString(R.string.please_enter_a_valid_mobile_number))
                     false
                 }
 
                 email.isEmpty() -> {
-                    showToast("Please enter your email address")
-                    false
-                }
-
-                docUrl1==null -> {
-                    showToast("Please upload document1")
-                    false
-                }
-
-                docUrl2==null -> {
-                    showToast("Please upload document2")
+                    showToast(getString(R.string.enter_email_address))
                     false
                 }
 
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                    showToast("Please enter a valid email address")
+                    showToast(getString(R.string.please_enter_a_valid_email_address))
                     false
                 }
 
+
+                docUrl1==null -> {
+                    showToast(getString(R.string.please_upload_document1))
+                    false
+                }
+
+                docUrl2==null -> {
+                    showToast(getString(R.string.please_upload_document2))
+                    false
+                }
+
+
                 password.isEmpty() -> {
-                    showToast("Please enter a password")
+                    showToast(getString(R.string.please_enter_password))
                     false
                 }
 
                  !CommonMethod.isValidPassword(password) -> {
-                     CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include letters and digits")
+                     CommonMethod.showAlertDialog(requireActivity(),getString(R.string.password_must_be_at_least_8_characters_long_and_include_letters_and_digits))
                      //   CommonMethod.showAlertDialog(requireActivity(),"Password must be at least 8 characters long and include uppercase, lowercase, number, and special symbol")
                      false
                  }
 
                 confirmPassword.isEmpty() -> {
-                    showToast("Please re-enter password")
+                    showToast(getString(R.string.please_re_enter_password))
                     false
                 }
 
                 confirmPassword != password -> {
-                    showToast("Password and confirm password didn't match")
+                    showToast(getString(R.string.password_and_confirm_password_didn_t_match))
                     false
                 }
 
                 !cbTermsPolicy.isChecked -> {
-                    showToast("Please accept Terms & Policies to continue")
+                    showToast(getString(R.string.please_accept_terms_policies_to_continue))
                     false
                 }
 

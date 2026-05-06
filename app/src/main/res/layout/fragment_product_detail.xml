@@ -114,6 +114,7 @@
                 tools:text="3pcs Set (by Abaya)"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dotsIndicator" />
@@ -127,6 +128,7 @@
                 tools:text="Allen Women Cotton Abhaya"
                 android:textColor="@color/brown"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@id/ratingBar" />
@@ -154,6 +156,7 @@
                 tools:text="(0)"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
                 app:layout_constraintStart_toEndOf="@+id/ratingBar"
                 app:layout_constraintTop_toTopOf="@id/ratingBar" />
@@ -166,6 +169,7 @@
                 tools:text="239 KD"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@id/tvName" />
 
@@ -178,6 +182,7 @@
                 tools:text="250 KD"
                 android:textColor="#99000000"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintBottom_toBottomOf="@+id/tvDiscountedPrice"
                 app:layout_constraintStart_toEndOf="@+id/tvDiscountedPrice"
                 app:layout_constraintTop_toTopOf="@+id/tvDiscountedPrice" />
@@ -211,6 +216,7 @@
                 tools:text="20% off"
                 android:textColor="#E70000"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@id/tvPrice" />
@@ -223,6 +229,7 @@
                 android:text="@string/inclusive_of_all_taxes"
                 android:textColor="#16B364"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@+id/tvDiscountedPrice" />
 
@@ -235,6 +242,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@+id/tvInclusiveTax" />
 
@@ -262,6 +270,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@+id/rvColor" />
 
@@ -290,6 +299,7 @@
                 android:text="@string/size_guide"
                 android:textColor="#714829"
                 android:textSize="@dimen/_10sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvSize" />
 
@@ -324,6 +334,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -336,6 +347,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_2sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDes" />
@@ -349,6 +361,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
 
@@ -385,10 +398,11 @@
                     android:drawableEnd="@drawable/icon_delivery"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/relSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -398,7 +412,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSearchAddress"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/edit_text"
                         android:paddingVertical="@dimen/_10sdp"
@@ -407,9 +421,10 @@
                         android:hint="@string/select_location"
                         android:singleLine="true"
                         android:textSize="@dimen/_11sdp"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/ivLoc"
-                        android:layout_toLeftOf="@+id/tvChange"/>
+                       app:layout_constraintStart_toEndOf="@+id/ivLoc"
+                        app:layout_constraintEnd_toStartOf="@+id/tvChange"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/ivLoc"
@@ -419,7 +434,9 @@
                         android:padding="@dimen/_10sdp"
                         app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
                         android:src="@drawable/ic_delivery_pin"
-                        android:layout_centerVertical="true" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvChange"
@@ -433,10 +450,11 @@
                         android:textColor="@color/brown"
                         android:textSize="@dimen/_10sdp"
                         android:layout_marginEnd="1dp"
-                      android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
+                      app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDeliveryDate"
@@ -449,6 +467,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/relSearch" />
 
@@ -463,6 +482,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvDeliveryDate" />
 
@@ -477,6 +497,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvCashOnDelivery" />
 
@@ -491,6 +512,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@+id/clCheckDelivery" />
 
@@ -595,6 +617,7 @@
                 android:text="(2 Items)"
                 android:textColor="@color/brown"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 android:layout_centerVertical="true" />
 
             <androidx.appcompat.widget.AppCompatTextView

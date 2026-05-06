@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/poppins_regular"
-        android:text="Ongoing"
+        android:text="@string/ongoing"
         android:textColor="#FF5F1B"
         android:layout_marginStart="1dp"
         android:textSize="@dimen/_10sdp"
@@ -54,6 +54,7 @@
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_1sdp"
         android:textSize="@dimen/_11sdp"
+        android:textAlignment="viewStart"
         android:layout_marginHorizontal="@dimen/_10sdp"
         app:layout_constraintStart_toEndOf="@+id/ivStore"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +69,7 @@
         android:text="@string/size"
         android:textColor="@color/black"
         android:textSize="@dimen/_9sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -91,6 +93,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/poppins_light"
         android:text="@string/color"
+        android:textAlignment="viewStart"
         android:drawableStart="@drawable/ic_cart_dot"
         android:drawablePadding="@dimen/_3sdp"
         android:textColor="@color/black"
@@ -122,6 +125,7 @@
         android:text="@string/qnt_sign"
         android:textColor="@color/black"
         android:textSize="@dimen/_9sdp"
+        android:textAlignment="viewStart"
         android:layout_marginStart="@dimen/_5sdp"
         android:drawableStart="@drawable/ic_cart_dot"
         android:drawablePadding="@dimen/_3sdp"
@@ -153,6 +157,7 @@
         android:text="KD 239"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvSize" />
 
@@ -166,6 +171,7 @@
         android:text="KD 239"
         android:textColor="#99000000"
         android:textSize="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         android:layout_marginStart="@dimen/_5sdp"
         app:layout_constraintStart_toEndOf="@+id/tvDiscountPrice"
         app:layout_constraintTop_toTopOf="@+id/tvDiscountPrice" />
@@ -187,6 +193,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/poppins_regular"
         android:maxLines="1"
+        android:textAlignment="viewStart"
         android:layout_marginTop="@dimen/_1sdp"
         android:text="20% off"
         android:textColor="#E70000"
@@ -203,13 +210,15 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvReturnPolicy"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_light"
         android:text="14 days return available"
         android:textColor="#17854C"
         android:textSize="@dimen/_9sdp"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:textAlignment="viewStart"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewImg" />
 

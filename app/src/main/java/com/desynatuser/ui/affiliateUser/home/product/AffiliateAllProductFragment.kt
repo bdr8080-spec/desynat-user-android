@@ -632,7 +632,7 @@ class AffiliateAllProductFragment : BaseFragment() {
                     dialog.dismiss()
                 }
                 else{
-                    showToast("Please select")
+                    showToast(getString(R.string.please_select))
                 }
             }
         }

@@ -157,6 +157,8 @@ class SettingFragment : BaseFragment() {
                     CommonMethod.showSuccessDialog(requireActivity(),
                         getString(R.string.account_deleted_successfully)){
                         Constants.isLogout = true
+                        SharedPreference.get(requireActivity()).affiliateAccessToken = ""
+                        SharedPreference.get(requireActivity()).clearAffiliateUser()
                         CommonMethod.clearAffiliateData(requireActivity())
                         requireActivity().startActivity(
                             Intent(
@@ -180,6 +182,11 @@ class SettingFragment : BaseFragment() {
                         Constants.isGuest = false
                         Constants.isLogout = true
                         Constants.Category = "Women"
+                        SharedPreference.get(requireActivity()).accessToken = ""
+                        SharedPreference.get(requireActivity()).affiliateAccessToken = ""
+                        SharedPreference.get(requireActivity()).clearUser()
+                        SharedPreference.get(requireActivity()).clearAffiliateUser()
+                        SharedPreference.get(requireActivity()).clearAddress()
                         requireActivity().startActivity(
                             Intent(requireActivity(),
                                 AuthActivity::class.java)

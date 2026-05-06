@@ -275,7 +275,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                 }
             }
 
-            etMobile.setOnClickListener {
+            tvChangeMobile.setOnClickListener {
 
                 val map = HashMap<String,Any>()
                 map["for"] = "mobile" //mobile,email
@@ -286,7 +286,7 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                 changeAffiliateMobileOrEmail(map)
             }
 
-            etEmail.setOnClickListener {
+            tvChangeEmail.setOnClickListener {
 
                 val map = HashMap<String,Any>()
                 map["for"] = "email" //mobile,email

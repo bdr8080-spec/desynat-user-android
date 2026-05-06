@@ -60,8 +60,8 @@ class BankDetailFragment : BaseFragment() {
             if (from == "profile") {
                 llTab.isVisible = false
                 if (type == "edit") {
-                    toolbar.tvToolbar.text = "Edit Account"
-                    btnSubmit.text = "Update"
+                    toolbar.tvToolbar.text = getString(R.string.edit_account)
+                    btnSubmit.text = getString(R.string.update)
 
                     val itemBankDataJson = arguments?.getString("bankData")
                     if (!itemBankDataJson.isNullOrEmpty()) {
@@ -73,13 +73,13 @@ class BankDetailFragment : BaseFragment() {
                     }
 
                 } else {
-                    toolbar.tvToolbar.text = "Add Account"
-                    btnSubmit.text = "Add Account"
+                    toolbar.tvToolbar.text = getString(R.string.add_account)
+                    btnSubmit.text = getString(R.string.add_account)
                 }
             } else {
                 llTab.isVisible = true
-                toolbar.tvToolbar.text = "Bank Details"
-                btnSubmit.text = "Submit"
+                toolbar.tvToolbar.text = getString(R.string.bank_details)
+                btnSubmit.text = getString(R.string.submit)
             }
             CommonMethod.removeSpace(etAccountNumber)
             CommonMethod.removeSpace(etAccountHolderName)
@@ -137,7 +137,7 @@ class BankDetailFragment : BaseFragment() {
                 response?.let {
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        "Details Submitted Successfully"
+                        getString(R.string.details_submitted_successfully)
                     ) {
                         findNavController().navigate(
                             R.id.action_affiliateAddBankDetailFragment_to_underReviewFragment
@@ -190,7 +190,7 @@ class BankDetailFragment : BaseFragment() {
                         "edit" -> {
                             CommonMethod.showSuccessDialog(
                                 requireActivity(),
-                                "Bank Details Updated Successfully"
+                                getString(R.string.bank_details_updated_successfully)
                             ) {
                                 findNavController().popBackStack()
                             }
@@ -199,7 +199,7 @@ class BankDetailFragment : BaseFragment() {
                         "add" -> {
                             CommonMethod.showSuccessDialog(
                                 requireActivity(),
-                                "Bank Details Added Successfully"
+                                getString(R.string.bank_details_added_successfully)
                             ) {
                                 findNavController().popBackStack()
                             }
@@ -232,37 +232,37 @@ class BankDetailFragment : BaseFragment() {
         binding?.apply {
             return when {
                 etBankName.text.toString().isEmpty() -> {
-                    showToast("Please enter bank name")
+                    showToast(getString(R.string.please_enter_bank_name))
                     false
                 }
 
                 etAccountHolderName.text.toString().isEmpty() -> {
-                    showToast("Please enter account holder name")
+                    showToast(getString(R.string.please_enter_account_holder_name))
                     false
                 }
 
                 etAccountNumber.text.toString().isEmpty() -> {
-                    showToast("Please enter account number")
+                    showToast(getString(R.string.please_enter_account_number))
                     false
                 }
 
                 etConfirmAccountNumber.text.toString().isEmpty() -> {
-                    showToast("Please enter re-enter account number")
+                    showToast(getString(R.string.please_enter_re_enter_account_number))
                     false
                 }
 
                 etAccountNumber.text.toString() != etConfirmAccountNumber.text.toString() -> {
-                    showToast("Account number and confirm account number didn't match")
+                    showToast(getString(R.string.account_number_and_confirm_account_number_didn_t_match))
                     false
                 }
 
                 etIban.text.toString().isEmpty() -> {
-                    showToast("Please enter IBAN number")
+                    showToast(getString(R.string.please_enter_iban_number))
                     false
                 }
 
                 etSwift.text.toString().isEmpty() -> {
-                    showToast("Please enter SWIFT/BIC number")
+                    showToast(getString(R.string.please_enter_swift_bic_number))
                     false
                 }
 

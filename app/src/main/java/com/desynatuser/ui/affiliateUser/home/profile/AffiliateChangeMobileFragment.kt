@@ -148,7 +148,7 @@ class AffiliateChangeMobileFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
-                    CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email")"Email Address Changed successfully !" else "Mobile Number Changed successfully !"){
+                    CommonMethod.showSuccessDialog(requireActivity(),  if (from=="email") getString(R.string.email_address_changed_successfully) else  getString(R.string.mobile_number_changed_successfully)){
                         findNavController().popBackStack()
                     }
                 }

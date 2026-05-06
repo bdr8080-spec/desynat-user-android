@@ -48,6 +48,7 @@
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_2sdp"
         android:textSize="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         android:layout_marginHorizontal="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="@+id/ivStore"
         app:layout_constraintEnd_toEndOf="@+id/ivStore"
@@ -79,6 +80,7 @@
         android:text="(0)"
         android:textColor="@color/black"
         android:textSize="@dimen/_9sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toEndOf="@+id/rating"
        app:layout_constraintTop_toTopOf="@+id/rating"
         app:layout_constraintBottom_toBottomOf="@+id/rating"/>
@@ -94,6 +96,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/rating" />
@@ -108,6 +111,7 @@
         android:text="KD 239"
         android:textColor="#99000000"
         android:textSize="@dimen/_9sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvDiscountPrice" />
 
@@ -132,6 +136,7 @@
         android:text="20% off"
         android:textColor="#E70000"
         android:textSize="@dimen/_9sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toEndOf="@+id/tvPrice"
         app:layout_constraintTop_toTopOf="@+id/tvPrice"
         app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>

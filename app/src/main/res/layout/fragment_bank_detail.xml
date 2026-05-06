@@ -69,113 +69,124 @@
                 android:id="@+id/tvBankName"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:text="Bank Name"
+                android:text="@string/bank_name"
+                android:textAlignment="viewStart"
                 android:layout_marginHorizontal="@dimen/_15sdp"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etBankName"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Enter Bank Name"
+                android:hint="@string/enter_bank_name"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="textCapSentences"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                android:background="@drawable/edit_back"/>
+                android:background="@drawable/edit_back"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvAccountHolderName"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:text="Account holder name"/>
+                android:text="@string/account_holder_name"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etAccountHolderName"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Enter Account holder name"
+                android:hint="@string/enter_account_holder_name"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="textCapSentences"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                android:background="@drawable/edit_back"/>
+                android:background="@drawable/edit_back"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvAccountNumber"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:text="Account Number"/>
+                android:text="@string/account_number"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etAccountNumber"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Enter Account Number"
+                android:hint="@string/enter_account_number"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="number"
                 android:maxLength="20"
-                android:background="@drawable/edit_back"/>
+                android:background="@drawable/edit_back"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvConfirmAccountNumber"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:text="Confirm Account Number"/>
+                android:text="@string/confirm_account_number"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etConfirmAccountNumber"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Re-Enter Account Number"
+                android:hint="@string/re_enter_account_number"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="number"
                 android:maxLength="20"
-                android:background="@drawable/edit_back"/>
+                android:background="@drawable/edit_back"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvIBAN"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:text="IBAN"/>
+                android:text="@string/iban"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etIban"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Enter IBAN"
+                android:hint="@string/enter_iban"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="text"
-                android:background="@drawable/edit_back"/>
+                android:background="@drawable/edit_back"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:text="SWIFT/BIC"/>
+                android:text="@string/swift_bic"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etSwift"
                 android:layout_width="match_parent"
                 style="@style/edit_text"
-                android:hint="Enter SWIFT/BIC"
+                android:hint="@string/enter_swift_bic"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:inputType="text"
                 android:maxLength="15"
-                android:background="@drawable/edit_back"/>
+                android:background="@drawable/edit_back"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btnSubmit"
                 style="@style/button"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:text="Submit"
+                android:text="@string/submit"
                 android:layout_marginHorizontal="@dimen/_15sdp"/>
 
             <View

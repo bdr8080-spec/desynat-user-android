@@ -100,7 +100,7 @@ class MyBagFragment : BaseFragment() {
 //                tvDiscountedPrice.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
 //                tvTotalAmountValue.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
 //                tvCouponDiscountValue.text = "${CommonMethod.formatPrice(promoCode?.applyDiscountValue?:0.0)} KD"
-                tvCouponDiscount.text = "Coupon Discount (${promoCode?.discountCode})"
+                tvCouponDiscount.text = "${getString(R.string.coupon_discount)} (${promoCode?.discountCode})"
 
                 promoCode?.let { promo ->
                     updateBillingDetails(
@@ -170,7 +170,7 @@ class MyBagFragment : BaseFragment() {
 
             btnPlaceOrder.setOnClickListener {
                 if (selectedAddress == null) {
-                    showToast("Please select address")
+                    showToast(getString(R.string.please_select_address))
                 } else {
                     val bundle = Bundle().apply {
                         putString("from", "myBag")
@@ -199,7 +199,7 @@ class MyBagFragment : BaseFragment() {
             relPromoCode.setOnClickListener {
                 if (promoCode == null) {
                     if (selectedAddress == null) {
-                        showToast("Please select delivery address first")
+                        showToast(getString(R.string.please_select_delivery_address_first))
                     } else {
                         val bundle = Bundle().apply {
                             putString("deliveryid", selectedAddress?.id.toString())
@@ -433,10 +433,10 @@ class MyBagFragment : BaseFragment() {
                 tvMrp.isVisible = false
                 if (myCartList.size==1){
                 //    tvCustomPrice.text = "Item Price (${CommonMethod.formatPrice(myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} KD X ${myCartList[0]?.chatroomData?.quantity})"
-                    tvCustomPrice.text = "Item Price (${CommonMethod.formatCurrencyAmount(requireActivity(),myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} X ${myCartList[0]?.chatroomData?.quantity})"
+                    tvCustomPrice.text = "${getString(R.string.item_price)} (${CommonMethod.formatCurrencyAmount(requireActivity(),myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} X ${myCartList[0]?.chatroomData?.quantity})"
                 }
                 else{
-                    tvCustomPrice.text = "Custom Items Price"
+                    tvCustomPrice.text = "${getString(R.string.custom_item_price)}"
                 }
             }
 
@@ -480,9 +480,9 @@ class MyBagFragment : BaseFragment() {
 //                tvSavePrice.text = "You will save ${
 //                    CommonMethod.formatPrice(discountOnMrp + couponDiscount)
 //                } KD on this"
-                tvSavePrice.text = "You will save ${
+                tvSavePrice.text = "${getString(R.string.you_will_save)} ${
                     CommonMethod.formatCurrencyAmount(requireActivity(),discountOnMrp + couponDiscount)
-                } on this"
+                } ${getString(R.string.on_this)}"
                 tvSavePrice.isVisible = true
             }
             else{
@@ -522,7 +522,7 @@ class MyBagFragment : BaseFragment() {
                 tvCouponDiscount.isVisible = true
                 tvCouponDiscountValue.isVisible = true
                 tvPromoCode.text = promo.discountCode
-                tvCouponDiscount.text = "Coupon Discount (${promo.discountCode})"
+                tvCouponDiscount.text = "${getString(R.string.coupon_discount)} (${promo.discountCode})"
             }
         }
     }

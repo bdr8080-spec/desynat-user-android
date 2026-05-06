@@ -41,71 +41,71 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
         holder.binding.apply {
             tvStatus.isVisible = false
             if (productData?.paymentStatus=="2"||productData?.paymentStatus=="3"){
-                tvStatus.text = "Cancelled"
+                tvStatus.text = context.getString(R.string.cancelled)
                 tvStatus.setTextColor(Color.parseColor("#E70000"))
             }
             else {
                 when (productData?.deliveryStatus) {//1 all 2 ongoing 3 delivered 4 cancelled 5 return
                     "0" -> {
-                        tvStatus.text = "Confirmed"
+                        tvStatus.text = context.getString(R.string.confirmed)
                         tvStatus.setTextColor(Color.parseColor("#17854C"))
                     }
                     "1" -> {
 
                         if (productData?.rEApprove=="1"&&productData?.returnType=="1"&&productData?.assignStatus=="0"){
-                            tvStatus.text = "Confirmed"
+                            tvStatus.text = context.getString(R.string.confirmed)
                             tvStatus.setTextColor(Color.parseColor("#16B364"))
                         }
                         else if (productData?.rEApprove=="1"&&productData?.returnType=="1"&&productData?.assignStatus=="1"){
-                            tvStatus.text = "Ongoing"
+                            tvStatus.text = context.getString(R.string.ongoing)
                             tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                         }
                         else{
-                            tvStatus.text = "Confirmed"
+                            tvStatus.text = context.getString(R.string.confirmed)
                             tvStatus.setTextColor(Color.parseColor("#16B364"))
                         }
 
                         if (productData?.rEApprove == "1" && productData?.returnType == "1" && productData?.assignStatus == "0") {
-                            tvStatus.text = "Confirmed"
+                            tvStatus.text = context.getString(R.string.confirmed)
                             tvStatus.setTextColor(Color.parseColor("#16B364"))
 
                         } else if (productData?.rEApprove == "1" && productData?.returnType == "1" && productData?.assignStatus == "1") {
-                            tvStatus.text = "Out for Picked"
+                            tvStatus.text = context.getString(R.string.out_for_picked)
                             tvStatus.setTextColor(Color.parseColor("#16B364"))
 
                         } else {
-                            tvStatus.text = "Confirmed"
+                            tvStatus.text = context.getString(R.string.confirmed)
                             tvStatus.setTextColor(Color.parseColor("#17854C"))
                         }
                     }
 
                     "2" -> {
-                        tvStatus.text = "Confirmed"
+                        tvStatus.text = context.getString(R.string.confirmed)
                         tvStatus.setTextColor(Color.parseColor("#17854C"))
                     }
                     "2.1" -> {
-                        tvStatus.text = "Ongoing"
+                        tvStatus.text = context.getString(R.string.ongoing)
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                     }
                     "2.2" -> {
-                        tvStatus.text = "Ongoing"
+                        tvStatus.text = context.getString(R.string.ongoing)
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                     }
 
                     "7" -> {
                         when (productData?.returnType) {
                             "1" -> {
-                               tvStatus.text = "Ongoing"
+                               tvStatus.text = context.getString(R.string.ongoing)
                                 tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                             }
 
                             "2" -> {
-                                tvStatus.text = "Ongoing"
+                                tvStatus.text = context.getString(R.string.ongoing)
                                 tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                             }
 
                             else -> {
-                                tvStatus.text = "Ongoing"
+                                tvStatus.text = context.getString(R.string.ongoing)
                                 tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                             }
                         }
@@ -115,66 +115,66 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
                     "3" -> {
 
                         if (productData?.r_e_type == "0" && productData?.p_orderdetails_id == "0" && productData?.rEApprove == "0" && productData?.returnType == "0") {
-                            tvStatus.text = "Delivered"
+                            tvStatus.text = context.getString(R.string.delivered)
                             tvStatus.setTextColor(Color.parseColor("#16B364"))
                         }
                         else if (productData?.r_e_type == "0" && productData?.p_orderdetails_id == "0" && productData?.rEApprove == "1" && productData?.returnType == "2") {
 
                             if (productData?.exchangeOrderDetails?.deliveryStatus=="7"){
-                                tvStatus.text = "Ongoing"
+                                tvStatus.text = context.getString(R.string.ongoing)
                                 tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                             }
                             else if (productData?.exchangeOrderDetails?.deliveryStatus=="3"){
-                                tvStatus.text = "Exchanged"
+                                tvStatus.text = context.getString(R.string.exchanged)
                                 tvStatus.setTextColor(Color.parseColor("#16B364"))
                             }
                             else{
-                                tvStatus.text = "Exchange Req.."
+                                tvStatus.text = context.getString(R.string.exchange_req)
                                 tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                             }
                         }
                         else if (productData?.r_e_type == "0" && productData?.p_orderdetails_id == "0" && productData?.rEApprove == "0" && productData?.returnType == "2") {
-                            tvStatus.text = "Exchange Req.."
+                            tvStatus.text = context.getString(R.string.exchange_req)
                             tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                         }
 
                         else if (productData?.r_e_type=="0"&&productData?.p_orderdetails_id=="0"&&productData?.rEApprove=="0"&&productData?.returnType=="1"){
-                            tvStatus.text = "Return Req.."
+                            tvStatus.text = context.getString(R.string.return_req)
                             tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                         }
                         else if (productData?.r_e_type=="0"&&productData?.p_orderdetails_id=="0"&&productData?.rEApprove=="1"&&productData?.returnType=="1"){
-                            tvStatus.text = "Returned"
+                            tvStatus.text = context.getString(R.string.returned)
                             tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                         }
                         else{
-                            tvStatus.text = "Delivered"
+                            tvStatus.text = context.getString(R.string.delivered)
                             tvStatus.setTextColor(Color.parseColor("#16B364"))
                         }
 
                     }
 
                     "4" -> {
-                        tvStatus.text = "Cancelled"
+                        tvStatus.text = context.getString(R.string.cancelled)
                         tvStatus.setTextColor(Color.parseColor("#E70000"))
                     }
 
                     "5" -> {
-                        tvStatus.text = "Return Req.."
+                        tvStatus.text = context.getString(R.string.return_req)
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                     }
 
                     "6" -> {
-                        tvStatus.text = "Confirmed"
+                        tvStatus.text = context.getString(R.string.confirmed)
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                     }
 
                     "8" -> {
-                        tvStatus.text = "Not Delivered"
+                        tvStatus.text = context.getString(R.string.not_delivered)
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                     }
 
                     "9" -> {
-                        tvStatus.text = "Exchange Req.."
+                        tvStatus.text = context.getString(R.string.exchange_req)
                         tvStatus.setTextColor(Color.parseColor("#FF5F1B"))
                     }
                 }
@@ -190,7 +190,7 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
                     holder.binding.viewCustomBottom.isVisible = true
                 }
 
-                tvRequestId.text = "Request Id #${productData?.id}"
+                tvRequestId.text = "${context.getString(R.string.request_id)} #${productData?.id}"
                 tvCustomTitle.text = productData?.productDetails?.productNameEn
 
                 tvCustomDetail.text = productData?.chatroomRecordtable?.customDetails
@@ -233,19 +233,24 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
                 val exchangeDays = productData?.productDetails?.exchangableDays
                 val finalText = when {
                     returnDays != null && exchangeDays != null ->
-                        "${returnDays} Days Return & ${exchangeDays} Days Exchange"
+                        "${returnDays} ${context.getString(R.string.days_return_and)} ${exchangeDays} ${
+                            context.getString(
+                                R.string.days_exchange
+                            )
+                        }"
 
                     returnDays != null ->
-                        "${returnDays} Days Return & No Exchange"
+                        "${returnDays} ${context.getString(R.string.days_return_and)} ${context.getString(R.string.no_exchange)}"
 
                     exchangeDays != null ->
-                        "No Return & ${exchangeDays} Days Exchange"
+                        "${context.getString(R.string.no_return)} ${exchangeDays} ${context.getString(R.string.days_exchange)}"
 
                     else ->
-                        "No Return & No Exchange"
+                        "${context.getString(R.string.no_return)} ${context.getString(R.string.no_exchange)}"
                 }
 
-                 tvReturnPolicy.text = finalText
+
+                tvReturnPolicy.text = finalText
 
                 ivStore.load(productData?.variationDetails?.variantImage?.get(0)) {
                     crossfade(true)

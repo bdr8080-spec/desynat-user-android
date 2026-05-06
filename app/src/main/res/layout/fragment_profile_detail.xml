@@ -71,6 +71,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="textCapSentences"
                 android:maxLength="30"
+                android:textAlignment="viewStart"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:background="@drawable/edit_back"
                 app:layout_constraintTop_toBottomOf="@+id/tvFullName"/>
@@ -102,6 +103,7 @@
                     android:focusable="false"
                     android:clickable="true"
                     android:background="@null"
+                    android:textAlignment="viewStart"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tvChangeMobile"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -154,8 +156,9 @@
                     android:focusable="false"
                     android:clickable="true"
                     android:background="@null"
+                    android:textAlignment="viewStart"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tvChangeMobile"
+                    app:layout_constraintEnd_toStartOf="@+id/tvChangeEmail"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 

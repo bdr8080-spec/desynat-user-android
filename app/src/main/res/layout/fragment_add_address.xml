@@ -33,7 +33,8 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:text="@string/name"/>
+                android:text="@string/name"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etName"
@@ -43,6 +44,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="textCapSentences"
                 android:maxLength="30"
+                android:textAlignment="viewStart"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:background="@drawable/edit_back"/>
 
@@ -50,6 +52,7 @@
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/mobile_number"
+                android:textAlignment="viewStart"
                 app:layout_constraintTop_toBottomOf="@+id/etFullName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -90,6 +93,7 @@
                     android:background="@null"
                     android:paddingHorizontal="0dp"
                     android:layout_marginStart="@dimen/_5sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -100,7 +104,8 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/address"/>
+                android:text="@string/address"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etAddress"
@@ -113,12 +118,14 @@
                 android:editable="false"
                 android:focusable="false"
                 android:clickable="true"
+                android:textAlignment="viewStart"
                 android:background="@drawable/edit_back"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/house_no_building_no_area"/>
+                android:text="@string/house_no_building_no_area"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etHouseNo"
@@ -127,13 +134,15 @@
                 android:hint="@string/house_no_building_no_area"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="text"
+                android:textAlignment="viewStart"
                 android:background="@drawable/edit_back"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:visibility="gone"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/block_street"/>
+                android:text="@string/block_street"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:visibility="gone"
@@ -143,12 +152,14 @@
                 android:hint="@string/block_street"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="text"
+                android:textAlignment="viewStart"
                 android:background="@drawable/edit_back"/>
 
             <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/postal_code_optional"/>
+            android:text="@string/postal_code_optional"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etPostalCode"
@@ -158,6 +169,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="text"
                 android:maxLength="10"
+                android:textAlignment="viewStart"
                 android:background="@drawable/edit_back"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,6 +183,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/city_district"
                     android:layout_marginEnd="@dimen/_8sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tvState"/>
@@ -182,6 +195,7 @@
                     android:hint="@string/city_district"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:inputType="text"
+                    android:textAlignment="viewStart"
                     android:background="@drawable/edit_back"
                     app:layout_constraintTop_toBottomOf="@+id/tvCity"
                     app:layout_constraintStart_toStartOf="parent"
@@ -193,6 +207,7 @@
                     style="@style/edit_text_title"
                     android:text="@string/state"
                     android:layout_marginStart="@dimen/_7sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintTop_toTopOf="@+id/tvCity"
                     app:layout_constraintStart_toEndOf="@+id/tvCity"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -203,6 +218,7 @@
                     style="@style/edit_text"
                     android:hint="@string/state"
                     android:inputType="text"
+                    android:textAlignment="viewStart"
                     android:background="@drawable/edit_back"
                     app:layout_constraintTop_toTopOf="@+id/etCity"
                     app:layout_constraintStart_toStartOf="@+id/tvState"
@@ -213,7 +229,8 @@
            <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/country"/>
+            android:text="@string/country"
+               android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etCountry"
@@ -222,12 +239,14 @@
                 android:hint="@string/country"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="text"
+                android:textAlignment="viewStart"
                 android:background="@drawable/edit_back"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/landmark"/>
+                android:text="@string/landmark"
+                android:textAlignment="viewStart"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etLandmark"
@@ -236,6 +255,7 @@
                 android:hint="@string/landmark"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="text"
+                android:textAlignment="viewStart"
                 android:background="@drawable/edit_back"/>
 
         </LinearLayout>
@@ -246,6 +266,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/saved_address_as"
             android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"
             android:fontFamily="@font/poppins_medium"
             app:layout_constraintTop_toBottomOf="@+id/llAddress"
             app:layout_constraintStart_toStartOf="parent"/>

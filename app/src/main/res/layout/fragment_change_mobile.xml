@@ -75,6 +75,7 @@
                     android:background="@null"
                     android:paddingHorizontal="0dp"
                     android:layout_marginStart="@dimen/_5sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -90,6 +91,7 @@
                 android:hint="@string/enter_new_email_address"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="textEmailAddress"
+                android:textAlignment="viewStart"
                 android:background="@drawable/edit_back" />
 
             <androidx.appcompat.widget.AppCompatTextView

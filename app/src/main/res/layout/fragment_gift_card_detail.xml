@@ -70,6 +70,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="#80000000"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/ivGift"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -81,6 +82,7 @@
             android:text="239 KD"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewEnd"
             app:layout_constraintTop_toTopOf="@+id/tvGiftName"
             app:layout_constraintBottom_toBottomOf="@+id/tvGiftName"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -94,6 +96,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="#80000000"
             android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvGiftName"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -106,6 +109,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvRecepientDetail"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -118,6 +122,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvName"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -130,6 +135,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvEmail"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -142,6 +148,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="#80000000"
             android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvQuantity"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -154,6 +161,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvFrom"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -166,6 +174,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="#80000000"
             android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvFromName"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -177,6 +186,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:gravity="start"
             android:textSize="@dimen/_10sdp"
+            android:textAlignment="viewStart"
             android:background="@drawable/edit_back"
             app:layout_constraintTop_toBottomOf="@+id/tvWish"/>
 
@@ -189,6 +199,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="#80000000"
             android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvWishMessage"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -200,6 +211,7 @@
             android:text="lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/edit_back"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvNote"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -211,6 +223,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="#80000000"
             android:textSize="@dimen/_12sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/tvNoteMsg"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -229,7 +242,7 @@
             app:layout_constraintStart_toEndOf="@+id/tvPaid"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relPaidBy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -245,7 +258,7 @@
                 android:layout_height="@dimen/_18sdp"
                 android:src="@drawable/ic_visa"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -257,7 +270,10 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:textColor="#80000000"
                 android:textSize="@dimen/_11sdp"
-                android:layout_toRightOf="@+id/ivPay"/>
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivPay"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvPayBy"
@@ -267,9 +283,12 @@
                 android:text="@string/paid_by_card"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp"
-                android:layout_alignParentEnd="true"/>
+                android:textAlignment="viewEnd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"

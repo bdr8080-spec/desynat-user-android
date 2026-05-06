@@ -248,7 +248,8 @@ class AddAddressFragment : BaseFragment() {
         viewModel.addAddressResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(requireActivity(),"Address saved successfully"){
+                CommonMethod.showSuccessDialog(requireActivity(),
+                    getString(R.string.address_saved_successfully)){
                     findNavController().popBackStack()
                 }
                 isObserver = false
@@ -258,7 +259,7 @@ class AddAddressFragment : BaseFragment() {
         viewModel.editAddressResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                CommonMethod.showSuccessDialog(requireActivity(),"Address updated successfully"){
+                CommonMethod.showSuccessDialog(requireActivity(),getString(R.string.address_updated_successfully)){
                     findNavController().popBackStack()
                 }
 
