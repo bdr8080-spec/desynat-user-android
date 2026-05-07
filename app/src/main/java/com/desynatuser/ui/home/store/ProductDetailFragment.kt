@@ -171,7 +171,7 @@ class ProductDetailFragment : BaseFragment() {
     private fun setData() {
         binding?.apply {
             tvTitle.text = productDetailData?.store?.storeName
-            tvProductName.text =  productDetailData?.productNameEn+" (by ${productDetailData?.store?.storeName})"
+            tvProductName.text =  productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
             if (productDetailData?.productAvgRating!=null){
                 tvRating.text = "(${productDetailData?.productAvgRating})"
             }
@@ -221,7 +221,11 @@ class ProductDetailFragment : BaseFragment() {
             tvDiscountedPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.finalPrice?:0.0)}"
 
             val discountValue = "${CommonMethod.formatCurrencyAmountWithout(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.discountValue?.toDoubleOrNull() ?: 0.0)}"
-            val discountType = if (variant?.productVariation?.get(selectedSizePos)?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
+            val discountType = if (variant?.productVariation?.get(selectedSizePos)?.discountType == "1")"%  ${
+                requireActivity().getString(
+                    R.string.off
+                )
+            }" else " ${CommonMethod.getCurrency(requireActivity())}  ${requireActivity().getString(R.string.off)}"
             tvOffer.text = "$discountValue$discountType"
 
             tvDescription.text = productDetailData?.descriptionEn

@@ -65,6 +65,7 @@
             android:paddingStart="@dimen/_8sdp"
             android:text="@string/english"
             android:textColor="@color/black"
+            android:textAlignment="viewStart"
             android:textSize="@dimen/_12sdp"
             app:buttonTint="@null" />
 
@@ -90,6 +91,7 @@
             android:paddingVertical="@dimen/_12sdp"
             android:paddingStart="@dimen/_8sdp"
             android:text="@string/arabic"
+            android:textAlignment="viewStart"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
             app:buttonTint="@null" />

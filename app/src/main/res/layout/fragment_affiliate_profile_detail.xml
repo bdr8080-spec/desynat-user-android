@@ -270,7 +270,7 @@
                     android:scaleType="centerCrop"
                     android:clipToOutline="true"
                     android:background="@drawable/brown_dash_rectangle"
-                    android:src="@drawable/doc1"
+                    android:src="@drawable/ic_placeholder"
                     android:layout_marginEnd="@dimen/_5sdp"
                     app:layout_constraintTop_toBottomOf="@+id/clEmail"
                     app:layout_constraintStart_toStartOf="parent"
@@ -284,7 +284,7 @@
                     android:scaleType="centerCrop"
                     android:clipToOutline="true"
                     android:background="@drawable/brown_dash_rectangle"
-                    android:src="@drawable/doc2"
+                    android:src="@drawable/ic_placeholder"
                     android:layout_marginStart="@dimen/_5sdp"
                     app:layout_constraintTop_toTopOf="@+id/ivDoc1"
                     app:layout_constraintBottom_toBottomOf="@+id/ivDoc1"
@@ -319,6 +319,7 @@
                     android:focusable="false"
                     android:hint="@string/country"
                     android:inputType="text"
+                    android:textAlignment="viewStart"
                     android:drawableEnd="@drawable/ic_drop_down"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -341,6 +342,7 @@
                     android:editable="false"
                     android:focusable="false"
                     android:clickable="true"
+                    android:textAlignment="viewStart"
                     android:background="@drawable/edit_back"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -360,6 +362,7 @@
                     android:editable="false"
                     android:focusable="false"
                     android:clickable="true"
+                    android:textAlignment="viewStart"
                     android:background="@drawable/edit_back"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -379,6 +382,7 @@
                     android:editable="false"
                     android:focusable="false"
                     android:clickable="true"
+                    android:textAlignment="viewStart"
                     android:background="@drawable/edit_back"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -395,6 +399,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:inputType="text"
+                    android:textAlignment="viewStart"
                     android:background="@drawable/edit_back"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -413,6 +418,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:inputType="text"
+                    android:textAlignment="viewStart"
                     android:background="@drawable/edit_back"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -427,6 +433,7 @@
                         style="@style/edit_text_title"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:text="@string/state"
+                        android:textAlignment="viewStart"
                         android:layout_marginEnd="@dimen/_8sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -440,6 +447,7 @@
                         android:hint="@string/enter_state_name"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:inputType="text"
+                        android:textAlignment="viewStart"
                         android:background="@drawable/edit_back"
                         app:layout_constraintTop_toBottomOf="@+id/tvState"
                         app:layout_constraintStart_toStartOf="parent"
@@ -451,6 +459,7 @@
                         android:layout_width="0dp"
                         style="@style/edit_text_title"
                         android:text="@string/city"
+                        android:textAlignment="viewStart"
                         android:layout_marginStart="@dimen/_7sdp"
                         app:layout_constraintTop_toTopOf="@+id/tvState"
                         app:layout_constraintStart_toEndOf="@+id/tvState"
@@ -463,6 +472,7 @@
                         style="@style/edit_text"
                         android:hint="@string/enter_city_name"
                         android:inputType="text"
+                        android:textAlignment="viewStart"
                         android:background="@drawable/edit_back"
                         app:layout_constraintTop_toTopOf="@+id/etState"
                         app:layout_constraintStart_toStartOf="@+id/tvCity"

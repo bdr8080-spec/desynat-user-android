@@ -604,9 +604,9 @@ object CommonMethod {
     fun shareProduct(context:Context,name: String, desc: String, imageUrl: String) {
 
         val shareText = """
-        Title: $name
-        Description: $desc
-        Image:
+        ${context.getString(R.string.title)} : $name
+        ${context.getString(R.string.description)} : $desc
+        ${context.getString(R.string.image)}  :
         $imageUrl
     """.trimIndent()
 
@@ -615,7 +615,7 @@ object CommonMethod {
             putExtra(Intent.EXTRA_TEXT, shareText)
         }
 
-        context.startActivity(Intent.createChooser(intent, "Share via"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
     }
 
     fun shareProductWithImage(context: Context, name: String, desc: String, imageUrl: String,link: String) {
@@ -652,7 +652,7 @@ object CommonMethod {
                 }
 
                 withContext(Dispatchers.Main) {
-                    context.startActivity(Intent.createChooser(intent, "Share via"))
+                    context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
                 }
 
             } catch (e: Exception) {
@@ -699,7 +699,7 @@ object CommonMethod {
                     file
                 )
 
-                val shareText = "Caption: ${caption}\n$link"
+                val shareText = "${context.getString(R.string.caption)}: ${caption}\n$link"
 
                 val mimeType = if (isVideo) "video/mp4" else "image/png"
 
@@ -712,7 +712,7 @@ object CommonMethod {
 
                 withContext(Dispatchers.Main) {
                     context.startActivity(
-                        Intent.createChooser(intent, "Share Reel via")
+                        Intent.createChooser(intent, context.getString(R.string.share_reel_via))
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     )
                 }
@@ -749,7 +749,7 @@ object CommonMethod {
         try {
             val request = DownloadManager.Request(Uri.parse(pdfUrl))
                 .setTitle("Invoice "+fileName)
-                .setDescription("Downloading PDF...")
+                .setDescription(context.getString(R.string.downloading_pdf))
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setAllowedOverMetered(true)
                 .setAllowedOverRoaming(true)
@@ -758,11 +758,11 @@ object CommonMethod {
             val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             downloadManager.enqueue(request)
 
-            context.showToast("Download started")
+            context.showToast(context.getString(R.string.download_started))
 
         } catch (e: Exception) {
             e.printStackTrace()
-            context.showToast("Download failed: ${e.message}")
+            context.showToast("${context.getString(R.string.download_failed)} : ${e.message}")
         }
     }
 
@@ -774,7 +774,7 @@ object CommonMethod {
         }
     }
 
-    fun formatChatTime(inputTime: String): String {
+    fun formatChatTime(context: Context,inputTime: String): String {
         val inputFormat = SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.ENGLISH)
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
         val fullDateFormat = SimpleDateFormat("dd/MM/yy, hh:mm a", Locale.ENGLISH)
@@ -796,11 +796,11 @@ object CommonMethod {
 
         return when {
             messageDate.after(startOfToday) -> {
-                "Today, ${timeFormat.format(messageDate)}"
+                "${context.getString(R.string.today)}, ${timeFormat.format(messageDate)}"
             }
 
             messageDate.after(startOfYesterday) -> {
-                "Yesterday, ${timeFormat.format(messageDate)}"
+                "${context.getString(R.string.yesterday)}, ${timeFormat.format(messageDate)}"
             }
 
             else -> {
@@ -808,7 +808,7 @@ object CommonMethod {
                 val daysDiff = TimeUnit.MILLISECONDS.toDays(diffMillis)
 
                 if (daysDiff in 2..30) {
-                    "$daysDiff days ago, ${timeFormat.format(messageDate)}"
+                    "$daysDiff ${context.getString(R.string.days_ago)}, ${timeFormat.format(messageDate)}"
                 } else {
                     fullDateFormat.format(messageDate)
                 }
@@ -878,19 +878,19 @@ object CommonMethod {
 
     fun copyText(context: Context, text: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("Copied Text", text)
+        val clip = ClipData.newPlainText(context.getString(R.string.copied_text), text)
         clipboard.setPrimaryClip(clip)
-        context.showToast("Copied to clipboard")
+        context.showToast(context.getString(R.string.copied_to_clipboard))
     }
 
     fun shareLink(context: Context, link: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, link)
-        context.startActivity(Intent.createChooser(intent, "Share via"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_via)))
     }
 
-    fun getTimeAgo(timestamp: String): String {
+    fun getTimeAgo(context: Context,timestamp: String): String {
         val time = ZonedDateTime.parse(timestamp, DateTimeFormatter.ISO_DATE_TIME)
         val now = ZonedDateTime.now(ZoneId.systemDefault())
 
@@ -903,14 +903,14 @@ object CommonMethod {
         val hours = ChronoUnit.HOURS.between(localTime, now)
 
         return when {
-            minutes < 1 -> "Just now"
-            minutes < 60 -> "$minutes min ago"
+            minutes < 1 -> context.getString(R.string.just_now)
+            minutes < 60 -> "$minutes ${context.getString(R.string.min_ago)}"
 
             date.isEqual(today.minusDays(1)) -> {
-                "Yesterday, ${localTime.format(DateTimeFormatter.ofPattern("hh:mm a"))}"
+                "${context.getString(R.string.yesterday)}, ${localTime.format(DateTimeFormatter.ofPattern("hh:mm a"))}"
             }
 
-            date.isEqual(today) -> "$hours hr ago"
+            date.isEqual(today) -> "$hours ${context.getString(R.string.hr_ago)}"
 
             ChronoUnit.DAYS.between(date, today) < 7 -> {
                 "${ChronoUnit.DAYS.between(date, today)} days ago"
@@ -1002,9 +1002,9 @@ object CommonMethod {
         val converted = if (rate == 0.0) amountInKwd else amountInKwd / rate
 
         val code = when (currency?.currencyCode) {
-            "KWD" -> "KD"
+            "KWD" -> context.getString(R.string.kd)
             "BHD" -> "BD"
-            else -> currency?.currencyCode ?: "KD"
+            else -> currency?.currencyCode ?: context.getString(R.string.kd)
         }
 
       /*  val formatted = if (currency?.currencyCode == "KWD") {
@@ -1016,6 +1016,38 @@ object CommonMethod {
         val formatted = java.text.DecimalFormat("#.##").format(converted)
 
         return "$formatted $code"
+    }
+
+    fun getCurrency(
+        context: Context
+    ): String {
+
+        val user = SharedPreference.get(context).getUser()
+        val countryList =   if (SharedPreference.get(context).affiliateAccessToken!=""){
+            SharedPreference.get(context).getSelectedCountryList()
+        }
+        else{
+            SharedPreference.get(context).getCountryList()
+        }
+
+
+
+        val currency = countryList?.find { it.id.toString() == user?.selectedCurrency }
+
+        val code = when (currency?.currencyCode) {
+            "KWD" -> context.getString(R.string.kd)
+            "BHD" -> "BD"
+            else -> currency?.currencyCode ?: context.getString(R.string.kd)
+        }
+
+        /*  val formatted = if (currency?.currencyCode == "KWD") {
+              String.format("%.3f", converted)
+          } else {
+              String.format("%.2f", converted)
+          }*/
+
+
+        return "$code"
     }
 
     fun formatCurrencyAmountWithout(
@@ -1033,9 +1065,9 @@ object CommonMethod {
         val converted = if (rate == 0.0) amountInKwd else amountInKwd / rate
 
         val code = when (currency?.currencyCode) {
-            "KWD" -> "KD"
+            "KWD" -> context.getString(R.string.kd)
             "BHD" -> "BD"
-            else -> currency?.currencyCode ?: "KWD"
+            else -> currency?.currencyCode ?: context.getString(R.string.kd)
         }
 
        /* val formatted = if (currency?.currencyCode == "KWD") {

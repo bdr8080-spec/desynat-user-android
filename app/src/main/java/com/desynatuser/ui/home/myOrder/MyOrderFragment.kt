@@ -246,7 +246,7 @@ class MyOrderFragment : BaseFragment() {
             }
 
 
-            tvToolbar.setOnClickListener {
+            closeIv.setOnClickListener {
                 dialog.dismiss()
             }
 

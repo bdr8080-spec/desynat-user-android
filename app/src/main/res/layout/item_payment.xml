@@ -31,6 +31,7 @@
             android:textColor="#80000000"
             android:textSize="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -44,6 +45,7 @@
             android:maxLength="25"
             android:ellipsize="end"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toStartOf="@id/tvTransactionId"
             app:layout_constraintTop_toBottomOf="@id/tvTransactionId" />
 
@@ -72,6 +74,7 @@
             android:text="250 KD"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
+            android:textAlignment="viewEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/tvTransactionIdValue"
             app:layout_constraintTop_toTopOf="@id/tvTransactionIdValue" />

@@ -22,6 +22,7 @@
         android:layout_marginStart="@dimen/_5sdp"
         android:textColor="@color/black"
         android:fontFamily="@font/poppins_medium"
-        android:textSize="@dimen/_11sdp"/>
+        android:textSize="@dimen/_11sdp"
+        android:textAlignment="viewStart"/>
 
 </LinearLayout>

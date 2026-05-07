@@ -706,7 +706,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Delivery Date 3 to 5 working days"
+                android:text="@string/delivery_date_3_to_5_working_days"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -861,6 +861,7 @@
             android:drawablePadding="@dimen/_10sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"
             android:layout_marginHorizontal="@dimen/_15sdp"
             app:layout_constraintTop_toBottomOf="@+id/tvDeliveryAdd"/>
 

@@ -184,7 +184,7 @@ class AffiliateMyProductFragment : BaseFragment() {
             if (isCategoryObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 categoryList.clear()
-                categoryList.add(GetCategoryResponse.Data(name = "All", id = 0))
+                categoryList.add(GetCategoryResponse.Data(name = getString(R.string.all), id = 0))
                 categoryList.addAll(response.data)
                 var pos = 0
                 if (selectedCategory!=null){

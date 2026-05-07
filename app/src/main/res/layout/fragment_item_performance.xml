@@ -56,6 +56,7 @@
             android:textSize="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_15sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/rating"
             app:layout_constraintTop_toBottomOf="@+id/ivStore" />
@@ -87,6 +88,7 @@
             android:text="(0)"
             android:textColor="@color/black"
             android:textSize="@dimen/_9sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toTopOf="@+id/rating"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/rating"/>
@@ -102,6 +104,7 @@
             android:textSize="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_1sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"  />
 
@@ -116,6 +119,7 @@
             android:textColor="#99000000"
             android:textSize="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toEndOf="@+id/tvDiscountPrice"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -140,6 +144,7 @@
             android:text="20% off"
             android:textColor="#E70000"
             android:textSize="@dimen/_10sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toEndOf="@+id/tvPrice"
             app:layout_constraintTop_toTopOf="@+id/tvPrice"
             app:layout_constraintBottom_toBottomOf="@+id/tvPrice"/>
@@ -154,6 +159,7 @@
             android:text="5% Commission"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvPrice"/>
 
@@ -167,6 +173,7 @@
             android:text="Link- off https://www.desynat.com"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintEnd_toStartOf="@+id/ivCopy"
             app:layout_constraintTop_toBottomOf="@+id/tvCommission" />
@@ -191,6 +198,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:textSize="@dimen/_12sdp"
             android:layout_marginStart="@dimen/_15sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLink" />
 
@@ -220,7 +228,7 @@
             android:layout_width="0dp"
             android:paddingVertical="@dimen/_9sdp"
             android:drawablePadding="@dimen/_5sdp"
-            android:hint="@string/to"
+            android:hint="@string/to_date_hint"
             android:editable="false"
             android:clickable="true"
             android:background="@drawable/grey_stroke_cards"

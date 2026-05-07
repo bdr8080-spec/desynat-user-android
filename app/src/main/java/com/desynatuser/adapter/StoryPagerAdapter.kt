@@ -1,5 +1,6 @@
 package com.desynatuser.adapter
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -25,7 +26,7 @@ import kotlin.text.toInt
 import kotlin.text.toLong
 import kotlin.times
 
-class StoryPagerAdapter(
+class StoryPagerAdapter(val context: Context,
     private val stories: List<GetSellerStoryResponse.Data>,private val click:OnClick,private val onVideoReady: (position: Int, duration: Long) -> Unit
     , private val onVideoFinished: (Int) -> Unit
 ) : RecyclerView.Adapter<StoryPagerAdapter.StoryViewHolder>() {
@@ -217,7 +218,7 @@ class StoryPagerAdapter(
                 .load(nextUrl)
                 .preload()
         }
-        holder.binding.tvTime.text = CommonMethod.getTimeAgo(story.createdAt)
+        holder.binding.tvTime.text = CommonMethod.getTimeAgo(context,story.createdAt)
         if (!story.title.isNullOrEmpty() && story.title != "null") {
             holder.binding.tvTitle.isVisible = true
             holder.binding.viewTitle.isVisible = true

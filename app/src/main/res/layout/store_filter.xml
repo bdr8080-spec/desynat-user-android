@@ -12,7 +12,7 @@
         android:paddingVertical="@dimen/_15sdp"
         android:paddingHorizontal="@dimen/_15sdp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Filter"
+        android:text="@string/filter"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:drawableStart="@drawable/ic_back"
@@ -30,8 +30,9 @@
             android:id="@+id/tvCountry"
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Ratings"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/ratings"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <RadioGroup
             android:id="@+id/radioGroupRating"
@@ -46,7 +47,7 @@
                 android:id="@+id/rb2Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upto 2 Star"
+                android:text="@string/upto_2_star"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -56,13 +57,14 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb3Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upto 3 Star"
+                android:text="@string/upto_3_star"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -72,14 +74,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb4Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Upto 4 Star"
+                android:text="@string/upto_4_star"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -88,14 +91,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb5Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Upto 5 Star"
+                android:text="@string/upto_5_star"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -104,7 +108,8 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
         </RadioGroup>
 
@@ -112,8 +117,9 @@
             android:id="@+id/tvChooseDate"
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Availability"
-            android:textSize="@dimen/_13sdp"/>
+            android:text="@string/availability"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -128,7 +134,7 @@
                 android:id="@+id/rbOpen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Open"
+                android:text="@string/open"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -138,13 +144,14 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rbBusy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Busy"
+                android:text="@string/busy"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -154,14 +161,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rbShortestDeliveryTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Shortest Delivery time"
+                android:text="@string/shortest_delivery_time"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -170,14 +178,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rbHighestSale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Highest Sale"
+                android:text="@string/highest_sale"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -186,7 +195,8 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
         </RadioGroup>
 
@@ -198,7 +208,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/button_stroke"
-        android:text="Clear"
+        android:text="@string/clear"
         android:textColor="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="@dimen/_12sdp"
@@ -218,7 +228,7 @@
         android:background="@drawable/btn_background"
         android:gravity="center"
         android:layout_marginStart="@dimen/_7sdp"
-        android:text="Apply"
+        android:text="@string/apply"
         android:layout_marginEnd="@dimen/_15sdp"
         android:fontFamily="@font/poppins_medium"
         android:paddingVertical="@dimen/_8sdp"

@@ -103,7 +103,8 @@
                 android:drawablePadding="@dimen/_5sdp"
                 android:hint="@string/search"
                 android:singleLine="true"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWithdrawal"

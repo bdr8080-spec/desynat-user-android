@@ -64,7 +64,11 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
             val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,cartData?.productVariants?.discountValue?.toDoubleOrNull() ?: 0.0)}"
-            val discountType = if (cartData?.productVariants?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
+            val discountType = if (cartData?.productVariants?.discountType == "1")"%  ${
+                context.getString(
+                    R.string.off
+                )
+            }" else " ${CommonMethod.getCurrency(context)}  ${context.getString(R.string.off)}"
             tvDiscount.text = "$discountValue$discountType"
 
             val returnDays = cartData?.product?.returnDays

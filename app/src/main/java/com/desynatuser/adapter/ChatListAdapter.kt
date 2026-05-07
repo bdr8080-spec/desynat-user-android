@@ -47,7 +47,7 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
                 tvTime.text = chatData.lastChatTime
             }
             else{
-                tvTime.text = CommonMethod.formatChatTime(CommonMethod.customizeChangeDateFormat(
+                tvTime.text = CommonMethod.formatChatTime(context,CommonMethod.customizeChangeDateFormat(
                     chatData?.updatedAt.toString(), outputFormat = "dd MMM yyyy, hh:mm a"
                 ) )
             }

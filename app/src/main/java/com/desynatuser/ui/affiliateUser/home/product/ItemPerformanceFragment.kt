@@ -101,7 +101,7 @@ class ItemPerformanceFragment : BaseFragment() {
 
             etTo.setOnClickListener {
                 if (fromTimestamp == null) {
-                    showToast("Please select From date first")
+                    showToast(getString(R.string.please_select_from_date_first))
                     return@setOnClickListener
                 }
 
@@ -178,7 +178,8 @@ class ItemPerformanceFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    CommonMethod.showSuccessDialog(requireActivity(),"Product removed successfully!"){
+                    CommonMethod.showSuccessDialog(requireActivity(),
+                        getString(R.string.product_removed_successfully)){
                         findNavController().popBackStack()
                     }
                 }
@@ -192,25 +193,31 @@ class ItemPerformanceFragment : BaseFragment() {
             Glide.with(requireActivity()).load(productDetailData?.product?.productVariants?.get(0)?.variantImage?.get(0)).placeholder(
                 R.drawable.ic_placeholder).into(ivStore)
             if (productDetailData?.product?.store?.storeName!=null){
-                tvTitle.text = productData?.product?.productNameEn+" (By ${productDetailData?.product?.store?.storeName})"
+                tvTitle.text = productData?.product?.productNameEn+" (${getString(R.string.by)} ${productDetailData?.product?.store?.storeName})"
             }
             else{
                 tvTitle.text = productData?.product?.productNameEn
             }
             tvRating.text ="(${productData?.averageRating?.product?:0})"
             rating.rating = productData?.averageRating?.product?.toFloatOrNull()?:0f
-            tvPrice.text = "${CommonMethod.formatPrice(productDetailData?.product?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
-            tvDiscountPrice.text = "${CommonMethod.formatPrice(productDetailData?.product?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),productDetailData?.product?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)}"
+            tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),productDetailData?.product?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
             val variant = productDetailData?.product?.productVariants?.getOrNull(0)
             val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1")"% off" else " KD off"
+            val discountType = if (variant?.discountType == "1")"% ${getString(R.string.off)}" else " ${
+                CommonMethod.getCurrency(requireActivity())
+            } ${
+                getString(
+                    R.string.by
+                )
+            }"
             tvDiscount.text = "$discountValue$discountType"
             tvCommission.text = "${productDetailData?.product?.affiliatedCommission?:0}% ${getString(R.string.commission)}"
             if (productDetailData?.affiliateProductLink!=null){
                 tvLink.isVisible = true
                 ivCopy.isVisible = true
-                tvLink.text = "Link- off ${productDetailData?.affiliateProductLink?.link}"
+                tvLink.text = "${getString(R.string.link_off)} ${productDetailData?.affiliateProductLink?.link}"
             }
             else{
                 tvLink.isVisible = false
@@ -218,8 +225,8 @@ class ItemPerformanceFragment : BaseFragment() {
             }
             tvTotalClicks.text = (productDetailData?.affiliateProductClickRecordsCount?:0).toString()
             tvTotalOrder.text = (productDetailData?.totalOrder?:0).toString()
-            tvTotalRevenue.text = "${CommonMethod.formatPrice(productDetailData?.totalRevenue?.toDoubleOrNull()?:0.0)} KD"
-            tvMyEarnings.text = "${CommonMethod.formatPrice(productDetailData?.myEarning?.toDoubleOrNull()?:0.0)} KD"
+            tvTotalRevenue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),productDetailData?.totalRevenue?.toDoubleOrNull()?:0.0)}"
+            tvMyEarnings.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),productDetailData?.myEarning?.toDoubleOrNull()?:0.0)}"
             tvConversionRate.text = productDetailData?.conversionrate
         }
     }

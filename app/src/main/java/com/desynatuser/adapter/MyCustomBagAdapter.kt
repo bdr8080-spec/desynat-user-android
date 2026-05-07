@@ -84,7 +84,11 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
             tvCount.text = cartData?.quantity.toString()
 
             val discountValue = cartData?.productVariants?.discountValue ?: 0
-            val discountType = if (cartData?.productVariants?.discountType == "1")"% off" else " KD off"
+            val discountType = if (cartData?.productVariants?.discountType == "1")"%  ${
+                context.getString(
+                    R.string.off
+                )
+            }" else " ${CommonMethod.getCurrency(context)}  ${context.getString(R.string.off)}"
             tvDiscount.text = "$discountValue$discountType"
 
             tvCustomDetail.setOnClickListener {

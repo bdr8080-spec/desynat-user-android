@@ -181,6 +181,7 @@ class SupportFragment : BaseFragment() {
                 uri?.let {
                     imageFile = CommonMethod.uriToFile(requireActivity(), it)
                     dialogBinding?.ivDoc?.setImageURI(it)
+                    dialogBinding?.clDocument1Placeholder?.isVisible = false
                 }
             }
         }

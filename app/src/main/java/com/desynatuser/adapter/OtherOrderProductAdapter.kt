@@ -227,8 +227,8 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
                 }
                 tvTitle.text = productData?.productDetails?.productNameEn
 
-                tvPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
-                tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
+                tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)}"
+                tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)}"
                 val returnDays = productData?.productDetails?.returnDays
                 val exchangeDays = productData?.productDetails?.exchangableDays
                 val finalText = when {
@@ -270,7 +270,11 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
 
                 val discountValue = productData?.variationDetails?.discountValue ?: 0
                 val discountType =
-                    if (productData?.variationDetails?.discountType == "1") "% off" else " KD off"
+                    if (productData?.variationDetails?.discountType == "1") "% ${context.getString(R.string.off)}" else " KD ${
+                        context.getString(
+                            R.string.off
+                        )
+                    }"
                 tvDiscount.text = "$discountValue$discountType"
 
             }

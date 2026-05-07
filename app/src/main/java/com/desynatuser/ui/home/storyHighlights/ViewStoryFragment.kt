@@ -209,7 +209,7 @@ class ViewStoryFragment : BaseFragment() {
     }
     private fun setupAdapter() {
 
-        storyPagerAdapter = StoryPagerAdapter(
+        storyPagerAdapter = StoryPagerAdapter(requireActivity(),
             myStories,
             object : StoryPagerAdapter.OnClick {
 

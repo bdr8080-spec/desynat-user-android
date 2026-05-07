@@ -770,7 +770,7 @@ class StoreDetailFragment : BaseFragment() {
            })
 
             rvSort.adapter = sortAdapter
-            if (sortList.size!=0) {
+            if (sortList.size==0) {
                 getStoreSortList()
             }
 
@@ -787,7 +787,7 @@ class StoreDetailFragment : BaseFragment() {
                     dialog.dismiss()
                 }
                 else{
-                    showToast("Please select")
+                    showToast(getString(R.string.please_select))
                 }
 
 
@@ -825,8 +825,15 @@ class StoreDetailFragment : BaseFragment() {
             colorList.forEach { it.isSelected = false }
             sizeList.forEach { it.isSelected = false }
 
+            tvMinPrice.text = "0 ${CommonMethod.getCurrency(requireActivity())}"
+            tvMaxPrice.text = "1000 ${CommonMethod.getCurrency(requireActivity())}"
+
+
             if (selectedMaxPrice!=0) {
-                tvCentrePrice.text = "$selectedMaxPrice KD"
+                tvCentrePrice.text = "$selectedMaxPrice ${CommonMethod.getCurrency(requireActivity())}"
+            }
+            else{
+                tvCentrePrice.text = "500 ${CommonMethod.getCurrency(requireActivity())}"
             }
 
             when (selectedDiscount) {
@@ -846,9 +853,9 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             when (selectedDeliveryTime) {
-                "Today-2 days" -> rgDeliveryTime.check(R.id.rb2Day)
-                "3-5 days" -> rgDeliveryTime.check(R.id.rb3day)
-                "6-12 days" -> rgDeliveryTime.check(R.id.rb6day)
+                "2" -> rgDeliveryTime.check(R.id.rb2Day)
+                "3" -> rgDeliveryTime.check(R.id.rb3day)
+                "6" -> rgDeliveryTime.check(R.id.rb6day)
             }
 
             if (selectedBrandList.isNotEmpty()) {
@@ -922,8 +929,8 @@ class StoreDetailFragment : BaseFragment() {
                  min = values[0].toInt()
                  max = values[1].toInt()
 
-                tvMinPrice.text = "$min KD"
-                tvCentrePrice.text = "$max KD"
+                tvMinPrice.text = "$min ${CommonMethod.getCurrency(requireActivity())}"
+                tvCentrePrice.text = "$max ${CommonMethod.getCurrency(requireActivity())}"
 
                 slider.post {
                   //  moveLabel(tvMinPrice, slider, 0)
@@ -1015,11 +1022,11 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             tvShowMoreColor.setOnClickListener {
-                if(tvShowMoreColor.text=="Show More Color"){
+                if(tvShowMoreColor.text==getString(R.string.show_more_color)){
                     newColorList.clear()
                     newColorList.addAll(colorList)
                     filterColorAdapter?.notifyDataSetChanged()
-                    tvShowMoreColor.text = "Show Less Color"
+                    tvShowMoreColor.text = getString(R.string.show_less_color)
                 }
                 else{
                     newColorList.clear()
@@ -1029,7 +1036,7 @@ class StoreDetailFragment : BaseFragment() {
                         newColorList.addAll(colorList)
                     }
                     filterColorAdapter?.notifyDataSetChanged()
-                    tvShowMoreColor.text = "Show More Color"
+                    tvShowMoreColor.text = getString(R.string.show_more_color)
                 }
 
             }

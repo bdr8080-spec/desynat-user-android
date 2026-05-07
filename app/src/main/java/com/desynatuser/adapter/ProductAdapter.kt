@@ -49,7 +49,11 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
 
             val variant = productData?.productVariants?.getOrNull(0)
             val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
-            val discountType = if (variant?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
+            val discountType = if (variant?.discountType == "1")"%  ${context.getString(R.string.off)}" else " ${CommonMethod.getCurrency(context)}  ${
+                context.getString(
+                    R.string.off
+                )
+            }"
             tvDiscount.text = "$discountValue$discountType"
 
             if (productData?.averageRating!=null){

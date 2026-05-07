@@ -197,7 +197,7 @@ class ChatListFragment : BaseFragment() {
                 }
             }
 
-            tvToolbar.setOnClickListener {
+            closeIv.setOnClickListener {
                 dialog.dismiss()
             }
 

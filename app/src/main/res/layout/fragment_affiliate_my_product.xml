@@ -126,19 +126,23 @@
                 android:text="@string/no_product_found"
                 android:textAlignment="center"
                 android:layout_marginTop="@dimen/_150sdp"
-                android:layout_below="@+id/rvCategory"
-                android:layout_toRightOf="@+id/rvSubCategory"
-                android:layout_alignParentEnd="true"/>
+               app:layout_constraintTop_toBottomOf="@+id/rvCategory"
+                app:layout_constraintEnd_toStartOf="@+id/rvSubCategory"
+               app:layout_constraintEnd_toEndOf="parent"/>
 
             <View
                 android:layout_width="@dimen/_1sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_below="@+id/rvProduct" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvProduct" />
 
             <View
                 android:layout_width="@dimen/_1sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_below="@+id/rvSubCategory"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvSubCategory"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

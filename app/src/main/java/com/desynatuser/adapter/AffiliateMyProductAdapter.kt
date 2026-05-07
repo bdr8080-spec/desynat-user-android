@@ -37,7 +37,7 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
 
         holder.binding.apply {
             if (productData?.store?.storeName!=null){
-                tvTitle.text = productData?.productNameEn+" (By ${productData?.store?.storeName})"
+                tvTitle.text = productData?.productNameEn+" (${context.getString(R.string.by)} ${productData?.store?.storeName})"
             }
             else{
                 tvTitle.text = productData?.productNameEn
@@ -48,7 +48,11 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
             val variant = productData?.productVariants?.getOrNull(0)
             val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
 
-            val discountType = if (variant?.discountType == "1")"% off" else " ${Constants.CURRENCY} off"
+            val discountType = if (variant?.discountType == "1")"%  ${context.getString(R.string.off)}" else " ${CommonMethod.getCurrency(context)}  ${
+                context.getString(
+                    R.string.off
+                )
+            }"
             tvDiscount.text = "$discountValue$discountType"
             tvCommission.text = "${CommonMethod.formatCurrencyAmountWithout(context,productData?.affiliatedCommission?.toDoubleOrNull() ?: 0.0)}% ${
                 context.getString(

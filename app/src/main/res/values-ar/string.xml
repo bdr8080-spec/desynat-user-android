@@ -17,7 +17,7 @@
     <!-- language -->
     <string name="continue_text">متابعة</string>
     <string name="arabic">العربية</string>
-    <string name="english">الإنجليزية</string>
+    <string name="english">English</string>
     <string name="change_language">تغيير اللغة</string>
     <string name="select_language">اختر اللغة</string>
     <string name="choose_the_language_and_continue_to_get_the_experience_the_app_in_your_preferred_language">اختر اللغة واستمر للحصول على تجربة التطبيق بلغتك المفضلة.</string>
@@ -146,7 +146,7 @@
     <string name="request_sent_successfully">تم إرسال الطلب بنجاح!</string>
     <string name="type_here">اكتب هنا...</string>
     <string name="order_placed">تم تقديم الطلب</string>
-    <string name="size">المقاس :</string>
+    <string name="size">المقاس </string>
     <string name="color">اللون</string>
     <string name="total_quantity">إجمالي الكمية</string>
     <string name="address">العنوان</string>
@@ -663,11 +663,10 @@
     <string name="re_enter_account_number">إعادة إدخال رقم الحساب</string>
     <string name="confirm_account_number">تأكيد رقم الحساب</string>
 
-    <string name="iban">رقم IBAN</string>
-    <string name="enter_iban">أدخل رقم IBAN</string>
-
-    <string name="swift_bic">رمز SWIFT/BIC</string>
-    <string name="enter_swift_bic">أدخل رمز SWIFT/BIC</string>
+    <string name="iban">رقم الآيبان</string>
+    <string name="enter_iban">أدخل رقم الآيبان</string>
+    <string name="swift_bic">سويفت / BIC</string>
+    <string name="enter_swift_bic">أدخل سويفت / BIC</string>
 
     <string name="edit_account">تعديل الحساب</string>
     <string name="update">تحديث</string>
@@ -699,5 +698,52 @@
     <string name="please_select_delivery_address_first">يرجى اختيار عنوان التوصيل أولاً</string>
 
     <string name="custom_item_price">سعر المنتج المخصص</string>
+    <string name="kd">د.ك</string>
+    <string name="document">مستند</string>
+    <string name="image">صورة</string>
+    <string name="share_via">مشاركة عبر</string>
+    <string name="share_reel_via">مشاركة الريل عبر</string>
+    <string name="download_started">بدأ التنزيل</string>
+    <string name="download_failed">فشل التنزيل</string>
+    <string name="downloading_pdf">جارٍ تنزيل ملف PDF...</string>
+    <string name="yesterday">أمس</string>
+    <string name="just_now">الآن</string>
+    <string name="min_ago">منذ دقيقة</string>
+    <string name="hr_ago">منذ ساعة</string>
+    <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
+    <string name="copied_text">تم نسخ النص</string>
+    <string name="days_ago">منذ أيام</string>
+    <string name="caption">التسمية التوضيحية</string>
+    <string name="off">خصم</string>
+    <string name="by">بواسطة</string>
+    <string name="customers_ratings">تقييمات العملاء</string>
 
+    <string name="ratings">التقييمات</string>
+    <string name="availability">التوفر</string>
+    <string name="open">مفتوح</string>
+    <string name="shortest_delivery_time">أقصر وقت للتوصيل</string>
+    <string name="highest_sale">الأعلى مبيعاً</string>
+    <string name="upto_2_star">حتى نجمتين</string>
+    <string name="upto_3_star">حتى 3 نجوم</string>
+    <string name="upto_4_star">حتى 4 نجوم</string>
+    <string name="upto_5_star">حتى 5 نجوم</string>
+    <string name="brand">العلامة التجارية</string>
+    <string name="discount_range">نطاق الخصم</string>
+    <string name="_3_star">3 نجوم</string>
+    <string name="_2_star">نجمتان</string>
+    <string name="_1_star">نجمة واحدة</string>
+    <string name="_5_star">5 نجوم</string>
+    <string name="_4_star">4 نجوم</string>
+    <string name="delivery_time">وقت التوصيل</string>
+    <string name="today_2_days">اليوم - يومان</string>
+    <string name="_3_5_days">3 - 5 أيام</string>
+    <string name="_6_12_days">6 - 12 يومًا</string>
+
+    <string name="sort_by">ترتيب حسب</string>
+    <string name="delivery_date_3_to_5_working_days">تاريخ التوصيل من 3 إلى 5 أيام عمل</string>
+    <string name="link_off">إلغاء الربط</string>
+    <string name="product_removed_successfully">تمت إزالة المنتج بنجاح!</string>
+    <string name="discard">تجاهل</string>
+    <string name="delete">حذف</string>
+    <string name="hi_there">مرحبًا</string>
 </resources>

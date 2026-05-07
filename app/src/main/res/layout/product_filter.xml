@@ -13,7 +13,7 @@
         android:paddingVertical="@dimen/_15sdp"
         android:paddingHorizontal="@dimen/_15sdp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Filter"
+        android:text="@string/filter"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:drawableStart="@drawable/ic_back"
@@ -37,8 +37,9 @@
             android:id="@+id/tvCategory"
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Category"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/category"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCategory"
@@ -53,8 +54,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Brand"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/brand"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -71,8 +73,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Price"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/price"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <com.yazantarifi.slider.RangeSliderView
             android:visibility="gone"
@@ -151,8 +154,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Color"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/color"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvColor"
@@ -168,18 +172,20 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvShowMoreColor"
             style="@style/edit_text_title"
-            android:text="Show More Color"
+            android:text="@string/show_more_color"
             android:textColor="@color/brown"
             android:fontFamily="@font/poppins_medium"
             android:paddingVertical="@dimen/_10sdp"
             android:paddingEnd="@dimen/_15sdp"
-            android:textSize="@dimen/_11sdp" />
+            android:textSize="@dimen/_11sdp"
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Discount Range"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/discount_range"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <RadioGroup
             android:id="@+id/radioGroupDiscount"
@@ -203,7 +209,8 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb20"
@@ -219,7 +226,8 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb30"
@@ -235,7 +243,8 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb40"
@@ -251,7 +260,8 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb50"
@@ -267,15 +277,17 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
         </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Size"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/size"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSize"
@@ -290,8 +302,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Ratings"
-            android:textSize="@dimen/_13sdp" />
+            android:text="@string/ratings"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <RadioGroup
             android:id="@+id/radioGroupRating"
@@ -306,7 +319,7 @@
                 android:id="@+id/rb1Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1 Star"
+                android:text="@string/_1_star"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -316,13 +329,14 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb2Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2 Star"
+                android:text="@string/_2_star"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -332,14 +346,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb3Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="3 Star"
+                android:text="@string/_3_star"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -348,14 +363,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb4Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="4 Star"
+                android:text="@string/_4_star"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -364,14 +380,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb5Star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="5 Star"
+                android:text="@string/_5_star"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -380,15 +397,17 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
         </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Delivery Time"
-            android:textSize="@dimen/_13sdp"/>
+            android:text="@string/delivery_time"
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <RadioGroup
             android:id="@+id/rgDeliveryTime"
@@ -403,7 +422,7 @@
                 android:id="@+id/rb2Day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Today- 2 days"
+                android:text="@string/today_2_days"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -413,13 +432,14 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb3day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3- 5 days"
+                android:text="@string/_3_5_days"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
@@ -429,14 +449,15 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
             <RadioButton
                 android:id="@+id/rb6day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="6- 12 days"
+                android:text="@string/_6_12_days"
                 android:textColor="@color/black"
                 android:paddingVertical="@dimen/_6sdp"
                 android:button="@drawable/selector_checkbox_icon"
@@ -445,7 +466,8 @@
                 app:buttonTint="@null"
                 android:drawableTint="@null"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"/>
 
         </RadioGroup>
 
@@ -460,7 +482,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/button_stroke"
-        android:text="Clear"
+        android:text="@string/clear"
         android:textColor="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="@dimen/_12sdp"
@@ -480,7 +502,7 @@
         android:background="@drawable/btn_gradient"
         android:gravity="center"
         android:layout_marginStart="@dimen/_7sdp"
-        android:text="Apply"
+        android:text="@string/apply"
         android:fontFamily="@font/poppins_medium"
         android:paddingVertical="@dimen/_8sdp"
         android:textColor="@color/white"
