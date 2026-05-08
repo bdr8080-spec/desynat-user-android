@@ -49,7 +49,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                     holder.binding.viewCustomBottom.isVisible = true
                 }
 
-                tvRequestId.text = "Request Id #${productData?.order?.id}"
+                tvRequestId.text = "${context.getString(R.string.request_id)} #${productData?.order?.id}"
                 tvCustomTitle.text = productData?.productDetails?.productNameEn
                 tvCustomDetail.text = productData?.chatroomRecordtable?.customDetails
                 tvTotalQuantityValue.text = productData?.chatroomRecordtable?.quantity
@@ -204,7 +204,15 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
 
                 val discountValue = CommonMethod.formatCurrencyAmountWithout(context,productData?.variationDetails?.discountValue?.toDoubleOrNull() ?: 0.0)
                 val discountType =
-                    if (productData?.variationDetails?.discountType == "1") "% off" else " KD off"
+                    if (productData?.variationDetails?.discountType == "1") "% ${context.getString(R.string.off)}" else " ${
+                        CommonMethod.getCurrency(
+                            context
+                        )
+                    } ${
+                        context.getString(
+                            R.string.off
+                        )
+                    }"
                 tvDiscount.text = "$discountValue$discountType"
 
                 if (productData?.paymentStatus == "2" || productData?.paymentStatus == "3") {

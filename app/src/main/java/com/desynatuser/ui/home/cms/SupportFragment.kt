@@ -31,6 +31,7 @@ import com.desynatuser.ui.home.cms.response.GetAllRaisedTicketResponse
 import com.desynatuser.ui.home.cms.response.GetContactResponse
 import com.desynatuser.ui.home.cms.response.GetTicketTypeResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -278,7 +279,8 @@ class SupportFragment : BaseFragment() {
 
                 if (isRaised){
                     isRaised = false
-                    CommonMethod.showSuccessDialog(requireActivity(),"Ticket Raised Successfully!")
+                    CommonMethod.showSuccessDialog(requireActivity(),
+                        getString(R.string.ticket_raised_successfully))
                 }
 
                 currentPage = response.data.currentPage
@@ -359,7 +361,7 @@ class SupportFragment : BaseFragment() {
                 binding?.progressBar?.isVisible = false
                 if (isRaised){
                     isRaised = false
-                    CommonMethod.showSuccessDialog(requireActivity(),"Ticket Raised Successfully!")
+                    CommonMethod.showSuccessDialog(requireActivity(),getString(R.string.ticket_raised_successfully))
                 }
                 currentPage = response.data.currentPage
                 totalItem = response.data.total
@@ -446,7 +448,7 @@ class SupportFragment : BaseFragment() {
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast("Speech recognition not supported")
+            showToast(getString(R.string.speech_recognition_not_supported))
         }
     }
 
@@ -603,13 +605,13 @@ class SupportFragment : BaseFragment() {
         val popup = android.widget.PopupMenu(requireContext(), dialogBinding?.etTicketType)
 
         ticketTypeList.forEachIndexed { index, item ->
-            popup.menu.add(0, index, index, item.name) // use correct field name
+            popup.menu.add(0, index, index, if (Constants.language=="ar")item.nameArabic else item.name) // use correct field name
         }
 
         popup.setOnMenuItemClickListener { menuItem ->
             selectedTicketType = ticketTypeList[menuItem.itemId]
 
-            dialogBinding?.etTicketType?.setText(selectedTicketType?.name)
+            dialogBinding?.etTicketType?.setText(if (Constants.language=="ar")selectedTicketType?.nameArabic else selectedTicketType?.name)
 
             true
         }

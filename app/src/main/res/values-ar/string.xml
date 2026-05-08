@@ -746,4 +746,14 @@
     <string name="discard">تجاهل</string>
     <string name="delete">حذف</string>
     <string name="hi_there">مرحبًا</string>
+
+    <string name="address_save_successfully">تم حفظ العنوان بنجاح</string>
+    <string name="please_select_country">يرجى اختيار الدولة</string>
+    <string name="please_enter_address_line_1">يرجى إدخال سطر العنوان 1</string>
+    <string name="please_enter_address_line_2">يرجى إدخال سطر العنوان 2</string>
+    <string name="ticket_raised_successfully">تم إنشاء التذكرة بنجاح!</string>
+    <string name="host_left">غادر المضيف</string>
+    <string name="wallet_balance_is_low">رصيد المحفظة منخفض</string>
+    <string name="google_pay_failed">فشل Google Pay</string>
+    <string name="lorem_ipsum">لوريم إيبسوم دولور سيت أميت كونسيكتيتور. مي أولتريسيس ديام سوسيوس فولوتبات أورسي نون. كومودو بريتيوم أورنا أوت أوغوي أك أميت سيد.</string>
 </resources>

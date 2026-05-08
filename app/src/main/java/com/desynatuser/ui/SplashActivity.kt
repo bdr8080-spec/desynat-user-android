@@ -54,6 +54,9 @@ class SplashActivity : BaseActivity() {
             }
             }
             else{
+                SharedPreference.get(this).language = ""
+                CommonMethod.setLocale(this,"en")
+                Constants.language = "en"
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()
             }

@@ -204,7 +204,7 @@ class ProductDetailFragment : BaseFragment() {
             variant?.productVariation?.let { sizeList.addAll(it) }
             sizeAdapter?.notifyDataSetChanged()
 
-            tvName.text = productDetailData?.brand?.nameEnglish
+            tvName.text = if (Constants.language=="ar") productDetailData?.brand?.nameArabic else productDetailData?.brand?.nameEnglish
 
             if (variant?.productVariation?.get(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0){
                 relAddToBag.isVisible = true
@@ -287,10 +287,16 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
 
             relSearch.setOnClickListener{
-                val bundle = Bundle().apply {
-                    putString("from", "productDetail")
+                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                    val bundle = Bundle().apply {
+                        putString("from", "productDetail")
+                    }
+                    findNavController().navigate(R.id.action_productDetailFragment_to_savedAddressFragment,bundle)
                 }
-                findNavController().navigate(R.id.action_productDetailFragment_to_savedAddressFragment,bundle)
+                else{
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+
             }
 
             ivBack.setOnClickListener {

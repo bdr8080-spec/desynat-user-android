@@ -290,7 +290,7 @@ class ViewReelFragment : BaseFragment() {
                 }
                 else{
                     reelData?.wishlist = 1
-                    showToast("Reel added to your wishlist successfully")
+                    showToast(getString(R.string.reel_added_to_your_wishlist_successfully))
                 }
                 setReelLikeStatus()
                 isObserver = false

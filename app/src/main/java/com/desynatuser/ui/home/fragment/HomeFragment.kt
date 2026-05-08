@@ -485,19 +485,41 @@ class HomeFragment : BaseFragment() {
             }
 
             etSearch.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_searchProductFragment)
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
+                    findNavController().navigate(R.id.action_homeFragment_to_searchProductFragment)
+                } else {
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+
+
             }
 
             ivSupportBot.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_TidioChatFragment)
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
+                    findNavController().navigate(R.id.action_homeFragment_to_TidioChatFragment)
+                } else {
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+
+
             }
 
             ivMic.setOnClickListener {
-                openSpeechDialog()
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
+                    openSpeechDialog()
+                } else {
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+
             }
 
             ivCamera.setOnClickListener {
-                imagePicker.showImageSourceDialog()
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
+                    imagePicker.showImageSourceDialog()
+                } else {
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+
             }
 
             ivChat.setOnClickListener {
@@ -517,7 +539,12 @@ class HomeFragment : BaseFragment() {
             }
 
             ivNotification.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_notificationFragment)
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
+                    findNavController().navigate(R.id.action_homeFragment_to_notificationFragment)
+                } else {
+                    CommonMethod.showLoginAlert(requireActivity())
+                }
+
             }
 
             tvWomen.setOnClickListener {

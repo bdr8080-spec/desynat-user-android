@@ -14,6 +14,7 @@ import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.collections.get
 
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
@@ -57,6 +58,7 @@ class AuthActivity : BaseActivity() {
             }
 
         } else {
+            val savedLanguage = SharedPreference.get(this).language
             if (SharedPreference.get(this).userType == 2) {
                 if (SharedPreference.get(this).getUser()?.affiliatedUserdetails?.adminVerify != null) {
                     R.id.login
@@ -65,11 +67,20 @@ class AuthActivity : BaseActivity() {
                 } else {
                     R.id.login
                 }
-            } else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
+            }
+            else if (SharedPreference.get(this).accessToken.isNotEmpty()) {
                 R.id.banner
-            } else {
-                if (Constants.isLogout) R.id.login
-                else R.id.language
+            }
+            else if (Constants.isLogout) {
+                R.id.login
+            } else if (savedLanguage.isEmpty()) {
+                R.id.language
+            }
+            else if (SharedPreference.get(this).isTutorial){
+                R.id.onBoarding
+            }
+            else{
+                R.id.login
             }
         }
 

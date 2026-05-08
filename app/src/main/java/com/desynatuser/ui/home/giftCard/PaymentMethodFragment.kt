@@ -150,7 +150,7 @@ class PaymentMethodFragment : BaseFragment() {
                             buyGiftCardPayment("wallet")
                         }
                         else{
-                            showToast("Wallet balance is low")
+                            showToast(getString(R.string.wallet_balance_is_low))
                         }
 
                     }
@@ -576,7 +576,7 @@ class PaymentMethodFragment : BaseFragment() {
 
                     is MFResult.Fail -> {
                         Log.d("GooglePay", "Payment failed: " + Gson().toJson(result.error))
-                        showToast("Google Pay failed: ${result.error.message}")
+                        showToast("${getString(R.string.google_pay_failed)}: ${result.error.message}")
                     }
 
                     else -> {}

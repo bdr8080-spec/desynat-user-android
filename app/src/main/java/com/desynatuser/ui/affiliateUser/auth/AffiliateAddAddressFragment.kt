@@ -125,7 +125,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
                 response?.let {
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        "Address Save Successfully"
+                        getString(R.string.address_save_successfully)
                     ) {
                         val bundle = Bundle().apply {
                             putString("userId", userId)
@@ -166,19 +166,19 @@ class AffiliateAddAddressFragment : BaseFragment() {
         binding?.apply {
             return when {
                 etCountry.text.toString().isEmpty() -> {
-                    showToast("Please select country")
+                    showToast(getString(R.string.please_select_country))
                     false
                 }
                 etChooseLocation.text.toString().isEmpty() -> {
-                    showToast("Please select address")
+                    showToast(getString(R.string.please_select_address))
                     false
                 }
                 etAddressLine1.text.toString().isEmpty() -> {
-                    showToast("Please enter address line 1")
+                    showToast(getString(R.string.please_enter_address_line_1))
                     false
                 }
                 etAddressLine2.text.toString().isEmpty() -> {
-                    showToast("Please enter address line 2")
+                    showToast(getString(R.string.please_enter_address_line_2))
                     false
                 }
              /*   etPinCode.text.toString().isEmpty() -> {

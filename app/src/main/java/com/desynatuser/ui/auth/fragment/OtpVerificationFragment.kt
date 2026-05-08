@@ -60,7 +60,7 @@ class OtpVerificationFragment : BaseFragment() {
         from = arguments?.getString("from").toString()
         email = arguments?.getString("email").toString()
         userId = arguments?.getString("userId").toString()
-
+        setupOtpInputs()
         when(from){
             "signUp" -> screenType = 1
             "affiliateSignUp" -> {
@@ -96,7 +96,26 @@ class OtpVerificationFragment : BaseFragment() {
             }
 
             btnVerify.setOnClickListener {
-                val otp = pinView.text.toString().trim()
+                val otp = if (
+                    resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+                ) {
+
+                    binding?.etOtp6?.text.toString() +
+                            binding?.etOtp5?.text.toString() +
+                            binding?.etOtp4?.text.toString() +
+                            binding?.etOtp3?.text.toString() +
+                            binding?.etOtp2?.text.toString() +
+                            binding?.etOtp1?.text.toString()
+
+                } else {
+
+                    binding?.etOtp1?.text.toString() +
+                            binding?.etOtp2?.text.toString() +
+                            binding?.etOtp3?.text.toString() +
+                            binding?.etOtp4?.text.toString() +
+                            binding?.etOtp5?.text.toString() +
+                            binding?.etOtp6?.text.toString()
+                }
 
                 when {
                     otp.isEmpty() -> {
@@ -108,17 +127,17 @@ class OtpVerificationFragment : BaseFragment() {
                     else -> {
                         if (screenType == -1) {
                             when (from) {
-                                "edit", "change" -> verifyUserOtp()
-                                "affiliateEdit", "affiliateChange" -> affiliateUserOtp()
+                                "edit", "change" -> verifyUserOtp(otp)
+                                "affiliateEdit", "affiliateChange" -> affiliateUserOtp(otp)
                             }
                         }
                         else{
                             if (from=="affiliateSignUp"||from=="affiliateLogin"||from=="affiliateForgot"){
                                 SharedPreference.get(requireActivity()).affiliateAccessToken = ""
-                                verifyAffiliateUserOtp()
+                                verifyAffiliateUserOtp(otp)
                             }
                             else{
-                                verifyOtp()
+                                verifyOtp(otp)
                             }
                         }
                     }
@@ -127,19 +146,19 @@ class OtpVerificationFragment : BaseFragment() {
         }
     }
 
-    private fun verifyUserOtp(){
+    private fun verifyUserOtp(otp: String){
         val map = HashMap<String,Any>()
         map["id"] = userId
-        map["otp"] = binding?.pinView?.text?.trim().toString()
+        map["otp"] = otp
         homeViewModel.userOtp(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
 
-    private fun verifyOtp(){
+    private fun verifyOtp(otp: String){
         val map = HashMap<String,Any>()
         map["user_id"] = userId
-        map["otp"] = binding?.pinView?.text?.trim().toString()
+        map["otp"] = otp
         map["type"] = screenType
         if (screenType==1){
             map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
@@ -150,19 +169,19 @@ class OtpVerificationFragment : BaseFragment() {
         isObserver = true
     }
 
-    private fun affiliateUserOtp(){
+    private fun affiliateUserOtp(otp: String){
         val map = HashMap<String,Any>()
         map["id"] = userId
-        map["otp"] = binding?.pinView?.text?.trim().toString()
+        map["otp"] = otp
         homeViewModel.affiliateUserOtp(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
 
-    private fun verifyAffiliateUserOtp(){
+    private fun verifyAffiliateUserOtp(otp: String){
         val map = HashMap<String,Any>()
         map["id"] = userId
-        map["otp"] = binding?.pinView?.text?.trim().toString()
+        map["otp"] = otp
         map["type"] = "1"
         map["device_type"] = Constants.DEVICE_TYPE
         if (from=="affiliateLogin"){
@@ -240,7 +259,7 @@ class OtpVerificationFragment : BaseFragment() {
                                 "2"->{
                                     SharedPreference.get(requireActivity()).isAffiliateTutorial = true
                                  //   SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
-                                    showToast("OTP verified successfully")
+                                    showToast(getString(R.string.otp_verified_successfully))
                                     requireActivity().startActivity(
                                         Intent(requireActivity(),
                                             AffiliateHomeActivity::class.java)
@@ -495,4 +514,96 @@ class OtpVerificationFragment : BaseFragment() {
             timer.cancel()
         }
     }
+
+    private fun setupOtpInputs() {
+
+        val otpFields = listOf(
+            binding?.etOtp1,
+            binding?.etOtp2,
+            binding?.etOtp3,
+            binding?.etOtp4,
+            binding?.etOtp5,
+            binding?.etOtp6
+        )
+
+        val isArabic =
+            resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        // First focus
+        if (isArabic) {
+            binding?.etOtp6?.requestFocus()
+        } else {
+            binding?.etOtp1?.requestFocus()
+        }
+
+        otpFields.forEachIndexed { index, editText ->
+
+            editText?.addTextChangedListener(object : android.text.TextWatcher {
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                }
+
+                override fun afterTextChanged(s: android.text.Editable?) {
+
+                    if (s?.length == 1) {
+
+                        if (isArabic) {
+
+                            // Move LEFT in Arabic
+                            if (index > 0) {
+                                otpFields[index - 1]?.requestFocus()
+                            }
+
+                        } else {
+
+                            // Move RIGHT in English
+                            if (index < otpFields.size - 1) {
+                                otpFields[index + 1]?.requestFocus()
+                            }
+                        }
+                    }
+                }
+            })
+
+            editText?.setOnKeyListener { _, keyCode, event ->
+
+                if (event.action == android.view.KeyEvent.ACTION_DOWN &&
+                    keyCode == android.view.KeyEvent.KEYCODE_DEL &&
+                    editText.text.isEmpty()
+                ) {
+
+                    if (isArabic) {
+
+                        // Back move RIGHT in Arabic
+                        if (index < otpFields.size - 1) {
+                            otpFields[index + 1]?.requestFocus()
+                        }
+
+                    } else {
+
+                        // Back move LEFT in English
+                        if (index > 0) {
+                            otpFields[index - 1]?.requestFocus()
+                        }
+                    }
+                }
+
+                false
+            }
+        }
+    }
+
 }

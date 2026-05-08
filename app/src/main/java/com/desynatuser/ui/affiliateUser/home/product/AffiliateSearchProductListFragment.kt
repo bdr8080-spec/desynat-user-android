@@ -486,7 +486,7 @@ class AffiliateSearchProductListFragment : BaseFragment() {
                     dialog.dismiss()
                 }
                 else{
-                    showToast("Please select")
+                    showToast(getString(R.string.please_select))
                 }
 
 
@@ -788,7 +788,7 @@ class AffiliateSearchProductListFragment : BaseFragment() {
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast("Speech recognition not supported")
+            showToast(getString(R.string.speech_recognition_not_supported))
         }
     }
 

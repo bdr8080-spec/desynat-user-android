@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemSpecificationBinding
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.utils.Constants
 
 class SpecificationAdapter(var context:Context, var specificationList: ArrayList<GetSingleStoreResponse.Data.AllProduct.Data.ProductSpecification>) : RecyclerView.Adapter<SpecificationAdapter.ViewHolder>() {
 
@@ -25,7 +26,13 @@ class SpecificationAdapter(var context:Context, var specificationList: ArrayList
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            tvDescription.text = "${specificationList[position].nameEn} - ${specificationList[position].featureEn}"
+            tvDescription.text = if (Constants.language=="ar"){
+                "${specificationList[position].nameAr} - ${specificationList[position].featureAr}"
+            }
+            else{
+                "${specificationList[position].nameEn} - ${specificationList[position].featureEn}"
+            }
+
 
         }
     }

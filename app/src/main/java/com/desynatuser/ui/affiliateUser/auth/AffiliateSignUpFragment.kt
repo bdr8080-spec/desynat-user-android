@@ -324,7 +324,7 @@ class AffiliateSignUpFragment : BaseFragment() {
                 response?.let {
                     CommonMethod.showSuccessDialog(
                         requireActivity(),
-                        "OTP sent successfully to your mobile number "
+                        getString(R.string.otp_sent_successfully_to_your_mobile_number)
                     ) {
                         val bundle = Bundle().apply {
                             putString("countryCode", binding?.tvCountryPicker?.text.toString())

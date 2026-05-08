@@ -742,6 +742,15 @@
  <string name="discard">Discard</string>
  <string name="delete">Delete</string>
  <string name="hi_there">Hi there</string>
+ <string name="address_save_successfully">Address Save Successfully</string>
+ <string name="please_select_country">Please select country</string>
+ <string name="please_enter_address_line_1">Please enter address line 1</string>
+ <string name="please_enter_address_line_2">Please enter address line 2</string>
+ <string name="ticket_raised_successfully">Ticket Raised Successfully!</string>
+ <string name="host_left">Host left</string>
+ <string name="wallet_balance_is_low">Wallet balance is low</string>
+ <string name="google_pay_failed">Google Pay failed</string>
+ <string name="lorem_ipsum">Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed.</string>
 
  <array name="initial_price_values">
         <item>0</item>

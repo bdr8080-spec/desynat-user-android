@@ -17,6 +17,7 @@ import com.desynatuser.utils.Constants
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.text.get
 
 @AndroidEntryPoint
 class LanguageFragment : BaseFragment() {
@@ -41,14 +42,20 @@ class LanguageFragment : BaseFragment() {
         from = arguments?.getString("from").toString()
         requestPermissions()
         binding?.apply {
-            Constants.language = SharedPreference.get(requireActivity()).language
-            if(Constants.language=="en"){
-                cbEnglish.isChecked = true
-                cbArabic.isChecked = false
+            if (SharedPreference.get(requireActivity()).language!=""){
+                Constants.language = SharedPreference.get(requireActivity()).language
             }
-            else if(Constants.language=="ar"){
+            else{
+                Constants.language = "en"
+            }
+
+            if(Constants.language=="ar"){
                 cbEnglish.isChecked = false
                 cbArabic.isChecked = true
+            }
+            else{
+                cbEnglish.isChecked = true
+                cbArabic.isChecked = false
             }
 
             if (from=="profile"){

@@ -229,7 +229,7 @@ class OrderPaymentFragment : BaseFragment() {
 
                         }
                         else{
-                            showToast("Wallet balance is low")
+                            showToast(getString(R.string.wallet_balance_is_low))
                         }
                     }
                     "COD" -> {
@@ -270,7 +270,7 @@ class OrderPaymentFragment : BaseFragment() {
 
         viewModel.buyGiftCardPaymentResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
-                CommonMethod.showSuccessDialog(requireActivity(),"Gift card purchased successfully!"){
+                CommonMethod.showSuccessDialog(requireActivity(),getString(R.string.gift_card_purchased_successfully)){
                     findNavController().navigate(
                         R.id.giftCard,
                         null,
@@ -651,7 +651,7 @@ class OrderPaymentFragment : BaseFragment() {
 
                     is MFResult.Fail -> {
                         Log.d("GooglePay", "Payment failed: " + Gson().toJson(result.error))
-                        showToast("Google Pay failed: ${result.error.message}")
+                        showToast("${getString(R.string.google_pay_failed)}: ${result.error.message}")
                     }
 
                     else -> {}
@@ -675,7 +675,7 @@ class OrderPaymentFragment : BaseFragment() {
                     Log.d("PaymentFlow", "Payment Cancelled")
                 }
                 else -> {
-                    showToast("Payment Failed or Unknown")
+                    showToast(getString(R.string.payment_failed_or_unknown))
                     Log.d("PaymentFlow", getString(R.string.payment_failed_or_unknown))
                 }
             }
