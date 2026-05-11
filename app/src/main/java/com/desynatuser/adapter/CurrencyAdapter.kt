@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemCurrencyBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.desynatuser.utils.Constants
 
 class CurrencyAdapter(var context:Context, var currencyList: ArrayList<GetCountryResponse.Data>, var clickOnItem:ClickOnItem) : RecyclerView.Adapter<CurrencyAdapter.ViewHolder>() {
 
@@ -15,7 +16,7 @@ class CurrencyAdapter(var context:Context, var currencyList: ArrayList<GetCountr
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
             val currencyData = currencyList[position]
-            tvCurrency.text = currencyData.currencyCode
+            tvCurrency.text = if (Constants.language=="ar") currencyData?.currencyCode else currencyData?.currencyCode
             if (selectedPos==position){
                 ivRadio.setImageResource(R.drawable.ic_radio_selected)
                 clMain.setBackgroundResource(R.drawable.notification_read_background)

@@ -12,6 +12,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemOrderProductBinding
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import java.time.Duration
 import java.time.Instant
 
@@ -191,7 +192,7 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
                 }
 
                 tvRequestId.text = "${context.getString(R.string.request_id)} #${productData?.id}"
-                tvCustomTitle.text = productData?.productDetails?.productNameEn
+                tvCustomTitle.text =  if (Constants.language=="ar") productData?.productDetails?.productNameAr else productData?.productDetails?.productNameEn
 
                 tvCustomDetail.text = productData?.chatroomRecordtable?.customDetails
                 tvTotalQuantityValue.text = productData?.chatroomRecordtable?.quantity
@@ -225,7 +226,7 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
                 } else {
                     holder.binding.viewBottom.isVisible = true
                 }
-                tvTitle.text = productData?.productDetails?.productNameEn
+                tvTitle.text =  if (Constants.language=="ar") productData?.productDetails?.productNameAr else productData?.productDetails?.productNameEn
 
                 tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)}"
                 tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)}"

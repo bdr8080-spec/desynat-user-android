@@ -10,6 +10,7 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemCategoryBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.utils.Constants
 
 class CatalogAdapter(var context:Context, private var catalogList: ArrayList<GetCategoryResponse.Data>, var catalogClick:CatalogClick) : RecyclerView.Adapter<CatalogAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemCategoryBinding) :
@@ -50,13 +51,13 @@ class CatalogAdapter(var context:Context, private var catalogList: ArrayList<Get
                 clLeft.isVisible = true
             }
 
-            tvCategoryName.text = catalogData.name
+            tvCategoryName.text = if (Constants.language=="ar") catalogData.nameAr else catalogData.name
             tvDescription.text = catalogData.description
             ivCategory.load(catalogData.image)
 
             relCategory.backgroundTintList = ColorStateList.valueOf(Color.parseColor(catalogData.colorCode))
 
-            tvCategoryName1.text = catalogData.name
+            tvCategoryName1.text = if (Constants.language=="ar") catalogData.nameAr else catalogData.name
             tvDescription1.text = catalogData.description
             ivCategory1.load(catalogData.image)
 

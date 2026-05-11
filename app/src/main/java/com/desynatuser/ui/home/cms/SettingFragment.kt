@@ -101,7 +101,14 @@ class SettingFragment : BaseFragment() {
                     userInfo?.notification = response?.data?.notification?:0
                     userInfo?.let { SharedPreference.get(requireActivity()).saveUser(it) }
                     setData()
-                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                    if (response?.data?.notification==1){
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.notification_is_set_to_on))
+                    }
+                    else{
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.notification_is_set_to_off))
+                    }
                 }
                 isObserver = false
             }
@@ -115,7 +122,14 @@ class SettingFragment : BaseFragment() {
                     userInfo?.appNotification = response?.data?.appNotification?:0
                     userInfo?.let { SharedPreference.get(requireActivity()).saveUser(it) }
                     setData()
-                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                    if (response?.data?.appNotification==1){
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.in_app_notification_is_set_to_on))
+                    }
+                    else{
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.in_app_notification_is_set_to_off))
+                    }
                 }
                 isObserver = false
             }
@@ -129,7 +143,14 @@ class SettingFragment : BaseFragment() {
                     affiliateUserInfo?.notification = response?.data?.notification?:0
                     affiliateUserInfo?.let { SharedPreference.get(requireActivity()).saveAffiliateUser(it) }
                     setData()
-                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                    if (response?.data?.notification==1){
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.notification_is_set_to_on))
+                    }
+                    else{
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.notification_is_set_to_off))
+                    }
                 }
                 isObserver = false
             }
@@ -143,7 +164,14 @@ class SettingFragment : BaseFragment() {
                     affiliateUserInfo?.appNotification = response?.data?.appNotification?:0
                     affiliateUserInfo?.let { SharedPreference.get(requireActivity()).saveAffiliateUser(it) }
                     setData()
-                    CommonMethod.showSuccessDialog(requireActivity(),response?.message.toString())
+                    if (response?.data?.appNotification==1){
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.in_app_notification_is_set_to_on))
+                    }
+                    else{
+                        CommonMethod.showSuccessDialog(requireActivity(),
+                            getString(R.string.in_app_notification_is_set_to_off))
+                    }
                 }
                 isObserver = false
             }

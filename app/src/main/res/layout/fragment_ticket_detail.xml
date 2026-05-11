@@ -182,6 +182,7 @@
                 android:padding="@dimen/_10sdp"
                 android:textColor="#80000000"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 android:layout_marginHorizontal="@dimen/_15sdp"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -205,6 +206,7 @@
                 android:text="lorem ipsum dolor sit amet, co adipisicing elit, sed do eiusmod tincididunt ut labore et dolore magnliqua. Ut enim ad minim veniam, quis."
                 android:textColor="#80000000"
                 android:textSize="@dimen/_11sdp"
+                android:textAlignment="viewStart"
                 android:layout_marginHorizontal="@dimen/_15sdp"/>
 
             <androidx.appcompat.widget.AppCompatTextView

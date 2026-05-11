@@ -29,6 +29,7 @@
         android:textSize="@dimen/_11sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_5sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toEndOf="@+id/ivStore"
         app:layout_constraintEnd_toStartOf="@+id/ivDelete"
         app:layout_constraintTop_toTopOf="@+id/clCartQuantity"
@@ -187,6 +188,7 @@
         android:text="KD 239"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvSize" />
 
@@ -262,6 +264,7 @@
         android:textColor="@color/black"
         android:layout_marginStart="@dimen/_10sdp"
         android:textSize="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewImg" />
 
@@ -276,6 +279,7 @@
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_20sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvDeliver"
         app:layout_constraintTop_toTopOf="@+id/tvDeliver"
@@ -292,6 +296,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tvDeliver"
         app:layout_constraintTop_toBottomOf="@+id/tvDeliver" />
@@ -306,6 +311,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvDeliverBy"
         app:layout_constraintTop_toTopOf="@+id/tvSeller"
@@ -322,6 +328,7 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp"
+        android:textAlignment="viewStart"
         android:drawableEnd="@drawable/ic_arrow_forward"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

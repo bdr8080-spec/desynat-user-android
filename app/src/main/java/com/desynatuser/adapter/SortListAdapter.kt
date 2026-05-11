@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemSortBinding
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.utils.Constants
 
 class SortListAdapter(var context:Context, var sortList: ArrayList<GetStoreSortListResponse.Data>, var onClick:ClickOnItem) : RecyclerView.Adapter<SortListAdapter.ViewHolder>() {
 
@@ -29,7 +30,7 @@ class SortListAdapter(var context:Context, var sortList: ArrayList<GetStoreSortL
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-          tvName.text = sortList[position].name
+          tvName.text = if (Constants.language=="ar") sortList[position].nameAr else sortList[position].name
 
             if (sortList[position].isSelected){
                 ivSort.setImageResource(R.drawable.ic_radio_selected)

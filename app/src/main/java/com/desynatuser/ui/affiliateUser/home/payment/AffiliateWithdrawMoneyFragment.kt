@@ -74,7 +74,7 @@ class AffiliateWithdrawMoneyFragment : BaseFragment() {
                 }
             }
 
-            tvCurrency.text = Constants.CURRENCY
+            tvCurrency.text = CommonMethod.getCurrency(requireActivity())
         }
     }
 

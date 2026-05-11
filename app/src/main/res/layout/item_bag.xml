@@ -29,6 +29,7 @@
         android:textSize="@dimen/_11sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_5sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintStart_toEndOf="@+id/ivStore"
         app:layout_constraintEnd_toStartOf="@+id/ivDelete"
         app:layout_constraintTop_toTopOf="@+id/clCartQuantity"

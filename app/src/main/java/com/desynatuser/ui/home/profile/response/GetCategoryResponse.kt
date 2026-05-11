@@ -24,6 +24,8 @@ data class GetCategoryResponse(
         val image: String?=null,
         @SerializedName("name")
         val name: String?=null,
+        @SerializedName("name_ar")
+        val nameAr: String?=null,
         @SerializedName("status")
         val status: String?=null,
         @SerializedName("updated_at")

@@ -11,6 +11,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemCustomBagBinding
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 
 class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<GetCartResponse.Data.CartData>, var foodBagClick:FoodBagClick) : RecyclerView.Adapter<MyCustomBagAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemCustomBagBinding) :
@@ -42,7 +43,7 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
             else{
                 holder.binding.viewBottom.isVisible = true
             }
-            tvTitle.text = cartData.product.productNameEn
+            tvTitle.text =  if (Constants.language=="ar") cartData.product.productNameAr else cartData.product.productNameEn
 
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.actualPrice?.toDoubleOrNull()?:0.0)}"
          //   tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
@@ -77,7 +78,7 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
             }
 
             tvSellerName.text = cartData?.product?.sellerDetails?.firstName+" "+ cartData?.product?.sellerDetails?.lastName
-            tvDeliverBy.text = "3 to 5 working days"
+            tvDeliverBy.text = "3 ${context.getString(R.string.to)} 5 ${context.getString(R.string.working_days)}"
             tvSizeValue.text = cartData?.productVariants?.size?.name.toString()
             ivColor.setColorFilter(Color.parseColor(cartData?.productVariants?.color?.hexCode))
             tvQuantity.text = cartData?.quantity.toString()

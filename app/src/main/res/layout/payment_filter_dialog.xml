@@ -7,20 +7,37 @@
     android:backgroundTint="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvToolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/_15sdp"
-        android:paddingHorizontal="@dimen/_15sdp"
+        android:backgroundTint="#FFF9ED"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/half_rounded_corner"
-        android:backgroundTint="#FFF7EA"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Filter"
-        android:textColor="@color/black"
-        android:drawableEnd="@drawable/close_icon"
-        android:textSize="@dimen/_13sdp"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:padding="20dp"
+        android:id="@+id/tvToolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/filter"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:id="@+id/title"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/title"
+            app:layout_constraintBottom_toBottomOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/close_icon"
+            android:id="@+id/closeIv"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -53,7 +70,7 @@
             android:id="@+id/rbPending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pending"
+            android:text="@string/pending"
             android:layout_weight="1"
             android:textColor="@color/black"
             android:paddingVertical="@dimen/_6sdp"
@@ -70,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Completed"
+            android:text="@string/completed"
             android:textColor="@color/black"
             android:paddingVertical="@dimen/_6sdp"
             android:button="@drawable/selector_checkbox_icon"
@@ -86,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancelled"
+            android:text="@string/cancelled"
             android:textColor="@color/black"
             android:paddingVertical="@dimen/_6sdp"
             android:button="@drawable/selector_checkbox_icon"
@@ -103,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Return"
+            android:text="@string/return_text"
             android:textColor="@color/black"
             android:paddingVertical="@dimen/_6sdp"
             android:button="@drawable/selector_checkbox_icon"
@@ -120,7 +137,7 @@
         android:id="@+id/tvChooseDate"
         style="@style/edit_text_title"
         android:layout_marginTop="@dimen/_15sdp"
-        android:text="Choose date"
+        android:text="@string/choose_date"
         android:textSize="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
         app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +154,7 @@
         android:drawablePadding="@dimen/_5sdp"
         android:editable="false"
         android:focusable="false"
-        android:hint="From   //  //"
+        android:hint="@string/from_date_hint"
         android:paddingVertical="@dimen/_9sdp"
         android:layout_marginStart="@dimen/_15sdp"
         app:layout_constraintEnd_toStartOf="@+id/etTo"
@@ -155,7 +172,7 @@
         android:drawablePadding="@dimen/_5sdp"
         android:editable="false"
         android:focusable="false"
-        android:hint="To   //  //"
+        android:hint="@string/to_date_hint"
         android:paddingVertical="@dimen/_9sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         app:layout_constraintBottom_toBottomOf="@+id/etFrom"
@@ -169,7 +186,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/button_stroke"
-        android:text="Clear"
+        android:text="@string/clear"
         android:textColor="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="@dimen/_12sdp"
@@ -190,7 +207,7 @@
         android:background="@drawable/btn_background"
         android:gravity="center"
         android:layout_marginStart="@dimen/_7sdp"
-        android:text="Apply"
+        android:text="@string/apply"
         android:layout_marginEnd="@dimen/_15sdp"
         android:fontFamily="@font/poppins_medium"
         android:paddingVertical="@dimen/_8sdp"

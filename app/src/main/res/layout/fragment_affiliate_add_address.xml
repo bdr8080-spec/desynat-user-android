@@ -69,7 +69,7 @@
             android:id="@+id/tvCountry"
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="Choose Country"
+            android:text="@string/choose_country"
             android:layout_marginHorizontal="@dimen/_15sdp"/>
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -82,21 +82,23 @@
             android:clickable="true"
             android:editable="false"
             android:focusable="false"
-            android:hint="Country"
+            android:hint="@string/select_country"
             android:inputType="text"
+            android:drawablePadding="@dimen/_5sdp"
+            android:textAlignment="viewStart"
             android:drawableEnd="@drawable/ic_drop_down"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
-            android:text="Choose Location"/>
+            android:text="@string/choose_location"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etChooseLocation"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Location"
+            android:hint="@string/location"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:drawableEnd="@drawable/ic_current"
@@ -106,60 +108,64 @@
             android:editable="false"
             android:focusable="false"
             android:clickable="true"
+            android:textAlignment="viewStart"
             android:background="@drawable/edit_back"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/edit_text_title"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Address Line 1"
+        android:text="@string/address_line_1"
         android:layout_marginHorizontal="@dimen/_15sdp"/>
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etAddressLine1"
         android:layout_width="match_parent"
         style="@style/edit_text"
-        android:hint="Enter House no., flat no..."
+        android:hint="@string/enter_house_no_flat_no"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:inputType="text"
         android:editable="false"
         android:focusable="false"
         android:clickable="true"
+        android:textAlignment="viewStart"
         android:background="@drawable/edit_back"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/edit_text_title"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:text="Address Line 2"/>
+        android:text="@string/address_line_2"/>
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etAddressLine2"
         android:layout_width="match_parent"
         style="@style/edit_text"
-        android:hint="Enter Street Name, Block, Apartment, Flat Name"
+        android:hint="@string/enter_street_name_block_apartment_flat_name"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:inputType="text"
         android:editable="false"
         android:focusable="false"
         android:clickable="true"
+        android:textAlignment="viewStart"
         android:background="@drawable/edit_back"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
-            android:text="Pin Code"/>
+            android:text="@string/pin_code"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etPinCode"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Enter Pin Code"
+            android:hint="@string/enter_pin_code"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:inputType="text"
+            android:textAlignment="viewStart"
             android:background="@drawable/edit_back"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -167,14 +173,14 @@
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
-            android:text="Locality Town"/>
+            android:text="@string/locality_town"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:visibility="gone"
             android:id="@+id/etLocalityTown"
             android:layout_width="match_parent"
             style="@style/edit_text"
-            android:hint="Enter Locality Town"
+            android:hint="@string/enter_locality_town"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:inputType="text"
@@ -191,7 +197,7 @@
                 android:layout_width="0dp"
                 style="@style/edit_text_title"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="State"
+                android:text="@string/state"
                 android:layout_marginEnd="@dimen/_8sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -202,7 +208,7 @@
                 android:id="@+id/etState"
                 android:layout_width="0dp"
                 style="@style/edit_text"
-                android:hint="Enter State Name"
+                android:hint="@string/enter_state_name"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="text"
                 android:background="@drawable/edit_back"
@@ -215,7 +221,7 @@
                 android:id="@+id/tvCity"
                 android:layout_width="0dp"
                 style="@style/edit_text_title"
-                android:text="City"
+                android:text="@string/city"
                 android:layout_marginStart="@dimen/_7sdp"
                 app:layout_constraintTop_toTopOf="@+id/tvState"
                 app:layout_constraintStart_toEndOf="@+id/tvState"
@@ -226,7 +232,7 @@
                 android:id="@+id/etCity"
                 android:layout_width="0dp"
                 style="@style/edit_text"
-                android:hint="Enter City Name"
+                android:hint="@string/enter_city_name"
                 android:inputType="text"
                 android:background="@drawable/edit_back"
                 app:layout_constraintTop_toTopOf="@+id/etState"
@@ -239,7 +245,7 @@
         android:id="@+id/btnContinue"
         style="@style/button"
         android:layout_marginTop="@dimen/_20sdp"
-        android:text="Continue"
+        android:text="@string/continue_text"
         android:layout_marginHorizontal="@dimen/_15sdp"/>
 
     <View

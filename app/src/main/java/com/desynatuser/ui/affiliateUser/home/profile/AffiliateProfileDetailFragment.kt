@@ -508,8 +508,8 @@ class AffiliateProfileDetailFragment : BaseFragment() {
                 docUrl2 = profileData?.document2
                  }
             Glide.with(requireActivity()).load(profileImageUrl).placeholder(R.drawable.ic_user).into(ivProfileImage)
-            Glide.with(requireActivity()).load(docUrl1).placeholder(R.drawable.doc1).into(ivDoc1)
-            Glide.with(requireActivity()).load(docUrl2).placeholder(R.drawable.doc2).into(ivDoc2)
+            Glide.with(requireActivity()).load(docUrl1).placeholder(R.drawable.ic_placeholder).into(ivDoc1)
+            Glide.with(requireActivity()).load(docUrl2).placeholder(R.drawable.ic_placeholder).into(ivDoc2)
 
             if (latitude==0.0){
                 latitude = profileData?.let?.toDoubleOrNull()?:0.0

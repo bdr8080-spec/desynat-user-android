@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemBrandBinding
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
+import com.desynatuser.utils.Constants
 
 class FilterSizeAdapter(var context:Context, var sizeList: ArrayList<GetSizeListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<FilterSizeAdapter.ViewHolder>() {
 
@@ -30,7 +31,7 @@ class FilterSizeAdapter(var context:Context, var sizeList: ArrayList<GetSizeList
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-            tvBrand.text = sizeList[position].name
+            tvBrand.text = if (Constants.language=="ar") sizeList[position].nameAr else sizeList[position].name
 
             if (sizeList[position].isSelected){
                 ivImage.setImageResource(R.drawable.ic_checkbox)

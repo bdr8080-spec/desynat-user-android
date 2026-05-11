@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -22,6 +23,7 @@ class SplashActivity : BaseActivity() {
     private var binding: ActivitySplashBinding?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -39,7 +41,8 @@ class SplashActivity : BaseActivity() {
 
     override fun initView() {
 
-         CommonMethod.setLocale(this,SharedPreference.get(this).language)
+        Log.e("language", "initView: ${SharedPreference.get(this).language}" )
+
         Constants.language = SharedPreference.get(this).language
         Handler(Looper.getMainLooper()).postDelayed({
             if (SharedPreference.get(this).userType==2){
@@ -54,9 +57,12 @@ class SplashActivity : BaseActivity() {
             }
             }
             else{
-                SharedPreference.get(this).language = ""
-                CommonMethod.setLocale(this,"en")
-                Constants.language = "en"
+                if (SharedPreference.get(this).accessToken.isEmpty()){
+                    SharedPreference.get(this).language = ""
+                    CommonMethod.setLocale(this,"en")
+                    Constants.language = "en"
+                }
+
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()
             }

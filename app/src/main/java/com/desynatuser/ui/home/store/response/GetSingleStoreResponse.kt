@@ -226,6 +226,8 @@ data class GetSingleStoreResponse(
                         val id: Int,
                         @SerializedName("name")
                         val name: String,
+                        @SerializedName("name_ar")
+                        val nameAr: String,
                         @SerializedName("created_at")
                         val createdAt: String,
                         @SerializedName("updated_at")

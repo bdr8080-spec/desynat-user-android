@@ -751,6 +751,23 @@
  <string name="wallet_balance_is_low">Wallet balance is low</string>
  <string name="google_pay_failed">Google Pay failed</string>
  <string name="lorem_ipsum">Lorem ipsum dolor sit amet consectetur. Mi ultrices diam sociis volutpat orci non. Commodo pretium urna ut augue ac amet sed.</string>
+ <string name="at">at</string>
+ <string name="gift_card_amount_redeemed">Gift Card Amount Redeemed</string>
+ <string name="apply_gift_card">Apply Gift Card</string>
+
+ <string name="notification_is_set_to_on">Notification is set to On</string>
+ <string name="notification_is_set_to_off">Notification is set to Off</string>
+ <string name="in_app_notification_is_set_to_on">In app Notification is set to On</string>
+ <string name="in_app_notification_is_set_to_off">In app Notification is set to Off</string>
+ <string name="choose_location">Choose Location</string>
+ <string name="choose_country">Choose Country</string>
+
+ <string name="no_result_found">Results not found</string>
+ <string name="search_hint">Search…</string>
+ <string name="select_country">Select a country</string>
+ <string name="reset">Reset</string>
+ <string name="no_card_found">No card found</string>
+
 
  <array name="initial_price_values">
         <item>0</item>

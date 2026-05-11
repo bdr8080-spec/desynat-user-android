@@ -25,7 +25,7 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
             tvMyEarnings.text = "${CommonMethod.formatCurrencyAmount(context,paymentData?.affiliateCommission?.toDoubleOrNull()?:0.0)}"
             tvTotalAmount.text = "${CommonMethod.formatCurrencyAmount(context,paymentData?.amount?.toDoubleOrNull()?:0.0)}"
             tvReasonValue.text = paymentData?.cancelReason
-            tvPurchaseOnValue.text = CommonMethod.customizeChangeDateFormat(paymentData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
+            tvPurchaseOnValue.text = CommonMethod.customizeChangeDateFormat(paymentData?.createdAt.toString(), outputFormat = "dd/MM/yyyy '${context.getString(R.string.at)}' hh:mm a" )
 
             if (paymentData?.paymentStatus=="2"||paymentData?.paymentStatus=="3"){
                 tvStatusValue.text = context.getString(R.string.cancelled)

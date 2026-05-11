@@ -189,6 +189,7 @@
                     android:layout_marginVertical="1dp"
                     android:hint="@string/select_address"
                     android:textSize="@dimen/_11sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -44,12 +44,14 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
             }
             tvLastMsg.text = chatData?.lastChat
             if (chatData.lastChatTime!=null&&chatData.lastChatTime!="null"&&chatData.lastChatTime!="") {
-                tvTime.text = chatData.lastChatTime
+                tvTime.text = CommonMethod.formatChatTime(context,
+                    chatData?.lastChatTime.toString(), inputType = "dd MMM yyyy, hh:mm a"
+                )
             }
             else{
-                tvTime.text = CommonMethod.formatChatTime(context,CommonMethod.customizeChangeDateFormat(
-                    chatData?.updatedAt.toString(), outputFormat = "dd MMM yyyy, hh:mm a"
-                ) )
+                tvTime.text = CommonMethod.formatChatTime(context,
+                    chatData?.updatedAt.toString(), inputType = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                )
             }
 
             if (chatData?.unreadCount!=0){

@@ -19,6 +19,7 @@ import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserAddAddressReq
 import com.desynatuser.ui.affiliateUser.auth.response.AffiliateUserLoginResponse
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -53,7 +54,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
     override fun initView() {
         userId = arguments?.getString("userId").toString()
         binding?.apply {
-            toolbar.tvToolbar.text = "Address"
+            toolbar.tvToolbar.text = getString(R.string.address)
         }
 
         if (SharedPreference.get(requireActivity()).getSelectedCountryList()==null){
@@ -77,7 +78,7 @@ class AffiliateAddAddressFragment : BaseFragment() {
                     countryList,
                     false
                 ) { selectedCountry ->
-                    etCountry.setText(selectedCountry.name)
+                    etCountry.setText(if (Constants.language=="ar") selectedCountry?.nameAr ?: selectedCountry?.name else selectedCountry.name)
                     selectedCountryId = selectedCountry.id.toString()
                 }
             }

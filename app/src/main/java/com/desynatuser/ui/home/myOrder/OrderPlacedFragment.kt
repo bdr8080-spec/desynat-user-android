@@ -55,8 +55,8 @@ class OrderPlacedFragment : BaseFragment() {
             if (!chatData.isNullOrEmpty()) {
                 chatDataDetail = Gson().fromJson(chatData, ChatDetailResponse.Data.Record::class.java)
             }
-             tvDeliveryDate.text = "${getString(R.string.expected_delivery_date)} : 3 to 5 ${getString(R.string.working_days)}"
-//             tvDeliveryDate.text = "Expected Delivery Date : ${CommonMethod.getExpectedDeliveryDate(output = "dd MMM yy")}"
+           //  tvDeliveryDate.text = "${getString(R.string.expected_delivery_date)} : 3 ${getString(R.string.to)} 5 ${getString(R.string.working_days)}"
+             tvDeliveryDate.text = getString(R.string.delivery_date_3_to_5_working_days)
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),amount?.toDouble()?:0.0)}"
             if (payment=="COD") {
                 tvPrice.text = getString(R.string.cash_on_delivery)

@@ -65,6 +65,52 @@ class TidioChatFragment : BaseFragment() {
     }
 
     override fun initView() {
+
+        if (Constants.language=="ar"){
+            binding?.webView?.apply {
+
+                settings.apply {
+                    javaScriptEnabled = true
+                    domStorageEnabled = true
+                    databaseEnabled = true
+                    allowFileAccess = true
+                    allowContentAccess = true
+                    javaScriptCanOpenWindowsAutomatically = true
+                    loadsImagesAutomatically = true
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                    }
+                }
+
+                // RTL support
+                layoutDirection = View.LAYOUT_DIRECTION_RTL
+
+                // JS bridge
+                addJavascriptInterface(WebAppInterface(), "Android")
+
+                webViewClient = object : WebViewClient() {
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+
+                        injectUserData(view)
+
+                        // Force Arabic
+                        view?.evaluateJavascript(
+                            """
+                document.documentElement.lang = 'ar';
+                document.documentElement.dir = 'rtl';
+                """.trimIndent(),
+                            null
+                        )
+                    }
+                }
+
+                loadUrl("file:///android_asset/tidio_chat_ar.html?lang=ar")
+
+            }
+        }
+        else{
         binding?.webView?.apply {
 
             settings.apply {
@@ -122,6 +168,7 @@ class TidioChatFragment : BaseFragment() {
             }
 
             loadUrl("file:///android_asset/tidio_chat.html")
+        }
         }
     }
 

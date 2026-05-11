@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemColorFilterBinding
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
+import com.desynatuser.utils.Constants
 
 class FilterColorAdapter(var context:Context, var colorList: ArrayList<GetAllColorListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
@@ -31,7 +32,7 @@ class FilterColorAdapter(var context:Context, var colorList: ArrayList<GetAllCol
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-            tvColorName.text = colorList[position].name
+            tvColorName.text = if(Constants.language=="ar")  colorList[position].nameAr else colorList[position].name
             ivRectangleColor.setColorFilter(Color.parseColor(colorList[position].hexCode))
 
             if (colorList[position].isSelected){

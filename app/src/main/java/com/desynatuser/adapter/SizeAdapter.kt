@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.databinding.ItemSizeBinding
 import com.desynatuser.ui.home.store.response.Product
+import com.desynatuser.utils.Constants
 
 class SizeAdapter(var context:Context, var productSizeList: ArrayList<Product.ProductVariation>, var onClick: OnClick) : RecyclerView.Adapter<SizeAdapter.ViewHolder>() {
     var selectedPos = 0
@@ -31,7 +32,7 @@ class SizeAdapter(var context:Context, var productSizeList: ArrayList<Product.Pr
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-            tvSize.text = productSizeList[position].size.name
+            tvSize.text = if (Constants.language=="ar")  productSizeList[position].size.nameAr else productSizeList[position].size.name
 
             if (selectedPos==position&&productSizeList[selectedPos].totalStock.toIntOrNull()?:0>0){
                 ivColorSelected.isVisible = true

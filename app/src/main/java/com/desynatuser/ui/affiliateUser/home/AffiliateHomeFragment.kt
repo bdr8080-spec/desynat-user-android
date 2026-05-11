@@ -181,6 +181,7 @@ class AffiliateHomeFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver||isNotificationObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
                 isNotificationObserver = false
@@ -207,6 +208,7 @@ class AffiliateHomeFragment : BaseFragment() {
         viewModel.getSelectedCountryResult.observe(viewLifecycleOwner) { response ->
             if (isCountryObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 response?.let {
                     SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
                     countryList.clear()
@@ -237,6 +239,7 @@ class AffiliateHomeFragment : BaseFragment() {
         viewModel.getAffiliateDashboardResult.observe(viewLifecycleOwner) { response ->
             if (isDashboardObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 response?.let {
                     dashboardData = response.data
                     setDashBoardDate()
@@ -248,6 +251,7 @@ class AffiliateHomeFragment : BaseFragment() {
         viewModel.getAffiliateProfileResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 profileData = response.data
                 SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                 setData()
@@ -259,7 +263,7 @@ class AffiliateHomeFragment : BaseFragment() {
 
     private fun getAffiliateUserProfile(){
         viewModel.getAffiliateProfile()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
@@ -269,13 +273,13 @@ class AffiliateHomeFragment : BaseFragment() {
          map["from_date"] = fromDateText.toString()
          map["to_date"] = toDateText.toString()
          viewModel.getAffiliateDashboard(map)
-         ProgressDialogUtils.getInstance().showProgress(requireActivity())
+         binding?.progressBar?.isVisible = true
          isDashboardObserver = true
      }
      else if (fromDateText==null&&toDateText==null){
          map["filter"] =filter//1-today,2-week,3-month
          viewModel.getAffiliateDashboard(map)
-         ProgressDialogUtils.getInstance().showProgress(requireActivity())
+         binding?.progressBar?.isVisible = true
          isDashboardObserver = true
      }
      else{
@@ -338,7 +342,6 @@ class AffiliateHomeFragment : BaseFragment() {
 
     private fun getSelectedCountry() {
         viewModel.getSelectedCountry()
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isCountryObserver = true
     }
 

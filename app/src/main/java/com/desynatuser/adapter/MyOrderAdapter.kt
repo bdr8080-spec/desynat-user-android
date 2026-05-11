@@ -12,6 +12,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemOrderBinding
 import com.desynatuser.ui.home.myOrder.response.GetAllOrderResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 
 class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAllOrderResponse.Data>, var orderClick:OrderClick) : RecyclerView.Adapter<MyOrderAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemOrderBinding) :
@@ -38,7 +39,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
         holder.binding.apply {
 
             tvOrderId.text = "${context.getString(R.string.order_id)}: #${orderData?.id}"
-            tvTitle.text = orderData?.productDetails?.productNameEn
+            tvTitle.text = if (Constants.language=="ar") orderData?.productDetails?.productNameAr else orderData?.productDetails?.productNameEn
 
          //   tvPrice.text = "${CommonMethod.formatPrice(orderData?.amount?.toDoubleOrNull()?:0.0)} KD"
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,orderData?.amount?.toDoubleOrNull()?:0.0)}"
@@ -50,8 +51,8 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
             }
 
         //    tvPlacedDate.text = CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "hh a  | dd MM yy")
-            tvPlacedDate.text = CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy 'at' hh:mma")
-            tvSizeValue.text = orderData?.variationDetails?.size?.name.toString()
+            tvPlacedDate.text = CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy '${context.getString(R.string.at)}' hh:mma")
+            tvSizeValue.text =  if(Constants.language=="ar") orderData?.variationDetails?.size?.nameAr.toString() else orderData?.variationDetails?.size?.name.toString()
             orderData?.variationDetails?.color
                 ?.hexCode?.let { ivColor.setColorFilter(Color.parseColor(it)) }
             tvQuantity.text = orderData?.quantity.toString()
@@ -111,7 +112,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                             tvStatus.setTextColor(Color.parseColor("#17854C"))
                             btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                             btn.setTextColor(Color.parseColor("#17854C"))
-                            btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 to 5 ${
+                            btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 ${context.getString(R.string.to)} 5 ${
                                 context.getString(
                                     R.string.working_days
                                 )
@@ -122,7 +123,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                     "2" -> {
                         btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                         btn.setTextColor(Color.parseColor("#17854C"))
-                        btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 to 5 ${
+                        btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 ${context.getString(R.string.to)} 5 ${
                             context.getString(
                                 R.string.working_days
                             )
@@ -135,7 +136,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                         btn.backgroundTintList =
                             ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                         btn.setTextColor(Color.parseColor("#17854C"))
-                        btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 to 5 ${
+                        btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 ${context.getString(R.string.to)} 5 ${
                             context.getString(
                                 R.string.working_days
                             )
@@ -179,7 +180,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                                 btn.backgroundTintList =
                                     ColorStateList.valueOf(Color.parseColor("#1A1AB364"))
                                 btn.setTextColor(Color.parseColor("#17854C"))
-                                btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 to 5 ${
+                                btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 ${context.getString(R.string.to)} 5 ${
                                     context.getString(
                                         R.string.working_days
                                     )
@@ -320,7 +321,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
                         btn.backgroundTintList =
                             ColorStateList.valueOf(Color.parseColor("#1A16B364"))
                         btn.setTextColor(Color.parseColor("#17854C"))
-                        btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 to 5 ${
+                        btn.text = "${context.getString(R.string.expected_delivery_date)} : 3 ${context.getString(R.string.to)} 5 ${
                             context.getString(
                                 R.string.working_days
                             )

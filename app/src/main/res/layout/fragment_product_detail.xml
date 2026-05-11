@@ -129,6 +129,7 @@
                 android:textColor="@color/brown"
                 android:textSize="@dimen/_11sdp"
                 android:textAlignment="viewStart"
+                android:layout_marginEnd="@dimen/_15sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@id/ratingBar" />
@@ -143,7 +144,7 @@
                 android:progressTint="#FFA41B"
                 android:rating="0"
                 android:secondaryProgressTint="#FFA41B"
-                android:stepSize="0.5"
+                android:stepSize="0.1"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
                 app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
 
@@ -217,6 +218,7 @@
                 android:textColor="#E70000"
                 android:textSize="@dimen/_11sdp"
                 android:textAlignment="viewStart"
+                android:layout_marginEnd="@dimen/_15sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@id/tvPrice" />

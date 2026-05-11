@@ -14,10 +14,13 @@ import android.net.Uri
 import android.os.Build
 import android.text.InputFilter
 import android.text.method.PasswordTransformationMethod
+import android.util.Base64
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,8 +36,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
-import android.util.Base64
 
 fun ImageView.loadBase64Image(base64String: String?) {
     if (base64String.isNullOrEmpty()) return
@@ -291,8 +294,12 @@ fun openCustomPreSelectedDatePicker(
     initialDate: Long? = null,
     onClick: (date: String, timestamp: Long) -> Unit
 ) {
-    val today = Calendar.getInstance()
-    val cal = Calendar.getInstance()
+
+    val locale: Locale = Locale(if (Constants.language=="ar") "ar-u-nu-latn" else "en")
+    Locale.setDefault(locale)
+    val cal = Calendar.getInstance(Locale.ENGLISH)
+
+    val today = Calendar.getInstance(Locale.ENGLISH)
 
     // If initialDate is provided, set calendar to it
     if (initialDate != null) {
@@ -325,6 +332,9 @@ fun openCustomPreSelectedDatePickerWithReset(
     onClick: (date: String, timestamp: Long) -> Unit,
     onReset: (() -> Unit)? = null
 ) {
+
+    val locale: Locale = Locale(if (Constants.language=="ar") "ar-u-nu-latn" else "en")
+    Locale.setDefault(locale)
     val cal = Calendar.getInstance()
 
     if (initialDate != null) {
@@ -341,7 +351,7 @@ fun openCustomPreSelectedDatePickerWithReset(
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
             val selectedDate =
-                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(cal.time)
+                SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(cal.time)
 
             onClick(selectedDate, cal.timeInMillis)
 
@@ -356,20 +366,50 @@ fun openCustomPreSelectedDatePickerWithReset(
     // ✅ RESET BUTTON
     datePickerDialog.setButton(
         DatePickerDialog.BUTTON_NEUTRAL,
-        "Reset"
+        context.getString(R.string.reset)
     ) { _, _ ->
         onReset?.invoke()
     }
 
     datePickerDialog.show()
+    forceEnglishNumbers(datePickerDialog.window!!.decorView)}
+
+
+fun forceEnglishNumbers(view: View) {
+
+    if (view is ViewGroup) {
+
+        for (i in 0 until view.childCount) {
+            forceEnglishNumbers(view.getChildAt(i))
+        }
+
+    } else if (view is TextView) {
+
+        val englishNumbers = view.text.toString()
+            .replace("٠", "0")
+            .replace("١", "1")
+            .replace("٢", "2")
+            .replace("٣", "3")
+            .replace("٤", "4")
+            .replace("٥", "5")
+            .replace("٦", "6")
+            .replace("٧", "7")
+            .replace("٨", "8")
+            .replace("٩", "9")
+
+        view.text = englishNumbers
+    }
 }
+
 
 fun openCustomDatePicker(
     context: Context,
     minDate: Long? = null,
     onClick: (String, Long) -> Unit
 ) {
-    val today = Calendar.getInstance()
+    val locale: Locale = Locale(if (Constants.language=="ar") "ar-u-nu-latn" else "en")
+    Locale.setDefault(locale)
+    val today = Calendar.getInstance(Locale.ENGLISH)
 
     val datePickerDialog = DatePickerDialog(
         context,

@@ -171,7 +171,7 @@ class ProductDetailFragment : BaseFragment() {
     private fun setData() {
         binding?.apply {
             tvTitle.text = productDetailData?.store?.storeName
-            tvProductName.text =  productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
+            tvProductName.text =  if (Constants.language=="ar") productDetailData?.productNameAr else productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
             if (productDetailData?.productAvgRating!=null){
                 tvRating.text = "(${productDetailData?.productAvgRating})"
             }
@@ -228,7 +228,7 @@ class ProductDetailFragment : BaseFragment() {
             }" else " ${CommonMethod.getCurrency(requireActivity())}  ${requireActivity().getString(R.string.off)}"
             tvOffer.text = "$discountValue$discountType"
 
-            tvDescription.text = productDetailData?.descriptionEn
+            tvDescription.text = if (Constants.language=="ar")  productDetailData?.descriptionAr else productDetailData?.descriptionEn
 
             specificationList.clear()
 

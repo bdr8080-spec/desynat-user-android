@@ -698,7 +698,7 @@
     <string name="please_select_delivery_address_first">يرجى اختيار عنوان التوصيل أولاً</string>
 
     <string name="custom_item_price">سعر المنتج المخصص</string>
-    <string name="kd">د.ك</string>
+    <string name="kd">KD</string>
     <string name="document">مستند</string>
     <string name="image">صورة</string>
     <string name="share_via">مشاركة عبر</string>
@@ -756,4 +756,20 @@
     <string name="wallet_balance_is_low">رصيد المحفظة منخفض</string>
     <string name="google_pay_failed">فشل Google Pay</string>
     <string name="lorem_ipsum">لوريم إيبسوم دولور سيت أميت كونسيكتيتور. مي أولتريسيس ديام سوسيوس فولوتبات أورسي نون. كومودو بريتيوم أورنا أوت أوغوي أك أميت سيد.</string>
+    <string name="at">في</string>
+    <string name="gift_card_amount_redeemed">تم استرداد مبلغ بطاقة الهدايا</string>
+    <string name="apply_gift_card">تطبيق بطاقة الهدايا</string>
+    <string name="notification_is_set_to_on">تم تشغيل الإشعارات</string>
+    <string name="notification_is_set_to_off">تم إيقاف الإشعارات</string>
+    <string name="in_app_notification_is_set_to_on">تم تشغيل إشعارات التطبيق</string>
+    <string name="in_app_notification_is_set_to_off">تم إيقاف إشعارات التطبيق</string>
+    <string name="choose_location">اختر الموقع</string>
+    <string name="choose_country">اختر الدولة</string>
+
+    <string name="no_result_found">لم يتم العثور على نتائج</string>
+    <string name="search_hint">بحث…</string>
+    <string name="select_country">اختر دولة</string>
+    <string name="reset">إعادة تعيين</string>
+    <string name="no_card_found">لم يتم العثور على بطاقة</string>
+
 </resources>

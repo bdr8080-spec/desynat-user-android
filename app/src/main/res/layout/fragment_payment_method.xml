@@ -40,56 +40,6 @@
             android:background="@drawable/grey_stroke_cards">
 
             <LinearLayout
-                android:id="@+id/llCredit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:paddingVertical="@dimen/_5sdp"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivCredit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_radio_unselected"
-                    android:layout_gravity="center_vertical"/>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="34dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_wallet"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_gravity="center_vertical"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/edit_text_title"
-                    android:text="Credit/ Debit Card"
-                    android:textSize="@dimen/_12sdp"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/poppins_medium"/>
-
-            </LinearLayout>
-
-            <com.myfatoorah.sdk.views.embeddedpayment.MFPaymentCardView
-                android:visibility="gone"
-                android:id="@+id/mfPaymentView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                app:layout_constraintTop_toBottomOf="@+id/llPaymentMethod"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
-                style="@style/edit_text_title"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="+ Add new card"
-                android:textSize="@dimen/_12sdp"
-                android:fontFamily="@font/poppins_medium"/>
-
-            <LinearLayout
                 android:id="@+id/llKnet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,7 +63,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
-                    android:text="Pay by KNET"
+                    android:text="@string/pay_by_knet"
                     android:textSize="@dimen/_12sdp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"/>
@@ -144,7 +94,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
-                    android:text="Google Pay"
+                    android:text="@string/google_pay"
                     android:textSize="@dimen/_12sdp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"/>
@@ -175,10 +125,11 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
-                    android:text="Visapay"
+                    android:text="@string/visapay"
                     android:textSize="@dimen/_12sdp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"/>
+
 
             </LinearLayout>
 
@@ -206,14 +157,65 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
-                    android:text="Samsung Pay"
+                    android:text="@string/samsung_pay"
                     android:textSize="@dimen/_12sdp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"/>
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/llCredit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCredit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_radio_unselected"
+                    android:layout_gravity="center_vertical"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="34dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_wallet"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_gravity="center_vertical"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/edit_text_title"
+                    android:text="@string/credit_debit_card"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/poppins_medium"/>
+
+            </LinearLayout>
+
+
+            <com.myfatoorah.sdk.views.embeddedpayment.MFPaymentCardView
+                android:visibility="gone"
+                android:id="@+id/mfPaymentView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                app:layout_constraintTop_toBottomOf="@+id/llPaymentMethod"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                style="@style/edit_text_title"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/add_new_card"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/llWallet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -226,7 +228,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_radio_unselected"
-                    android:layout_gravity="center_vertical"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tvWallet"
@@ -234,31 +238,39 @@
                     android:layout_height="24dp"
                     android:src="@drawable/ic_wallet"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_toRightOf="@+id/ivWallet"
-                    android:layout_gravity="center_vertical"/>
+                    app:layout_constraintStart_toEndOf="@+id/ivWallet"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInAppWallet"
                     style="@style/edit_text_title"
-                    android:text="In -App Wallet"
+                    android:text="@string/in_app_wallet"
                     android:textSize="@dimen/_12sdp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@+id/tvWallet"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvWallet"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:fontFamily="@font/poppins_medium"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvBalance"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Available Balance : 349 KD"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/poppins_regular"
-                    android:layout_below="@+id/tvWallet"
-                    android:layout_toRightOf="@+id/tvWallet"
-                    android:layout_gravity="center_vertical"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tvInAppWallet"
+                    app:layout_constraintStart_toEndOf="@+id/tvWallet"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </LinearLayout>
 
@@ -270,9 +282,9 @@
         android:id="@+id/btnProceed"
         style="@style/button"
         android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:text="Proceed"
+        android:text="@string/proceed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

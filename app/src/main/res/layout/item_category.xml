@@ -18,7 +18,7 @@
     android:orientation="vertical"
    >
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relDetail"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -29,9 +29,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relCategory"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@drawable/card_background"
         android:backgroundTint="#F6E5E3"
@@ -45,29 +45,36 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvCategoryName"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semi_bold"
         android:text="Women"
+        android:textAlignment="viewStart"
         android:layout_marginVertical="@dimen/_5sdp"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
-        android:layout_marginEnd="@dimen/_110sdp"/>
+        android:layout_marginEnd="@dimen/_110sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDescription"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
         android:text="From casual wear to formal looks, explore the latest in men’s fashion, accessories, and more."
         android:textColor="@color/black"
         android:textSize="@dimen/_11sdp"
-        android:layout_below="@+id/tvCategoryName"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryName"
         android:layout_marginEnd="@dimen/_110sdp"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivCategory"
@@ -90,7 +97,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relDetail1"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -101,9 +108,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/relCategory1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/card_background"
                 android:backgroundTint="#F6E5E3"
@@ -117,29 +124,36 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvCategoryName1"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semi_bold"
                     android:text="Women"
+                    android:textAlignment="viewStart"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginStart="@dimen/_110sdp"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDescription1"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:text="From casual wear to formal looks, explore the latest in men’s fashion, accessories, and more."
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp"
-                    android:layout_below="@+id/tvCategoryName1"
+                    android:textAlignment="viewStart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCategoryName1"
                     android:layout_marginStart="@dimen/_110sdp"/>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivCategory1"

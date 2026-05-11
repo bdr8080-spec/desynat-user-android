@@ -214,7 +214,7 @@
                         android:textSize="@dimen/_12sdp"
                         android:fontFamily="@font/poppins_medium"/>
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/llWallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -227,7 +227,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_radio_unselected"
-                        android:layout_gravity="center_vertical"/>
+                       app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/tvWallet"
@@ -235,31 +237,38 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_wallet"
                         android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/ivWallet"
-                        android:layout_gravity="center_vertical"/>
+                        app:layout_constraintStart_toEndOf="@+id/ivWallet"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvInAppWallet"
                         style="@style/edit_text_title"
                         android:text="@string/in_app_wallet"
                         android:textSize="@dimen/_12sdp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_toRightOf="@+id/tvWallet"
+                        android:layout_width="0dp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tvWallet"
+                        app:layout_constraintEnd_toEndOf="parent"
                         android:fontFamily="@font/poppins_medium"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvBalance"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Available Balance : 349 KD"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp"
+                        android:textAlignment="viewStart"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/poppins_regular"
-                        android:layout_below="@+id/tvWallet"
-                        android:layout_toRightOf="@+id/tvWallet"
-                        android:layout_gravity="center_vertical"/>
+                        app:layout_constraintTop_toBottomOf="@+id/tvInAppWallet"
+                        app:layout_constraintStart_toEndOf="@+id/tvWallet"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:id="@+id/llCod"
@@ -285,16 +294,17 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/edit_text_title"
+                        android:layout_width="match_parent"
                         android:text="@string/cash_on_delivery"
                         android:textSize="@dimen/_12sdp"
-                        android:layout_gravity="center_vertical"
+                        android:textAlignment="viewStart"
                         android:fontFamily="@font/poppins_medium"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/relGiftCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -306,49 +316,60 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_gift_img"
-                    android:layout_centerVertical="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvGiftCardNumber"
                     android:visibility="gone"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="123456789"
                     android:textSize="@dimen/_11sdp"
                     android:textColor="@color/black"
                     android:paddingVertical="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/poppins_regular"
-                    android:layout_toRightOf="@+id/ivGift"
-                    android:drawableEnd="@drawable/ic_green_tick"
-                    android:layout_centerVertical="true"/>
+                    app:layout_constraintStart_toEndOf="@+id/ivGift"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:drawableEnd="@drawable/ic_green_tick" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvHaveGiftCard"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/have_a_gift_card"
                     android:textSize="@dimen/_11sdp"
                     android:textColor="@color/black"
                     android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_regular"
-                    android:layout_toRightOf="@+id/ivGift"
-                    android:layout_centerVertical="true"/>
+                    app:layout_constraintStart_toEndOf="@+id/ivGift"
+                    app:layout_constraintEnd_toStartOf="@+id/tvApply"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvApply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_apply_gift_card"
-                    android:layout_alignParentEnd="true"
+                    android:text="@string/apply_gift_card"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/brown"
+                    android:textSize="@dimen/_9sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:drawablePadding="@dimen/_5sdp"
                     android:padding="@dimen/_10sdp"
-                    android:layout_centerVertical="true"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvGiftCard"

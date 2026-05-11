@@ -56,6 +56,7 @@ class HomeActivity : BaseActivity() {
     var latitude = 0.0
     var locationGet: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        CommonMethod.setLocale(this,SharedPreference.get(this).language)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityHomeBinding.inflate(layoutInflater)

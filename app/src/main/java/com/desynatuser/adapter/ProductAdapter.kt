@@ -38,10 +38,10 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
 
         holder.binding.apply {
             if (storeName!=""){
-                tvTitle.text = productData.productNameEn+" (By ${storeName})"
+                tvTitle.text = if (Constants.language=="ar") productData.productNameAr else productData.productNameEn+" (By ${storeName})"
             }
             else{
-                tvTitle.text = productData.productNameEn
+                tvTitle.text =  if (Constants.language=="ar") productData.productNameAr else productData.productNameEn
             }
 
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?:0.0)}"

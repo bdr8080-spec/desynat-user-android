@@ -9,6 +9,7 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemAffiliateCategoriesBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.utils.Constants
 
 class AffiliateCategoryAdapter(var context: Context, private val categoryList: List<GetCategoryResponse.Data>, var categoryClick:CategoryClick) :
     RecyclerView.Adapter<AffiliateCategoryAdapter.ViewHolder>() {
@@ -28,7 +29,7 @@ class AffiliateCategoryAdapter(var context: Context, private val categoryList: L
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            tvCategory.text = categoryList[position].name
+            tvCategory.text = if (Constants.language=="ar") categoryList[position].nameAr else categoryList[position].name
 
             ivCategory.load(categoryList[position].image) {
                 crossfade(true)

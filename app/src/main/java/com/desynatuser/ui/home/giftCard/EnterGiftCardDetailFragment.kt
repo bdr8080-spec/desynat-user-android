@@ -66,8 +66,8 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                     Gson().fromJson(itemJson, GetGiftCardOccasionTypeResponse.Data::class.java)
             }
 
-            tv100.text = "100 ${Constants.CURRENCY}"
-            tv200.text = "200 ${Constants.CURRENCY}"
+            tv100.text = "100 ${CommonMethod.getCurrency(requireActivity())}"
+            tv200.text = "200 ${CommonMethod.getCurrency(requireActivity())}"
 
             etAmount.addTextChangedListener(object : TextWatcher {
                 private var isEditing = false

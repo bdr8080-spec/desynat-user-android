@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemOccasionBinding
 import com.desynatuser.ui.home.giftCard.response.GetGiftCardOccasionTypeResponse
+import com.desynatuser.utils.Constants
 
 class OccasionTypeAdapter(var context:Context, var occasionList: ArrayList<GetGiftCardOccasionTypeResponse.Data>, var click:OnClick) : RecyclerView.Adapter<OccasionTypeAdapter.ViewHolder>() {
 
@@ -32,7 +33,7 @@ class OccasionTypeAdapter(var context:Context, var occasionList: ArrayList<GetGi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.apply {
-            tvOccasion.text = occasionList[position].nameEnglish
+            tvOccasion.text = if (Constants.language=="ar") occasionList[position].nameArabic else occasionList[position].nameEnglish
 
             if (selected==position){
                 tvOccasion.setTextColor(context.getColor(R.color.white))

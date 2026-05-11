@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemChangeCountryBinding
 import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.SharedPreference
 
 class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCountryResponse.Data>, var clickOnItem:ClickOnItem) : RecyclerView.Adapter<ChangeCountryAdapter.ViewHolder>() {
@@ -17,7 +18,7 @@ class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCo
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
             val countryData = countryList[position]
-            tvCountry.text = countryData.name
+            tvCountry.text = if (Constants.language=="ar") countryData.nameAr else countryData.name
             if (SharedPreference.get(context).affiliateAccessToken!=""){
                 Glide.with(context).load(countryData.flag1).into(ivFlag)
             }

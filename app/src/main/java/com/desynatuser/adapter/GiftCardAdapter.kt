@@ -8,6 +8,7 @@ import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemGiftCardBinding
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
+import com.desynatuser.utils.Constants
 
 class GiftCardAdapter(var context:Context, var giftCardList: ArrayList<GetAllGiftCardResponse.Data>, var giftCardClick:GiftCardClick) : RecyclerView.Adapter<GiftCardAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemGiftCardBinding) :
@@ -31,7 +32,7 @@ class GiftCardAdapter(var context:Context, var giftCardList: ArrayList<GetAllGif
         var giftData = giftCardList[position]
 
         holder.binding.apply {
-            tvGiftName.text = giftData?.giftDetails?.nameEnglish
+            tvGiftName.text = if (Constants.language=="ar") giftData?.giftDetails?.nameArabic?:giftData?.giftDetails?.nameEnglish else giftData?.giftDetails?.nameEnglish
             ivGift.load(giftData?.giftDetails?.image) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)

@@ -20,8 +20,8 @@ class AffiliateWithdrawalAdapter(var context:Context, var withdrawalList: ArrayL
             tvRequestIdValue.text = "#${withdrawalData?.requestId}"
             tvAccountNumber.text = withdrawalData?.bankDetails?.accountNo
             tvTotalAmountValue.text = "${CommonMethod.formatPrice(withdrawalData?.amount?.toDoubleOrNull()?:0.0)} KD"
-            tvCreditOn.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.updatedAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
-            tvRequestedOnValue.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.createdAt.toString(), outputFormat = "dd/MM/yyyy 'at' hh:mm a" )
+            tvCreditOn.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.updatedAt.toString(), outputFormat = "dd/MM/yyyy '${context.getString(R.string.at)}' hh:mm a" )
+            tvRequestedOnValue.text = CommonMethod.customizeChangeDateFormat(withdrawalData?.createdAt.toString(), outputFormat = "dd/MM/yyyy '${context.getString(R.string.at)}' hh:mm a" )
 
                 when(withdrawalData?.adminVerify){
                     0->{

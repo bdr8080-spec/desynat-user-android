@@ -11,6 +11,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemOrderProductBinding
 import com.desynatuser.ui.home.myOrder.response.GetSingleOrderSummaryResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import java.time.Duration
 import java.time.Instant
 
@@ -50,7 +51,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 }
 
                 tvRequestId.text = "${context.getString(R.string.request_id)} #${productData?.order?.id}"
-                tvCustomTitle.text = productData?.productDetails?.productNameEn
+                tvCustomTitle.text = if (Constants.language=="ar") productData?.productDetails?.productNameAr else productData?.productDetails?.productNameEn
                 tvCustomDetail.text = productData?.chatroomRecordtable?.customDetails
                 tvTotalQuantityValue.text = productData?.chatroomRecordtable?.quantity
               //  tvAddressValue.text = productData?.order?.deliveryDetails?.address
@@ -141,7 +142,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 } else {
                     holder.binding.viewBottom.isVisible = true
                 }
-                tvTitle.text = productData?.productDetails?.productNameEn
+                tvTitle.text = if (Constants.language=="ar") productData?.productDetails?.productNameAr else productData?.productDetails?.productNameEn
 
 //                tvPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
 //                tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
@@ -196,7 +197,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                     error(R.drawable.ic_placeholder)
                 }
 
-                tvSizeValue.text = productData?.variationDetails?.size?.name.toString()
+                tvSizeValue.text = if(Constants.language=="ar") productData?.variationDetails?.size?.nameAr.toString() else productData?.variationDetails?.size?.name.toString()
                 productData?.variationDetails?.color?.hexCode?.let {
                     ivColor.setColorFilter(Color.parseColor(it))
                 }

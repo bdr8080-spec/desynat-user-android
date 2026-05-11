@@ -61,6 +61,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
+import java.text.DecimalFormatSymbols
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.ZoneId
@@ -354,8 +355,75 @@ object CommonMethod {
         }
         val date: Date
         try {
-            date = originalFormat.parse(inputDate)
-            return targetFormat.format(date)
+            if (Constants.language == "ar") {
+                val date = originalFormat.parse(inputDate)
+
+                var formattedDate = targetFormat.format(date!!)
+
+                val englishMonthsMMMM = arrayOf(
+                    "January", "February", "March", "April",
+                    "May", "June", "July", "August",
+                    "September", "October", "November", "December"
+                )
+
+                val arabicMonthsMMMM = arrayOf(
+                    "يناير", "فبراير", "مارس", "أبريل",
+                    "مايو", "يونيو", "يوليو", "أغسطس",
+                    "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                )
+
+                for (i in englishMonthsMMMM.indices) {
+                    formattedDate =
+                        formattedDate.replace(
+                            englishMonthsMMMM[i],
+                            arabicMonthsMMMM[i]
+                        )
+                }
+
+                val englishMonths = arrayOf(
+                    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                )
+
+                val arabicMonths = arrayOf(
+                    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                )
+
+                for (i in englishMonths.indices) {
+                    formattedDate =
+                        formattedDate.replace(
+                            englishMonths[i],
+                            arabicMonths[i]
+                        )
+                }
+
+                val englishDays = arrayOf(
+                    "Sun", "Mon", "Tue", "Wed",
+                    "Thu", "Fri", "Sat"
+                )
+
+                val arabicDays = arrayOf(
+                    "الأحد", "الاثنين", "الثلاثاء", "الأربعاء",
+                    "الخميس", "الجمعة", "السبت"
+                )
+
+                for (i in englishDays.indices) {
+                    formattedDate = formattedDate.replace(
+                        englishDays[i],
+                        arabicDays[i]
+                    )
+                }
+
+                formattedDate = formattedDate
+                    .replace("AM", "ص")
+                    .replace("PM", "م")
+                return formattedDate
+            }
+            else {
+                date = originalFormat.parse(inputDate)
+                return targetFormat.format(date)
+            }
         } catch (e: ParseException) {
             e.printStackTrace()
             return ""
@@ -371,8 +439,75 @@ object CommonMethod {
         }
         val date: Date
         try {
-            date = originalFormat.parse(inputDate)
-            return targetFormat.format(date)
+            if (Constants.language == "ar") {
+                val date = originalFormat.parse(inputDate)
+
+                var formattedDate = targetFormat.format(date!!)
+
+                val englishMonthsMMMM = arrayOf(
+                    "January", "February", "March", "April",
+                    "May", "June", "July", "August",
+                    "September", "October", "November", "December"
+                )
+
+                val arabicMonthsMMMM = arrayOf(
+                    "يناير", "فبراير", "مارس", "أبريل",
+                    "مايو", "يونيو", "يوليو", "أغسطس",
+                    "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                )
+
+                for (i in englishMonthsMMMM.indices) {
+                    formattedDate =
+                        formattedDate.replace(
+                            englishMonthsMMMM[i],
+                            arabicMonthsMMMM[i]
+                        )
+                }
+
+                val englishMonths = arrayOf(
+                    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                )
+
+                val arabicMonths = arrayOf(
+                    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                )
+
+                for (i in englishMonths.indices) {
+                    formattedDate =
+                        formattedDate.replace(
+                            englishMonths[i],
+                            arabicMonths[i]
+                        )
+                }
+
+                val englishDays = arrayOf(
+                    "Sun", "Mon", "Tue", "Wed",
+                    "Thu", "Fri", "Sat"
+                )
+
+                val arabicDays = arrayOf(
+                    "الأحد", "الاثنين", "الثلاثاء", "الأربعاء",
+                    "الخميس", "الجمعة", "السبت"
+                )
+
+                for (i in englishDays.indices) {
+                    formattedDate = formattedDate.replace(
+                        englishDays[i],
+                        arabicDays[i]
+                    )
+                }
+
+                formattedDate = formattedDate
+                    .replace("AM", "ص")
+                    .replace("PM", "م")
+                return formattedDate
+            }
+            else {
+                date = originalFormat.parse(inputDate)
+                return targetFormat.format(date)
+            }
         } catch (e: ParseException) {
             e.printStackTrace()
             return ""
@@ -774,8 +909,8 @@ object CommonMethod {
         }
     }
 
-    fun formatChatTime(context: Context,inputTime: String): String {
-        val inputFormat = SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.ENGLISH)
+    fun formatChatTime(context: Context,inputTime: String,inputType: String="dd MMM yyyy, hh:mm a"): String {
+        val inputFormat = SimpleDateFormat(inputType, Locale.ENGLISH)
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
         val fullDateFormat = SimpleDateFormat("dd/MM/yy, hh:mm a", Locale.ENGLISH)
 
@@ -796,11 +931,11 @@ object CommonMethod {
 
         return when {
             messageDate.after(startOfToday) -> {
-                "${context.getString(R.string.today)}, ${timeFormat.format(messageDate)}"
+                "${context.getString(R.string.today)}, ${timeFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")}"
             }
 
             messageDate.after(startOfYesterday) -> {
-                "${context.getString(R.string.yesterday)}, ${timeFormat.format(messageDate)}"
+                "${context.getString(R.string.yesterday)}, ${timeFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")}"
             }
 
             else -> {
@@ -808,9 +943,9 @@ object CommonMethod {
                 val daysDiff = TimeUnit.MILLISECONDS.toDays(diffMillis)
 
                 if (daysDiff in 2..30) {
-                    "$daysDiff ${context.getString(R.string.days_ago)}, ${timeFormat.format(messageDate)}"
+                    "$daysDiff ${context.getString(R.string.days_ago)}, ${timeFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")}"
                 } else {
-                    fullDateFormat.format(messageDate)
+                    fullDateFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")
                 }
             }
         }
@@ -1003,8 +1138,8 @@ object CommonMethod {
 
         val code = when (currency?.currencyCode) {
             "KWD" -> context.getString(R.string.kd)
-            "BHD" -> "BD"
-            else -> currency?.currencyCode ?: context.getString(R.string.kd)
+            "BHD" -> if (Constants.language=="ar") currency?.currencyCode else "BD"
+            else -> if (Constants.language=="ar") currency?.currencyCode ?: context.getString(R.string.kd) else  currency?.currencyCode ?: context.getString(R.string.kd)
         }
 
       /*  val formatted = if (currency?.currencyCode == "KWD") {
@@ -1012,8 +1147,9 @@ object CommonMethod {
         } else {
             String.format("%.2f", converted)
         }*/
+        val symbols = DecimalFormatSymbols(Locale.ENGLISH)
 
-        val formatted = java.text.DecimalFormat("#.##").format(converted)
+        val formatted = java.text.DecimalFormat("#.##",symbols).format(converted)
 
         return "$formatted $code"
     }
@@ -1036,8 +1172,8 @@ object CommonMethod {
 
         val code = when (currency?.currencyCode) {
             "KWD" -> context.getString(R.string.kd)
-            "BHD" -> "BD"
-            else -> currency?.currencyCode ?: context.getString(R.string.kd)
+            "BHD" -> if (Constants.language=="ar") currency?.currencyCode else "BD"
+            else -> if (Constants.language=="ar") currency?.currencyCode ?: context.getString(R.string.kd) else  currency?.currencyCode ?: context.getString(R.string.kd)
         }
 
         /*  val formatted = if (currency?.currencyCode == "KWD") {
@@ -1066,8 +1202,8 @@ object CommonMethod {
 
         val code = when (currency?.currencyCode) {
             "KWD" -> context.getString(R.string.kd)
-            "BHD" -> "BD"
-            else -> currency?.currencyCode ?: context.getString(R.string.kd)
+            "BHD" -> if (Constants.language=="ar") currency?.currencyCode else "BD"
+            else -> if (Constants.language=="ar") currency?.currencyCode ?: context.getString(R.string.kd) else  currency?.currencyCode ?: context.getString(R.string.kd)
         }
 
        /* val formatted = if (currency?.currencyCode == "KWD") {
@@ -1075,8 +1211,8 @@ object CommonMethod {
         } else {
             String.format("%.2f", converted)
         }*/
-
-        val formatted = java.text.DecimalFormat("#.##").format(converted)
+        val symbols = DecimalFormatSymbols(Locale.ENGLISH)
+        val formatted = java.text.DecimalFormat("#.##",symbols).format(converted)
 
 
         return "$formatted"

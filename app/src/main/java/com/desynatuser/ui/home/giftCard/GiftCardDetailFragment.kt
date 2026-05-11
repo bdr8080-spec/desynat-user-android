@@ -14,6 +14,7 @@ import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentGiftCardDetailBinding
 import com.desynatuser.ui.home.giftCard.response.GetAllGiftCardResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
@@ -76,7 +77,7 @@ class GiftCardDetailFragment : BaseFragment() {
         binding?.apply {
             tvDate.text = CommonMethod.customizeChangeDateFormat(giftData?.createdAt.toString(), outputFormat = "dd MMM yy hh:mm a")
             ivGift.load(giftData?.giftDetails?.image)
-            tvGiftName.text = giftData?.giftDetails?.nameEnglish
+            tvGiftName.text = if (Constants.language=="ar") giftData?.giftDetails?.nameArabic else giftData?.giftDetails?.nameEnglish
             tvFromName.text = giftData?.senderName
             tvWishMessage.text = giftData?.wishMessage
             if (giftData?.notes==null){
