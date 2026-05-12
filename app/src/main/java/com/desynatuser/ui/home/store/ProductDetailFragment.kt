@@ -170,6 +170,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
+            tvBuyCount.text = "100 + ${getString(R.string.bought)}"
             tvTitle.text = productDetailData?.store?.storeName
             tvProductName.text =  if (Constants.language=="ar") productDetailData?.productNameAr else productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
             if (productDetailData?.productAvgRating!=null){

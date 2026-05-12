@@ -767,9 +767,12 @@
  <string name="select_country">Select a country</string>
  <string name="reset">Reset</string>
  <string name="no_card_found">No card found</string>
+    <string name="joined_on">Joined on</string>
+    <string name="live_timing">Live Timing</string>
+    <string name="bought">Bought</string>
 
 
- <array name="initial_price_values">
+    <array name="initial_price_values">
         <item>0</item>
         <item>500</item>
     </array>

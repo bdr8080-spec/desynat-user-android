@@ -771,5 +771,7 @@
     <string name="select_country">اختر دولة</string>
     <string name="reset">إعادة تعيين</string>
     <string name="no_card_found">لم يتم العثور على بطاقة</string>
-
+    <string name="joined_on">انضم في</string>
+    <string name="live_timing">التوقيت المباشر</string>
+    <string name="bought">تم الشراء</string>
 </resources>

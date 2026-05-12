@@ -26,6 +26,7 @@ import com.google.gson.Gson
 import me.leolin.shortcutbadger.ShortcutBadger
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
+import kotlin.collections.get
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -50,7 +51,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val obj = JSONObject(remoteMessage.data as Map<String, String>).toString()
         val notificationData = Gson().fromJson(obj, NotificationInfoModel::class.java)
        // sendNotification(notificationData)
-            sendNotification(notificationData.title.toString(),notificationData.body.toString(),notificationData?.badge?:0)
+            sendNotification(notificationData?.title_en?:notificationData?.title.toString(),notificationData?.body_en?:notificationData?.body.toString(),notificationData?.badge?:0,notificationData?.title_ar.toString(),notificationData?.body_ar.toString())
             if (Constants.currentScreen=="home"||Constants.currentScreen=="notification") {
                 EventBus.getDefault().post(notificationData?.title.toString())
             }
@@ -76,7 +77,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     @SuppressLint("InvalidWakeLockTag")
-    private fun sendNotification(titleText: String, body: String,badge: Int) {
+    private fun sendNotification(titleText: String, body: String,badge: Int,titleAr: String?="",bodyAr: String?="") {
  //   private fun sendNotification(notificationData: NotificationInfoModel) {
         var  badgeCount = badge
 
@@ -109,8 +110,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             )
         }
 
-        val message = body
-        val title = titleText
+        val message = if(SharedPreference.get(applicationContext).language=="ar") bodyAr?:body else body
+        val title = if(SharedPreference.get(applicationContext).language=="ar") titleAr?:titleText else titleText
+
 
 //        val message = notificationData.body
 //        val title = notificationData.title

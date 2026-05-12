@@ -96,7 +96,7 @@ class MyBagFragment : BaseFragment() {
                 tvRemove.isVisible = true
                 tvCouponDiscount.isVisible = true
                 tvCouponDiscountValue.isVisible = true
-                tvPromoCode.text = promoCode?.discountCode
+                tvPromoCode.text = if (Constants.language=="ar") promoCode?.discountCodeAr else promoCode?.discountCode
 //                tvDiscountedPrice.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
 //                tvTotalAmountValue.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
 //                tvCouponDiscountValue.text = "${CommonMethod.formatPrice(promoCode?.applyDiscountValue?:0.0)} KD"
@@ -521,7 +521,7 @@ class MyBagFragment : BaseFragment() {
                 tvRemove.isVisible = true
                 tvCouponDiscount.isVisible = true
                 tvCouponDiscountValue.isVisible = true
-                tvPromoCode.text = promo.discountCode
+                tvPromoCode.text = if (Constants.language=="ar") promoCode?.discountCodeAr else promo.discountCode
                 tvCouponDiscount.text = "${getString(R.string.coupon_discount)} (${promo.discountCode})"
             }
         }

@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.desynatuser.R
 import com.desynatuser.databinding.ItemEventBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetLiveStreamingRoomResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -35,10 +37,15 @@ class EventAdapter(var context: Context, var list : List<GetLiveStreamingRoomRes
         holder.binding.apply {
             val item = list[position]
             tvName.text = item?.sellerDetails?.firstName+" "+item?.sellerDetails?.lastName
-            tvLocation.text = item?.timeslotDetails?.countryInfo?.name
+            tvLocation.text = if (Constants.language=="ar") item?.timeslotDetails?.countryInfo?.nameAr else item?.timeslotDetails?.countryInfo?.name
             Glide.with(ivProfileImage).load(item?.sellerDetails?.profilePic).transform(CircleCrop()).into(ivProfileImage)
-            tvJoinedOn.text = "Joined on ${CommonMethod.customizeChangeDateFormat(item?.createdAt.toString(), outputFormat = "dd/MM/yyyy")}"
-            tvLiveTiming.text = "Live Timing ${CommonMethod.customizeChangeDateFormat(item?.timeslotDetails?.date.toString(), inputFormat = "yyyy-MM-dd", outputFormat = "dd/MM/yy")}"
+            tvJoinedOn.text = "${ context.getString(
+                R.string.joined_on)} ${CommonMethod.customizeChangeDateFormat(item?.createdAt.toString(), outputFormat = "dd/MM/yyyy")}"
+            tvLiveTiming.text = "${
+                context.getString(
+                    R.string.live_timing
+                )
+            } ${CommonMethod.customizeChangeDateFormat(item?.timeslotDetails?.date.toString(), inputFormat = "yyyy-MM-dd", outputFormat = "dd/MM/yy")}"
             val isShow = isLiveTime(item.timeslotDetails)
             btnWatchLive.apply {
                 alpha = if (isShow) 1f else 0.4f

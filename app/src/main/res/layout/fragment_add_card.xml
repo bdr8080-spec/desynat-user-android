@@ -31,7 +31,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="@string/card_holder_name"/>
+            android:text="@string/card_holder_name"
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etCardHolderName"
@@ -43,12 +44,13 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/edit_back"
             android:hint="@string/card_holder_name"
-            android:gravity="start"/>
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="@string/card_number" />
+            android:text="@string/card_number"
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etCardNumber"
@@ -61,12 +63,13 @@
             android:background="@drawable/edit_back"
             android:hint="@string/card_number"
             android:maxLength="16"
-            android:gravity="start"/>
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="@string/expiry_date" />
+            android:text="@string/expiry_date"
+            android:textAlignment="viewStart"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,7 +90,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/edit_back"
             android:hint="@string/expiry_date"
-            android:gravity="start"/>
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etCvv"
@@ -102,7 +105,7 @@
             android:background="@drawable/edit_back"
             android:hint="@string/cvv"
             android:maxLength="3"
-            android:gravity="start"/>
+            android:textAlignment="viewStart"/>
 
         </LinearLayout>
 
@@ -115,6 +118,7 @@
             android:fontFamily="@font/poppins_regular"
             android:textColor="@color/black"
             android:padding="@dimen/_5sdp"
+            android:textAlignment="viewStart"
             android:button="@drawable/selector_checkbox_icon"
             android:text="@string/check_card_for_future"/>
 

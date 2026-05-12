@@ -20,6 +20,8 @@ data class ApplyPromoCodeResponse(
         val applyDiscountValue: Double,
         @SerializedName("discount_code")
         val discountCode: String,
+        @SerializedName("discount_code_ar")
+        var discountCodeAr: String,
         @SerializedName("discount_percentage")
         val discountPercentage: String,
         @SerializedName("final_amount")

@@ -143,6 +143,7 @@ class PromoCodeFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 var data = response.data
                 data.id = promoCodeList[selectedPos].id.toString()
+                data.discountCodeAr = promoCodeList[selectedPos].nameArabic.toString()
                 showToast(response.message)
                 val bundle = Bundle().apply {
                     putString("promoCode", Gson().toJson(data))

@@ -118,6 +118,7 @@
                     android:textColor="@color/black"
                     android:layout_marginTop="@dimen/_1sdp"
                     android:textSize="@dimen/_11sdp"
+                    android:textAlignment="viewStart"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     app:layout_constraintStart_toEndOf="@+id/ivProduct"
                     app:layout_constraintEnd_toStartOf="@+id/relStatus"
@@ -284,6 +285,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -297,6 +299,7 @@
                     android:textSize="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_15sdp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toEndOf="@+id/tvTotalQuantity"
                     app:layout_constraintBottom_toBottomOf="@+id/tvTotalQuantity"
                     app:layout_constraintTop_toTopOf="@id/tvTotalQuantity" />
@@ -311,6 +314,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvTotalQuantity" />
 
@@ -323,6 +327,7 @@
                     android:text="Sector 63, Bismilla Apartment, Kuwait"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     android:layout_marginStart="@dimen/_15sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvTotalQuantity"
@@ -337,6 +342,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvAddressValue" />
 
@@ -349,6 +355,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_15sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvTotalQuantity"
                     app:layout_constraintTop_toTopOf="@id/tvCustom" />
@@ -376,6 +383,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -404,6 +412,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvPerItemPrice" />
 
@@ -432,6 +441,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvShippingFees" />
 

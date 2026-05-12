@@ -36,7 +36,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="@string/add_quantity"/>
+            android:text="@string/add_quantity"
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etAddQuantity"
@@ -48,14 +49,15 @@
             android:inputType="number"
             android:background="@drawable/edit_back"
             android:hint="@string/add_quantity"
-            android:gravity="start"/>
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:visibility="gone"
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
             android:text="@string/delivering_address"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_13sdp"
+            android:textAlignment="viewStart"/>
 
         <RelativeLayout
             android:visibility="gone"
@@ -77,6 +79,7 @@
                 android:hint="@string/select_address"
                 android:textSize="@dimen/_11sdp"
                 android:singleLine="true"
+                android:textAlignment="viewStart"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/tvChange" />
 
@@ -95,7 +98,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="@string/custom_details" />
+            android:text="@string/custom_details"
+            android:textAlignment="viewStart"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etCustomDetails"
@@ -109,7 +113,7 @@
             android:lines="3"
             android:background="@drawable/edit_back"
             android:hint="@string/write_here"
-            android:gravity="start"/>
+            android:textAlignment="viewStart"/>
 
         <TextView
         android:id="@+id/btnSendRequest"

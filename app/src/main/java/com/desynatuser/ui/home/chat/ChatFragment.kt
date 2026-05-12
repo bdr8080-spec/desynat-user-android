@@ -36,6 +36,7 @@ import com.desynatuser.ui.home.chat.response.NormalChatResponse
 import com.desynatuser.ui.home.chat.response.SendMessageRequest
 import com.desynatuser.ui.home.profile.response.GetAddressResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -352,7 +353,7 @@ class ChatFragment : BaseFragment() {
             tvTotalAmountValue.text =
                 "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.totalAmount ?: 0.0)}"
 
-            tvProductName.text = chatDetailData?.productVariation?.productDetails?.productNameEn
+            tvProductName.text = if(Constants.language=="ar") chatDetailData?.productVariation?.productDetails?.productNameAr else chatDetailData?.productVariation?.productDetails?.productNameEn
             tvSizeValue.text = chatDetailData?.productVariation?.size?.name.toString()
             ivColor.setColorFilter(Color.parseColor(chatDetailData?.productVariation?.color?.hexCode))
 

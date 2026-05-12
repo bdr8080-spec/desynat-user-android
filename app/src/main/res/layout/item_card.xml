@@ -35,6 +35,7 @@
             android:fontFamily="@font/poppins_medium"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
+            android:textAlignment="viewStart"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivDelete"
             app:layout_constraintStart_toEndOf="@+id/ivCard" />
@@ -48,6 +49,7 @@
         android:fontFamily="@font/poppins_regular"
         android:textColor="#CC000000"
         android:textSize="@dimen/_12sdp"
+        android:textAlignment="viewStart"
         app:layout_constraintTop_toBottomOf="@+id/tvCardName"
         app:layout_constraintStart_toStartOf="@+id/tvCardName"
         app:layout_constraintEnd_toEndOf="@+id/tvCardName" />
