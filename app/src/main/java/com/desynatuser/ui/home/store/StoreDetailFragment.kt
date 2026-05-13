@@ -39,6 +39,7 @@ import com.desynatuser.databinding.FragmentStoreDetailBinding
 import com.desynatuser.databinding.ProductFilterBinding
 import com.desynatuser.databinding.SortProductBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
+import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
@@ -111,6 +112,7 @@ class StoreDetailFragment : BaseFragment() {
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
     private var isFirstLoad = true
     private var storeId = ""
+    private var subCategoryData: GetSubCategoryResponse.Data?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -133,6 +135,10 @@ class StoreDetailFragment : BaseFragment() {
         SharedPreference.get(requireActivity()).getCategoryList()?.let { categoryList.addAll(it) }
         ProgressDialogUtils.getInstance().hideProgress()
          storeId = arguments?.getString("storeId").toString()
+        val itemJson = arguments?.getString("subCategoryData")
+        if (!itemJson.isNullOrEmpty()) {
+            subCategoryData = Gson().fromJson(itemJson, GetSubCategoryResponse.Data::class.java)
+        }
         binding?.apply {
 
             when(type){
@@ -286,12 +292,12 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             if (storeDetailData?.store?.storeAvailability==1){
-                tvStatus.text = getString(R.string.busy)
-                tvStatus.isVisible = true
-            }
-            else{
                 tvStatus.isVisible = false
                 tvStatus.text = getString(R.string.available)
+            }
+            else{
+                tvStatus.text = getString(R.string.busy)
+                tvStatus.isVisible = true
             }
         }
     }
@@ -407,6 +413,10 @@ class StoreDetailFragment : BaseFragment() {
 
         if (selectedCategory!=null) {
             map["category_id"] = arrayListOf(selectedCategory?.id.toString())    // ArrayList<String>
+        }
+
+        if (subCategoryData!=null&&selectedCategory==null) {
+            map["category_id"] = arrayListOf(subCategoryData?.categoryId.toString())    // ArrayList<String>
         }
 
         if (selectedBrandList.isNotEmpty()) {

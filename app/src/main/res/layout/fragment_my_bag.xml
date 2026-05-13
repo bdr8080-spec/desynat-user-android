@@ -15,7 +15,7 @@
         android:paddingHorizontal="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_25sdp"
         android:fontFamily="@font/poppins_medium"
-        android:text="@string/my_bag"
+        android:text="@string/cart"
         android:textColor="@color/black"
         android:textSize="@dimen/_13sdp"
         android:textAlignment="center"

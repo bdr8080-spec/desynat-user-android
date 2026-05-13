@@ -10,6 +10,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemPaymentBinding
 import com.desynatuser.ui.affiliateUser.home.payment.response.GetAllAffiliateOrderResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 
 class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<GetAllAffiliateOrderResponse.Data.Orders.Data>, var onClick:OnClick) : RecyclerView.Adapter<AffiliatePaymentAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemPaymentBinding) :
@@ -19,8 +20,8 @@ class AffiliatePaymentAdapter(var context:Context, var paymentList: ArrayList<Ge
 
             tvPurchasedByValue.text = paymentData?.userDetails?.fullName
             tvTransactionIdValue.text = "#${paymentData?.order?.transactionId?:paymentData?.id}"
-            tvProductName.text = paymentData?.productDetails?.productNameEn
-            tvCategoryValue.text = paymentData?.productDetails?.category?.name
+            tvProductName.text = if (Constants.language=="ar") paymentData?.productDetails?.productNameAr else paymentData?.productDetails?.productNameEn
+            tvCategoryValue.text = if (Constants.language=="ar") paymentData?.productDetails?.category?.nameAr else paymentData?.productDetails?.category?.name
             tvQuantityValue.text = paymentData?.quantity.toString()
             tvMyEarnings.text = "${CommonMethod.formatCurrencyAmount(context,paymentData?.affiliateCommission?.toDoubleOrNull()?:0.0)}"
             tvTotalAmount.text = "${CommonMethod.formatCurrencyAmount(context,paymentData?.amount?.toDoubleOrNull()?:0.0)}"

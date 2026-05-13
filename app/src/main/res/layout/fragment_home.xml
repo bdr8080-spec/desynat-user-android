@@ -50,6 +50,7 @@
             android:textSize="@dimen/_11sdp"
             android:singleLine="true"
             android:ellipsize="end"
+            android:textAlignment="viewStart"
             android:layout_marginStart="@dimen/_5sdp"
             app:layout_constraintEnd_toStartOf="@+id/ivChat"
            app:layout_constraintStart_toEndOf="@+id/ivAdminStory"/>
@@ -68,6 +69,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:drawableStart="@drawable/ic_loc"
             android:drawablePadding="@dimen/_2sdp"
+            android:textAlignment="viewStart"
            app:layout_constraintTop_toBottomOf="@+id/tvDeliverTo"
            app:layout_constraintEnd_toStartOf="@+id/ivChat"
             app:layout_constraintStart_toEndOf="@+id/ivAdminStory"/>

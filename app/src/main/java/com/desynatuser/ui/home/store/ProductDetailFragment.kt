@@ -185,7 +185,7 @@ class ProductDetailFragment : BaseFragment() {
             colorList.clear()
             colorList.addAll(productInfo)
             colorAdapter?.notifyDataSetChanged()
-            btnCustomOrder.isVisible = productDetailData?.customizedProduct=="1"
+            btnCustomOrder.isVisible = productDetailData?.customizedProduct=="1"&&productDetailData?.store?.storeAvailability==1
 
             if (productDetailData?.wishlist==1) {
                 ivLike.setImageResource(R.drawable.ic_heart_filled)
@@ -207,7 +207,7 @@ class ProductDetailFragment : BaseFragment() {
 
             tvName.text = if (Constants.language=="ar") productDetailData?.brand?.nameArabic else productDetailData?.brand?.nameEnglish
 
-            if (variant?.productVariation?.get(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0){
+            if (variant?.productVariation?.get(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0&&productDetailData?.store?.storeAvailability==1){
                 relAddToBag.isVisible = true
                 btnBuyNow.isVisible = true
                 viewBottom.isVisible = true
@@ -306,8 +306,8 @@ class ProductDetailFragment : BaseFragment() {
 
             ivShare.setOnClickListener {
                 CommonMethod.shareProductWithImage(requireActivity(),
-                    "Product name: ${productDetailData?.productNameEn}",
-                    "Description: ${productDetailData?.descriptionEn}",
+                    "${getString(R.string.product_name)}: ${productDetailData?.productNameEn}",
+                    "${getString(R.string.description)}: ${productDetailData?.descriptionEn}",
                     productDetailData?.productVariants?.get(selectedPos)?.variantImage?.get(0) ?: "",
                     "https://desynat.com/user/product/detail-page/${productId}"
                 )
@@ -557,6 +557,7 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun checkCartData(quantity: Int) {
+        if (productDetailData?.store?.storeAvailability==0) return
         binding?.apply {
             if (quantity > 0) {
                 tvCount.text = quantity.toString()

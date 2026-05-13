@@ -38,7 +38,7 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
 
         holder.binding.apply {
             if (storeName!=""){
-                tvTitle.text = if (Constants.language=="ar") productData.productNameAr else productData.productNameEn+" (By ${storeName})"
+                tvTitle.text = if (Constants.language=="ar") productData.productNameAr else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
             }
             else{
                 tvTitle.text =  if (Constants.language=="ar") productData.productNameAr else productData.productNameEn

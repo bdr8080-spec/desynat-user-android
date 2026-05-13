@@ -394,7 +394,7 @@ class OrderDetailFragment : BaseFragment() {
             if (orderData?.order?.promocodeStatus=="yes"){
                 tvPromoCode.isVisible = true
                 tvPromoCodeValue.isVisible = true
-                tvPromoCode.text = "${getString(R.string.coupon_discount)} (${orderData?.order?.promocodeDetails?.nameEnglish})"
+                tvPromoCode.text = "${getString(R.string.coupon_discount)} (${if (Constants.language=="ar") orderData?.order?.promocodeDetails?.nameArabic else orderData?.order?.promocodeDetails?.nameEnglish})"
             //    tvPromoCodeValue.text = "${CommonMethod.formatPrice(orderData?.order?.promocodeValue?.toDoubleOrNull()?:0.0)} KD"
                 tvPromoCodeValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.promocodeValue?.toDoubleOrNull()?:0.0)}"
 

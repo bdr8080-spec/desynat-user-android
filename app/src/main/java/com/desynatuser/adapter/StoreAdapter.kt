@@ -56,12 +56,13 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
             }
 
             if (storeData.storeAvailability==1){
-                tvStatus.text = context.getString(R.string.busy)
-                tvStatus.isVisible = true
-            }
-            else{
                 tvStatus.isVisible = false
                 tvStatus.text = context.getString(R.string.available)
+            }
+            else{
+                tvStatus.text = context.getString(R.string.busy)
+                tvStatus.isVisible = true
+
             }
 
         }

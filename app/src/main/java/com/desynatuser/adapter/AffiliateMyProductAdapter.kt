@@ -37,10 +37,10 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
 
         holder.binding.apply {
             if (productData?.store?.storeName!=null){
-                tvTitle.text = productData?.productNameEn+" (${context.getString(R.string.by)} ${productData?.store?.storeName})"
+                tvTitle.text = if (Constants.language=="ar") productData?.productNameAr else productData?.productNameEn+" (${context.getString(R.string.by)} ${productData?.store?.storeName})"
             }
             else{
-                tvTitle.text = productData?.productNameEn
+                tvTitle.text = if (Constants.language=="ar") productData?.productNameAr else productData?.productNameEn
             }
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.firstOrNull()?.actualPrice?.toDoubleOrNull()?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.firstOrNull()?.finalPrice?.toDoubleOrNull()?:0.0)}"

@@ -415,8 +415,12 @@
  <string name="cash_on_delivery_available">Cash on Delivery Available</string>
  <string name="view_all">View All</string>
  <string name="simillar_products">Simillar Products</string>
- <string name="view_my_bag">View My Bag</string>
- <string name="add_to_bag">Add to Bag</string>
+ <string name="view_my_bag">View My Cart</string>
+ <string name="add_to_bag">Add to Cart</string>
+ <string name="go_to_bag">Go to Cart</string>
+ <string name="there_is_nothing_in_your_bag_let_s_add_some_items">There is nothing in your Cart. Let\'s add some items</string>
+ <string name="apply_promocode">Apply PromoCode</string>
+ <string name="my_bag">My Bag</string>
  <string name="get_it_by">Get it by</string>
  <string name="days_return">Days Return</string>
  <string name="says_exchange">Days Exchange</string>
@@ -582,11 +586,8 @@
  <string name="affiliate_link">Affiliate link</string>
  <string name="add_to_products">Add to Products</string>
  <string name="copy_link">Copy Link</string>
- <string name="go_to_bag">Go to Bag</string>
  <string name="custom_order_details">Custom Order Details</string>
- <string name="there_is_nothing_in_your_bag_let_s_add_some_items">There is nothing in your bag. Let\'s add some items</string>
- <string name="apply_promocode">Apply PromoCode</string>
- <string name="my_bag">My Bag</string>
+ <string name="cart">Cart</string>
  <string name="select_image_source">Select Image Source</string>
  <string name="camera">Camera</string>
  <string name="gallery">Gallery</string>

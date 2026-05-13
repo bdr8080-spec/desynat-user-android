@@ -19,8 +19,13 @@ class NewestProductAdapter(private val context: Context, private val newestProdu
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) = with(binding) {
             val productData = newestProductList[position]
-            tvTitle.text = if (Constants.language=="ar") productData?.productNameAr else productData?.productNameEn
-
+            var storeName = productData?.store?.storeName?:""
+            if (storeName!=""){
+                tvTitle.text = if (Constants.language=="ar") productData.productNameAr else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
+            }
+            else{
+                tvTitle.text =  if (Constants.language=="ar") productData.productNameAr else productData.productNameEn
+            }
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)}"
 

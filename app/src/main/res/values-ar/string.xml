@@ -398,8 +398,6 @@
     <string name="cash_on_delivery_available">الدفع عند الاستلام متاح</string>
     <string name="view_all">عرض الكل</string>
     <string name="simillar_products">منتجات مشابهة</string>
-    <string name="view_my_bag">عرض السلة</string>
-    <string name="add_to_bag">أضف إلى السلة</string>
     <string name="get_it_by">احصل عليه بحلول</string>
     <string name="days_return">أيام الإرجاع</string>
     <string name="says_exchange">أيام الاستبدال</string>
@@ -567,11 +565,14 @@
     <string name="affiliate_link">رابط التسويق بالعمولة</string>
     <string name="add_to_products">إضافة إلى المنتجات</string>
     <string name="copy_link">نسخ الرابط</string>
-    <string name="go_to_bag">اذهب إلى الحقيبة</string>
     <string name="custom_order_details">تفاصيل الطلب المخصص</string>
-    <string name="there_is_nothing_in_your_bag_let_s_add_some_items">لا يوجد شيء في حقيبتك. دعنا نضيف بعض العناصر</string>
     <string name="apply_promocode">تطبيق رمز الخصم</string>
-    <string name="my_bag">حقيبتي</string>
+    <string name="view_my_bag">عرض السلة</string>
+    <string name="add_to_bag">أضف إلى السلة</string>
+    <string name="go_to_bag">الذهاب إلى السلة</string>
+    <string name="there_is_nothing_in_your_bag_let_s_add_some_items">لا يوجد شيء في سلتك. لنقم بإضافة بعض العناصر</string>
+    <string name="my_bag">سلتي</string>
+    <string name="cart">السلة</string>
     <string name="select_image_source">اختر مصدر الصورة</string>
     <string name="camera">الكاميرا</string>
     <string name="gallery">المعرض</string>

@@ -106,6 +106,7 @@ class StoreFragment : BaseFragment() {
                 override fun onItemClick(position: Int) {
                     val bundle = Bundle().apply {
                         putString("storeId", premiumStoreList[position]?.sellerDetails?.storeInfo?.id.toString())
+                        putString("subCategoryData", Gson().toJson(subCategoryData))
                     }
                     findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
                 }

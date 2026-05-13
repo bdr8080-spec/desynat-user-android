@@ -260,8 +260,8 @@ class HomeFragment : BaseFragment() {
                             val data = bestSellingList[position]
                             CommonMethod.shareProductWithImage(
                                 requireActivity(),
-                                "Product name: ${data?.productNameEn}",
-                                "Description: ${data?.descriptionEn}",
+                                "${getString(R.string.product_name)}: ${data?.productNameEn}",
+                                "${getString(R.string.description)}: ${data?.descriptionEn}",
                                 data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
                                 "https://desynat.com/user/product/detail-page/${data.id}"
                             )
@@ -296,8 +296,8 @@ class HomeFragment : BaseFragment() {
                             val data = topRatedList[position]
                             CommonMethod.shareProductWithImage(
                                 requireActivity(),
-                                "Product name: ${data?.productNameEn}",
-                                "Description: ${data?.descriptionEn}",
+                                "${getString(R.string.product_name)} : ${data?.productNameEn}",
+                                "${getString(R.string.description)} : ${data?.descriptionEn}",
                                 data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
                                 "https://desynat.com/user/product/detail-page/${data.id}"
                             )
@@ -313,8 +313,6 @@ class HomeFragment : BaseFragment() {
                             )
                         }
                     }
-
-
                 }
 
             })
@@ -351,8 +349,8 @@ class HomeFragment : BaseFragment() {
                                 val data = newestProductList[position]
                                 CommonMethod.shareProductWithImage(
                                     requireActivity(),
-                                    "Product name: ${data?.productNameEn}",
-                                    "Description: ${data?.descriptionEn}",
+                                    "${getString(R.string.product_name)}: ${data?.productNameEn}",
+                                    "${getString(R.string.description)}: ${data?.descriptionEn}",
                                     data?.productVariants?.get(0)?.variantImage?.get(0) ?: "",
                                     "https://desynat.com/user/product/detail-page/${data.id}"
                                 )
