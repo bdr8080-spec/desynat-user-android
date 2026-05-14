@@ -417,6 +417,12 @@
     <string name="product">منتج</string>
     <string name="reels">ريلز</string>
     <string name="reel_added_to_your_wishlist_successfully">تمت إضافة الريل إلى المفضلة بنجاح</string>
+    <string name="bust">الصدر</string>
+    <string name="waist">الخصر</string>
+    <string name="hip">الورك</string>
+    <string name="shoulder">الكتف</string>
+    <string name="sleeve_length">طول الكم</string>
+    <string name="length">الطول</string>
 
     <!-- order -->
     <string name="my_order">طلباتي</string>
@@ -775,4 +781,6 @@
     <string name="joined_on">انضم في</string>
     <string name="live_timing">التوقيت المباشر</string>
     <string name="bought">تم الشراء</string>
+    <string name="no_review_found">لم يتم العثور على أي مراجعة</string>
+
 </resources>

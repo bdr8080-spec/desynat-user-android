@@ -440,6 +440,12 @@
  <string name="product">Product</string>
  <string name="reels">Reels</string>
  <string name="reel_added_to_your_wishlist_successfully">Reel added to your wishlist successfully</string>
+ <string name="bust">Bust</string>
+ <string name="waist">Waist</string>
+ <string name="hip">Hip</string>
+ <string name="shoulder">Shoulder</string>
+ <string name="sleeve_length">Sleeve length</string>
+ <string name="length">Length</string>
 
  <string name="my_order">My Order</string>
  <string name="other_item">Other Item</string>
@@ -771,6 +777,7 @@
     <string name="joined_on">Joined on</string>
     <string name="live_timing">Live Timing</string>
     <string name="bought">Bought</string>
+    <string name="no_review_found">No review found</string>
 
 
     <array name="initial_price_values">

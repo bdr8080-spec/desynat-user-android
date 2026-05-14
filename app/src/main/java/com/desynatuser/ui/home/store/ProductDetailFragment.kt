@@ -42,6 +42,8 @@ import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.collections.get
+import kotlin.text.category
 
 @AndroidEntryPoint
 class ProductDetailFragment : BaseFragment() {
@@ -170,7 +172,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
-            tvBuyCount.text = "100 + ${getString(R.string.bought)}"
+            tvBuyCount.text = "0 + ${getString(R.string.bought)}"
             tvTitle.text = productDetailData?.store?.storeName
             tvProductName.text =  if (Constants.language=="ar") productDetailData?.productNameAr else productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
             if (productDetailData?.productAvgRating!=null){
@@ -218,6 +220,20 @@ class ProductDetailFragment : BaseFragment() {
                 viewBottom.isVisible = false
             }
 
+            if (productData?.category?.name=="Women"){
+                clWomenSize.isVisible = true
+                tvBustSize.text = variant?.productVariation?.get(selectedSizePos)?.bust?:"NA"
+                tvHipSize.text =variant?.productVariation?.get(selectedSizePos)?.hip?:"NA"
+                tvShoulderSize.text = variant?.productVariation?.get(selectedSizePos)?.shoulder?:"NA"
+                tvWaistSize.text = variant?.productVariation?.get(selectedSizePos)?.waist?:"NA"
+                tvSleeveLengthSize.text = variant?.productVariation?.get(selectedSizePos)?.sleeveLength?:"NA"
+                tvLengthSize.text = variant?.productVariation?.get(selectedSizePos)?.length?:"NA"
+
+            }
+            else{
+                clWomenSize.isVisible = false
+            }
+
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.actualPrice?:0.0)}"
             tvDiscountedPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.finalPrice?:0.0)}"
 
@@ -236,7 +252,7 @@ class ProductDetailFragment : BaseFragment() {
             productDetailData?.productSpecifications?.let { specificationList.addAll(it) }
             specificationAdapter?.notifyDataSetChanged()
 
-            tvDeliveryDate.text = "${getString(R.string.get_it_by)} 30/11/2025"
+            tvDeliveryDate.text = "${getString(R.string.get_it_by)} 3 ${getString(R.string.to)} 5 ${getString(R.string.working_days)}"
             tvCashOnDelivery.text = if (productDetailData?.cashOnDelivery=="1")
             {
                getString(R.string.cash_on_delivery_available)
@@ -532,12 +548,12 @@ class ProductDetailFragment : BaseFragment() {
                 reviewAdapter?.notifyDataSetChanged()
                 if (ratingList.isNotEmpty()){
                     binding?.rvRating?.isVisible = true
-                    binding?.tvCustomerRating?.isVisible = true
                     binding?.tvViewAll?.isVisible = true
+                    binding?.tvNoReview?.isVisible = false
                 }
                 else{
+                    binding?.tvNoReview?.isVisible = true
                     binding?.rvRating?.isVisible = false
-                    binding?.tvCustomerRating?.isVisible = false
                     binding?.tvViewAll?.isVisible = false
                 }
                 setData()

@@ -18,6 +18,7 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import kotlin.getValue
 
 @AndroidEntryPoint
@@ -28,7 +29,7 @@ class ViewReelFragment : BaseFragment() {
     private var reelData: GetSellerStoryResponse.Data?=null
 
     private val handler = android.os.Handler()
-    private lateinit var runnable: Runnable
+    private var runnable: Runnable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -212,7 +213,9 @@ class ViewReelFragment : BaseFragment() {
                 ivPlay.isVisible = true
                 ivPlay.setImageResource(R.drawable.ic_play)
 
-                handler.removeCallbacks(runnable)
+                runnable?.let {
+                    handler.removeCallbacks(it)
+                }
             }
         }
     }
@@ -346,7 +349,7 @@ class ViewReelFragment : BaseFragment() {
         val totalSeconds = ms / 1000
         val minutes = totalSeconds / 60
         val seconds = totalSeconds % 60
-        return String.format("%02d:%02d", minutes, seconds)
+        return String.format(Locale.ENGLISH,"%02d:%02d", minutes, seconds)
     }
 
     private fun startSeekBarUpdate() {
@@ -370,7 +373,9 @@ class ViewReelFragment : BaseFragment() {
                 handler.postDelayed(this, 500)
             }
         }
-        handler.post(runnable)
+        runnable?.let {
+            handler.post(it)
+        }
     }
 
     override fun onDestroyView() {
