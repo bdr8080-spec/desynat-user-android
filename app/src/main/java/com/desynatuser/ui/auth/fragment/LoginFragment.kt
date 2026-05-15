@@ -12,6 +12,8 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,6 +30,12 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +48,9 @@ class LoginFragment : BaseFragment() {
     var isObserver = false
     var type = 1
     var countryList = ArrayList<GetCountryResponse.Data>()
+
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +67,35 @@ class LoginFragment : BaseFragment() {
         observe()
     }
 
+    private val googleLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+            try {
+
+                val account = task.getResult(ApiException::class.java)
+
+                account.idToken?.let {
+                    firebaseAuthWithGoogle(it)
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showToast(e.message ?: "Google login failed")
+            }
+        }
+
     override fun initView() {
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.e("FCM_ERROR", "Token failed", task.exception)
@@ -89,12 +128,12 @@ class LoginFragment : BaseFragment() {
             CommonMethod.removeAllTextSpaces(etPassword)
             tvCreateNewAccount.text = CommonMethod.spannableText(requireActivity(),requireActivity().getString(
                 R.string.don_t_have_an_account_create_new),requireActivity().getString(R.string.signUp), onClick = {
-                /*if (SharedPreference.get(requireActivity()).userType==2){
+                if (SharedPreference.get(requireActivity()).userType==2){
                     findNavController().navigate(R.id.action_loginFragment_to_affiliateSignUpFragment)
                 }
                 else{
                     findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
-                }*/
+                }
 
 
             })
@@ -115,9 +154,18 @@ class LoginFragment : BaseFragment() {
 
             if (SharedPreference.get(requireActivity()).userType==2){
                 tvGuest.text = getString(R.string.switch_to_user)
+                tvOtherOption.isInvisible = true
+                view2.isInvisible = true
+                view1.isInvisible = true
+                ivFacebook.isInvisible = true
+                ivGoogle.isInvisible = true
             }
             else{
                 tvGuest.text = getString(R.string.continue_as_a_guest)
+                view2.isVisible = true
+                view1.isVisible = true
+                ivFacebook.isVisible = true
+                ivGoogle.isVisible = true
             }
         }
     }
@@ -204,6 +252,12 @@ class LoginFragment : BaseFragment() {
             }
 
             ivGoogle.setOnClickListener {
+
+                googleSignInClient.signOut().addOnCompleteListener {
+
+                    val signInIntent = googleSignInClient.signInIntent
+                    googleLauncher.launch(signInIntent)
+                }
             }
 
             ivFacebook.setOnClickListener {
@@ -418,6 +472,20 @@ class LoginFragment : BaseFragment() {
             }
         }
 
+        viewModel.socialLoginResult.observe(viewLifecycleOwner) { response ->
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                response?.let {
+                    showToast(response.message)
+                    clearInputField()
+                    SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
+                    SharedPreference.get(requireActivity()).saveUser(response.data)
+                    findNavController().navigate(R.id.action_loginFragment_to_BannerFragment)
+                }
+                isObserver = false
+            }
+        }
+
         viewModel.loginWithOtpAffiliateUserResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -515,6 +583,57 @@ class LoginFragment : BaseFragment() {
             val countryCodeString = countryCodes.joinToString(",")
             // binding?.ccp?.setCustomMasterCountries(countryCodeString)
         }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+
+        firebaseAuth.signInWithCredential(credential)
+            .addOnCompleteListener(requireActivity()) { task ->
+
+                if (task.isSuccessful) {
+
+                    val user = firebaseAuth.currentUser
+                    val uid = user?.uid ?: ""
+                    val name = user?.displayName ?: ""
+                    val email = user?.email ?: ""
+                    val profileImage = user?.photoUrl.toString()
+
+                    Log.e("GOOGLE_USER", "Name : $name")
+                    Log.e("GOOGLE_USER", "Email : $email")
+
+                    googleSocialLogin(uid,name, email, profileImage)
+
+                } else {
+
+                    showToast("Google login failed")
+                }
+            }
+    }
+
+    private fun googleSocialLogin(
+        uid: String,
+        name: String,
+        email: String,
+        image: String
+    ) {
+
+        val map = HashMap<String, Any>()
+
+        map["full_name"] = name
+        map["email"] = email
+        map["profile_image"] = image
+        map["unique_id"] = uid
+        map["socialType"] = "1"
+        map["device_type"] = Constants.DEVICE_TYPE
+        map["device_token"] = SharedPreference.get(requireActivity()).deviceToken
+        map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
+        map["lang"] = SharedPreference.get(requireActivity()).language
+        viewModel.socialLogin(map)
+
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
 }

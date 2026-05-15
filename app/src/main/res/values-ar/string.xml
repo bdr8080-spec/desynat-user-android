@@ -353,7 +353,7 @@
     <string name="city_district">المدينة / المنطقة</string>
     <string name="landmark">علامة مميزة</string>
     <string name="saved_address_as">حفظ العنوان باسم</string>
-    <string name="home">المنزل</string>
+    <string name="home">الرئيسية</string>
     <string name="office">المكتب</string>
     <string name="add_address">إضافة عنوان</string>
     <string name="saved_address">العناوين المحفوظة</string>
@@ -544,6 +544,7 @@
     <string name="item_performance">أداء المنتج</string>
     <string name="quick_summary">ملخص سريع</string>
     <string name="to">إلى</string>
+    <string name="to_small">إلى</string>
     <string name="total_clicks">إجمالي النقرات</string>
     <string name="total_orders">إجمالي الطلبات</string>
     <string name="conversion_rate">معدل التحويل</string>

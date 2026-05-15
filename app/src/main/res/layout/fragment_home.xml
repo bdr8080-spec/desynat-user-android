@@ -256,7 +256,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/men"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:enabled="false"
             android:textSize="@dimen/_12sdp"
             android:gravity="center"
             android:fontFamily="@font/poppins_medium"
@@ -280,7 +281,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/women"
-            android:textColor="@color/black"
+            android:textColor="#E6E6E6"
+            android:enabled="false"
             android:textSize="@dimen/_12sdp"
             android:gravity="center"
             android:layout_marginHorizontal="@dimen/_15sdp"
@@ -290,6 +292,7 @@
             app:layout_constraintTop_toTopOf="@+id/tvMen"/>
 
         <View
+            android:visibility="invisible"
             android:id="@+id/viewWomen"
             android:layout_width="0dp"
             android:layout_height="@dimen/_1sdp"
@@ -303,7 +306,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/kids"
-            android:textColor="@color/black"
+            android:textColor="#E6E6E6"
+            android:enabled="false"
             android:textSize="@dimen/_12sdp"
             android:gravity="center"
             android:fontFamily="@font/poppins_medium"

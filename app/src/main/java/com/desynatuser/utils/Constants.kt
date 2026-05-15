@@ -27,6 +27,7 @@ object Constants {
     const val UPLOAD = "/api/uploadFile"
     const val REGISTER = "/api/register"
     const val LOGIN = "/api/login"
+    const val SOCIAL_LOGIN = "/api/socialSignup"
     const val OTP_VERIFY = "/api/verify_otp"
     const val RESEND_OTP = "/api/resend_otp"
     const val FORGOT_PASSWORD = "/api/forgot_password"

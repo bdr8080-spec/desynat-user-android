@@ -64,6 +64,15 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    val socialLoginResult: LiveData<LoginResponse>
+        get() = repository.socialLoginLiveData
+
+    fun socialLogin(map: HashMap<String, Any>) {
+        viewModelScope.launch {
+            repository.socialLogin(map)
+        }
+    }
+
     val loginEmailMobileResult: LiveData<LoginResponse>
         get() = repository.loginEmailMobileLiveData
 

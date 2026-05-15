@@ -7,8 +7,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivSelected"
-        android:layout_width="@dimen/_33sdp"
-        android:layout_height="@dimen/_33sdp"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
         android:src="@color/white"
         app:strokeColor="@color/brown"
         app:strokeWidth="1dp"
@@ -21,8 +21,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivRectangleColor"
-        android:layout_width="@dimen/_28sdp"
-        android:layout_height="@dimen/_28sdp"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:src="@color/white"
         android:clipToOutline="true"
         app:strokeColor="#959494"

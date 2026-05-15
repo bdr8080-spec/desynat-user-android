@@ -22,10 +22,10 @@ class TopRatedAdapter(private val context: Context, private val topRatedList: Li
             val productData = topRatedList[position]
             var storeName = productData?.store?.storeName?:""
             if (storeName!=""){
-                tvTitle.text = if (Constants.language=="ar") productData.productNameAr else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
+                tvTitle.text = if (Constants.language=="ar") productData.productNameAr+" (${context.getString(R.string.by)} ${storeName})" else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
             }
             else{
-                tvTitle.text =  if (Constants.language=="ar") productData.productNameAr else productData.productNameEn
+                tvTitle.text =  if (Constants.language=="ar") productData.productNameAr+" (${context.getString(R.string.by)} ${storeName})" else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
             }
             tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)}"

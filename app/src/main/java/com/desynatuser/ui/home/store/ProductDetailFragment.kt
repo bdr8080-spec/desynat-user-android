@@ -174,7 +174,7 @@ class ProductDetailFragment : BaseFragment() {
         binding?.apply {
             tvBuyCount.text = "0 + ${getString(R.string.bought)}"
             tvTitle.text = productDetailData?.store?.storeName
-            tvProductName.text =  if (Constants.language=="ar") productDetailData?.productNameAr else productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
+            tvProductName.text =  if (Constants.language=="ar") productDetailData?.productNameAr+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})" else productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
             if (productDetailData?.productAvgRating!=null){
                 tvRating.text = "(${productDetailData?.productAvgRating})"
             }
@@ -252,7 +252,7 @@ class ProductDetailFragment : BaseFragment() {
             productDetailData?.productSpecifications?.let { specificationList.addAll(it) }
             specificationAdapter?.notifyDataSetChanged()
 
-            tvDeliveryDate.text = "${getString(R.string.get_it_by)} 3 ${getString(R.string.to)} 5 ${getString(R.string.working_days)}"
+            tvDeliveryDate.text = "${getString(R.string.get_it_by)} 3 ${getString(R.string.to_small)} 5 ${getString(R.string.working_days)}"
             tvCashOnDelivery.text = if (productDetailData?.cashOnDelivery=="1")
             {
                getString(R.string.cash_on_delivery_available)

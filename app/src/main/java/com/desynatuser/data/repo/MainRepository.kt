@@ -147,6 +147,18 @@ class MainRepository @Inject constructor(
         )
     }
 
+    val socialLoginLiveData = SingleLiveEvent<LoginResponse>()
+    suspend fun socialLogin(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.socialLogin(map)
+            },
+            responseLiveData = socialLoginLiveData
+        )
+    }
+
  val loginEmailMobileLiveData = SingleLiveEvent<LoginResponse>()
     suspend fun loginViaEmailOrMobile(
         map: HashMap<String,Any>

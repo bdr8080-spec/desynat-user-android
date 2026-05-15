@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -546,6 +547,7 @@ class HomeFragment : BaseFragment() {
             }
 
             tvWomen.setOnClickListener {
+                if (Constants.Category=="Women") return@setOnClickListener
                 Constants.Category = "Women"
                 viewWomen.isVisible = true
                 viewMen.isInvisible = true
@@ -555,6 +557,7 @@ class HomeFragment : BaseFragment() {
             }
 
             tvMen.setOnClickListener {
+                if (Constants.Category=="Men") return@setOnClickListener
                 Constants.Category = "Men"
                 viewMen.isVisible = true
                 viewWomen.isInvisible = true
@@ -564,6 +567,7 @@ class HomeFragment : BaseFragment() {
             }
 
             tvKids.setOnClickListener {
+                if (Constants.Category=="Kids") return@setOnClickListener
                 Constants.Category = "Kids"
                 viewKids.isVisible = true
                 viewMen.isInvisible = true
@@ -731,6 +735,7 @@ class HomeFragment : BaseFragment() {
                 response?.let {
                     mainCategoryList.clear()
                     mainCategoryList.addAll(response.data)
+                    checkCategory()
                     SharedPreference.get(requireActivity()).saveCategoryLIst(response.data)
                     getSubCategoryApi(mainCategoryList.find { it.name == Constants.Category }?.id.toString())
                 }
@@ -886,6 +891,54 @@ class HomeFragment : BaseFragment() {
         }
 
 
+    }
+
+    private fun checkCategory() {
+        binding?.apply {
+            tvMen.isEnabled = false
+            tvMen.setTextColor(Color.parseColor("#E6E6E6"))
+            tvWomen.isEnabled = false
+            tvWomen.setTextColor(Color.parseColor("#E6E6E6"))
+            tvKids.isEnabled = false
+            tvKids.setTextColor(Color.parseColor("#E6E6E6"))
+            for (i in 0 until mainCategoryList.size){
+                if (mainCategoryList[i].name=="Men"){
+                    if (mainCategoryList[i].status=="1"){
+                        tvMen.isEnabled = true
+                        tvMen.setTextColor(Color.parseColor("#000000"))
+
+                    }
+                    else{
+                        tvMen.isEnabled = false
+                        tvMen.setTextColor(Color.parseColor("#E6E6E6"))
+                    }
+
+
+                }
+                if (mainCategoryList[i].name=="Women"){
+                    if (mainCategoryList[i].status=="1"){
+                        tvWomen.isEnabled = true
+                        tvWomen.setTextColor(Color.parseColor("#000000"))
+
+                    }
+                    else{
+                        tvWomen.isEnabled = false
+                        tvWomen.setTextColor(Color.parseColor("#E6E6E6"))
+                    }
+                }
+                if (mainCategoryList[i].name=="Kids"){
+                    if (mainCategoryList[i].status=="1"){
+                        tvKids.isEnabled = true
+                        tvKids.setTextColor(Color.parseColor("#000000"))
+
+                    }
+                    else{
+                        tvKids.isEnabled = false
+                        tvKids.setTextColor(Color.parseColor("#E6E6E6"))
+                    }
+                }
+            }
+        }
     }
 
     private fun setAdminStory() {

@@ -127,6 +127,11 @@ interface ApiServices {
         @Body body: HashMap<String, Any>
     ): Response<LoginResponse>
 
+    @POST(Constants.SOCIAL_LOGIN)
+    suspend fun socialLogin(
+        @Body body: HashMap<String, Any>
+    ): Response<LoginResponse>
+
     @POST(Constants.LOGIN_VIA_EMAIL_OR_MOBILE)
     suspend fun loginViaEmailOrMobile(
         @Body body: HashMap<String, Any>

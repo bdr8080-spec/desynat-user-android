@@ -13,7 +13,20 @@
           "package_name": "com.desynatadmin"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "89320198276-5tq7evjt12m0ksl88r9cmus39tmssc59.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desynatadmin",
+            "certificate_hash": "78bbb36ca38b3f78cfe71318b771ca73e708832a"
+          }
+        },
+        {
+          "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCJKDAVeXi2TvmbKl3-i2bDdBvDHJez0KE"
@@ -21,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "89320198276-3i2ku90r01fiicghlv3b661ketskmmr7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.DesynatDriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -32,7 +57,20 @@
           "package_name": "com.desynatdealer"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "89320198276-qnvsmd4q7ef2rb1e1nf345jhmobq2jet.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desynatdealer",
+            "certificate_hash": "78bbb36ca38b3f78cfe71318b771ca73e708832a"
+          }
+        },
+        {
+          "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCJKDAVeXi2TvmbKl3-i2bDdBvDHJez0KE"
@@ -40,7 +78,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "89320198276-3i2ku90r01fiicghlv3b661ketskmmr7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.DesynatDriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -51,7 +101,20 @@
           "package_name": "com.desynatdriver"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "89320198276-siiivae5r1i12kg0krnmgfq6ks0qsoib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desynatdriver",
+            "certificate_hash": "78bbb36ca38b3f78cfe71318b771ca73e708832a"
+          }
+        },
+        {
+          "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCJKDAVeXi2TvmbKl3-i2bDdBvDHJez0KE"
@@ -59,7 +122,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "89320198276-3i2ku90r01fiicghlv3b661ketskmmr7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.DesynatDriver"
+              }
+            }
+          ]
         }
       }
     },
@@ -70,7 +145,20 @@
           "package_name": "com.desynatuser"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "89320198276-73q2d6o5bd60rrcg3oc35774poc7vmk0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desynatuser",
+            "certificate_hash": "78bbb36ca38b3f78cfe71318b771ca73e708832a"
+          }
+        },
+        {
+          "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCJKDAVeXi2TvmbKl3-i2bDdBvDHJez0KE"
@@ -78,7 +166,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89320198276-krmgs6vbt4a30mtbcf0gl8s9d4d99pjn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "89320198276-3i2ku90r01fiicghlv3b661ketskmmr7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.DesynatDriver"
+              }
+            }
+          ]
         }
       }
     }

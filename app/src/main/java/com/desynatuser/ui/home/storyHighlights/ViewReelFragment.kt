@@ -20,6 +20,8 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import kotlin.getValue
+import kotlin.text.compareTo
+import kotlin.text.toFloat
 
 @AndroidEntryPoint
 class ViewReelFragment : BaseFragment() {
@@ -74,28 +76,26 @@ class ViewReelFragment : BaseFragment() {
 
                     videoStory.post {
 
-                        val videoWidth = mp.videoWidth.toFloat()
-                        val videoHeight = mp.videoHeight.toFloat()
+                        val videoWidth = mp.videoWidth
+                        val videoHeight = mp.videoHeight
 
-                        val viewWidth = videoStory.width.toFloat()
-                        val viewHeight = videoStory.height.toFloat()
+                        val viewWidth = videoStory.width
+                        val viewHeight = videoStory.height
 
-                        val scale = maxOf(
-                            viewWidth / videoWidth,
-                            viewHeight / videoHeight
-                        )
-
-                        val scaledWidth = scale * videoWidth
-                        val scaledHeight = scale * videoHeight
+                        val videoRatio = videoWidth.toFloat() / videoHeight
+                        val viewRatio = viewWidth.toFloat() / viewHeight
 
                         val layoutParams = videoStory.layoutParams
-                        layoutParams.width = scaledWidth.toInt()
-                        layoutParams.height = scaledHeight.toInt()
-                        videoStory.layoutParams = layoutParams
 
-                        // Center it
-                        videoStory.translationX = (viewWidth - scaledWidth) / 2
-                        videoStory.translationY = (viewHeight - scaledHeight) / 2
+                        if (videoRatio > viewRatio) {
+                            layoutParams.height = viewHeight
+                            layoutParams.width = (viewHeight * videoRatio).toInt()
+                        } else {
+                            layoutParams.width = viewWidth
+                            layoutParams.height = (viewWidth / videoRatio).toInt()
+                        }
+
+                        videoStory.layoutParams = layoutParams
                     }
 
 // for center crop
