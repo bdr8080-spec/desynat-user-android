@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.store.response
 
 
+import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.google.gson.annotations.SerializedName
 
 data class GetStoreResponse(
@@ -49,7 +50,9 @@ data class GetStoreResponse(
         @SerializedName("updated_at")
         val updatedAt: String,
         @SerializedName("average_store_rating")
-        val averageStoreRating: String
+        val averageStoreRating: String,
+        @SerializedName("seller_stories")
+        val sellerStories: ArrayList<GetSellerStoryResponse.Data>
 
     ) {
         data class SellerInformation(

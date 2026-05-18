@@ -17,8 +17,6 @@ import com.desynatuser.CoreApplication
 import com.desynatuser.R
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.utils.SharedPreference
-import com.desynatuser.fcm.NotificationInfoModel
-import com.desynatuser.utils.AppLifecycleListener
 import com.desynatuser.utils.Constants
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -26,7 +24,6 @@ import com.google.gson.Gson
 import me.leolin.shortcutbadger.ShortcutBadger
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
-import kotlin.collections.get
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -50,7 +47,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             val obj = JSONObject(remoteMessage.data as Map<String, String>).toString()
         val notificationData = Gson().fromJson(obj, NotificationInfoModel::class.java)
-       // sendNotification(notificationData)
             sendNotification(notificationData?.title_en?:notificationData?.title.toString(),notificationData?.body_en?:notificationData?.body.toString(),notificationData?.badge?:0,notificationData?.title_ar?:notificationData?.title.toString(),notificationData?.body_ar?:notificationData?.body.toString())
             if (Constants.currentScreen=="home"||Constants.currentScreen=="notification") {
                 EventBus.getDefault().post(notificationData?.title.toString())
@@ -78,17 +74,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @SuppressLint("InvalidWakeLockTag")
     private fun sendNotification(titleText: String, body: String,badge: Int,titleAr: String?="",bodyAr: String?="") {
- //   private fun sendNotification(notificationData: NotificationInfoModel) {
         var  badgeCount = badge
-
 
         SharedPreference.get(applicationContext).badgeCount = badgeCount
 
-        //   private fun sendNotification(notificationData: NotificationInfoModel) {
-
         val intent = Intent(this, HomeActivity::class.java)
         intent.putExtra("from", "push")
-     //   intent.putExtra("notificationData", notificationData)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         var pendingIntent: PendingIntent? = null
@@ -113,10 +104,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val message = if(SharedPreference.get(applicationContext).language=="ar") bodyAr?:body else body
         val title = if(SharedPreference.get(applicationContext).language=="ar") titleAr?:titleText else titleText
 
-
-//        val message = notificationData.body
-//        val title = notificationData.title
-      //  val title = getString(R.string.app_name)
         val channelId = getString(R.string.channel)
         val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
@@ -164,14 +151,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             channel.setShowBadge(true)
             CoreApplication.notificationManager?.createNotificationChannel(channel)
         }
-      //  val notificationId = System.currentTimeMillis().toInt()
         val notificationId = 1
         val notification = notificationBuilder.build()
         notification.number = badgeCount
         CoreApplication.notificationManager?.notify(notificationId, notification)
         ShortcutBadger.applyCount(applicationContext, badgeCount)
-//        if (AppLifecycleListener.isAppInForeground) {
-//            ShortcutBadger.removeCount(applicationContext)
-//        }
+
     }
 }

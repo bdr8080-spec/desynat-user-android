@@ -91,11 +91,29 @@ class StoreFragment : BaseFragment() {
             toolbar.tvToolbar.text = getString(R.string.stores)
 
             storeAdapter = StoreAdapter(requireActivity(),storeList,object: StoreAdapter.StoreClick{
-                override fun onStoreClick(position: Int) {
-                    val bundle = Bundle().apply {
-                        putString("storeId", storeList[position].id.toString())
+                override fun onStoreClick(position: Int,type:Int) {
+                    when(type){
+                        1->{
+                            val bundle = Bundle().apply {
+                                putString("storeId", storeList[position].id.toString())
+                            }
+                            findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
+                        }
+                        2->{
+                            if (storeList[position].sellerStories.size!=0) {
+                                val bundle = Bundle().apply {
+                                    putString("from", "story")
+                                    putString("storyData", Gson().toJson(storeList[position].sellerStories))
+                                }
+                                findNavController().navigate(
+                                    R.id.action_storeFragment_to_viewStoryFragment,
+                                    bundle
+                                )
+                            }
+
+                        }
                     }
-                    findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
+
                 }
 
             })

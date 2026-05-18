@@ -18,7 +18,7 @@ class AffiliateProductAdapter(var context:Context, private var productList: Arra
                 val productData = productList[position]
 
                 if (productData?.store?.storeName!=null){
-                    tvTitle.text = if (Constants.language=="ar") productData?.productNameAr else productData?.productNameEn+" (${context.getString(R.string.by)} ${productData?.store?.storeName})"
+                    tvTitle.text = if (Constants.language=="ar") productData?.productNameAr+" (${context.getString(R.string.by)} ${productData?.store?.storeName})" else productData?.productNameEn+" (${context.getString(R.string.by)} ${productData?.store?.storeName})"
                 }
                 else{
                     tvTitle.text = if (Constants.language=="ar") productData?.productNameAr else productData?.productNameEn

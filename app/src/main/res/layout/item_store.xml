@@ -27,10 +27,24 @@
         android:scaleType="centerCrop"
         android:clipToOutline="true"
         android:src="@drawable/toprated"
-        android:layout_marginStart="@dimen/_5sdp"
         app:shapeAppearanceOverlay="@style/circle_image"
+        app:layout_constraintTop_toTopOf="@+id/ivStoryHighlight"
+        app:layout_constraintEnd_toEndOf="@+id/ivStoryHighlight"
+        app:layout_constraintBottom_toBottomOf="@+id/ivStoryHighlight"
+        app:layout_constraintStart_toStartOf="@+id/ivStoryHighlight" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:visibility="invisible"
+        android:id="@+id/ivStoryHighlight"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        app:strokeColor="@color/brown"
+        app:shapeAppearanceOverlay="@style/circle_image"
+        app:strokeWidth="@dimen/_2sdp"
+        android:padding="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
         app:layout_constraintTop_toTopOf="@+id/tvName"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/tvName"
@@ -43,7 +57,7 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:textSize="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_5sdp"
-        app:layout_constraintStart_toEndOf="@+id/ivProfile"
+        app:layout_constraintStart_toEndOf="@+id/ivStoryHighlight"
         app:layout_constraintEnd_toStartOf="@+id/tvStatus"
         app:layout_constraintTop_toBottomOf="@+id/ivStore" />
 
@@ -73,8 +87,8 @@
         android:rating="0"
         android:contentDescription="@string/app_name"
         android:layout_marginTop="@dimen/_2sdp"
-        app:layout_constraintStart_toStartOf="@+id/ivProfile"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfile"/>
+        app:layout_constraintStart_toStartOf="@+id/ivStoryHighlight"
+        app:layout_constraintTop_toBottomOf="@+id/ivStoryHighlight"/>
 
     <TextView
         android:id="@+id/tvRating"

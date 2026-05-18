@@ -39,7 +39,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.text.get
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
@@ -87,7 +86,7 @@ class LoginFragment : BaseFragment() {
         }
 
     override fun initView() {
-        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance() //firebase auth initialize
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -96,7 +95,7 @@ class LoginFragment : BaseFragment() {
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task -> //get fcm token
             if (!task.isSuccessful) {
                 Log.e("FCM_ERROR", "Token failed", task.exception)
                 return@addOnCompleteListener
@@ -107,7 +106,7 @@ class LoginFragment : BaseFragment() {
             SharedPreference.get(requireActivity()).deviceToken = token
         }
 
-        if (SharedPreference.get(requireActivity()).userType==2){
+        if (SharedPreference.get(requireActivity()).userType==2){ //for affiliate user
             if (SharedPreference.get(requireActivity()).getSelectedCountryList()==null){
                 getSelectedCountry()
             }
@@ -376,14 +375,6 @@ class LoginFragment : BaseFragment() {
                     clearInputField()
                     SharedPreference.get(requireActivity()).accessToken = response.data.accessToken
                     SharedPreference.get(requireActivity()).saveUser(response.data)
-                  /*  if (response.data.affiliatedAccessToken!="null"&&response.data.affiliatedAccessToken!=""&&response.data.affiliatedAccessToken!=null){
-                        SharedPreference.get(requireActivity()).affiliateAccessToken = response.data.affiliatedAccessToken
-                    }*/
-                   /* requireActivity().startActivity(
-                        Intent(requireActivity(),
-                            HomeActivity::class.java)
-                    )
-                    requireActivity().finish()*/
                     findNavController().navigate(R.id.action_loginFragment_to_BannerFragment)
                 }
                 isObserver = false
@@ -419,7 +410,6 @@ class LoginFragment : BaseFragment() {
                             SharedPreference.get(requireActivity()).isAffiliateTutorial = true
                             showToast(response.message)
                             clearInputField()
-                           // SharedPreference.get(requireActivity()).saveAffiliateUser(response.data)
                             requireActivity().startActivity(
                                 Intent(requireActivity(),
                                     AffiliateHomeActivity::class.java)
@@ -568,9 +558,6 @@ class LoginFragment : BaseFragment() {
         if (!data.isNullOrEmpty()) {
             countryList.clear()
             data?.let { countryList.addAll(it) }
-            val countryCodes = data.map { it.isoCode }
-            val countryCodeString = countryCodes.joinToString(",")
-           // binding?.ccp?.setCustomMasterCountries(countryCodeString)
         }
     }
 
@@ -579,12 +566,10 @@ class LoginFragment : BaseFragment() {
         if (!data.isNullOrEmpty()) {
             countryList.clear()
             data?.let { countryList.addAll(it) }
-            val countryCodes = data.map { it.isoCode }
-            val countryCodeString = countryCodes.joinToString(",")
-            // binding?.ccp?.setCustomMasterCountries(countryCodeString)
         }
     }
 
+    //Google login
     private fun firebaseAuthWithGoogle(idToken: String) {
 
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -603,7 +588,7 @@ class LoginFragment : BaseFragment() {
                     Log.e("GOOGLE_USER", "Name : $name")
                     Log.e("GOOGLE_USER", "Email : $email")
 
-                    googleSocialLogin(uid,name, email, profileImage)
+                    socialLogin(uid,name, email, profileImage)
 
                 } else {
 
@@ -612,7 +597,8 @@ class LoginFragment : BaseFragment() {
             }
     }
 
-    private fun googleSocialLogin(
+    //social login api
+    private fun socialLogin(
         uid: String,
         name: String,
         email: String,

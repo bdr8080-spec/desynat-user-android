@@ -438,6 +438,12 @@ class StoreDetailFragment : BaseFragment() {
         if (selectedDiscount!=0&&selectedDiscount!=null) {
             map["discount_range"] = selectedDiscount.toString()
         }
+        if (selectedRating!=0&&selectedRating!=null) {
+            map["rating"] = selectedRating.toString()
+        }
+        if (selectedDeliveryTime!=""&&selectedDeliveryTime!=null) {
+            map["delivery_time"] = selectedDeliveryTime.toString()
+        }
 
         viewModel.getSingleStoreInfo(map)
         if (isLoading){

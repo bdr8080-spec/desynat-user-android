@@ -15,6 +15,7 @@ import com.desynatuser.databinding.FragmentItemPerformanceBinding
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductResponse
 import com.desynatuser.ui.affiliateUser.home.product.response.GetAffiliateMyProductDetailResponse
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.openCustomPreSelectedDatePickerWithReset
 import com.desynatuser.utils.showToast
@@ -193,10 +194,10 @@ class ItemPerformanceFragment : BaseFragment() {
             Glide.with(requireActivity()).load(productDetailData?.product?.productVariants?.get(0)?.variantImage?.get(0)).placeholder(
                 R.drawable.ic_placeholder).into(ivStore)
             if (productDetailData?.product?.store?.storeName!=null){
-                tvTitle.text = productData?.product?.productNameEn+" (${getString(R.string.by)} ${productDetailData?.product?.store?.storeName})"
+                tvTitle.text = if (Constants.language=="ar") productData?.product?.productNameAr+" (${getString(R.string.by)} ${productDetailData?.product?.store?.storeName})" else productData?.product?.productNameEn+" (${getString(R.string.by)} ${productDetailData?.product?.store?.storeName})"
             }
             else{
-                tvTitle.text = productData?.product?.productNameEn
+                tvTitle.text = if (Constants.language=="ar") productData?.product?.productNameAr else productData?.product?.productNameEn
             }
             tvRating.text ="(${productData?.averageRating?.product?:0})"
             rating.rating = productData?.averageRating?.product?.toFloatOrNull()?:0f

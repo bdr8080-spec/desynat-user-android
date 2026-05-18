@@ -45,7 +45,7 @@ class SplashActivity : BaseActivity() {
 
         Constants.language = SharedPreference.get(this).language
         Handler(Looper.getMainLooper()).postDelayed({
-            if (SharedPreference.get(this).userType==2){
+            if (SharedPreference.get(this).userType==2){ //user type -1 normal user 2- affiliate user
             if (SharedPreference.get(this).affiliateAccessToken.isNotEmpty()&&SharedPreference.get(this).getAffiliateUser()?.adminVerify=="2") {
                 startActivity(Intent(this, AffiliateHomeActivity::class.java))
                 finish()

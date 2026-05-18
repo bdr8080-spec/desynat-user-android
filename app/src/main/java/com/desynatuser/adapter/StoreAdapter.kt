@@ -2,6 +2,7 @@ package com.desynatuser.adapter
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -15,7 +16,7 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
         RecyclerView.ViewHolder(binding.root)
 
     interface StoreClick{
-        fun onStoreClick(position: Int)
+        fun onStoreClick(position: Int,type: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -65,11 +66,23 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
 
             }
 
+            if (storeData.sellerStories.size!=0){
+                ivStoryHighlight.isVisible = true
+            }
+            else{
+                ivStoryHighlight.isInvisible = true
+            }
+
+            ivProfile.setOnClickListener {
+                if (storeList.size!=0) {
+                    storeClick.onStoreClick(position, 2)
+                }
+            }
+
         }
 
         holder.itemView.setOnClickListener {
-            storeClick.onStoreClick(position)
-
+            storeClick.onStoreClick(position,1)
         }
     }
 

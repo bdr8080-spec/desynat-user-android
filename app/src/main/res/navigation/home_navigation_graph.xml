@@ -254,6 +254,10 @@
             app:destination="@id/storeDetail"/>
 
         <action
+            android:id="@+id/action_storeFragment_to_viewStoryFragment"
+            app:destination="@id/viewStory"/>
+
+        <action
             android:id="@+id/actions_storeFragment_to_viewStoryFragment"
             app:destination="@id/viewStory"/>
 
