@@ -911,6 +911,7 @@ object CommonMethod {
 
     fun formatChatTime(context: Context,inputTime: String,inputType: String="dd MMM yyyy, hh:mm a"): String {
         val inputFormat = SimpleDateFormat(inputType, Locale.ENGLISH)
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
         val fullDateFormat = SimpleDateFormat("dd/MM/yy, hh:mm a", Locale.ENGLISH)
 

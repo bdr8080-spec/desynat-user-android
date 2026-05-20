@@ -279,7 +279,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoFaq"
                     android:layout_toEndOf="@id/ivFaq"
-                    android:text="@string/faq" />
+                    android:text="@string/faq_s" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoFaq"
@@ -490,7 +490,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_toStartOf="@+id/ivGoSetting"
                     android:layout_toEndOf="@id/ivSetting"
-                    android:text="@string/setting" />
+                    android:text="@string/settings" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivGoSetting"

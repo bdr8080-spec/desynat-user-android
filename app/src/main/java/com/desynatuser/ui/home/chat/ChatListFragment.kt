@@ -133,6 +133,7 @@ class ChatListFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.swipeRefreshLayout?.isRefreshing = false
+                binding?.progressBar?.isVisible = false
                 isFromSwipe = false
                 errorMessage?.let { showToast(it) }
                 isObserver = false
@@ -144,6 +145,7 @@ class ChatListFragment : BaseFragment() {
         viewModel.getAllChatListResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
                 if (isFromSwipe){
                     binding?.swipeRefreshLayout?.isRefreshing = false
                     isFromSwipe = false
@@ -238,7 +240,7 @@ class ChatListFragment : BaseFragment() {
         }
         viewModel.getAllChatList(map)
         if (isLoading){
-            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+            binding?.progressBar?.isVisible = true
 
         }
         isObserver = true

@@ -849,13 +849,13 @@ class OrderDetailFragment : BaseFragment() {
                 map["product_review"] = etProductReview.text?.trim().toString()
                 if (productReviewImage.size!=0) {
                    // map["product_image"] = productReviewImage.toString()
-                    map["product_image"] = productReviewImage[0]
+                    map["product_image"] = productReviewImage
                 }
                 map["store_rating"] = rbStore.rating
                 map["store_review"] = etStoreReview.text?.trim().toString()
                 if (storeReviewImage.size!=0) {
                  //   map["store_image"] = storeReviewImage.toString()
-                    map["store_image"] = storeReviewImage[0]
+                    map["store_image"] = storeReviewImage
                 }
                 rateOrder(map)
                 dialog.dismiss()

@@ -87,8 +87,6 @@ class ViewStoryFragment : BaseFragment() {
 //            "highlights"->getSellerHighlights()
 //        }
 
-
-
         setData()
 
         setupAdapter()

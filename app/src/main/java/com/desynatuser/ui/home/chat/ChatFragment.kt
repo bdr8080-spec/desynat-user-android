@@ -72,6 +72,8 @@ class ChatFragment : BaseFragment() {
 
     var from = ""
     var sellerId = ""
+    private var isChatVisible = false
+
     var customOrderInfo: CreateCustomOrderResponse.Data? = null
     var normalChatData: NormalChatResponse.Data? = null
     var chatData: GetChatListResponse.Data? = null
@@ -184,10 +186,13 @@ class ChatFragment : BaseFragment() {
 
                     chatList.add(message)
                     chatAdapter?.notifyItemInserted(chatList.size - 1)
-                    rvChat.scrollToPosition(chatList.size - 1)
+                    rvChat?.post {
+                        rvChat?.scrollToPosition(chatList.size - 1)
+                    }
 
-                    if (message.by.toSafeString() != "user" && message.read.toSafeInt() == 0 && message.id.toSafeString() != null && message.id.toSafeString() != "") {
+                    if (isChatVisible && message.by.toSafeString() != "user" && message.read.toSafeInt() == 0 && message.id.toSafeString() != null && message.id.toSafeString() != "") {
                         markMessageRead(uniqueId, message.id.toSafeString())
+                        markAllRead()
                     }
                 },
                 onMessageUpdated = { updatedMessage ->
@@ -366,6 +371,12 @@ class ChatFragment : BaseFragment() {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
+            }
+
+            rvChat.post {
+                if (chatList.isNotEmpty()) {
+                    rvChat.scrollToPosition(chatList.size - 1)
+                }
             }
 
         }
@@ -960,6 +971,17 @@ class ChatFragment : BaseFragment() {
         viewModel.sendNotification(map)
 
         isObserver = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        markAllRead()
+        isChatVisible = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isChatVisible = false
     }
 
 }

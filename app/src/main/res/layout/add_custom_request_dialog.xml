@@ -113,7 +113,7 @@
             android:lines="3"
             android:background="@drawable/edit_back"
             android:hint="@string/write_here"
-            android:textAlignment="viewStart"/>
+            android:gravity="start"/>
 
         <TextView
         android:id="@+id/btnSendRequest"
