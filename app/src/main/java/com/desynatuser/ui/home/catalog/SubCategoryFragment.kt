@@ -56,6 +56,8 @@ class SubCategoryFragment : BaseFragment() {
     private var isMicDialogOpen = false
     private var speechRecognizer: SpeechRecognizer? = null
     private var speechIntent: Intent? = null
+    private var scrollYPosition = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +76,7 @@ class SubCategoryFragment : BaseFragment() {
 
     override fun initView() {
         ProgressDialogUtils.getInstance().hideProgress()
+        binding?.progressBar?.isVisible = false
         val itemJson = arguments?.getString("categoryData")
         if (!itemJson.isNullOrEmpty()) {
             categoryData = Gson().fromJson(itemJson, GetCategoryResponse.Data::class.java)
@@ -166,7 +169,7 @@ class SubCategoryFragment : BaseFragment() {
     private fun getAllSubCategory(loading:Boolean=true,search:String?=null){
         viewModel.getSubCategory(categoryData?.id.toString(),search)
         if (loading){
-            ProgressDialogUtils.getInstance().showProgress(requireActivity())
+            binding?.mainProgressBar?.isVisible = true
         }
         isObserver = true
     }
@@ -196,6 +199,7 @@ class SubCategoryFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
+                binding?.mainProgressBar?.isVisible = false
                 if (isFromSwipe){
                     binding?.swipeRefreshLayout?.isRefreshing = false
                 }
@@ -209,6 +213,7 @@ class SubCategoryFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
+                binding?.mainProgressBar?.isVisible = false
                 if (isFromSwipe){
                     binding?.swipeRefreshLayout?.isRefreshing = false
                 }
@@ -362,5 +367,20 @@ class SubCategoryFragment : BaseFragment() {
                 }
             }
         }
+
+
+    override fun onPause() {
+        super.onPause()
+
+        scrollYPosition = binding?.nestedScrollView?.scrollY ?: 0
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding?.nestedScrollView?.post {
+            binding?.nestedScrollView?.scrollTo(0, scrollYPosition)
+        }
+    }
 
 }

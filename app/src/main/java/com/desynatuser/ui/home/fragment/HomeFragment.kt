@@ -147,6 +147,7 @@ class HomeFragment : BaseFragment() {
 
     private var countryList= ArrayList<GetCountryResponse.Data>()
 
+    private var scrollYPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -1276,13 +1277,6 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-        bannerHandler.removeCallbacksAndMessages(null)
-        discountHandler.removeCallbacksAndMessages(null)
-        premiumHandler.removeCallbacksAndMessages(null)
-    }
-
     override fun onStart() {
         super.onStart()
         Constants.currentScreen = "home"
@@ -1328,4 +1322,23 @@ class HomeFragment : BaseFragment() {
     fun getCurrencyData(code: String) {
         Constants.CURRENCY = if (code == "KWD") "KD" else code
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        scrollYPosition = binding?.nestedScrollView?.scrollY ?: 0
+
+        bannerHandler.removeCallbacksAndMessages(null)
+        discountHandler.removeCallbacksAndMessages(null)
+        premiumHandler.removeCallbacksAndMessages(null)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding?.nestedScrollView?.post {
+            binding?.nestedScrollView?.scrollTo(0, scrollYPosition)
+        }
+    }
+
 }

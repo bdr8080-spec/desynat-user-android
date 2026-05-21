@@ -206,7 +206,7 @@ class StoreFragment : BaseFragment() {
     private fun getStoreList(search:String?=null){
         val map = HashMap<String,Any>()
         map["category_id"] = subCategoryData?.categoryId.toString()
-        map["subcategory"] = subCategoryData?.id.toString()
+      //  map["subcategory"] = subCategoryData?.id.toString()
         if (search!=null){
             map["search"] = search
         }

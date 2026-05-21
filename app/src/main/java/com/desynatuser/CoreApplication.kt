@@ -4,6 +4,8 @@ import android.app.Application
 import android.app.NotificationManager
 import android.util.Log
 import com.desynatuser.utils.SharedPreference
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.google.android.libraries.places.api.Places
 import com.google.firebase.messaging.FirebaseMessaging
 import com.myfatoorah.sdk.enums.MFCountry
@@ -26,6 +28,10 @@ override fun onCreate() {
     if (!Places.isInitialized()) {
         Places.initialize(applicationContext, getString(R.string.map_key))
     }
+
+    FacebookSdk.sdkInitialize(applicationContext)
+    AppEventsLogger.activateApp(this)
+
 /*
     MFSDK.init(
         getString(R.string.my_fatoorah_token),

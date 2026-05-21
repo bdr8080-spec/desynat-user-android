@@ -209,7 +209,7 @@ class ProductDetailFragment : BaseFragment() {
 
             tvName.text = if (Constants.language=="ar") productDetailData?.brand?.nameArabic else productDetailData?.brand?.nameEnglish
 
-            if (variant?.productVariation?.get(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0&&productDetailData?.store?.storeAvailability==1){
+            if (variant?.productVariation?.getOrNull(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0&&productDetailData?.store?.storeAvailability==1){
                 relAddToBag.isVisible = true
                 btnBuyNow.isVisible = true
                 viewBottom.isVisible = true
@@ -222,23 +222,23 @@ class ProductDetailFragment : BaseFragment() {
 
             if (productData?.category?.name=="Women"){
                 clWomenSize.isVisible = true
-                tvBustSize.text = variant?.productVariation?.get(selectedSizePos)?.bust?:"NA"
-                tvHipSize.text =variant?.productVariation?.get(selectedSizePos)?.hip?:"NA"
-                tvShoulderSize.text = variant?.productVariation?.get(selectedSizePos)?.shoulder?:"NA"
-                tvWaistSize.text = variant?.productVariation?.get(selectedSizePos)?.waist?:"NA"
-                tvSleeveLengthSize.text = variant?.productVariation?.get(selectedSizePos)?.sleeveLength?:"NA"
-                tvLengthSize.text = variant?.productVariation?.get(selectedSizePos)?.length?:"NA"
+                tvBustSize.text = variant?.productVariation?.getOrNull(selectedSizePos)?.bust?:"NA"
+                tvHipSize.text =variant?.productVariation?.getOrNull(selectedSizePos)?.hip?:"NA"
+                tvShoulderSize.text = variant?.productVariation?.getOrNull(selectedSizePos)?.shoulder?:"NA"
+                tvWaistSize.text = variant?.productVariation?.getOrNull(selectedSizePos)?.waist?:"NA"
+                tvSleeveLengthSize.text = variant?.productVariation?.getOrNull(selectedSizePos)?.sleeveLength?:"NA"
+                tvLengthSize.text = variant?.productVariation?.getOrNull(selectedSizePos)?.length?:"NA"
 
             }
             else{
                 clWomenSize.isVisible = false
             }
 
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.actualPrice?:0.0)}"
-            tvDiscountedPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.finalPrice?:0.0)}"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.getOrNull(selectedSizePos)?.actualPrice?:0.0)}"
+            tvDiscountedPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),variant?.productVariation?.getOrNull(selectedSizePos)?.finalPrice?:0.0)}"
 
-            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(requireActivity(),variant?.productVariation?.get(selectedSizePos)?.discountValue?.toDoubleOrNull() ?: 0.0)}"
-            val discountType = if (variant?.productVariation?.get(selectedSizePos)?.discountType == "1")"%  ${
+            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(requireActivity(),variant?.productVariation?.getOrNull(selectedSizePos)?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+            val discountType = if (variant?.productVariation?.getOrNull(selectedSizePos)?.discountType == "1")"%  ${
                 requireActivity().getString(
                     R.string.off
                 )
@@ -324,7 +324,7 @@ class ProductDetailFragment : BaseFragment() {
                 CommonMethod.shareProductWithImage(requireActivity(),
                     "${getString(R.string.product_name)}: ${productDetailData?.productNameEn}",
                     "${getString(R.string.description)}: ${productDetailData?.descriptionEn}",
-                    productDetailData?.productVariants?.get(selectedPos)?.variantImage?.get(0) ?: "",
+                    productDetailData?.productVariants?.getOrNull(selectedPos)?.variantImage?.getOrNull(0) ?: "",
                     "https://desynat.com/user/product/detail-page/${productId}"
                 )
             }
@@ -696,26 +696,26 @@ class ProductDetailFragment : BaseFragment() {
                     val variationList = ArrayList(
                         listByColor.map { variant ->
                             Product.ProductVariation(
-                                id = variant.id.toString(),
-                                productId = variant.productId.toString(),
-                                sizeId = variant.sizeId.toString(),
-                                size = variant.size,
-                                actualPrice = variant.actualPrice,
-                                discountType = variant.discountType,
-                                discountValue = variant.discountValue,
-                                finalPrice = variant.finalPrice,
-                                totalStock = variant.totalStock.toString(),
-                                sku = variant.sku,
-                                skuThresholdValue = variant.skuThresholdValue ?: "0",
-                                bust = variant.bust,
-                                waist = variant.waist,
-                                hip = variant.hip,
-                                shoulder = variant.shoulder,
-                                sleeveLength = variant.sleeveLength,
-                                length = variant.length,
-                                status = variant.status,
-                                createdAt = variant.createdAt,
-                                updatedAt = variant.updatedAt
+                                id = variant?.id.toString(),
+                                productId = variant?.productId.toString(),
+                                sizeId = variant?.sizeId.toString(),
+                                size = variant?.size?:null,
+                                actualPrice = variant?.actualPrice,
+                                discountType = variant?.discountType?:"",
+                                discountValue = variant?.discountValue?:"",
+                                finalPrice = variant?.finalPrice,
+                                totalStock = variant?.totalStock.toString(),
+                                sku = variant?.sku?:"",
+                                skuThresholdValue = variant?.skuThresholdValue ?: "0",
+                                bust = variant?.bust,
+                                waist = variant?.waist,
+                                hip = variant?.hip,
+                                shoulder = variant?.shoulder,
+                                sleeveLength = variant?.sleeveLength,
+                                length = variant?.length,
+                                status = variant?.status,
+                                createdAt = variant?.createdAt,
+                                updatedAt = variant?.updatedAt
                             )
                         }
                     )

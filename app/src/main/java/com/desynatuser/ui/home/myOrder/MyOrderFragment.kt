@@ -43,6 +43,7 @@ class MyOrderFragment : BaseFragment() {
     private var filterApply = 0
     private var lastQuery: String? = null
     private var orderType = 1
+    private var scrollYPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -271,5 +272,20 @@ class MyOrderFragment : BaseFragment() {
     private fun checkData() {
         binding?.tvNoDataFound?.isVisible = myOrderList.isEmpty()
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        scrollYPosition = binding?.nestedScrollView?.scrollY ?: 0
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding?.nestedScrollView?.post {
+            binding?.nestedScrollView?.scrollTo(0, scrollYPosition)
+        }
+    }
+
 
 }

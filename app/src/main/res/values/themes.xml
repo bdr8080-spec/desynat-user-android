@@ -81,6 +81,12 @@
         <item name="cornerSize">@dimen/_10sdp</item>
     </style>
 
+    <style name="half_rounded_corner_6sdp" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/_6sdp</item>
+        <item name="cornerSizeTopRight">@dimen/_6sdp</item>
+    </style>
+
     <style name="half_rounded_corner_10sdp" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">@dimen/_10sdp</item>

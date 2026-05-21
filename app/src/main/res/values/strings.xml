@@ -5,6 +5,9 @@
  <string name="default_web_client_id">89320198276-5tq7evjt12m0ksl88r9cmus39tmssc59.apps.googleusercontent.com</string>
     <string name="agora_app_id">564c1a00b81c4d1c91d0a3a22db4a8bd</string>
     <string name="agora_token">007eJxTYDhyJbPbYHp1B9M0qyLnXaEaa4xfOCnYb2J5wP5vkbh5fJICg6mZSbJhooFBkoVhskmKYbKlYYpBonGikVFKkkmiRVLK/5NnMhsCGRk8db8xMzJAIIjPx5CTWZbqnJGYl5eaY2hkzMAAADQZIig=</string>
+ <string name="facebook_app_id">2050785725796089</string>
+ <string name="fb_login_protocol_scheme">fb2050785725796089</string>
+ <string name="facebook_client_token">40955d10a2953936be4b9d4074906a02</string>
 
 
     <string name="channel">desynat notification</string>

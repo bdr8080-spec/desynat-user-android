@@ -1,18 +1,22 @@
 package com.desynatuser.ui.auth.fragment
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
+import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -30,6 +34,13 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.desynatuser.utils.togglePasswordVisibility
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.GraphRequest
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -39,6 +50,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import java.security.MessageDigest
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
@@ -51,6 +63,14 @@ class LoginFragment : BaseFragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
 
+    private var callbackManager: CallbackManager?=null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        callbackManager = CallbackManager.Factory.create()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,8 +79,10 @@ class LoginFragment : BaseFragment() {
         return binding?.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        printHashKey()
         initView()
         initControl()
         observe()
@@ -260,7 +282,36 @@ class LoginFragment : BaseFragment() {
             }
 
             ivFacebook.setOnClickListener {
+                LoginManager.getInstance().logInWithReadPermissions(
+                    this@LoginFragment,
+                    listOf("email", "public_profile")
+                )
             }
+
+            LoginManager.getInstance()
+                .registerCallback(
+                    callbackManager,
+                    object : FacebookCallback<LoginResult> {
+
+                        override fun onSuccess(result: LoginResult) {
+
+                            val token = result.accessToken.token
+
+                            Log.e("FACEBOOK_TOKEN", token)
+
+                            getFacebookUserData()
+                        }
+
+                        override fun onCancel() {
+
+                            Log.e("FACEBOOK", "Cancelled")
+                        }
+
+                        override fun onError(error: FacebookException) {
+
+                            Log.e("FACEBOOK", error.message.toString())
+                        }
+                    })
 
                 etEmailMobile.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -620,6 +671,75 @@ class LoginFragment : BaseFragment() {
 
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun printHashKey() {
+        try {
+            val info = requireActivity().packageManager.getPackageInfo(
+                requireActivity().packageName,
+                PackageManager.GET_SIGNING_CERTIFICATES
+            )
+
+            for (signature in info.signingInfo?.apkContentsSigners!!) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val hashKey = Base64.encodeToString(md.digest(), Base64.NO_WRAP)
+                Log.e("HASH_KEY", hashKey)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getFacebookUserData() {
+
+        val request = GraphRequest.newMeRequest(
+            AccessToken.getCurrentAccessToken()
+        ) { obj, _ ->
+
+            try {
+
+                val id = obj?.getString("id")
+                val name = obj?.getString("name")
+                val email = obj?.getString("email")
+
+                val image =
+                    "https://graph.facebook.com/$id/picture?type=large"
+
+                Log.e("NAME", name ?: "")
+                Log.e("EMAIL", email ?: "")
+                Log.e("IMAGE", image)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        val parameters = Bundle()
+
+        parameters.putString(
+            "fields",
+            "id,name,email,picture.type(large)"
+        )
+
+        request.parameters = parameters
+        request.executeAsync()
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        callbackManager?.onActivityResult(
+            requestCode,
+            resultCode,
+            data
+        )
     }
 
 }

@@ -53,7 +53,7 @@ data class Product(
         @SerializedName("size_id")
         var sizeId: String,
         @SerializedName("size")
-        val size: GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant.Size,
+        val size: GetSingleStoreResponse.Data.AllProduct.Data.ProductVariant.Size?=null,
         @SerializedName("sku")
         var sku: String,
         @SerializedName("sku_threshold_value")
