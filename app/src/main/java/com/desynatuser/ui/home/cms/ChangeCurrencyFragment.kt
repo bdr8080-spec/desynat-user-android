@@ -62,7 +62,7 @@ class ChangeCurrencyFragment : BaseFragment() {
 
 
             if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
-                countryList.clear()
+               /* countryList.clear()
                 if (SharedPreference.get(requireActivity()).getSelectedCountryList()?.isNotEmpty() == true){
                     val data =  SharedPreference.get(requireActivity()).getSelectedCountryList()
                     countryList.clear()
@@ -93,49 +93,11 @@ class ChangeCurrencyFragment : BaseFragment() {
                 }
                 else{
                     getSelectedCountry()
-                }
+                }*/
+                getCurrencyList()
             }
             else{
-                countryList.clear()
-                if (SharedPreference.get(requireActivity()).getCurrencyList()?.isNotEmpty() == true){
-                    val data =  SharedPreference.get(requireActivity()).getCurrencyList()
-                    countryList.clear()
-                    data?.let { countryList.addAll(it) }
-
-                    selectedPos = -1
-
-                    for (i in 0 until countryList.size) {
-                        if (countryList[i].id.toString() == userInfo?.selectedCurrency) {
-                            selectedPos = i
-                            break
-                        }
-                    }
-
-                    if (selectedPos == -1) {
-                        for (i in 0 until countryList.size) {
-                            if (countryList[i].currencyCode == "KWD") {
-                                selectedPos = i
-                                break
-                            }
-                        }
-                    }
-
-                    if (selectedPos == -1 && countryList.isNotEmpty()) {
-                        selectedPos = 0
-                    }
-
-                    currencyAdapter?.selectedPos = selectedPos
-                    currencyAdapter?.notifyDataSetChanged()
-
-                    getCurrencyData(countryList[selectedPos].currencyCode)
-
-                    currencyAdapter?.selectedPos = selectedPos
-                    currencyAdapter?.notifyDataSetChanged()
-                }
-                else{
                     getCurrencyList()
-                }
-
             }
 
         }
@@ -186,7 +148,6 @@ class ChangeCurrencyFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    SharedPreference.get(requireActivity()).saveCurrencyList(response.data)
                     countryList.clear()
                     response.data?.let { countryList.addAll(it) }
                     for (i in 0 until countryList.size) {

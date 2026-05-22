@@ -21,13 +21,13 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:src="@drawable/ic_admin_story"
-            android:layout_marginStart="@dimen/_1sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintTop_toTopOf="@+id/ivHighlightStory"
+            app:layout_constraintBottom_toBottomOf="@+id/ivHighlightStory"
+            app:layout_constraintEnd_toEndOf="@+id/ivHighlightStory"
+            app:layout_constraintStart_toStartOf="@+id/ivHighlightStory"/>
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:visibility="gone"
+            android:visibility="invisible"
             android:id="@+id/ivHighlightStory"
             android:layout_width="@dimen/_42sdp"
             android:layout_height="@dimen/_42sdp"
@@ -52,6 +52,7 @@
             android:ellipsize="end"
             android:textAlignment="viewStart"
             android:layout_marginStart="@dimen/_5sdp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivChat"
            app:layout_constraintStart_toEndOf="@+id/ivAdminStory"/>
 
@@ -78,7 +79,7 @@
             android:id="@+id/ivNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp"
+            android:padding="@dimen/_6sdp"
             android:src="@drawable/ic_notification"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -125,7 +126,7 @@
             android:id="@+id/ivWishlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp"
+            android:padding="@dimen/_6sdp"
             android:src="@drawable/ic_wishlist"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -135,7 +136,7 @@
             android:id="@+id/ivChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp"
+            android:padding="@dimen/_6sdp"
             android:src="@drawable/chat_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -421,6 +422,12 @@
                 android:fontFamily="@font/poppins_regular"
                 android:paddingVertical="@dimen/_30sdp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FAFAFA">
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -438,13 +445,13 @@
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_suggested_store"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
                 tools:itemCount="10"
                 app:spanCount="5"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/tvNoSuggested"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -455,6 +462,15 @@
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:paddingVertical="@dimen/_30sdp" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FAFAFA"
+            android:layout_marginTop="@dimen/_10sdp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -491,6 +507,8 @@
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:paddingVertical="@dimen/_30sdp" />
+
+        </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvBrowseSomePremium"

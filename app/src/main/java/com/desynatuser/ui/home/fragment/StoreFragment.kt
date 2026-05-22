@@ -16,6 +16,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -52,8 +53,6 @@ class StoreFragment : BaseFragment() {
     var isAllBannerObserver = false
     var isAdminObserver = false
     private var subCategoryData: GetSubCategoryResponse.Data?=null
-    private var isFirstLoad = true
-
     private var storeAdapter: StoreAdapter? = null
     private var storeList = ArrayList<GetStoreResponse.Data>()
     var premiumStoreViewPagerAdapter : PremiumStoreViewPagerAdapter?=null
@@ -134,7 +133,7 @@ class StoreFragment : BaseFragment() {
 
             TabLayoutMediator(binding!!.dotsIndicatorStore, binding!!.viewPager) { _, _ -> }.attach()
 
-
+            lastQuery = etSearch.text.toString().trim()
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -155,10 +154,8 @@ class StoreFragment : BaseFragment() {
             })
         }
 
-        if (isFirstLoad) {
             getStoreList()
-            isFirstLoad = false
-        }
+
         getHomeScreenAllBanner()
     }
 
@@ -206,7 +203,7 @@ class StoreFragment : BaseFragment() {
     private fun getStoreList(search:String?=null){
         val map = HashMap<String,Any>()
         map["category_id"] = subCategoryData?.categoryId.toString()
-      //  map["subcategory"] = subCategoryData?.id.toString()
+        map["subcategory"] = subCategoryData?.id.toString()
         if (search!=null){
             map["search"] = search
         }
@@ -279,11 +276,13 @@ class StoreFragment : BaseFragment() {
         binding?.apply {
             if (premiumStoreList.size != 0) {
                 tvPremium.isVisible = true
+                dummy.isVisible = false
                 viewPager.isVisible = true
                 dotsIndicatorStore.isVisible = true
                 autoScrollViewPager(viewPager, bannerHandler)
             } else {
-                tvPremium.isVisible = false
+                tvPremium.isVisible = true
+                dummy.isVisible = true
                 viewPager.isVisible = false
                 dotsIndicatorStore.isVisible = false
             }
@@ -417,17 +416,14 @@ class StoreFragment : BaseFragment() {
     }
 
     private fun setAdminStory() {
-        /*  binding?.apply {
-          //    ivAdminStory.segmentCount = myStories.size
-              if (myStories.size!=0){
-                  ivAdminStory.setImageResource(R.drawable.ic_admin_highlight_story)
-              }
-              else{
-                  ivAdminStory.setImageResource(R.drawable.ic_admin_story)
-              }
-          }*/
-
-        binding?.ivHighlightStory?.isVisible = myStories.isNotEmpty()
+        binding?.apply {
+            if (myStories.size!=0){
+                binding?.ivHighlightStory?.isVisible = true
+            }
+            else{
+                binding?.ivHighlightStory?.isInvisible = true
+            }
+        }
 
     }
 }

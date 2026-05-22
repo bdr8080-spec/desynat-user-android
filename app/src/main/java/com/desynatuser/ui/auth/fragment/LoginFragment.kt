@@ -272,6 +272,7 @@ class LoginFragment : BaseFragment() {
 
             }
 
+            //google login
             ivGoogle.setOnClickListener {
 
                 googleSignInClient.signOut().addOnCompleteListener {
@@ -281,6 +282,7 @@ class LoginFragment : BaseFragment() {
                 }
             }
 
+            //facebook login
             ivFacebook.setOnClickListener {
                 LoginManager.getInstance().logInWithReadPermissions(
                     this@LoginFragment,

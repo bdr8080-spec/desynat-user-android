@@ -81,6 +81,7 @@ class ChatListFragment : BaseFragment() {
                 getChat(false)
             }
 
+            lastQuery = etSearch.text.toString().trim()
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?,

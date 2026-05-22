@@ -375,7 +375,6 @@ class HomeFragment : BaseFragment() {
                 })
             rvNewestProducts.adapter = newestProductAdapter
 
-            categoryList.clear()
             categoryAdapter = CategoryAdapter(
                 requireActivity(),
                 categoryList,
@@ -943,17 +942,14 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setAdminStory() {
-        /*  binding?.apply {
-          //    ivAdminStory.segmentCount = myStories.size
-              if (myStories.size!=0){
-                  ivAdminStory.setImageResource(R.drawable.ic_admin_highlight_story)
-              }
-              else{
-                  ivAdminStory.setImageResource(R.drawable.ic_admin_story)
-              }
-          }*/
-
-        binding?.ivHighlightStory?.isVisible = myStories.isNotEmpty()
+        binding?.apply {
+            if (myStories.size!=0){
+                binding?.ivHighlightStory?.isVisible = true
+            }
+            else{
+                binding?.ivHighlightStory?.isInvisible = true
+            }
+        }
 
     }
 

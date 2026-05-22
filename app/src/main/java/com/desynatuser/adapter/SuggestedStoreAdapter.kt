@@ -18,6 +18,7 @@ class SuggestedStoreAdapter(private val context: Context, private val suggestedS
         fun bind(position: Int) = with(binding) {
             val suggestedStoreData = suggestedStoreList[position]
             Glide.with(context).load(suggestedStoreData?.storeImage).placeholder(R.drawable.ic_placeholder).into(ivStore)
+            tvName.text = suggestedStoreData?.storeName
 
             root.setOnClickListener {
                 onClick.onItemClick(position)

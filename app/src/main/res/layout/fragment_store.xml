@@ -30,14 +30,14 @@
                 android:layout_height="@dimen/_40sdp"
                 android:src="@drawable/ic_admin_story"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_1sdp"
                 app:shapeAppearanceOverlay="@style/circle_image"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/ivHighlightStory"
+                app:layout_constraintEnd_toEndOf="@+id/ivHighlightStory"
+                app:layout_constraintBottom_toBottomOf="@+id/ivHighlightStory"
+                app:layout_constraintTop_toTopOf="@+id/ivHighlightStory"/>
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:id="@+id/ivHighlightStory"
                 android:layout_width="@dimen/_42sdp"
                 android:layout_height="@dimen/_42sdp"
@@ -98,7 +98,7 @@
                 android:layout_height="0dp"
                 android:src="@drawable/ic_filter"
                 android:background="@color/light_pink"
-                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:shapeAppearanceOverlay="@style/rounded_corner4sdp"
                 app:layout_constraintTop_toTopOf="@+id/ivAdminStory"
                 app:layout_constraintBottom_toBottomOf="@+id/ivAdminStory"
@@ -111,7 +111,7 @@
                 android:text="@string/browse_some_premium_stores"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_medium"
                 android:layout_marginTop="@dimen/_15sdp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +123,7 @@
                 android:layout_height="@dimen/_150sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@+id/tvPremium"/>
 
             <com.google.android.material.tabs.TabLayout
@@ -137,29 +137,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewPager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
-<!--
-            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-                android:id="@+id/dotsIndicatorStore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:dotsColor="#1A000000"
-                app:dotsCornerRadius="5dp"
-                app:dotsSize="10dp"
-                app:dotsSpacing="3dp"
-                app:dotsWidthFactor="2.2"
-                app:selectedDotColor="@color/black"
-                app:progressMode="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>-->
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:visibility="gone"
+                android:id="@+id/dummy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_140sdp"
+                android:src="@drawable/home_banner"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:shapeAppearanceOverlay="@style/rounded_corner_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/dotsIndicatorStore"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/dotsIndicatorStore">
+                app:layout_constraintTop_toBottomOf="@+id/dummy">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvStore"
@@ -182,12 +179,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_60sdp"
+                android:layout_marginTop="@dimen/_80sdp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="@dimen/_13sdp"
                 android:text="@string/no_store_found"
-                app:layout_constraintTop_toBottomOf="@+id/dotsIndicatorStore"
+                app:layout_constraintTop_toBottomOf="@+id/dummy"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

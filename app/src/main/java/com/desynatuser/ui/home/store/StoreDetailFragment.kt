@@ -110,7 +110,6 @@ class StoreDetailFragment : BaseFragment() {
     var isSizeObserver = false
     var isColorObserver = false
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
-    private var isFirstLoad = true
     private var storeId = ""
     private var subCategoryData: GetSubCategoryResponse.Data?=null
 
@@ -225,6 +224,7 @@ class StoreDetailFragment : BaseFragment() {
             })
             rvReel.adapter = reelAdapter
 
+            lastQuery = etSearch.text.toString().trim()
             etSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 

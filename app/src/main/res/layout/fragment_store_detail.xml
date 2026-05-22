@@ -75,8 +75,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProfileImage"
-                    android:layout_width="@dimen/_52sdp"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_width="@dimen/_51sdp"
+                    android:layout_height="@dimen/_51sdp"
                     android:src="@drawable/ic_user"
                     android:scaleType="centerCrop"
                     android:clipToOutline="true"

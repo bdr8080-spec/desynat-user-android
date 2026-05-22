@@ -14,7 +14,6 @@
         android:orientation="horizontal"
         android:elevation="@dimen/_4sdp"
         android:layout_marginTop="@dimen/_35sdp"
-        android:layout_marginHorizontal="@dimen/_15sdp"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
