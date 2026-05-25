@@ -381,6 +381,26 @@
                 app:spanCount="2"
                 app:layout_constraintTop_toBottomOf="@+id/llProduct"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
+                android:id="@+id/tvNoReelDataFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_13sdp"
+                android:text="@string/no_product_found"
+                android:paddingVertical="@dimen/_30sdp"
+                app:layout_constraintTop_toBottomOf="@+id/rvReel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                app:layout_constraintTop_toBottomOf="@+id/tvNoReelDataFound"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"

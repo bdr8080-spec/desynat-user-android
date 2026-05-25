@@ -202,9 +202,12 @@ class StoreDetailFragment : BaseFragment() {
                                     putString("from", "reel")
                                     putString("sellerId", reelList[position]?.sellerId.toString())
                                     putString("storyData", Gson().toJson(reelList[position]))
+                                    putString("storyList", Gson().toJson(reelList))
+                                    putInt("position", position)
                                 }
                                 findNavController().navigate(
-                                    R.id.action_storeDetailFragment_to_viewReelFragment,
+                                //    R.id.action_storeDetailFragment_to_viewReelFragment,
+                                    R.id.action_storeDetailFragment_to_viewReelFragment1,
                                     bundle
                                 )
                             }
@@ -384,6 +387,7 @@ class StoreDetailFragment : BaseFragment() {
             tvReel.setBackgroundResource(R.drawable.selected_right_tab)
             clProduct.isVisible = false
             rvReel.isVisible = true
+            checkReelData()
         }
 
     }
@@ -743,6 +747,9 @@ class StoreDetailFragment : BaseFragment() {
 
     private fun checkData() {
         binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+    }
+    private fun checkReelData() {
+        binding?.tvNoReelDataFound?.isVisible = reelList.isEmpty()
     }
 
     private fun sortProductDialog() {

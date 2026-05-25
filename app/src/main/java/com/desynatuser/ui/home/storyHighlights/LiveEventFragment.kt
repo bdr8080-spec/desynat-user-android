@@ -47,6 +47,7 @@ class LiveEventFragment : BaseFragment() {
     private var uidValue = 0
     private var isMuted = false
     private var isVideoSetup = false
+    private var remoteUid: Int? = null
     private var eventData: GetLiveStreamingRoomResponse.Data?=null
 
     private val userCountHandler = Handler(Looper.getMainLooper())
@@ -121,12 +122,14 @@ class LiveEventFragment : BaseFragment() {
 
                 isMuted = !isMuted
 
-                engine?.muteAllRemoteAudioStreams(isMuted)
+                remoteUid?.let { uid ->
+                    engine?.muteRemoteAudioStream(uid, isMuted)
+                }
 
-                if (isMuted) {
-                    binding?.tvMute?.text = getString(R.string.unmute)
+                tvMute.text = if (isMuted) {
+                    getString(R.string.unmute)
                 } else {
-                    binding?.tvMute?.text = getString(R.string.mute)
+                    getString(R.string.mute)
                 }
             }
         }
@@ -196,6 +199,7 @@ class LiveEventFragment : BaseFragment() {
 
         override fun onUserJoined(uid: Int, elapsed: Int) {
             Log.d("LIVE_TEST", "Host joined: $uid")
+            remoteUid = uid
             if (!isVideoSetup) {
                 isVideoSetup = true
 
@@ -303,6 +307,9 @@ class LiveEventFragment : BaseFragment() {
             clientRoleType = Constants.CLIENT_ROLE_AUDIENCE
             channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
         }
+        engine?.enableVideo()
+        engine?.enableAudio()
+        engine?.muteLocalAudioStream(true)
 
         engine?.joinChannel(
                token,
@@ -310,12 +317,10 @@ class LiveEventFragment : BaseFragment() {
             uidValue,
             options
         )
-
-
     }
 
     private fun setupRemoteVideo(uid: Int) {
-
+        binding?.videoContainer?.removeAllViews()
         val surfaceView = RtcEngine.CreateRendererView(requireContext())
 
         binding?.videoContainer?.addView(surfaceView)

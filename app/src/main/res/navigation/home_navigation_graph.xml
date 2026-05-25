@@ -285,6 +285,10 @@
             android:id="@+id/action_storeDetailFragment_to_viewReelFragment"
             app:destination="@id/viewReel"/>
 
+        <action
+            android:id="@+id/action_storeDetailFragment_to_viewReelFragment1"
+            app:destination="@id/viewReel1"/>
+
     </fragment>
 
     <fragment
@@ -582,6 +586,12 @@
         android:name="com.desynatuser.ui.home.storyHighlights.ViewReelFragment"
         android:label="View Reel Fragment"
         tools:layout="@layout/fragment_view_reel"/>
+
+    <fragment
+        android:id="@+id/viewReel1"
+        android:name="com.desynatuser.ui.home.storyHighlights.ViewReelFragment1"
+        android:label="View Reel Fragment1"
+        tools:layout="@layout/fragment1_view_reel"/>
 
     <fragment
         android:id="@+id/event"
