@@ -1559,6 +1559,18 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
         )
     }
 
+    var seeStoryLiveData = SingleLiveEvent<CommonResponse>()
+    suspend fun seeStory(
+        map: HashMap<String,Any>
+    ) {
+        handleApiCall(
+            api = {
+                api.seeStory(map)
+            },
+            responseLiveData = seeStoryLiveData
+        )
+    }
+
     var getWishlistedReelLiveData = SingleLiveEvent<GetWishlistedReelResponse>()
     suspend fun getWishlistedReel(
         map: HashMap<String,Any>

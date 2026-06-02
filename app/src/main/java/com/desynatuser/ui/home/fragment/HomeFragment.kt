@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.ImageDecoder
@@ -22,6 +23,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -596,11 +598,11 @@ class HomeFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver || isNotificationObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                errorMessage?.let { showToast(it) }
+              //  errorMessage?.let { showToast(it) }
                 binding?.clMain?.isVisible = true
                 binding?.progressBar?.isVisible = false
-                isObserver = false
-                isNotificationObserver = false
+//                isObserver = false
+//                isNotificationObserver = false
             }
         }
 
@@ -945,6 +947,17 @@ class HomeFragment : BaseFragment() {
         binding?.apply {
             if (myStories.size!=0){
                 binding?.ivHighlightStory?.isVisible = true
+                val allStoriesSeen = myStories?.all { it.isSeen == 1 } == true
+                binding?.ivHighlightStory?.strokeColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireActivity(),
+                        if (allStoriesSeen) {
+                            R.color.light_brown   // All stories read
+                        } else {
+                            R.color.brown         // At least one unread story
+                        }
+                    )
+                )
             }
             else{
                 binding?.ivHighlightStory?.isInvisible = true

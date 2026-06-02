@@ -1065,6 +1065,20 @@ val defaultBankResult: LiveData<CommonResponse>
             repository.getSellerReel(map)
         }
     }
+
+
+    val seeStoryResult : LiveData<CommonResponse>
+        get() = repository.seeStoryLiveData
+
+    fun seeStory(
+        map: HashMap<String,Any>
+    ) {
+        viewModelScope.launch {
+            repository.
+            seeStory(map)
+        }
+    }
+
     val getWishlistedReelResult: LiveData<GetWishlistedReelResponse>
         get() = repository.getWishlistedReelLiveData
 

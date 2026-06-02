@@ -26,6 +26,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import me.leolin.shortcutbadger.ShortcutBadger
+import kotlin.collections.get
 import kotlin.compareTo
 import kotlin.getValue
 import kotlin.toString
@@ -87,10 +88,9 @@ class ViewStoryFragment : BaseFragment() {
 //            "highlights"->getSellerHighlights()
 //        }
 
-        setData()
-
         setupAdapter()
         setupPagerCallback()
+        setData()
 
 
     }
@@ -200,11 +200,31 @@ class ViewStoryFragment : BaseFragment() {
     }
 
     private fun setData() {
+
         if (myStories.isNotEmpty()) {
+
             setupProgressBars(myStories.size)
-            startProgress(0)
+
+            val startPosition = myStories.indexOfFirst { it.isSeen == 0 }
+                .takeIf { it != -1 } ?: 0
+
+            binding?.viewPager?.setCurrentItem(startPosition, false)
+
+            val story = myStories[startPosition]
+
+            if ((from == "story" || from == "admin") && story.isSeen == 0) {
+                seeStory(story.id.toString())
+                story.isSeen = 1
+            }
+
+            progressBars.forEachIndexed { index, progressBar ->
+                progressBar.progress = if (index < startPosition) 100 else 0
+            }
+
+            startProgress(startPosition)
         }
     }
+
     private fun setupAdapter() {
 
         storyPagerAdapter = StoryPagerAdapter(requireActivity(),
@@ -282,6 +302,13 @@ class ViewStoryFragment : BaseFragment() {
 
                     progressBars.forEachIndexed { index, progressBar ->
                         progressBar.progress = if (index < position) 100 else 0
+                    }
+
+                    val story = myStories[position]
+
+                    if ((from == "story" || from == "admin") && story.isSeen == 0) {
+                        seeStory(story.id.toString())
+                        story.isSeen = 1
                     }
 
                     startProgress(position)
@@ -407,5 +434,13 @@ class ViewStoryFragment : BaseFragment() {
         super.onDestroyView()
         stopProgress()
         binding = null
+    }
+
+    private fun seeStory(id: String){
+        val map = HashMap<String, Any>()
+        map["story_id"] = id
+        map["type"] = 1
+        map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+        viewModel.seeStory(map)
     }
 }

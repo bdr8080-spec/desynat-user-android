@@ -18,6 +18,8 @@ data class GetSellerStoryResponse(
         val `file`: String,
         @SerializedName("id")
         val id: Int,
+        @SerializedName("is_seen")
+        var isSeen: Int=0,
         @SerializedName("seller_details")
         val sellerDetails: SellerDetails,
         @SerializedName("seller_id")

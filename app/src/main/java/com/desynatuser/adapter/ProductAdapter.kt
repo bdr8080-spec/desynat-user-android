@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemProductBinding
 import com.desynatuser.databinding.ItemStoreBinding
@@ -64,11 +65,10 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
             }
             rating.rating = productData?.averageRating?.toFloatOrNull()?:0f
 
-            ivStore.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
-                crossfade(true)
+            Glide.with(context).load(productData?.productVariants?.get(0)?.variantImage?.get(0)).
                 placeholder(R.drawable.ic_placeholder)
-                error(R.drawable.ic_placeholder)
-            }
+                .into(ivStore)
+
 
             if (from!=1) {
                 if (productData.wishlist == 1) {

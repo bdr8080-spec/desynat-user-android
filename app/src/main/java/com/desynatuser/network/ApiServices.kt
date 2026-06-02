@@ -645,6 +645,12 @@ interface ApiServices {
     @GET(Constants.GET_SELLER_REEL)
     suspend fun getSellerReel(@QueryMap map: HashMap<String, Any>): Response<GetSellerStoryResponse>
 
+    @POST(Constants.SEE_STORY)
+    suspend fun seeStory(
+        @Body body: HashMap<String, Any>
+    ): Response<CommonResponse>
+
+
     @GET(Constants.GET_ADMIN_STORY)
     suspend fun getAdminStory(@QueryMap map: HashMap<String, Any>): Response<GetSellerStoryResponse>
 

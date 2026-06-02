@@ -153,6 +153,8 @@ object Constants {
 
     const val GET_SELLER_STORY = "/api/user/get_seller_stories"
     const val GET_SELLER_REEL = "/api/user/get_seller_reels"
+
+    const val SEE_STORY = "/api/see_story"
     const val GET_SELLER_HIGHLIGHTS = "/api/user/get_seller_highlights"
     const val GET_ADMIN_STORY = "/api/user/get_admin_stories"
     const val ADD_REMOVE_REEL_TO_WISHLIST = "/api/user/add_remove_reel_to_whislist"

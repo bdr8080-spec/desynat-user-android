@@ -1,7 +1,9 @@
 package com.desynatuser.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -68,6 +70,26 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
 
             if (storeData.sellerStories.size!=0){
                 ivStoryHighlight.isVisible = true
+                if (!storeData?.sellerStories.isNullOrEmpty()) {
+
+                    ivStoryHighlight?.isVisible = true
+
+                    val allStoriesSeen = storeData?.sellerStories?.all { it.isSeen == 1 } == true
+
+                    ivStoryHighlight?.strokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            if (allStoriesSeen) {
+                                R.color.light_brown   // All stories read
+                            } else {
+                                R.color.brown         // At least one unread story
+                            }
+                        )
+                    )
+
+                } else {
+                    ivStoryHighlight?.isInvisible = true
+                }
             }
             else{
                 ivStoryHighlight.isInvisible = true

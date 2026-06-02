@@ -416,8 +416,8 @@ class ProductDetailFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
-                errorMessage?.let { showToast(it) }
-                isObserver = false
+               // errorMessage?.let { showToast(it) }
+               // isObserver = false
             }
         }
 
