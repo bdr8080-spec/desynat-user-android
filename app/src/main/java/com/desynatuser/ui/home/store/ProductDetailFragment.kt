@@ -32,7 +32,6 @@ import com.desynatuser.ui.home.store.response.AddToCartListResponse
 import com.desynatuser.ui.home.store.response.GetCartResponse
 import com.desynatuser.ui.home.store.response.GetProductDetailResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
-import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.Product
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
@@ -42,8 +41,6 @@ import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.collections.get
-import kotlin.text.category
 
 @AndroidEntryPoint
 class ProductDetailFragment : BaseFragment() {

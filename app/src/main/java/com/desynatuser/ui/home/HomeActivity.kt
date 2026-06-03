@@ -96,22 +96,17 @@ class HomeActivity : BaseActivity() {
             getCurrentLocation()
         }
 
+        val openScreen = intent.getStringExtra("open_screen")
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         controller = navHostFragment.navController
         val navGraph = controller.navInflater.inflate(R.navigation.home_navigation_graph)
-        controller.graph = navGraph
-
-        val openScreen = intent.getStringExtra("open_screen")
-        binding?.root?.post {
-            when (openScreen) {
-                "profile" -> {
-                    controller.navigate(R.id.profile)
-                }
-                "home" -> {
-                    controller.navigate(R.id.home)
-                }
-            }
+        if (openScreen == "profile") {
+            navGraph.setStartDestination(R.id.profile)
+        } else {
+            navGraph.setStartDestination(R.id.home)
         }
+        controller.graph = navGraph
 
         bottonNavItemList.clear()
         bottonNavItemList.add(BottomNavItem(getString(R.string.home),R.drawable.ic_home,R.drawable.ic_selected_home))

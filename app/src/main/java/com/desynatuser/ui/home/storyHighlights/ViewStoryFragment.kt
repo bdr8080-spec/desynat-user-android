@@ -19,6 +19,7 @@ import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentViewStoryBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
@@ -178,6 +179,10 @@ class ViewStoryFragment : BaseFragment() {
     private fun getSellerStory(){
         val map = HashMap<String, Any>()
         map["seller_id"]= sellerId
+        if (!Constants.isGuest) {
+            map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+        }
+
         viewModel.getSellerStory(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -306,7 +311,7 @@ class ViewStoryFragment : BaseFragment() {
 
                     val story = myStories[position]
 
-                    if ((from == "story" || from == "admin") && story.isSeen == 0) {
+                    if ((from == "story" || from == "admin") && story.isSeen == 0 && !Constants.isGuest) {
                         seeStory(story.id.toString())
                         story.isSeen = 1
                     }

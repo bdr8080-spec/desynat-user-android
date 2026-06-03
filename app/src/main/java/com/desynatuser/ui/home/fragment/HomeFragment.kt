@@ -968,6 +968,12 @@ class HomeFragment : BaseFragment() {
 
     private fun getAdminStory() {
         val map = HashMap<String, Any>()
+        if (!Constants.isGuest) {
+            map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+        }
+        else{
+            map["user-user_id"] = "null"
+        }
         viewModel.getAdminStory(map)
         isAdminObserver = true
     }

@@ -495,6 +495,10 @@ class StoreDetailFragment : BaseFragment() {
     private fun getSellerStory(){
         val map = HashMap<String, Any>()
         map["seller_id"]= storeDetailData?.store?.sellerId.toString()
+        if (!Constants.isGuest) {
+            map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+        }
+
         viewModel.getSellerStory(map)
         isStoryObserver = true
     }

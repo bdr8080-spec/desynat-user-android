@@ -36,7 +36,9 @@ import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
 import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
+import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
@@ -210,6 +212,10 @@ class StoreFragment : BaseFragment() {
         if (filter!=null){
             map["availbility"] = filter.toString()
         }
+        if (!Constants.isGuest) {
+            map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+        }
+
         viewModel.getStoreList(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -218,6 +224,9 @@ class StoreFragment : BaseFragment() {
 
     private fun getAdminStory(){
         val map = HashMap<String, Any>()
+        if (!Constants.isGuest) {
+            map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
+        }
         viewModel.getAdminStory(map)
         isAdminObserver = true
     }
