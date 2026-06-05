@@ -11,7 +11,7 @@ data class AddGiftCardRequest(
     @SerializedName("notes")
     val notes: String,
     @SerializedName("receiver_email")
-    val receiverEmail: String,
+    val receiverEmail: String?=null,
     @SerializedName("receiver_name")
     val receiverName: String,
     @SerializedName("country_code")

@@ -198,7 +198,7 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             amount = amount,
             giftCardId = occasionData?.id.toString(),
             notes = binding?.etNote?.text?.trim().toString(),
-            receiverEmail = binding?.etEmail?.text?.trim().toString(),
+            receiverEmail = if (binding?.etEmail?.text?.isNotEmpty()==true) binding?.etEmail?.text?.trim().toString() else null,
             receiverName = binding?.etName?.text?.trim().toString(),
             senderName = binding?.etFromName?.text?.trim().toString(),
             countryCode = binding?.tvCountryPicker?.text?.trim().toString(),
@@ -233,7 +233,7 @@ class EnterGiftCardDetailFragment : BaseFragment() {
                 return false
             }
 
-            if (email.isEmpty()) {
+          /*  if (email.isEmpty()) {
                 showToast(getString(R.string.please_enter_email_id))
                 return false
             }
@@ -242,7 +242,7 @@ class EnterGiftCardDetailFragment : BaseFragment() {
             if (!emailRegex.matches(email)) {
                 showToast(getString(R.string.please_enter_a_valid_email_id))
                 return false
-            }
+            }*/
 
             if (mobile.isEmpty()) {
                 showToast(getString(R.string.please_enter_mobile_number))

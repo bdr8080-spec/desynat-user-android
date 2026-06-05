@@ -31,10 +31,10 @@ class CountryPickerAdapter(var context:Context, var countryList: ArrayList<GetCo
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
             if (isDial){
-                tvCountry.text = "${countryList[position].flag1}  ${if(Constants.language=="ar") countryList[position]?.nameAr?:countryList[position]?.name else countryList[position].name } (${countryList[position].dialCode})"
+                tvCountry.text = "${countryList[position].flag}  ${if(Constants.language=="ar") countryList[position]?.nameAr?:countryList[position]?.name else countryList[position].name } (${countryList[position].dialCode})"
             }
             else{
-                tvCountry.text = "${countryList[position].flag1}  ${if (Constants.language == "ar") countryList[position]?.nameAr ?: countryList[position]?.name else countryList[position].name}"
+                tvCountry.text = "${countryList[position].flag}  ${if (Constants.language == "ar") countryList[position]?.nameAr ?: countryList[position]?.name else countryList[position].name}"
             }
 
             ivFlag.isVisible = false

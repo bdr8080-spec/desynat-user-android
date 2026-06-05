@@ -149,12 +149,12 @@ class LoginFragment : BaseFragment() {
             CommonMethod.removeAllTextSpaces(etPassword)
             tvCreateNewAccount.text = CommonMethod.spannableText(requireActivity(),requireActivity().getString(
                 R.string.don_t_have_an_account_create_new),requireActivity().getString(R.string.signUp), onClick = {
-                if (SharedPreference.get(requireActivity()).userType==2){
+               /* if (SharedPreference.get(requireActivity()).userType==2){
                     findNavController().navigate(R.id.action_loginFragment_to_affiliateSignUpFragment)
                 }
                 else{
                     findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
-                }
+                }*/
 
 
             })

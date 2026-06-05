@@ -23,7 +23,7 @@ class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCo
                 Glide.with(context).load(countryData.flag1).into(ivFlag)
             }
             else{
-                Glide.with(context).load(countryData.flag).into(ivFlag)
+                Glide.with(context).load(countryData.flag1).into(ivFlag)
             }
             if (selectedPos==position){
                 ivRadio.setImageResource(R.drawable.ic_radio_selected)
