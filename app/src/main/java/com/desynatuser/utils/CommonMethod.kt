@@ -26,6 +26,7 @@ import android.text.TextPaint
 import android.text.TextWatcher
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -348,10 +349,21 @@ object CommonMethod {
     }
 
     fun customizeChangeDateFormatKuwait(inputDate: String,inputFormat:String="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",outputFormat:String="dd MMM,yyyy"): String {
-        val originalFormat: SimpleDateFormat = SimpleDateFormat(inputFormat, Locale.ENGLISH).apply {
+      /*  val originalFormat: SimpleDateFormat = SimpleDateFormat(inputFormat, Locale.ENGLISH).apply {
             timeZone = TimeZone.getTimeZone("Asia/Kuwait")}
-        val targetFormat = SimpleDateFormat(outputFormat, Locale.ENGLISH).apply {
+*/
+        val originalFormat = SimpleDateFormat(
+            inputFormat,
+            Locale.ENGLISH
+        ).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+       /* val targetFormat = SimpleDateFormat(outputFormat, Locale.ENGLISH).apply {
             timeZone = TimeZone.getDefault()
+        }*/
+
+        val targetFormat = SimpleDateFormat(outputFormat, Locale.ENGLISH).apply {
+            timeZone = TimeZone.getTimeZone("Asia/Kuwait")
         }
         val date: Date
         try {
@@ -909,17 +921,31 @@ object CommonMethod {
         }
     }
 
-    fun formatChatTime(context: Context,inputTime: String,inputType: String="dd MMM yyyy, hh:mm a"): String {
-        val inputFormat = SimpleDateFormat(inputType, Locale.ENGLISH)
-        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-        val timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
-        val fullDateFormat = SimpleDateFormat("dd/MM/yy, hh:mm a", Locale.ENGLISH)
+    fun formatChatTime(
+        context: Context,
+        inputTime: String,
+        inputType: String = "dd MMM yyyy, hh:mm a"
+    ): String {
+
+        val inputFormat = SimpleDateFormat(inputType, Locale.ENGLISH).apply {
+            timeZone = TimeZone.getTimeZone("Asia/Kolkata") // Backend time
+        }
+
+        val kuwaitTimeZone = TimeZone.getTimeZone("Asia/Kuwait")
+
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH).apply {
+            timeZone = kuwaitTimeZone
+        }
+
+        val fullDateFormat = SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.ENGLISH).apply {
+            timeZone = kuwaitTimeZone
+        }
 
         val messageDate = inputFormat.parse(inputTime) ?: return inputTime
-        val now = Date()
 
-        val calendar = Calendar.getInstance()
-        calendar.time = now
+        val calendar = Calendar.getInstance(kuwaitTimeZone)
+        val now = calendar.time
+
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
@@ -930,28 +956,47 @@ object CommonMethod {
         calendar.add(Calendar.DAY_OF_YEAR, -1)
         val startOfYesterday = calendar.time
 
+        val formattedTime = timeFormat.format(messageDate)
+            .replace("AM", if(Constants.language=="ar")"ص" else "AM")
+            .replace("PM", if(Constants.language=="ar")"م" else "PM")
+
         return when {
             messageDate.after(startOfToday) -> {
-                "${context.getString(R.string.today)}, ${timeFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")}"
+                "${context.getString(R.string.today)}, $formattedTime"
             }
 
             messageDate.after(startOfYesterday) -> {
-                "${context.getString(R.string.yesterday)}, ${timeFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")}"
+                "${context.getString(R.string.yesterday)}, $formattedTime"
             }
+
+            else -> {
+                fullDateFormat.format(messageDate)
+                    .replace("AM", if(Constants.language=="ar")"ص" else "AM")
+                    .replace("PM", if(Constants.language=="ar")"م" else "PM")
+            }
+        }
+
+     /*   return when {
+            messageDate.after(startOfToday) ->
+                "${context.getString(R.string.today)}, $formattedTime"
+
+            messageDate.after(startOfYesterday) ->
+                "${context.getString(R.string.yesterday)}, $formattedTime"
 
             else -> {
                 val diffMillis = now.time - messageDate.time
                 val daysDiff = TimeUnit.MILLISECONDS.toDays(diffMillis)
 
                 if (daysDiff in 2..30) {
-                    "$daysDiff ${context.getString(R.string.days_ago)}, ${timeFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")}"
+                    "$daysDiff ${context.getString(R.string.days_ago)}, $formattedTime"
                 } else {
-                    fullDateFormat.format(messageDate).replace("AM", "ص").replace("PM", "م")
+                    fullDateFormat.format(messageDate)
+                        .replace("AM", "ص")
+                        .replace("PM", "م")
                 }
             }
-        }
+        }*/
     }
-
     fun showUserCountryPicker(
         context: Context,
         anchor: View,
@@ -1122,21 +1167,23 @@ object CommonMethod {
     ): String {
 
         val user = SharedPreference.get(context).getUser()
-        val countryList =   if (SharedPreference.get(context).affiliateAccessToken!=""){
-           SharedPreference.get(context).getSelectedCountryList()
+        val countryList = SharedPreference.get(context).getCurrencyList()
+
+        Log.e("selectedCurrency", user?.selectedCurrency.toString())
+
+
+        val currency = countryList?.find {
+            Log.e("showcode", it?.currencyCode.toString())
+            it.id.toString() == user?.selectedCurrency
         }
-        else{
-           SharedPreference.get(context).getCountryList()
-        }
 
-
-
-        val currency = countryList?.find { it.id.toString() == user?.selectedCurrency }
+        Log.e("currency_list",currency.toString())
 
         val rate = currency?.exchangeRateToKwd?.toDoubleOrNull() ?: 1.0
 
         val converted = if (rate == 0.0) amountInKwd else amountInKwd / rate
 
+        Log.e("currency_code",currency?.currencyCode.toString())
         val code = when (currency?.currencyCode) {
             "KWD" -> context.getString(R.string.kd)
             "BHD" -> if (Constants.language=="ar") currency?.currencyCode else "BD"

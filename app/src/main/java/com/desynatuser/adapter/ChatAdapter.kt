@@ -64,7 +64,7 @@ class ChatAdapter(var context:Context, var chatList: ArrayList<ChatMessage>, var
                 else{
                     ivRead.isVisible = false
                 }
-                tvMyMsgTime.text = CommonMethod.customizeChangeDateFormat(chatData.times.toSafeString(),"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'","hh:mma")
+                tvMyMsgTime.text = CommonMethod.customizeChangeDateFormatKuwait(chatData.times.toSafeString(),"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'","hh:mma")
 
             }
             else{
@@ -84,7 +84,7 @@ class ChatAdapter(var context:Context, var chatList: ArrayList<ChatMessage>, var
                         else -> arText
                     }
                 }
-                tvOtherMsgTime.text = CommonMethod.customizeChangeDateFormat(chatData.times.toSafeString(),"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'","hh:mma")
+                tvOtherMsgTime.text = CommonMethod.customizeChangeDateFormatKuwait(chatData.times.toSafeString(),"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'","hh:mma")
             }
 
             ivMyMsg.setOnClickListener {

@@ -32,19 +32,18 @@ override fun onCreate() {
     FacebookSdk.sdkInitialize(applicationContext)
     AppEventsLogger.activateApp(this)
 
-/*
     MFSDK.init(
         getString(R.string.my_fatoorah_token),
-        MFCountry.UNITED_ARAB_EMIRATES_UAE,
+        MFCountry.KUWAIT,
         MFEnvironment.LIVE
-    )*/
+    )
 
-    MFSDK.init(
+   /* MFSDK.init(
         getString(R.string.fatoorah),
         MFCountry.KUWAIT,
         MFEnvironment.TEST
     )
-
+*/
     notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
         if (!task.isSuccessful) {

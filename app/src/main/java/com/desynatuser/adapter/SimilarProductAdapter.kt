@@ -7,11 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemProductBinding
-import com.desynatuser.databinding.ItemStoreBinding
-import com.desynatuser.ui.home.profile.response.GetCategoryResponse
-import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.ui.home.store.response.GetProductDetailResponse
+import com.desynatuser.utils.CommonMethod
 
-class SimilarProductAdapter(var context:Context, private var productList: ArrayList<String>, var storeName:String, var productClick:ProductClick) : RecyclerView.Adapter<SimilarProductAdapter.ViewHolder>() {
+class SimilarProductAdapter(var context:Context, private var productList: ArrayList<GetProductDetailResponse.Data.SimilarProduct>, var storeName:String, var productClick:ProductClick) : RecyclerView.Adapter<SimilarProductAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -34,21 +33,28 @@ class SimilarProductAdapter(var context:Context, private var productList: ArrayL
         var productData = productList[position]
 
         holder.binding.apply {
-           /* tvTitle.text = productData.productNameEn+" (By ${storeName})"
+            tvTitle.text = productData?.productNameEn
+          //  tvTitle.text = productData?.productNameEn+" (By ${storeName})"
 
-            tvPrice.text = "${productData?.productVariants?.get(0)?.actualPrice} KD"
-            tvDiscountPrice.text = "${productData?.productVariants?.get(0)?.finalPrice} KD"
+            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)}"
+            tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
             val variant = productData?.productVariants?.getOrNull(0)
-            val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1") "% off" else "KD off"
-            tvDiscount.text = "$discountValue $discountType"
+            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+
+            val discountType = if (variant?.discountType == "1")"%  ${
+                context.getString(
+                    R.string.off
+                )
+            }" else " ${CommonMethod.getCurrency(context)}  ${context.getString(R.string.off)}"
+            tvDiscount.text = "$discountValue$discountType"
+
 
             ivStore.load(productData?.productVariants?.get(0)?.variantImage?.get(0)) {
                 crossfade(true)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
-            }*/
+            }
 
         }
 

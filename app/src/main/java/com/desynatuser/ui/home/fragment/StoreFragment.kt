@@ -197,6 +197,7 @@ class StoreFragment : BaseFragment() {
         map["type"] = "3"
         map["category"] = subCategoryData?.categoryId.toString()
         map["subcategory"] = subCategoryData?.id.toString()
+        map["subcategory_id"] = subCategoryData?.id.toString()
         viewModel.getHomeScreenAllBanner(map)
         isAllBannerObserver = true
     }
@@ -206,6 +207,7 @@ class StoreFragment : BaseFragment() {
         val map = HashMap<String,Any>()
         map["category_id"] = subCategoryData?.categoryId.toString()
         map["subcategory"] = subCategoryData?.id.toString()
+        map["subcategory_id"] = subCategoryData?.id.toString()
         if (search!=null){
             map["search"] = search
         }

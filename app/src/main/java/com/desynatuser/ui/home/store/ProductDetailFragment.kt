@@ -65,6 +65,7 @@ class ProductDetailFragment : BaseFragment() {
     private var selectedPos = 0
     private var selectedSizePos = 0
     private var myBagList = ArrayList<GetCartResponse.Data.CartData>()
+    private var similarProductList = ArrayList<GetProductDetailResponse.Data.SimilarProduct>()
     private var cartList = ArrayList<AddToCartListResponse.Data>()
     var productInfo = ArrayList<Product>()
     var ratingList = ArrayList<GetProductDetailResponse.Data.Review>()
@@ -107,7 +108,7 @@ class ProductDetailFragment : BaseFragment() {
             productInfo = productData?.productVariants?.let { mapVariantsToProducts(it) }!!
         }
 
-        similarProductAdapter = SimilarProductAdapter(requireActivity(), arrayListOf("",""),productDetailData?.store?.storeName.toString(),object:SimilarProductAdapter.ProductClick{
+        similarProductAdapter = SimilarProductAdapter(requireActivity(), similarProductList,productDetailData?.store?.storeName.toString(),object:SimilarProductAdapter.ProductClick{
             override fun onProductClick(position: Int) {
 
             }
@@ -206,7 +207,7 @@ class ProductDetailFragment : BaseFragment() {
 
             tvName.text = if (Constants.language=="ar") productDetailData?.brand?.nameArabic else productDetailData?.brand?.nameEnglish
 
-            if (variant?.productVariation?.getOrNull(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0&&productDetailData?.store?.storeAvailability==1){
+           /* if (variant?.productVariation?.getOrNull(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0&&productDetailData?.store?.storeAvailability==1){
                 relAddToBag.isVisible = true
                 btnBuyNow.isVisible = true
                 viewBottom.isVisible = true
@@ -215,6 +216,18 @@ class ProductDetailFragment : BaseFragment() {
                 relAddToBag.isVisible = false
                 btnBuyNow.isVisible = false
                 viewBottom.isVisible = false
+            }*/
+
+
+            if (variant?.productVariation?.getOrNull(selectedSizePos)?.totalStock?.toIntOrNull()?:0>0&&productDetailData?.store?.storeAvailability==1){
+                relAddToBag.isVisible = true
+                btnBuyNow.isVisible = true
+                viewBottom.isVisible = true
+            }
+            else{
+                relAddToBag.isVisible = true
+                btnBuyNow.isVisible = true
+                viewBottom.isVisible = true
             }
 
             if (productData?.category?.name=="Women"){
@@ -543,6 +556,10 @@ class ProductDetailFragment : BaseFragment() {
                 ratingList.clear()
                 productDetailData?.review?.let { ratingList.addAll(it) }
                 reviewAdapter?.notifyDataSetChanged()
+                similarProductList.clear()
+                productDetailData?.similarProducts?.let { similarProductList.addAll(it) }
+                similarProductAdapter?.notifyDataSetChanged()
+
                 if (ratingList.isNotEmpty()){
                     binding?.rvRating?.isVisible = true
                     binding?.tvViewAll?.isVisible = true

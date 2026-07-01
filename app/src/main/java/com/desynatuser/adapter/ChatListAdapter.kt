@@ -43,7 +43,7 @@ class ChatListAdapter(var context:Context, var chatList: ArrayList<GetChatListRe
                 error(R.drawable.ic_user)
             }
             tvLastMsg.text = chatData?.lastChat
-            if (chatData.lastChatTime!=null&&chatData.lastChatTime!="null"&&chatData.lastChatTime!="") {
+                if (chatData.lastChatTime!=null&&chatData.lastChatTime!="null"&&chatData.lastChatTime!="") {
                 tvTime.text = CommonMethod.formatChatTime(context,
                     chatData?.lastChatTime.toString(), inputType = "dd MMM yyyy, hh:mm a"
                 )

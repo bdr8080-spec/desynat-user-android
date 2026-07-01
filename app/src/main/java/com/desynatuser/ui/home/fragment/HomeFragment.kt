@@ -78,6 +78,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
+import kotlin.math.log
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
@@ -148,6 +149,7 @@ class HomeFragment : BaseFragment() {
     var selectedType = 0
 
     private var countryList= ArrayList<GetCountryResponse.Data>()
+    private var currencyList= ArrayList<GetCountryResponse.Data>()
 
     private var scrollYPosition = 0
 
@@ -173,7 +175,12 @@ class HomeFragment : BaseFragment() {
         Constants.language = SharedPreference.get(requireActivity()).language
         getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
-        getCurrency()
+        if (SharedPreference.get(requireActivity()).getCurrencyList()?.isEmpty() == true){
+            getCurrencyList()
+        }
+        else{
+            getCurrency()
+        }
         binding?.apply {
             if (SharedPreference.get(requireActivity()).accessToken != "") {
                 tvDeliverTo.text = "${getString(R.string.deliver_to)} ${user?.fullName}"
@@ -447,30 +454,23 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getCurrency() {
-        countryList.clear()
-        if (SharedPreference.get(requireActivity()).getCountryList()?.isNotEmpty() == true) {
-            val data = SharedPreference.get(requireActivity()).getCountryList()
-            countryList.clear()
-            data?.let { countryList.addAll(it) }
-            for (i in 0 until countryList.size) {
-                if (SharedPreference.get(requireActivity()).affiliateAccessToken != "") {
-
-                    if (countryList[i].id.toString() == user?.selectedCurrency) {
-                        getCurrencyData(countryList[i].currencyCode)
-                        break
-                    }
-                } else {
-                    if (countryList[i].id.toString() == user?.selectedCurrency) {
-                        getCurrencyData(countryList[i].currencyCode)
-                        break
-                    }
+            val data = SharedPreference.get(requireActivity()).getCurrencyList()
+            currencyList.clear()
+            data?.let { currencyList.addAll(it) }
+            for (i in 0 until currencyList.size) {
+                if (currencyList[i].id.toString() == user?.selectedCurrency) {
+                    getCurrencyData(currencyList[i].currencyCode)
+                    break
                 }
 
             }
-        }
-        else{
-            getCountry()
-        }
+
+    }
+
+    private fun getCurrencyList() {
+        viewModel.getCurrencyList()
+        ProgressDialogUtils.getInstance().showProgress(requireActivity())
+        isObserver = true
     }
 
     private fun getCountry() {
@@ -635,6 +635,18 @@ class HomeFragment : BaseFragment() {
             }
         }
 
+        viewModel.getCurrencyListResult.observe(viewLifecycleOwner) { response ->
+
+                response?.let {
+                    currencyList.clear()
+                    response.data?.let { currencyList.addAll(it) }
+                    SharedPreference.get(requireActivity()).saveCurrencyList(currencyList)
+                    getCurrency()
+
+                }
+                isObserver = false
+
+        }
 
         viewModel.userNotificationCountResult.observe(viewLifecycleOwner) { response ->
             if (isNotificationObserver) {
@@ -898,19 +910,24 @@ class HomeFragment : BaseFragment() {
     private fun checkCategory() {
         binding?.apply {
             tvMen.isEnabled = false
+            tvMen.isInvisible = true
             tvMen.setTextColor(Color.parseColor("#E6E6E6"))
             tvWomen.isEnabled = false
+            tvWomen.isInvisible = true
             tvWomen.setTextColor(Color.parseColor("#E6E6E6"))
             tvKids.isEnabled = false
+            tvKids.isInvisible = true
             tvKids.setTextColor(Color.parseColor("#E6E6E6"))
             for (i in 0 until mainCategoryList.size){
                 if (mainCategoryList[i].name=="Men"){
                     if (mainCategoryList[i].status=="1"){
+                        tvMen.isVisible = true
                         tvMen.isEnabled = true
                         tvMen.setTextColor(Color.parseColor("#000000"))
 
                     }
                     else{
+                        tvMen.isInvisible = true
                         tvMen.isEnabled = false
                         tvMen.setTextColor(Color.parseColor("#E6E6E6"))
                     }
@@ -920,22 +937,26 @@ class HomeFragment : BaseFragment() {
                 if (mainCategoryList[i].name=="Women"){
                     if (mainCategoryList[i].status=="1"){
                         tvWomen.isEnabled = true
+                        tvWomen.isVisible = true
                         tvWomen.setTextColor(Color.parseColor("#000000"))
 
                     }
                     else{
                         tvWomen.isEnabled = false
+                        tvWomen.isInvisible = true
                         tvWomen.setTextColor(Color.parseColor("#E6E6E6"))
                     }
                 }
                 if (mainCategoryList[i].name=="Kids"){
                     if (mainCategoryList[i].status=="1"){
                         tvKids.isEnabled = true
+                        tvKids.isVisible = true
                         tvKids.setTextColor(Color.parseColor("#000000"))
 
                     }
                     else{
                         tvKids.isEnabled = false
+                        tvKids.isInvisible = true
                         tvKids.setTextColor(Color.parseColor("#E6E6E6"))
                     }
                 }
@@ -1335,6 +1356,7 @@ class HomeFragment : BaseFragment() {
     }
 
     fun getCurrencyData(code: String) {
+        Log.e("currency",code)
         Constants.CURRENCY = if (code == "KWD") "KD" else code
     }
 

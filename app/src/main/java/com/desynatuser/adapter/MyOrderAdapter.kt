@@ -52,7 +52,7 @@ class MyOrderAdapter(var context:Context, private var orderList: ArrayList<GetAl
 
         //    tvPlacedDate.text = CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "hh a  | dd MM yy")
             tvPlacedDate.text = CommonMethod.customizeChangeDateFormat(orderData?.createdAt.toString(), outputFormat = "dd/MM/yy '${context.getString(R.string.at)}' hh:mma")
-            tvSizeValue.text =  if(Constants.language=="ar") orderData?.variationDetails?.size?.nameAr.toString() else orderData?.variationDetails?.size?.name.toString()
+            tvSizeValue.text =  if(Constants.language=="ar") orderData?.variationDetails?.size?.name.toString() else orderData?.variationDetails?.size?.name.toString()
             orderData?.variationDetails?.color
                 ?.hexCode?.let { ivColor.setColorFilter(Color.parseColor(it)) }
             tvQuantity.text = orderData?.quantity.toString()

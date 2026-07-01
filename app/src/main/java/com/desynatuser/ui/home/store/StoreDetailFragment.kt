@@ -115,6 +115,8 @@ class StoreDetailFragment : BaseFragment() {
     private var storeId = ""
     private var subCategoryData: GetSubCategoryResponse.Data?=null
 
+    private var isFirstLoad = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -251,11 +253,11 @@ class StoreDetailFragment : BaseFragment() {
 
         }
 
-        getStoreDetail()
-//        if (isFirstLoad) {
-//            getStoreDetail()
-//            isFirstLoad = false
-//        }
+     //   getStoreDetail()
+        if (isFirstLoad) {
+            getStoreDetail()
+            isFirstLoad = false
+        }
 
     }
 

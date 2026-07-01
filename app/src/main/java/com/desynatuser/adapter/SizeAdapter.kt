@@ -32,7 +32,7 @@ class SizeAdapter(var context:Context, var productSizeList: ArrayList<Product.Pr
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-            tvSize.text = if (Constants.language=="ar")  productSizeList[position].size?.nameAr else productSizeList[position].size?.name
+            tvSize.text = if (Constants.language=="ar")  productSizeList[position].size?.name else productSizeList[position].size?.name
 
             if (selectedPos==position&&productSizeList[selectedPos].totalStock.toIntOrNull()?:0>0){
                 ivColorSelected.isVisible = true

@@ -61,6 +61,7 @@ class MyBagFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("currency12",Constants.CURRENCY)
         initView()
         initControl()
         observe()

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_12sdp"
     android:orientation="horizontal"
-    android:paddingHorizontal="@dimen/_10sdp"
-    android:layout_marginBottom="@dimen/_12sdp">
+    android:paddingHorizontal="@dimen/_10sdp">
 
     <ImageView
         android:id="@+id/ivFlag"
@@ -12,14 +12,14 @@
         android:layout_height="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_15sdp" />
 
-   <androidx.appcompat.widget.AppCompatTextView
-    android:id="@+id/tvCountry"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fontFamily="@font/poppins_regular"
-    android:text="Kuwait"
-       android:textAlignment="viewStart"
-    android:textColor="@color/black"
-    android:textSize="@dimen/_12sdp" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Kuwait"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp" />
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.cms
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,38 +63,7 @@ class ChangeCurrencyFragment : BaseFragment() {
 
 
             if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
-               /* countryList.clear()
-                if (SharedPreference.get(requireActivity()).getSelectedCountryList()?.isNotEmpty() == true){
-                    val data =  SharedPreference.get(requireActivity()).getSelectedCountryList()
-                    countryList.clear()
-                    data?.let { countryList.addAll(it) }
-                    selectedPos = -1
-                    for (i in 0 until countryList.size) {
-                        if (countryList[i].id.toString() == userInfo?.selectedCurrency) {
-                            selectedPos = i
-                            break
-                        }
-                    }
 
-                    if (selectedPos == -1) {
-                        for (i in 0 until countryList.size) {
-                            if (countryList[i].currencyCode == "KWD") {
-                                selectedPos = i
-                                break
-                            }
-                        }
-                    }
-
-                    if (selectedPos == -1 && countryList.isNotEmpty()) {
-                        selectedPos = 0
-                    }
-
-                    currencyAdapter?.selectedPos = selectedPos
-                    currencyAdapter?.notifyDataSetChanged()
-                }
-                else{
-                    getSelectedCountry()
-                }*/
                 getCurrencyList()
             }
             else{
@@ -129,6 +99,9 @@ class ChangeCurrencyFragment : BaseFragment() {
                 response?.let {
                     SharedPreference.get(requireActivity()).saveSelectedCountryList(response.data)
                     countryList.clear()
+                    selectedPos = -1
+
+                    Log.e("currency", "observe: ${userInfo?.selectedCurrency}" )
                     response.data?.let { countryList.addAll(it) }
                     for (i in 0 until countryList.size) {
                         if (countryList[i].id.toString() == userInfo?.selectedCurrency) {
@@ -136,6 +109,20 @@ class ChangeCurrencyFragment : BaseFragment() {
                             break
                         }
                     }
+
+                    Log.e("currency", "selectedPos: ${selectedPos}" )
+
+                    if (selectedPos == -1) {
+                        for (i in 0 until countryList.size) {
+                            if (countryList[i].currencyCode == "KWD") {
+                                selectedPos = i
+                                break
+                            }
+                        }
+                    }
+
+                    Log.e("currency", "selectedPos12: ${selectedPos}" )
+
 
                     currencyAdapter?.selectedPos = selectedPos
                     currencyAdapter?.notifyDataSetChanged()
@@ -149,6 +136,7 @@ class ChangeCurrencyFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
                     countryList.clear()
+                    selectedPos = -1
                     response.data?.let { countryList.addAll(it) }
                     for (i in 0 until countryList.size) {
                         if (countryList[i].id.toString() == userInfo?.selectedCurrency) {
@@ -156,6 +144,16 @@ class ChangeCurrencyFragment : BaseFragment() {
                             break
                         }
                     }
+
+                    if (selectedPos == -1) {
+                        for (i in 0 until countryList.size) {
+                            if (countryList[i].currencyCode == "KWD") {
+                                selectedPos = i
+                                break
+                            }
+                        }
+                    }
+                    SharedPreference.get(requireActivity()).saveCurrencyList(countryList)
 
                     currencyAdapter?.selectedPos = selectedPos
                     currencyAdapter?.notifyDataSetChanged()
@@ -170,6 +168,7 @@ class ChangeCurrencyFragment : BaseFragment() {
                 getCurrencyData(countryList[selectedPos].currencyCode)
                 userInfo?.selectedCurrency = countryList[selectedPos].id.toString()
                 userInfo?.let { SharedPreference.get(requireActivity()).saveUser(it) }
+                Log.e("currency11",countryList[selectedPos].currencyCode)
                 CommonMethod.showSuccessDialog(requireActivity(),response.message){
                     findNavController().popBackStack()
                 }
@@ -217,6 +216,7 @@ class ChangeCurrencyFragment : BaseFragment() {
 
     fun getCurrencyData(code: String) {
         Constants.CURRENCY = if (code == "KWD") "KD" else code
+        Log.e("currency12",Constants.CURRENCY)
     }
 
 }

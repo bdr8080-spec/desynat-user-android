@@ -50,11 +50,12 @@ class AuthActivity : BaseActivity() {
             if (fromLanguage == "profile") {
                 R.id.login
             } else {
-                if (SharedPreference.get(this).isTutorial) {
+                R.id.login
+                /*if (SharedPreference.get(this).isTutorial) {
                     R.id.login
                 } else {
                     R.id.onBoarding
-                }
+                }*/
             }
 
         } else {

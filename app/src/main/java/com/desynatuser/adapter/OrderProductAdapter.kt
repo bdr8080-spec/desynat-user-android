@@ -197,7 +197,7 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                     error(R.drawable.ic_placeholder)
                 }
 
-                tvSizeValue.text = if(Constants.language=="ar") productData?.variationDetails?.size?.nameAr.toString() else productData?.variationDetails?.size?.name.toString()
+                tvSizeValue.text = if(Constants.language=="ar") productData?.variationDetails?.size?.name.toString() else productData?.variationDetails?.size?.name.toString()
                 productData?.variationDetails?.color?.hexCode?.let {
                     ivColor.setColorFilter(Color.parseColor(it))
                 }

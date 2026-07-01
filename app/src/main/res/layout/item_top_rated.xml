@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_130sdp"
+    android:layout_width="@dimen/_120sdp"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/_15sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
     android:layout_marginBottom="@dimen/_15sdp"
     android:paddingBottom="@dimen/_6sdp"
     android:background="@drawable/card_background"

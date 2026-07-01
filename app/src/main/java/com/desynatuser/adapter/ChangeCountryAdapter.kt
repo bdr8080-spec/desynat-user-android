@@ -18,12 +18,14 @@ class ChangeCountryAdapter(var context:Context, var countryList: ArrayList<GetCo
         RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) = with(binding){
             val countryData = countryList[position]
-            tvCountry.text = if (Constants.language=="ar") countryData.nameAr else countryData.name
-            if (SharedPreference.get(context).affiliateAccessToken!=""){
-                Glide.with(context).load(countryData.flag1).into(ivFlag)
+            tvCountry.text = if (Constants.language=="ar") countryData?.nameAr else countryData?.name
+
+            tvFlagIcon.text = countryData?.flag
+            if (SharedPreference.get(context)?.affiliateAccessToken!=""){
+                Glide.with(context).load(countryData?.flag1).into(ivFlag)
             }
             else{
-                Glide.with(context).load(countryData.flag1).into(ivFlag)
+                Glide.with(context).load(countryData?.flag1).into(ivFlag)
             }
             if (selectedPos==position){
                 ivRadio.setImageResource(R.drawable.ic_radio_selected)

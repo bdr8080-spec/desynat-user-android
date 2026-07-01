@@ -33,6 +33,7 @@
         app:layout_constraintEnd_toStartOf="@+id/ivFlag"/>
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:visibility="gone"
         android:id="@+id/ivFlag"
         android:layout_width="35dp"
         android:layout_height="20dp"
@@ -40,5 +41,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvFlagIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="\ud83c\uddf0\ud83c\uddfc"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
