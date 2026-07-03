@@ -20,8 +20,7 @@ class SimilarProductAdapter(var context:Context, private var productList: ArrayL
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemProductBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false)
+            ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 

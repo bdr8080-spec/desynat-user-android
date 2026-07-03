@@ -51,6 +51,7 @@ data class GetSingleStoreResponse(
                 val affiliatedCommission: String,
                 @SerializedName("affiliated_product")
                 val affiliatedProduct: String,
+                val delivery_time:DeliveryTime,
                 @SerializedName("brand")
                 val brand: Brand,
                 @SerializedName("brand_id")
@@ -118,6 +119,13 @@ data class GetSingleStoreResponse(
                 @SerializedName("average_rating")
                 val averageRating: String,
             ) {
+
+                data class DeliveryTime(
+                    val id: String,
+                    val name: String,
+                    val name_ar: String,
+                    val status: String,
+                )
                 data class Brand(
                     @SerializedName("created_at")
                     val createdAt: String,

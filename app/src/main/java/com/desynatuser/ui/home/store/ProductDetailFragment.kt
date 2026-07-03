@@ -107,9 +107,14 @@ class ProductDetailFragment : BaseFragment() {
             productData = Gson().fromJson(itemJson, GetSingleStoreResponse.Data.AllProduct.Data::class.java)
             productInfo = productData?.productVariants?.let { mapVariantsToProducts(it) }!!
         }
+        binding?.tvDeliveryDate?.text = if (Constants.language=="ar") productData?.delivery_time?.name_ar else  productData?.delivery_time?.name
+
 
         similarProductAdapter = SimilarProductAdapter(requireActivity(), similarProductList,productDetailData?.store?.storeName.toString(),object:SimilarProductAdapter.ProductClick{
             override fun onProductClick(position: Int) {
+                productId=similarProductList[position].id.toString()
+
+                getProductDetail()
 
             }
 
@@ -170,6 +175,8 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
+            tvDeliveryDate?.text = "Get within " + if (Constants.language=="ar") productDetailData?.delivery_time?.name_ar else  productDetailData?.delivery_time?.name
+
             tvBuyCount.text = "0 + ${getString(R.string.bought)}"
             tvTitle.text = productDetailData?.store?.storeName
             tvProductName.text =  if (Constants.language=="ar") productDetailData?.productNameAr+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})" else productDetailData?.productNameEn+" (${requireActivity().getString(R.string.by)} ${productDetailData?.store?.storeName})"
@@ -262,7 +269,6 @@ class ProductDetailFragment : BaseFragment() {
             productDetailData?.productSpecifications?.let { specificationList.addAll(it) }
             specificationAdapter?.notifyDataSetChanged()
 
-            tvDeliveryDate.text = "${getString(R.string.get_it_by)} 3 ${getString(R.string.to_small)} 5 ${getString(R.string.working_days)}"
             tvCashOnDelivery.text = if (productDetailData?.cashOnDelivery=="1")
             {
                getString(R.string.cash_on_delivery_available)

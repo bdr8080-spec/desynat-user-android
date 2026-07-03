@@ -12,6 +12,7 @@ import com.desynatuser.ui.home.chat.response.ChatMessage
 import com.desynatuser.ui.home.chat.toSafeInt
 import com.desynatuser.ui.home.chat.toSafeString
 import com.desynatuser.utils.CommonMethod
+import com.desynatuser.utils.CommonMethod.formatTime
 import com.desynatuser.utils.SharedPreference
 
 class ChatAdapter(var context:Context, var chatList: ArrayList<ChatMessage>, var chatClick:ChatClick) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
@@ -64,7 +65,7 @@ class ChatAdapter(var context:Context, var chatList: ArrayList<ChatMessage>, var
                 else{
                     ivRead.isVisible = false
                 }
-                tvMyMsgTime.text = CommonMethod.customizeChangeDateFormatKuwait(chatData.times.toSafeString(),"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'","hh:mma")
+                tvMyMsgTime.text = formatTime(chatData.times.toSafeString())
 
             }
             else{

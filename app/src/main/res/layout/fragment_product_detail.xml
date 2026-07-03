@@ -627,7 +627,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="Get it by 30/11/2025"
+                    android:text=""
                     android:drawablePadding="@dimen/_5sdp"
                     android:drawableStart="@drawable/icon_delivery_date"
                     android:textColor="@color/black"
@@ -754,11 +754,12 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_product"
+                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_15sdp"
-                tools:itemCount="2"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
+
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
                 app:layout_constraintTop_toBottomOf="@+id/tvSimilarProduct"/>
 
             <View

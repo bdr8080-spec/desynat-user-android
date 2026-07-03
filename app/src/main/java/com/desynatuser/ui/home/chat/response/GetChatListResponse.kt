@@ -30,6 +30,7 @@ data class GetChatListResponse(
         val id: Int,
         @SerializedName("last_chat")
         val lastChat: String,
+
         @SerializedName("last_chat_time")
         val lastChatTime: String,
         @SerializedName("price")

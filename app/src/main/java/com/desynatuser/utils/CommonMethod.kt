@@ -65,6 +65,7 @@ import java.net.URL
 import java.text.DecimalFormatSymbols
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -346,6 +347,13 @@ object CommonMethod {
         } catch (e: NumberFormatException) {
             amountStr // fallback → return original string if parsing fails
         }
+    }
+
+
+    fun formatTime(input: String): String {
+        return Instant.parse(input)
+            .atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofPattern("hh:mma", Locale.ENGLISH))
     }
 
     fun customizeChangeDateFormatKuwait(inputDate: String,inputFormat:String="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",outputFormat:String="dd MMM,yyyy"): String {

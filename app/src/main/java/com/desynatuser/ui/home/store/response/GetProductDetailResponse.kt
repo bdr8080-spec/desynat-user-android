@@ -1,6 +1,7 @@
 package com.desynatuser.ui.home.store.response
 
 
+import com.desynatuser.ui.home.store.response.GetSingleStoreResponse.Data.AllProduct.Data.DeliveryTime
 import com.google.gson.annotations.SerializedName
 
 data class GetProductDetailResponse(
@@ -14,6 +15,7 @@ data class GetProductDetailResponse(
     data class Data(
         @SerializedName("addtocart")
         val addtocart: Addtocart,
+        val delivery_time:DeliveryTime,
         @SerializedName("affiliated_product")
         val affiliatedProduct: String,
         @SerializedName("brand")
