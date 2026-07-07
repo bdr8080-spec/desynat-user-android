@@ -103,6 +103,7 @@ class StoreDetailFragment : BaseFragment() {
     private var selectedSizeList = ArrayList<GetSizeListResponse.Data>()
     private var selectedColorList = ArrayList<GetAllColorListResponse.Data>()
     private var selectedCategory: GetCategoryResponse.Data?=null
+    private var subCat : String?=null
     var selectedDiscount: Int? = null
     var selectedRating: Int? = null
     var selectedDeliveryTime: String? = null
@@ -134,10 +135,12 @@ class StoreDetailFragment : BaseFragment() {
     }
 
     override fun initView() {
+
         categoryList.clear()
         SharedPreference.get(requireActivity()).getCategoryList()?.let { categoryList.addAll(it) }
         ProgressDialogUtils.getInstance().hideProgress()
-         storeId = arguments?.getString("storeId").toString()
+        storeId = arguments?.getString("storeId").toString()
+        subCat = arguments?.getString("subId")
         val itemJson = arguments?.getString("subCategoryData")
         if (!itemJson.isNullOrEmpty()) {
             subCategoryData = Gson().fromJson(itemJson, GetSubCategoryResponse.Data::class.java)
@@ -421,6 +424,9 @@ class StoreDetailFragment : BaseFragment() {
 
         if (selectedCategory!=null) {
             map["category_id"] = arrayListOf(selectedCategory?.id.toString())    // ArrayList<String>
+        }
+        if (subCat!=null){
+            map["subcategory_id"] =subCat?:""
         }
 
         if (subCategoryData!=null&&selectedCategory==null) {

@@ -97,6 +97,8 @@ class StoreFragment : BaseFragment() {
                         1->{
                             val bundle = Bundle().apply {
                                 putString("storeId", storeList[position].id.toString())
+                                putString("catId", subCategoryData?.categoryId.toString())
+                                putString("subId", subCategoryData?.id.toString())
                             }
                             findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
                         }
