@@ -72,6 +72,9 @@ import com.desynatuser.vision.VisionRetrofit
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
 import org.greenrobot.eventbus.EventBus
@@ -383,6 +386,7 @@ class HomeFragment : BaseFragment() {
                     }
                 })
             rvNewestProducts.adapter = newestProductAdapter
+            startAutoChange()
 
             categoryAdapter = CategoryAdapter(
                 requireActivity(),
@@ -1114,6 +1118,27 @@ class HomeFragment : BaseFragment() {
         isNewestObserver = true
     }
 
+
+    private var autoChangeJob: Job? = null
+
+    private fun startAutoChange() {
+
+        autoChangeJob = viewLifecycleOwner.lifecycleScope.launch {
+
+            while (isActive) {
+                isSuggestedStoreObserver=true
+                delay(5000)
+
+                viewModel.getSuggestedStore()
+        }
+    }
+        }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        autoChangeJob?.cancel()
+    }
     private fun getBestSellingProduct() {
         viewModel.getBestSellingProduct()
         isBestSellingObserver = true

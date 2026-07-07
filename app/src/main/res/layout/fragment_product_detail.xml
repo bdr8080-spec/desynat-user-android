@@ -831,6 +831,7 @@
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginStart="@dimen/_15sdp"
             android:layoutDirection="ltr"
+
             app:layout_constraintTop_toTopOf="@+id/btnBuyNow"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/btnBuyNow"
