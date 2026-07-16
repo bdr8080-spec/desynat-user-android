@@ -835,7 +835,6 @@ class ProductDetailFragment : BaseFragment() {
             val imagePreviewAdapter = ImagePreviewAdapter(
                 context = requireActivity(),
                 productList = imageList,
-                selectedImgPosition = position
             )
             viewPager?.adapter = imagePreviewAdapter
             viewPager.setCurrentItem(position, false)

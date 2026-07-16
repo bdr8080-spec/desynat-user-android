@@ -37,7 +37,7 @@ class ViewStoryFragment : BaseFragment() {
     private var binding : FragmentViewStoryBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
-    private val myStories = ArrayList<GetSellerStoryResponse.Data>()
+    private val myStories = ArrayList<GetSellerStoryResponse.Data.SellerHighlight>()
 
     private val progressBars = ArrayList<ProgressBar>()
     private var storyPagerAdapter: StoryPagerAdapter?=null
@@ -76,8 +76,7 @@ class ViewStoryFragment : BaseFragment() {
             val storyList: ArrayList<GetSellerStoryResponse.Data> =
                 Gson().fromJson(json, type)
 
-            myStories.clear()
-            myStories.addAll(storyList)
+            flattenStories(storyList)
         }
         if (from!="admin"){
             sellerId = arguments?.getString("sellerId").toString()
@@ -117,8 +116,7 @@ class ViewStoryFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    myStories.clear()
-                    myStories.addAll(response.data)
+                    flattenStories(it.data)
                     storyPagerAdapter?.notifyDataSetChanged()
                     setData()
                 }
@@ -130,8 +128,7 @@ class ViewStoryFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    myStories.clear()
-                    myStories.addAll(response.data)
+                    flattenStories(it.data)
                     storyPagerAdapter?.notifyDataSetChanged()
 
                     setData()
@@ -144,8 +141,7 @@ class ViewStoryFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    myStories.clear()
-                    myStories.addAll(response.data)
+                    flattenStories(it.data)
                     storyPagerAdapter?.notifyDataSetChanged()
                     setData()
                 }
@@ -157,8 +153,7 @@ class ViewStoryFragment : BaseFragment() {
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 response?.let {
-                    myStories.clear()
-                    myStories.addAll(response.data)
+                    flattenStories(it.data)
                     storyPagerAdapter?.notifyDataSetChanged()
                     setData()
                 }
@@ -217,7 +212,7 @@ class ViewStoryFragment : BaseFragment() {
 
             val story = myStories[startPosition]
 
-            if ((from == "story" || from == "admin") && story.isSeen == 0) {
+            if ((from == "story" || from == "admin" || from == "highlights" || from == "reel") && story.isSeen == 0 && !Constants.isGuest) {
                 seeStory(story.id.toString())
                 story.isSeen = 1
             }
@@ -311,7 +306,7 @@ class ViewStoryFragment : BaseFragment() {
 
                     val story = myStories[position]
 
-                    if ((from == "story" || from == "admin") && story.isSeen == 0 && !Constants.isGuest) {
+                    if ((from == "story" || from == "admin" || from == "highlights" || from == "reel") && story.isSeen == 0 && !Constants.isGuest) {
                         seeStory(story.id.toString())
                         story.isSeen = 1
                     }
@@ -340,7 +335,7 @@ class ViewStoryFragment : BaseFragment() {
         }
 
         progressAnimator = ValueAnimator.ofInt(0, 100).apply {
-            duration = 10000L
+            duration = 5000L
 
             addUpdateListener {
                 progressBars[index].progress = it.animatedValue as Int
@@ -369,7 +364,7 @@ class ViewStoryFragment : BaseFragment() {
         progressAnimator = ValueAnimator.ofInt(0, 100).apply {
          //   this.duration = duration
 
-            val safeDuration = if (duration > 0) duration else 10000L
+            val safeDuration = if (duration > 0) duration else 5000L
 
             this.duration = safeDuration
 
@@ -447,5 +442,14 @@ class ViewStoryFragment : BaseFragment() {
         map["type"] = 1
         map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
         viewModel.seeStory(map)
+    }
+
+    private fun flattenStories(list: List<GetSellerStoryResponse.Data>) {
+        myStories.clear()
+        list.forEach { data ->
+            data.highlights?.let {
+                myStories.addAll(it)
+            }
+        }
     }
 }

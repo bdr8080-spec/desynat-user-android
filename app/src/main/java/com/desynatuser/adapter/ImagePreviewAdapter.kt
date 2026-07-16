@@ -13,7 +13,6 @@ import com.desynatuser.databinding.ItemPreviewImageBinding
 class ImagePreviewAdapter(
     var context: Context,
     var productList: ArrayList<String>,
-    val selectedImgPosition: Int = 0
 ) :
     RecyclerView.Adapter<ImagePreviewAdapter.ViewHolder>() {
 

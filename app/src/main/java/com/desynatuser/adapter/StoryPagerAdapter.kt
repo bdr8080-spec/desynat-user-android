@@ -15,24 +15,21 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.desynatuser.R
 import com.desynatuser.databinding.ItemStoryBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.utils.CommonMethod
-import kotlin.div
-import kotlin.text.compareTo
-import kotlin.text.toFloat
-import kotlin.text.toInt
-import kotlin.text.toLong
-import kotlin.times
 
-class StoryPagerAdapter(val context: Context,
-    private val stories: List<GetSellerStoryResponse.Data>,private val click:OnClick,private val onVideoReady: (position: Int, duration: Long) -> Unit
-    , private val onVideoFinished: (Int) -> Unit
+class StoryPagerAdapter(
+    val context: Context,
+    private val stories: List<GetSellerStoryResponse.Data.SellerHighlight>,
+    private val click: OnClick,
+    private val onVideoReady: (position: Int, duration: Long) -> Unit,
+    private val onVideoFinished: (Int) -> Unit
 ) : RecyclerView.Adapter<StoryPagerAdapter.StoryViewHolder>() {
 
     private var pressStartTime = 0L
     private val LONG_PRESS_THRESHOLD = 200L
+
     interface OnClick {
         fun clickOnItem(position: Int)
         fun onNext(position: Int)
@@ -44,10 +41,11 @@ class StoryPagerAdapter(val context: Context,
     inner class StoryViewHolder(val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):StoryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         return StoryViewHolder(
             ItemStoryBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false)
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
     }
 
@@ -71,11 +69,12 @@ class StoryPagerAdapter(val context: Context,
             holder.binding.ivStory.isVisible = false
             holder.binding.videoStory.isVisible = true
 
-        //    holder.binding.videoStory.setVideoPath(url)
+            //    holder.binding.videoStory.setVideoPath(url)
             holder.binding.videoStory.setVideoURI(android.net.Uri.parse(url))
 
             holder.binding.videoStory.setOnPreparedListener { mp ->
-                holder.binding.videoLoader.indeterminateTintList = ColorStateList.valueOf(Color.WHITE)
+                holder.binding.videoLoader.indeterminateTintList =
+                    ColorStateList.valueOf(Color.WHITE)
                 val videoWidth = mp.videoWidth
                 val videoHeight = mp.videoHeight
 
@@ -162,16 +161,16 @@ class StoryPagerAdapter(val context: Context,
             holder.binding.ivStory.isVisible = true
             holder.binding.videoStory.isVisible = false
 
-           /* if (isGif) {
-                Glide.with(holder.itemView.context)
-                    .asGif()
-                    .load(url)
-                    .into(holder.binding.ivStory)
-            } else {
-                Glide.with(holder.itemView.context)
-                    .load(url)
-                    .into(holder.binding.ivStory)
-            }*/
+            /* if (isGif) {
+                 Glide.with(holder.itemView.context)
+                     .asGif()
+                     .load(url)
+                     .into(holder.binding.ivStory)
+             } else {
+                 Glide.with(holder.itemView.context)
+                     .load(url)
+                     .into(holder.binding.ivStory)
+             }*/
 
             val requestListener = object : RequestListener<Drawable> {
                 override fun onLoadFailed(
@@ -200,7 +199,7 @@ class StoryPagerAdapter(val context: Context,
                 Glide.with(holder.itemView.context)
                     .asGif()
                     .load(url)
-                   // .listener(requestListener)
+                    // .listener(requestListener)
                     .into(holder.binding.ivStory)
             } else {
                 Glide.with(holder.itemView.context)
@@ -218,7 +217,7 @@ class StoryPagerAdapter(val context: Context,
                 .load(nextUrl)
                 .preload()
         }
-        holder.binding.tvTime.text = CommonMethod.getTimeAgo(context,story.createdAt)
+        holder.binding.tvTime.text = CommonMethod.getTimeAgo(context, story.createdAt)
         if (!story.title.isNullOrEmpty() && story.title != "null") {
             holder.binding.tvTitle.isVisible = true
             holder.binding.viewTitle.isVisible = true

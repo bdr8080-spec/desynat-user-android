@@ -12,6 +12,12 @@ data class GetSellerStoryResponse(
     val status: String
 ) {
     data class Data(
+
+        @SerializedName("highlights")
+        val highlights: List<SellerHighlight>? = emptyList(),
+        @SerializedName("title")
+        val title: String,
+
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("file")
@@ -19,7 +25,7 @@ data class GetSellerStoryResponse(
         @SerializedName("id")
         val id: Int,
         @SerializedName("is_seen")
-        var isSeen: Int=0,
+        var isSeen: Int = 0,
         @SerializedName("seller_details")
         val sellerDetails: SellerDetails,
         @SerializedName("seller_id")
@@ -30,13 +36,49 @@ data class GetSellerStoryResponse(
         val type: Int,
         @SerializedName("updated_at")
         val updatedAt: String,
-        @SerializedName("title")
-        val title: String,
         @SerializedName("caption")
         val caption: String,
         @SerializedName("is_whishlisted")
         var wishlist: Int
     ) {
+
+        data class SellerHighlight(
+
+            @SerializedName("id")
+            val id: Int,
+
+            @SerializedName("type")
+            val type: Int,
+
+            @SerializedName("seller_id")
+            val sellerId: Int,
+
+            @SerializedName("file")
+            val file: String,
+
+            @SerializedName("title")
+            val title: String,
+
+            @SerializedName("status")
+            val status: Int,
+
+            @SerializedName("thumbnail")
+            val thumbnail: String?,
+
+            @SerializedName("created_at")
+            val createdAt: String,
+
+            @SerializedName("updated_at")
+            val updatedAt: String,
+
+            @SerializedName("is_seen")
+            var isSeen: Int = 0,
+
+            @SerializedName("caption")
+            val caption: String? = "",
+
+            )
+
         data class SellerDetails(
             @SerializedName("accept_terms")
             val acceptTerms: String,

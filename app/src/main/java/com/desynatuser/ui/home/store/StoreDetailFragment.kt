@@ -46,14 +46,12 @@ import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
-import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
-import com.desynatuser.utils.loadBase64Image
 import com.desynatuser.utils.showToast
 import com.google.android.material.slider.RangeSlider
 import com.google.gson.Gson
@@ -64,16 +62,16 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StoreDetailFragment : BaseFragment() {
-    private var binding : FragmentStoreDetailBinding?=null
+    private var binding: FragmentStoreDetailBinding? = null
     private val viewModel: HomeViewModel by activityViewModels()
     var isObserver = false
     var isReelObserver = false
     var isStoryObserver = false
     var isHighlightObserver = false
 
-    private var storyList= ArrayList<GetSellerStoryResponse.Data>()
-    private var highlightList= ArrayList<GetSellerStoryResponse.Data>()
-    private var reelList= ArrayList<GetSellerStoryResponse.Data>()
+    private var storyList = ArrayList<GetSellerStoryResponse.Data>()
+    private var highlightList = ArrayList<GetSellerStoryResponse.Data>()
+    private var reelList = ArrayList<GetSellerStoryResponse.Data>()
     var isSortObserver = false
 
     private var reelAdapter: ReelAdapter? = null
@@ -82,11 +80,12 @@ class StoreDetailFragment : BaseFragment() {
     private var productAdapter: ProductAdapter? = null
     private var productList = ArrayList<GetSingleStoreResponse.Data.AllProduct.Data>()
     private var sortList = ArrayList<GetStoreSortListResponse.Data>()
-   // private var storeData: GetStoreResponse.Data?=null
-    private var storeDetailData: GetSingleStoreResponse.Data?=null
+
+    // private var storeData: GetStoreResponse.Data?=null
+    private var storeDetailData: GetSingleStoreResponse.Data? = null
     var selectedPos = -1
     var selectedReelPos = -1
-    private var sortFilter: String?=null
+    private var sortFilter: String? = null
     private var type = 1 //1-product.2-reel
     private var search: Job? = null
     private var lastQuery: String? = null
@@ -102,8 +101,8 @@ class StoreDetailFragment : BaseFragment() {
     private var selectedBrandList = ArrayList<GetAllBrandListResponse.Data>()
     private var selectedSizeList = ArrayList<GetSizeListResponse.Data>()
     private var selectedColorList = ArrayList<GetAllColorListResponse.Data>()
-    private var selectedCategory: GetCategoryResponse.Data?=null
-    private var subCat : String?=null
+    private var selectedCategory: GetCategoryResponse.Data? = null
+    private var subCat: String? = null
     var selectedDiscount: Int? = null
     var selectedRating: Int? = null
     var selectedDeliveryTime: String? = null
@@ -114,15 +113,14 @@ class StoreDetailFragment : BaseFragment() {
     var isColorObserver = false
     val newColorList = ArrayList<GetAllColorListResponse.Data>()
     private var storeId = ""
-    private var subCategoryData: GetSubCategoryResponse.Data?=null
+    private var subCategoryData: GetSubCategoryResponse.Data? = null
 
     private var isFirstLoad = true
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentStoreDetailBinding.inflate(layoutInflater, container,false)
+        binding = FragmentStoreDetailBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -147,64 +145,75 @@ class StoreDetailFragment : BaseFragment() {
         }
         binding?.apply {
 
-            when(type){
-                1->{
+            when (type) {
+                1 -> {
                     product()
                 }
-                2->{
+
+                2 -> {
                     reel()
                 }
             }
 
-            productAdapter = ProductAdapter(requireActivity(),productList,storeDetailData?.store?.storeName.toString(),3,object: ProductAdapter.ProductClick{
-                override fun onProductClick(position: Int,type:Int) {
-                    when(type){
-                        1->{
-                            val bundle = Bundle().apply {
-                                putString("productData", Gson().toJson(productList[position]))
-                                putString("productId", productList[position].id.toString())
+            productAdapter = ProductAdapter(
+                requireActivity(),
+                productList,
+                storeDetailData?.store?.storeName.toString(),
+                3,
+                object : ProductAdapter.ProductClick {
+                    override fun onProductClick(position: Int, type: Int) {
+                        when (type) {
+                            1 -> {
+                                val bundle = Bundle().apply {
+                                    putString("productData", Gson().toJson(productList[position]))
+                                    putString("productId", productList[position].id.toString())
+                                }
+                                findNavController().navigate(
+                                    R.id.action_storeDetailFragment_to_productDetailFragment, bundle
+                                )
                             }
-                            findNavController().navigate(R.id.action_storeDetailFragment_to_productDetailFragment,bundle)
+
+                            2 -> {
+                                selectedPos = position
+                                addToWishList()
+                            }
                         }
 
-                        2->{
-                            selectedPos = position
-                           addToWishList()
-                        }
                     }
 
-                }
-
-            })
+                })
             rvProduct.adapter = productAdapter
 
-            highlightAdapter = HighlightAdapter(requireActivity(), highlightList,object :
-                HighlightAdapter.OnClick{
-                override fun onItemClick(position: Int) {
-                    if (highlightList.size!=0) {
-                        val list = ArrayList<GetSellerStoryResponse.Data>()
-                        list.add(highlightList[position])
-                        val bundle = Bundle().apply {
-                            putString("from", "highlights")
-                            putString("sellerId", storeDetailData?.store?.sellerId.toString())
-                            putString("storyData", Gson().toJson(list))
-                        }
-                        findNavController().navigate(
-                            R.id.action_storeDetailFragment_to_viewStoryFragment,
-                            bundle
-                        )
-                    }
-                }
 
-            })
+            //File doesn't exist. Contact owner
+
+            highlightAdapter = HighlightAdapter(
+                requireActivity(),
+                highlightList,
+                object : HighlightAdapter.OnClick {
+                    override fun onItemClick(position: Int) {
+                        if (highlightList.isNotEmpty()) {
+                            val list = ArrayList<GetSellerStoryResponse.Data>()
+                            list.add(highlightList[position])
+                            val bundle = Bundle().apply {
+                                putString("from", "highlights")
+                                putString("sellerId", storeDetailData?.store?.sellerId.toString())
+                                putString("storyData", Gson().toJson(list))
+                            }
+                            findNavController().navigate(
+                                R.id.action_storeDetailFragment_to_viewStoryFragment, bundle
+                            )
+                        }
+                    }
+
+                })
             rvHighlights.adapter = highlightAdapter
 
-            reelAdapter = ReelAdapter(requireActivity(), reelList,2,object :
-                ReelAdapter.OnClick{
-                override fun onItemClick(position: Int,type:Int) {
-                    when(type){
-                        1->{
-                            if (reelList.size!=0) {
+            reelAdapter = ReelAdapter(requireActivity(), reelList, 2, object : ReelAdapter.OnClick {
+                override fun onItemClick(position: Int, type: Int) {
+                    when (type) {
+                        1 -> {
+                            if (reelList.size != 0) {
                                 val bundle = Bundle().apply {
                                     putString("from", "reel")
                                     putString("sellerId", reelList[position]?.sellerId.toString())
@@ -213,17 +222,18 @@ class StoreDetailFragment : BaseFragment() {
                                     putInt("position", position)
                                 }
                                 findNavController().navigate(
-                                //    R.id.action_storeDetailFragment_to_viewReelFragment,
-                                    R.id.action_storeDetailFragment_to_viewReelFragment1,
-                                    bundle
+                                    //    R.id.action_storeDetailFragment_to_viewReelFragment,
+                                    R.id.action_storeDetailFragment_to_viewReelFragment1, bundle
                                 )
                             }
                         }
-                        2->{
+
+                        2 -> {
                             selectedReelPos = position
                             addRemoveReelToWishlist()
                         }
-                        3->{
+
+                        3 -> {
                             selectedReelPos = position
                             shareReel()
                         }
@@ -236,7 +246,10 @@ class StoreDetailFragment : BaseFragment() {
 
             lastQuery = etSearch.text.toString().trim()
             etSearch.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
@@ -247,8 +260,7 @@ class StoreDetailFragment : BaseFragment() {
                     search?.cancel()
                     search = lifecycleScope.launch {
                         delay(600)
-                        if (!isObserver)
-                            getStoreDetail(isLoading = false)
+                        if (!isObserver) getStoreDetail(isLoading = false)
                     }
 
                 }
@@ -256,7 +268,7 @@ class StoreDetailFragment : BaseFragment() {
 
         }
 
-     //   getStoreDetail()
+        //   getStoreDetail()
         if (isFirstLoad) {
             getStoreDetail()
             isFirstLoad = false
@@ -269,14 +281,14 @@ class StoreDetailFragment : BaseFragment() {
             tvToolbar.text = storeDetailData?.store?.storeName
             tvBrand.text = storeDetailData?.store?.storeName
             tvDescription.text = storeDetailData?.store?.bio
-            if (storeDetailData?.store?.averageStoreRating!=null){
+            if (storeDetailData?.store?.averageStoreRating != null) {
                 tvRating.text = "(${storeDetailData?.store?.averageStoreRating})"
-            }
-            else{
+            } else {
                 tvRating.text = "(0)"
             }
-            ratingBar.rating = storeDetailData?.store?.averageStoreRating?.toFloatOrNull()?:0f
-            tvName.text = storeDetailData?.store?.sellerInformation?.firstName+" "+storeDetailData?.store?.sellerInformation?.lastName
+            ratingBar.rating = storeDetailData?.store?.averageStoreRating?.toFloatOrNull() ?: 0f
+            tvName.text =
+                storeDetailData?.store?.sellerInformation?.firstName + " " + storeDetailData?.store?.sellerInformation?.lastName
 
             ivProfileImage.load(storeDetailData?.store?.sellerInformation?.profilePic) {
                 crossfade(true)
@@ -284,15 +296,14 @@ class StoreDetailFragment : BaseFragment() {
                 error(R.drawable.ic_user)
             }
 
-            Glide.with(requireActivity()).load(storeDetailData?.store?.storeImage).placeholder(R.color.black).into(ivStore)
+            Glide.with(requireActivity()).load(storeDetailData?.store?.storeImage)
+                .placeholder(R.color.black).into(ivStore)
 
             if (storeDetailData?.store?.sellerInformation?.profileQr != null) {
 
-                val imageLoader = ImageLoader.Builder(requireContext())
-                    .components {
+                val imageLoader = ImageLoader.Builder(requireContext()).components {
                         add(SvgDecoder.Factory())
-                    }
-                    .build()
+                    }.build()
 
                 ivQr.load(storeDetailData?.store?.sellerInformation?.profileQr, imageLoader) {
                     crossfade(true)
@@ -301,11 +312,10 @@ class StoreDetailFragment : BaseFragment() {
                 }
             }
 
-            if (storeDetailData?.store?.storeAvailability==1){
+            if (storeDetailData?.store?.storeAvailability == 1) {
                 tvStatus.isVisible = false
                 tvStatus.text = getString(R.string.available)
-            }
-            else{
+            } else {
                 tvStatus.text = getString(R.string.busy)
                 tvStatus.isVisible = true
             }
@@ -319,7 +329,8 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             ivShare.setOnClickListener {
-                CommonMethod.shareProductWithImage(requireActivity(),
+                CommonMethod.shareProductWithImage(
+                    requireActivity(),
                     "Store name: ${storeDetailData?.store?.storeName}",
                     "Bio: ${storeDetailData?.store?.bio}",
                     storeDetailData?.store?.storeImage ?: "",
@@ -328,15 +339,14 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             ivProfileImage.setOnClickListener {
-                if (storyList.size!=0) {
+                if (storyList.size != 0) {
                     val bundle = Bundle().apply {
                         putString("from", "story")
                         putString("sellerId", storeDetailData?.store?.sellerId.toString())
                         putString("storyData", Gson().toJson(storyList))
                     }
                     findNavController().navigate(
-                        R.id.action_storeDetailFragment_to_viewStoryFragment,
-                        bundle
+                        R.id.action_storeDetailFragment_to_viewStoryFragment, bundle
                     )
                 }
             }
@@ -354,25 +364,24 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             tvProduct.setOnClickListener {
-              product()
+                product()
             }
 
             tvReel.setOnClickListener {
-               reel()
+                reel()
             }
 
             ivChat.setOnClickListener {
-                if (SharedPreference.get(requireActivity()).accessToken!="") {
+                if (SharedPreference.get(requireActivity()).accessToken != "") {
                     chatWithSeller()
-                }
-                else{
+                } else {
                     CommonMethod.showLoginAlert(requireActivity())
                 }
             }
         }
     }
 
-    private fun product(){
+    private fun product() {
         binding?.apply {
             type = 1
             tvProduct.setBackgroundResource(R.drawable.selected_left_tab)
@@ -385,9 +394,9 @@ class StoreDetailFragment : BaseFragment() {
         }
     }
 
-    private fun reel(){
+    private fun reel() {
         binding?.apply {
-            type =2
+            type = 2
             tvProduct.background = null
             tvProduct.setTextColor(requireActivity().getColor(R.color.black))
             tvReel.setTextColor(requireActivity().getColor(R.color.white))
@@ -398,7 +407,8 @@ class StoreDetailFragment : BaseFragment() {
         }
 
     }
-    private fun chatWithSeller(){
+
+    private fun chatWithSeller() {
         val map = HashMap<String, Any>()
         map["seller_id"] = storeDetailData?.store?.sellerId.toString()
         viewModel.chatWithSeller(map)
@@ -407,30 +417,32 @@ class StoreDetailFragment : BaseFragment() {
     }
 
 
-    private fun getStoreSortList(){
+    private fun getStoreSortList() {
         viewModel.getStoreSorList()
         isSortObserver = true
     }
 
-    private fun getStoreDetail(isLoading: Boolean=true){
-        val map = HashMap<String,Any>()
+    private fun getStoreDetail(isLoading: Boolean = true) {
+        val map = HashMap<String, Any>()
         map["store_id"] = storeId
-        if (sortFilter!=null) {
+        if (sortFilter != null) {
             map["sort_filter"] = sortFilter.toString()
         }
-        if (lastQuery!=null) {
+        if (lastQuery != null) {
             map["search"] = lastQuery.toString()
         }
 
-        if (selectedCategory!=null) {
-            map["category_id"] = arrayListOf(selectedCategory?.id.toString())    // ArrayList<String>
+        if (selectedCategory != null) {
+            map["category_id"] =
+                arrayListOf(selectedCategory?.id.toString())    // ArrayList<String>
         }
-        if (subCat!=null){
-            map["subcategory_id"] =subCat?:""
+        if (subCat != null) {
+            map["subcategory_id"] = subCat ?: ""
         }
 
-        if (subCategoryData!=null&&selectedCategory==null) {
-            map["category_id"] = arrayListOf(subCategoryData?.categoryId.toString())    // ArrayList<String>
+        if (subCategoryData != null && selectedCategory == null) {
+            map["category_id"] =
+                arrayListOf(subCategoryData?.categoryId.toString())    // ArrayList<String>
         }
 
         if (selectedBrandList.isNotEmpty()) {
@@ -449,41 +461,41 @@ class StoreDetailFragment : BaseFragment() {
             map["size_id"] = selectedSizeList.map { it.id }
         }
 
-        if (selectedDiscount!=0&&selectedDiscount!=null) {
+        if (selectedDiscount != 0 && selectedDiscount != null) {
             map["discount_range"] = selectedDiscount.toString()
         }
-        if (selectedRating!=0&&selectedRating!=null) {
+        if (selectedRating != 0 && selectedRating != null) {
             map["rating"] = selectedRating.toString()
         }
-        if (selectedDeliveryTime!=""&&selectedDeliveryTime!=null) {
+        if (selectedDeliveryTime != "" && selectedDeliveryTime != null) {
             map["delivery_time"] = selectedDeliveryTime.toString()
         }
 
         viewModel.getSingleStoreInfo(map)
-        if (isLoading){
+        if (isLoading) {
             binding?.progressBar?.isVisible = true
         }
         isObserver = true
     }
 
-    private fun addToWishList(){
-        val map = HashMap<String,Any>()
+    private fun addToWishList() {
+        val map = HashMap<String, Any>()
         map["product_id"] = productList[selectedPos].id
         viewModel.addToWishlist(map)
         binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
-    private fun addRemoveReelToWishlist(){
-        val map = HashMap<String,Any>()
+    private fun addRemoveReelToWishlist() {
+        val map = HashMap<String, Any>()
         map["reel_id"] = reelList[selectedReelPos].id
         viewModel.addRemoveReelToWishlist(map)
         binding?.progressBar?.isVisible = true
         isObserver = true
     }
 
-    private fun shareReel(){
-        val map = HashMap<String,Any>()
+    private fun shareReel() {
+        val map = HashMap<String, Any>()
         map["reel_id"] = reelList[selectedReelPos].id
         viewModel.shareReel(map)
         isObserver = true
@@ -500,9 +512,9 @@ class StoreDetailFragment : BaseFragment() {
         isColorObserver = true
     }
 
-    private fun getSellerStory(){
+    private fun getSellerStory() {
         val map = HashMap<String, Any>()
-        map["seller_id"]= storeDetailData?.store?.sellerId.toString()
+        map["seller_id"] = storeDetailData?.store?.sellerId.toString()
         if (!Constants.isGuest) {
             map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
         }
@@ -511,22 +523,22 @@ class StoreDetailFragment : BaseFragment() {
         isStoryObserver = true
     }
 
-    private fun getSellerReel(){
+    private fun getSellerReel() {
         val map = HashMap<String, Any>()
-        map["seller_id"]= storeDetailData?.store?.sellerId.toString()
+        map["seller_id"] = storeDetailData?.store?.sellerId.toString()
         viewModel.getSellerReel(map)
         isReelObserver = true
     }
 
-    private fun getSellerHighlights(){
+    private fun getSellerHighlights() {
         val map = HashMap<String, Any>()
-        map["seller_id"]= storeDetailData?.store?.sellerId.toString()
+        map["seller_id"] = storeDetailData?.store?.sellerId.toString()
         viewModel.getSellerHighlights(map)
         isHighlightObserver = true
     }
 
-    private fun captureSellerStoreVisitor(sellerId: String){
-        val map = HashMap<String,Any>()
+    private fun captureSellerStoreVisitor(sellerId: String) {
+        val map = HashMap<String, Any>()
         map["seller_id"] = sellerId
         map["store_id"] = storeId
         if (!Constants.isGuest) {
@@ -538,7 +550,7 @@ class StoreDetailFragment : BaseFragment() {
     override fun observe() {
 
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (isObserver||isStoryObserver||isReelObserver||isHighlightObserver) {
+            if (isObserver || isStoryObserver || isReelObserver || isHighlightObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
                 errorMessage?.let { showToast(it) }
@@ -579,10 +591,9 @@ class StoreDetailFragment : BaseFragment() {
                 colorList.addAll(response.data)
 
                 newColorList.clear()
-                if (colorList.size>10){
+                if (colorList.size > 10) {
                     newColorList.addAll(colorList.take(10))
-                }
-                else{
+                } else {
                     newColorList.addAll(colorList)
                 }
 
@@ -629,41 +640,41 @@ class StoreDetailFragment : BaseFragment() {
                     putString("from", "store")
                     putString("normalChatData", Gson().toJson(response.data))
                 }
-                findNavController().navigate(R.id.action_storeDetailFragment_to_chatFragment,bundle)
+                findNavController().navigate(
+                    R.id.action_storeDetailFragment_to_chatFragment, bundle
+                )
                 isObserver = false
             }
         }
 
         viewModel.addToWishlistResult.observe(viewLifecycleOwner) { response ->
-        if (isObserver) {
-            ProgressDialogUtils.getInstance().hideProgress()
-            binding?.progressBar?.isVisible = false
+            if (isObserver) {
+                ProgressDialogUtils.getInstance().hideProgress()
+                binding?.progressBar?.isVisible = false
 
-            if (productList[selectedPos].wishlist==1){
-                showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
-                productList[selectedPos].wishlist = 0
-            }
-            else{
-                showToast(getString(R.string.product_added_to_your_wishlist_successfully))
-                productList[selectedPos].wishlist = 1
+                if (productList[selectedPos].wishlist == 1) {
+                    showToast(getString(R.string.product_removed_from_your_wishlist_successfully))
+                    productList[selectedPos].wishlist = 0
+                } else {
+                    showToast(getString(R.string.product_added_to_your_wishlist_successfully))
+                    productList[selectedPos].wishlist = 1
+                }
+
+                productAdapter?.notifyItemChanged(selectedPos)
+                selectedPos = -1
+                isObserver = false
             }
 
-            productAdapter?.notifyItemChanged(selectedPos)
-            selectedPos = -1
-            isObserver = false
         }
-
-    }
 
         viewModel.addRemoveReelToWishlistResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
-                if (reelList[selectedReelPos].wishlist==1){
+                if (reelList[selectedReelPos].wishlist == 1) {
                     showToast(getString(R.string.reel_removed_from_your_wishlist_successfully))
                     reelList[selectedReelPos].wishlist = 0
-                }
-                else{
+                } else {
                     showToast(getString(R.string.reel_added_to_your_wishlist_successfully))
                     reelList[selectedReelPos].wishlist = 1
                 }
@@ -721,10 +732,12 @@ class StoreDetailFragment : BaseFragment() {
                 ProgressDialogUtils.getInstance().hideProgress()
                 val fileUrl = reelList[selectedReelPos]?.file ?: ""
 
-                val isVideo = fileUrl.contains(".mp4", true) ||
-                        fileUrl.contains(".mov", true) ||
-                        fileUrl.contains(".mkv", true)
-                CommonMethod.shareReel(requireActivity(),
+                val isVideo = fileUrl.contains(".mp4", true) || fileUrl.contains(
+                    ".mov",
+                    true
+                ) || fileUrl.contains(".mkv", true)
+                CommonMethod.shareReel(
+                    requireActivity(),
                     caption = reelList[selectedReelPos]?.caption ?: "",
                     mediaUrl = fileUrl,
                     link = response.data.file ?: "",
@@ -738,24 +751,22 @@ class StoreDetailFragment : BaseFragment() {
     }
 
 
-    private fun setStory(){
+    private fun setStory() {
         binding?.apply {
-         //   ivProfileImage.segmentCount = storyList.size
-            if (storyList.size!=0){
+            //   ivProfileImage.segmentCount = storyList.size
+            if (storyList.size != 0) {
                 ivStoryHighlight.isVisible = true
                 val allStoriesSeen = storyList?.all { it.isSeen == 1 } == true
                 binding?.ivStoryHighlight?.strokeColor = ColorStateList.valueOf(
                     ContextCompat.getColor(
-                        requireActivity(),
-                        if (allStoriesSeen) {
+                        requireActivity(), if (allStoriesSeen) {
                             R.color.light_brown   // All stories read
                         } else {
                             R.color.brown         // At least one unread story
                         }
                     )
                 )
-            }
-            else{
+            } else {
                 ivStoryHighlight.isInvisible = true
             }
         }
@@ -766,13 +777,14 @@ class StoreDetailFragment : BaseFragment() {
             productList.clear()
             storeDetailData?.allProduct?.data?.let { productList.addAll(it) }
             checkData()
-            productAdapter?.updateStoreName(storeDetailData?.store?.storeName?:"")
+            productAdapter?.updateStoreName(storeDetailData?.store?.storeName ?: "")
         }
     }
 
     private fun checkData() {
         binding?.tvNoDataFound?.isVisible = productList.isEmpty()
     }
+
     private fun checkReelData() {
         binding?.tvNoReelDataFound?.isVisible = reelList.isEmpty()
     }
@@ -785,8 +797,7 @@ class StoreDetailFragment : BaseFragment() {
 
         val window: Window = dialog.window!!
         window.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT
+            WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT
         )
         window.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setCancelable(false)
@@ -801,24 +812,24 @@ class StoreDetailFragment : BaseFragment() {
                 dialog.dismiss()
             }
 
-                for (i in 0 until sortList.size) {
-                    if (sortList[i].id.toString() == sortFilter) {
-                        sortList[i].isSelected = true
-                    }
-                    else{
-                        sortList[i].isSelected = false
-                    }
+            for (i in 0 until sortList.size) {
+                if (sortList[i].id.toString() == sortFilter) {
+                    sortList[i].isSelected = true
+                } else {
+                    sortList[i].isSelected = false
                 }
+            }
 
-            sortAdapter = SortListAdapter(requireActivity(),sortList,object:SortListAdapter.ClickOnItem{
-               override fun onClickItem(position: Int) {
-                   sort = sortList[position].id.toString()
-               }
+            sortAdapter =
+                SortListAdapter(requireActivity(), sortList, object : SortListAdapter.ClickOnItem {
+                    override fun onClickItem(position: Int) {
+                        sort = sortList[position].id.toString()
+                    }
 
-           })
+                })
 
             rvSort.adapter = sortAdapter
-            if (sortList.size==0) {
+            if (sortList.size == 0) {
                 getStoreSortList()
             }
 
@@ -829,12 +840,11 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             tvApply.setOnClickListener {
-                if (sort!=""){
+                if (sort != "") {
                     sortFilter = sort
                     getStoreDetail()
                     dialog.dismiss()
-                }
-                else{
+                } else {
                     showToast(getString(R.string.please_select))
                 }
 
@@ -847,7 +857,7 @@ class StoreDetailFragment : BaseFragment() {
     }
 
     private fun productFilterDialog() {
-        var category : GetCategoryResponse.Data? = null
+        var category: GetCategoryResponse.Data? = null
         var min: Int = 0
         var max: Int = 0
 
@@ -861,8 +871,7 @@ class StoreDetailFragment : BaseFragment() {
 
         val window: Window = dialog.window!!
         window.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT
+            WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT
         )
         window.setBackgroundDrawableResource(android.R.color.white)
         dialog.setCancelable(false)
@@ -877,10 +886,10 @@ class StoreDetailFragment : BaseFragment() {
             tvMaxPrice.text = "1000 ${CommonMethod.getCurrency(requireActivity())}"
 
 
-            if (selectedMaxPrice!=0) {
-                tvCentrePrice.text = "$selectedMaxPrice ${CommonMethod.getCurrency(requireActivity())}"
-            }
-            else{
+            if (selectedMaxPrice != 0) {
+                tvCentrePrice.text =
+                    "$selectedMaxPrice ${CommonMethod.getCurrency(requireActivity())}"
+            } else {
                 tvCentrePrice.text = "500 ${CommonMethod.getCurrency(requireActivity())}"
             }
 
@@ -927,65 +936,67 @@ class StoreDetailFragment : BaseFragment() {
 
 
             newColorList.clear()
-            if (colorList.size>10){
+            if (colorList.size > 10) {
                 newColorList.addAll(colorList.take(10))
-            }
-            else{
+            } else {
                 newColorList.addAll(colorList)
             }
 
-            filterColorAdapter = FilterColorAdapter(requireActivity(),newColorList,object :FilterColorAdapter.OnClick{
-                override fun onClickItem(position: Int) {
-                    colorList[position].isSelected = newColorList[position].isSelected
-                }
+            filterColorAdapter = FilterColorAdapter(
+                requireActivity(), newColorList, object : FilterColorAdapter.OnClick {
+                    override fun onClickItem(position: Int) {
+                        colorList[position].isSelected = newColorList[position].isSelected
+                    }
 
-            })
+                })
 
             rvColor.adapter = filterColorAdapter
 
-            filterBrandAdapter = FilterBrandAdapter(requireActivity(), brandList,object :FilterBrandAdapter.OnClick{
-                override fun onClickItem(position: Int) {
+            filterBrandAdapter = FilterBrandAdapter(
+                requireActivity(), brandList, object : FilterBrandAdapter.OnClick {
+                    override fun onClickItem(position: Int) {
 
-                }
+                    }
 
-            })
+                })
             rvBrand.adapter = filterBrandAdapter
 
-            filterSizeAdapter = FilterSizeAdapter(requireActivity(), sizeList,object :FilterSizeAdapter.OnClick{
-                override fun onClickItem(position: Int) {
-                }
+            filterSizeAdapter =
+                FilterSizeAdapter(requireActivity(), sizeList, object : FilterSizeAdapter.OnClick {
+                    override fun onClickItem(position: Int) {
+                    }
 
-            })
+                })
             rvSize.adapter = filterSizeAdapter
 
-            filterCategoryAdapter = FilterCategoryAdapter(requireActivity(), categoryList,object :FilterCategoryAdapter.OnClick{
-                override fun onClickItem(position: Int) {
-                    category = categoryList[position]
-                }
+            filterCategoryAdapter = FilterCategoryAdapter(
+                requireActivity(), categoryList, object : FilterCategoryAdapter.OnClick {
+                    override fun onClickItem(position: Int) {
+                        category = categoryList[position]
+                    }
 
-            })
+                })
             filterCategoryAdapter?.setSelectedCategoryId(selectedCategory?.id)
             rvCategory.adapter = filterCategoryAdapter
 
-            if(colorList.isEmpty()||sizeList.isEmpty()||brandList.isEmpty()){
+            if (colorList.isEmpty() || sizeList.isEmpty() || brandList.isEmpty()) {
                 getAllFilterList()
             }
 
             priceSlider.addOnChangeListener { slider, _, _ ->
                 val values = slider.values
 
-                 min = values[0].toInt()
-                 max = values[1].toInt()
+                min = values[0].toInt()
+                max = values[1].toInt()
 
                 tvMinPrice.text = "$min ${CommonMethod.getCurrency(requireActivity())}"
                 tvCentrePrice.text = "$max ${CommonMethod.getCurrency(requireActivity())}"
 
                 slider.post {
-                  //  moveLabel(tvMinPrice, slider, 0)
-                    if(max==0||max==1000){
+                    //  moveLabel(tvMinPrice, slider, 0)
+                    if (max == 0 || max == 1000) {
                         tvCentrePrice.isVisible = false
-                    }
-                    else{
+                    } else {
                         tvCentrePrice.isVisible = true
                     }
                     moveLabel(tvCentrePrice, slider, 1)
@@ -1041,25 +1052,25 @@ class StoreDetailFragment : BaseFragment() {
                 dialog.dismiss()
             }
 
-            tvApply.setOnClickListener{
+            tvApply.setOnClickListener {
                 selectedMaxPrice = max
-                    selectedMinPrice = min
+                selectedMinPrice = min
                 selectedCategory = category
                 selectedDeliveryTime = deliveryTime
                 selectedRating = rating
                 selectedDiscount = discount
                 selectedBrandList.clear()
-                for(i in 0 until brandList.size){
+                for (i in 0 until brandList.size) {
                     if (brandList[i].isSelected) {
                         selectedBrandList.add(brandList[i])
                     }
                 }
-                for(i in 0 until sizeList.size){
+                for (i in 0 until sizeList.size) {
                     if (sizeList[i].isSelected) {
                         selectedSizeList.add(sizeList[i])
                     }
                 }
-                for(i in 0 until colorList.size){
+                for (i in 0 until colorList.size) {
                     if (colorList[i].isSelected) {
                         selectedColorList.add(colorList[i])
                     }
@@ -1070,17 +1081,16 @@ class StoreDetailFragment : BaseFragment() {
             }
 
             tvShowMoreColor.setOnClickListener {
-                if(tvShowMoreColor.text==getString(R.string.show_more_color)){
+                if (tvShowMoreColor.text == getString(R.string.show_more_color)) {
                     newColorList.clear()
                     newColorList.addAll(colorList)
                     filterColorAdapter?.notifyDataSetChanged()
                     tvShowMoreColor.text = getString(R.string.show_less_color)
-                }
-                else{
+                } else {
                     newColorList.clear()
-                    if (colorList.size>10){
+                    if (colorList.size > 10) {
                         newColorList.addAll(colorList.take(10))
-                    }else {
+                    } else {
                         newColorList.addAll(colorList)
                     }
                     filterColorAdapter?.notifyDataSetChanged()
@@ -1095,9 +1105,8 @@ class StoreDetailFragment : BaseFragment() {
     }
 
     private fun moveLabel(label: TextView, slider: RangeSlider, index: Int) {
-        val thumbX = slider.thumbRadius * 2 +
-                (slider.width - slider.thumbRadius * 4) * slider.values[index] /
-                (slider.valueTo - slider.valueFrom)
+        val thumbX =
+            slider.thumbRadius * 2 + (slider.width - slider.thumbRadius * 4) * slider.values[index] / (slider.valueTo - slider.valueFrom)
 
         label.x = thumbX - label.width / 2f
     }
@@ -1105,8 +1114,7 @@ class StoreDetailFragment : BaseFragment() {
     private fun openSpeechDialog() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
             )
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
             putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
