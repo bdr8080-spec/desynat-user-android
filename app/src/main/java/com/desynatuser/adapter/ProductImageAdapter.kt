@@ -4,13 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemProductImageBinding
-class ProductImageAdapter(var context:Context, var productList: ArrayList<String>,var click:OnClick) : RecyclerView.Adapter<ProductImageAdapter.ViewHolder>() {
 
-    interface OnClick{
+class ProductImageAdapter(
+    var context: Context,
+    var productList: ArrayList<String>,
+    var click: OnClick
+) : RecyclerView.Adapter<ProductImageAdapter.ViewHolder>() {
+
+    interface OnClick {
         fun onClick(position: Int)
     }
 
@@ -20,7 +24,8 @@ class ProductImageAdapter(var context:Context, var productList: ArrayList<String
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemProductImageBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false)
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
     }
 
@@ -36,7 +41,8 @@ class ProductImageAdapter(var context:Context, var productList: ArrayList<String
 //                placeholder(R.drawable.ic_placeholder)
 //                error(R.drawable.ic_placeholder)
 //            }
-            Glide.with(context).load(productData).placeholder(R.drawable.ic_placeholder).into(ivProduct)
+            Glide.with(context).load(productData).placeholder(R.drawable.ic_placeholder)
+                .into(ivProduct)
 
             ivProduct.setOnClickListener {
                 click.onClick(position)

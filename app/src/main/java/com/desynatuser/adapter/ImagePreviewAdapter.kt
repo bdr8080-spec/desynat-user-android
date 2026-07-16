@@ -6,17 +6,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.databinding.ItemPreviewImageBinding
-import kotlin.div
-import kotlin.text.compareTo
-import kotlin.text.toFloat
-import kotlin.text.toInt
-import kotlin.times
 
-class ImagePreviewAdapter(var context:Context, var productList: ArrayList<String>) : RecyclerView.Adapter<ImagePreviewAdapter.ViewHolder>() {
+class ImagePreviewAdapter(
+    var context: Context,
+    var productList: ArrayList<String>,
+    val selectedImgPosition: Int = 0
+) :
+    RecyclerView.Adapter<ImagePreviewAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemPreviewImageBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -24,7 +23,8 @@ class ImagePreviewAdapter(var context:Context, var productList: ArrayList<String
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemPreviewImageBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false)
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
     }
 
@@ -36,7 +36,10 @@ class ImagePreviewAdapter(var context:Context, var productList: ArrayList<String
         val productData = productList[position]
         holder.binding.apply {
             val url = productList[position] ?: ""
-            if (url.endsWith(".mp4") || url.endsWith(".mov") ||url.endsWith(".avi") || url.endsWith(".mkv") || url.endsWith(".gif")) {
+            if (url.endsWith(".mp4") || url.endsWith(".mov") || url.endsWith(".avi") || url.endsWith(
+                    ".mkv"
+                ) || url.endsWith(".gif")
+            ) {
                 ivProduct.isVisible = false
                 videoView.isVisible = true
                 progressBar.isVisible = true
@@ -77,18 +80,20 @@ class ImagePreviewAdapter(var context:Context, var productList: ArrayList<String
 
                 videoView.setOnInfoListener { mp, what, extra ->
                     when (what) {
-                        android.media.MediaPlayer.MEDIA_INFO_BUFFERING_START -> progressBar.isVisible = true
-                        android.media.MediaPlayer.MEDIA_INFO_BUFFERING_END -> progressBar.isVisible = false
+                        android.media.MediaPlayer.MEDIA_INFO_BUFFERING_START -> progressBar.isVisible =
+                            true
+
+                        android.media.MediaPlayer.MEDIA_INFO_BUFFERING_END -> progressBar.isVisible =
+                            false
                     }
                     false
                 }
-            }
-
-            else{
+            } else {
                 ivProduct.isVisible = true
                 videoView.isVisible = false
                 ivPlay.isVisible = false
-                Glide.with(context).load(productData).placeholder(R.drawable.ic_placeholder).into(ivProduct)
+                Glide.with(context).load(productData).placeholder(R.drawable.ic_placeholder)
+                    .into(ivProduct)
             }
         }
 
