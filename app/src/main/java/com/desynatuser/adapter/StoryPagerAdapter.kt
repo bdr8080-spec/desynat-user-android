@@ -21,7 +21,7 @@ import com.desynatuser.utils.CommonMethod
 
 class StoryPagerAdapter(
     val context: Context,
-    private val stories: List<GetSellerStoryResponse.Data.SellerHighlight>,
+    private val stories: List<GetSellerStoryResponse.Data>,
     private val click: OnClick,
     private val onVideoReady: (position: Int, duration: Long) -> Unit,
     private val onVideoFinished: (Int) -> Unit
@@ -53,8 +53,11 @@ class StoryPagerAdapter(
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         holder.binding.videoStory.stopPlayback()
-        val story = stories[position]
+        val story = stories[holder.absoluteAdapterPosition]
         val url = story.file ?: ""
+
+        holder.binding.tvAd.isVisible =
+            story.sellerDetails?.storeInfo?.storeName?.isNotEmpty() == true
 
         val cleanUrl = url.substringBefore("?").lowercase()
 
@@ -213,11 +216,23 @@ class StoryPagerAdapter(
 
             val nextUrl = stories[position + 1].file ?: ""
 
-            Glide.with(holder.itemView.context)
-                .load(nextUrl)
-                .preload()
+            if (nextUrl.isNotEmpty()) {
+                Glide.with(holder.itemView.context)
+                    .load(nextUrl)
+                    .preload()
+            }
         }
-        holder.binding.tvTime.text = CommonMethod.getTimeAgo(context, story.createdAt)
+        val timeStr = story.createdAt
+        holder.binding.tvTime.text = if (!timeStr.isNullOrEmpty()) {
+            try {
+                CommonMethod.getTimeAgo(context, timeStr)
+            } catch (e: Exception) {
+                ""
+            }
+        } else {
+            ""
+        }
+        holder.binding.tvTime.isVisible = false // Hiding since we have it in the fixed header now
         if (!story.title.isNullOrEmpty() && story.title != "null") {
             holder.binding.tvTitle.isVisible = true
             holder.binding.viewTitle.isVisible = true

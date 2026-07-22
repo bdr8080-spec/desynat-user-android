@@ -16,30 +16,30 @@ data class GetSellerStoryResponse(
         @SerializedName("highlights")
         val highlights: List<SellerHighlight>? = emptyList(),
         @SerializedName("title")
-        val title: String,
+        val title: String? = "",
 
         @SerializedName("created_at")
-        val createdAt: String,
+        val createdAt: String? = "",
         @SerializedName("file")
-        val `file`: String,
+        val `file`: String? = "",
         @SerializedName("id")
         val id: Int,
         @SerializedName("is_seen")
         var isSeen: Int = 0,
         @SerializedName("seller_details")
-        val sellerDetails: SellerDetails,
+        val sellerDetails: SellerDetails? = null,
         @SerializedName("seller_id")
-        val sellerId: Int,
+        val sellerId: Int? = null,
         @SerializedName("status")
-        val status: Int,
+        val status: Int? = 0,
         @SerializedName("type")
-        val type: Int,
+        val type: Int? = 0,
         @SerializedName("updated_at")
-        val updatedAt: String,
+        val updatedAt: String? = "",
         @SerializedName("caption")
-        val caption: String,
+        val caption: String? = "",
         @SerializedName("is_whishlisted")
-        var wishlist: Int
+        var wishlist: Int? = 0
     ) {
 
         data class SellerHighlight(
@@ -51,25 +51,25 @@ data class GetSellerStoryResponse(
             val type: Int,
 
             @SerializedName("seller_id")
-            val sellerId: Int,
+            val sellerId: Int? = null,
 
             @SerializedName("file")
-            val file: String,
+            val file: String? = "",
 
             @SerializedName("title")
-            val title: String,
+            val title: String? = "",
 
             @SerializedName("status")
-            val status: Int,
+            val status: Int? = 0,
 
             @SerializedName("thumbnail")
-            val thumbnail: String?,
+            val thumbnail: String? = "",
 
             @SerializedName("created_at")
-            val createdAt: String,
+            val createdAt: String? = "",
 
             @SerializedName("updated_at")
-            val updatedAt: String,
+            val updatedAt: String? = "",
 
             @SerializedName("is_seen")
             var isSeen: Int = 0,
@@ -81,57 +81,74 @@ data class GetSellerStoryResponse(
 
         data class SellerDetails(
             @SerializedName("accept_terms")
-            val acceptTerms: String,
+            val acceptTerms: String?,
             @SerializedName("admin_verify")
-            val adminVerify: String,
+            val adminVerify: String?,
             @SerializedName("affilate_commission")
-            val affilateCommission: String,
+            val affilateCommission: String?,
             @SerializedName("bank_information")
-            val bankInformation: String,
+            val bankInformation: String?,
             @SerializedName("country_code")
-            val countryCode: String,
+            val countryCode: String?,
             @SerializedName("country_details")
-            val countryDetails: Any,
+            val countryDetails: Any?,
             @SerializedName("created_at")
-            val createdAt: String,
+            val createdAt: String?,
             @SerializedName("device_token")
-            val deviceToken: String,
+            val deviceToken: String?,
             @SerializedName("device_type")
-            val deviceType: String,
+            val deviceType: String?,
             @SerializedName("email")
-            val email: String,
+            val email: String?,
             @SerializedName("fcm_token")
-            val fcmToken: String,
+            val fcmToken: String?,
             @SerializedName("first_name")
-            val firstName: String,
+            val firstName: String?,
             @SerializedName("id")
-            val id: Int,
+            val id: Int?,
             @SerializedName("is_block")
-            val isBlock: Int,
+            val isBlock: Int?,
             @SerializedName("lang")
-            val lang: Any,
+            val lang: Any?,
             @SerializedName("last_name")
-            val lastName: String,
+            val lastName: String?,
             @SerializedName("mobile")
-            val mobile: String,
+            val mobile: String?,
             @SerializedName("otp")
-            val otp: String,
+            val otp: String?,
             @SerializedName("otp_verify")
-            val otpVerify: String,
+            val otpVerify: String?,
             @SerializedName("password")
-            val password: String,
+            val password: String?,
             @SerializedName("profile_pic")
-            val profilePic: String,
+            val profilePic: String?,
             @SerializedName("profile_qr")
-            val profileQr: String,
+            val profileQr: String?,
             @SerializedName("qrSellerUrl")
-            val qrSellerUrl: String,
+            val qrSellerUrl: String?,
             @SerializedName("reject_reason")
-            val rejectReason: Any,
+            val rejectReason: Any?,
             @SerializedName("store_information")
-            val storeInformation: String,
+            val storeInformation: String?,
             @SerializedName("updated_at")
-            val updatedAt: String
-        )
+            val updatedAt: String?,
+            @SerializedName("store_info")
+            val storeInfo: StoreInfo?
+        ) {
+            data class StoreInfo(
+                @SerializedName("id")
+                val id: Int?,
+                @SerializedName("seller_id")
+                val sellerId: Int?,
+                @SerializedName("store_image")
+                val storeImage: String?,
+                @SerializedName("store_name")
+                val storeName: String?,
+                @SerializedName("store_address")
+                val storeAddress: String?,
+                @SerializedName("bio")
+                val bio: String?
+            )
+        }
     }
 }

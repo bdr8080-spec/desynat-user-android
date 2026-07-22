@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_pink"
-    android:id="@+id/clMain"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.fragment.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_35sdp"
+        android:paddingHorizontal="@dimen/_10sdp"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.desynatuser.utils.StoryImageView
@@ -21,59 +21,59 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:src="@drawable/ic_admin_story"
-            app:layout_constraintTop_toTopOf="@+id/ivHighlightStory"
             app:layout_constraintBottom_toBottomOf="@+id/ivHighlightStory"
             app:layout_constraintEnd_toEndOf="@+id/ivHighlightStory"
-            app:layout_constraintStart_toStartOf="@+id/ivHighlightStory"/>
+            app:layout_constraintStart_toStartOf="@+id/ivHighlightStory"
+            app:layout_constraintTop_toTopOf="@+id/ivHighlightStory" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:visibility="invisible"
             android:id="@+id/ivHighlightStory"
             android:layout_width="@dimen/_42sdp"
             android:layout_height="@dimen/_42sdp"
-            app:strokeWidth="@dimen/_2sdp"
-            app:strokeColor="@color/brown"
             android:clipToOutline="true"
             android:padding="@dimen/_2sdp"
-            app:shapeAppearanceOverlay="@style/circle_image"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circle_image"
+            app:strokeColor="@color/brown"
+            app:strokeWidth="@dimen/_2sdp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDeliverTo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:ellipsize="end"
             android:fontFamily="@font/poppins_regular"
+            android:singleLine="true"
             android:text="@string/deliver_to"
+            android:textAlignment="viewStart"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textAlignment="viewStart"
-            android:layout_marginStart="@dimen/_5sdp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivChat"
-           app:layout_constraintStart_toEndOf="@+id/ivAdminStory"/>
+            app:layout_constraintStart_toEndOf="@+id/ivAdminStory"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:hint="@string/fetching_location"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:layout_marginEnd="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
             android:drawableStart="@drawable/ic_loc"
             android:drawablePadding="@dimen/_2sdp"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="@string/fetching_location"
+            android:singleLine="true"
             android:textAlignment="viewStart"
-           app:layout_constraintTop_toBottomOf="@+id/tvDeliverTo"
-           app:layout_constraintEnd_toStartOf="@+id/ivChat"
-            app:layout_constraintStart_toEndOf="@+id/ivAdminStory"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintEnd_toStartOf="@+id/ivChat"
+            app:layout_constraintStart_toEndOf="@+id/ivAdminStory"
+            app:layout_constraintTop_toBottomOf="@+id/tvDeliverTo" />
 
         <ImageView
             android:id="@+id/ivNotification"
@@ -81,44 +81,44 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_6sdp"
             android:src="@drawable/ic_notification"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="gone"
             android:id="@+id/relCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/_1sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:elevation="@dimen/_1sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/_12sdp"
                 android:layout_height="@dimen/_12sdp"
                 android:src="@drawable/circle_cart"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:shapeAppearanceOverlay="@style/circle_image"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/circle_image" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="visible"
                 android:id="@+id/tvCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_8sdp"/>
+                android:textSize="@dimen/_8sdp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -128,9 +128,9 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_6sdp"
             android:src="@drawable/ic_wishlist"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivNotification"/>
+            app:layout_constraintEnd_toStartOf="@+id/ivNotification"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivChat"
@@ -138,79 +138,79 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_6sdp"
             android:src="@drawable/chat_icon"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivWishlist"/>
+            app:layout_constraintEnd_toStartOf="@+id/ivWishlist"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="gone"
             android:id="@+id/relChatCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/_1sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginStart="-18dp"
-            app:layout_constraintTop_toTopOf="parent"
-           app:layout_constraintStart_toEndOf="@+id/ivChat">
+            android:layout_marginTop="@dimen/_5sdp"
+            android:elevation="@dimen/_1sdp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/ivChat"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/_12sdp"
                 android:layout_height="@dimen/_12sdp"
                 android:src="@drawable/circle_cart"
-                app:shapeAppearanceOverlay="@style/circle_image"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:shapeAppearanceOverlay="@style/circle_image" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="visible"
                 android:id="@+id/tvChatCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_8sdp"/>
+                android:textSize="@dimen/_8sdp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/search_back"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/search_back"
         app:layout_constraintTop_toBottomOf="@+id/relToolbar">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etSearch"
+            style="@style/edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/edit_text"
-            android:paddingVertical="@dimen/_9sdp"
-            android:layout_marginStart="1dp"
+            android:layout_centerVertical="true"
             android:layout_marginVertical="1dp"
+            android:layout_marginStart="1dp"
             android:background="@drawable/edit_search"
+            android:drawableStart="@drawable/ic_search"
             android:drawablePadding="@dimen/_5sdp"
-            android:hint="@string/search_product_or_brand"
             android:editable="false"
             android:focusable="false"
+            android:hint="@string/search_product_or_brand"
+            android:paddingVertical="@dimen/_9sdp"
             android:singleLine="true"
             android:textColorHint="@color/black"
-            android:layout_centerVertical="true"
-            android:drawableStart="@drawable/ic_search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivCamera"/>
+            app:layout_constraintEnd_toStartOf="@+id/ivCamera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivMic"
@@ -218,113 +218,113 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_mic"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
             android:background="@color/white"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_camera"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivMic"/>
+            app:layout_constraintEnd_toStartOf="@+id/ivMic"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-   <!-- <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/brown"
-        app:tabTextColor="@color/black"
-        app:tabIndicatorHeight="3dp"
-        app:layout_constraintTop_toBottomOf="@+id/relSearch"/>-->
+    <!-- <com.google.android.material.tabs.TabLayout
+         android:id="@+id/tabLayout"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:tabIndicatorColor="@color/brown"
+         app:tabTextColor="@color/black"
+         app:tabIndicatorHeight="3dp"
+         app:layout_constraintTop_toBottomOf="@+id/relSearch"/>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginHorizontal="@dimen/_15sdp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/relSearch">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:enabled="false"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
             android:text="@string/men"
             android:textColor="@color/white"
-            android:enabled="false"
             android:textSize="@dimen/_12sdp"
-            android:gravity="center"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginTop="@dimen/_15sdp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvWomen"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:visibility="invisible"
             android:id="@+id/viewMen"
             android:layout_width="0dp"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/brown"
-            app:layout_constraintTop_toBottomOf="@+id/tvMen"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/tvMen"
             app:layout_constraintStart_toStartOf="@+id/tvMen"
-            app:layout_constraintEnd_toEndOf="@+id/tvMen"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvMen" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvWomen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:enabled="false"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
             android:text="@string/women"
             android:textColor="#E6E6E6"
-            android:enabled="false"
             android:textSize="@dimen/_12sdp"
-            android:gravity="center"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:fontFamily="@font/poppins_medium"
-            app:layout_constraintStart_toEndOf="@+id/tvMen"
             app:layout_constraintEnd_toStartOf="@+id/tvKids"
-            app:layout_constraintTop_toTopOf="@+id/tvMen"/>
+            app:layout_constraintStart_toEndOf="@+id/tvMen"
+            app:layout_constraintTop_toTopOf="@+id/tvMen" />
 
         <View
-            android:visibility="invisible"
             android:id="@+id/viewWomen"
             android:layout_width="0dp"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/brown"
-            app:layout_constraintTop_toBottomOf="@+id/tvWomen"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/tvWomen"
             app:layout_constraintStart_toStartOf="@+id/tvWomen"
-            app:layout_constraintEnd_toEndOf="@+id/tvWomen"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvWomen" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvKids"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
             android:text="@string/kids"
             android:textColor="#E6E6E6"
-            android:enabled="false"
             android:textSize="@dimen/_12sdp"
-            android:gravity="center"
-            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvWomen"
-            app:layout_constraintTop_toTopOf="@+id/tvWomen"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="@+id/tvWomen" />
 
         <View
-            android:visibility="invisible"
             android:id="@+id/viewKids"
             android:layout_width="0dp"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/brown"
-            app:layout_constraintTop_toBottomOf="@+id/tvKids"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/tvKids"
             app:layout_constraintStart_toStartOf="@+id/tvKids"
-            app:layout_constraintEnd_toEndOf="@+id/tvKids"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvKids" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -333,7 +333,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_20sdp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/llTab"/>
+        app:layout_constraintTop_toBottomOf="@+id/llTab" />
 
     <!--<androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -348,8 +348,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -366,337 +366,337 @@
                 android:id="@+id/dotsIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
                 app:tabBackground="@drawable/tab_selector"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp"
-                app:tabPaddingEnd="@dimen/_5sdp"
-                android:layout_gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:tabPaddingEnd="@dimen/_5sdp" />
 
-<!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-<!--                android:id="@+id/dotsIndicator"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:dotsColor="#1A000000"-->
-<!--                app:dotsCornerRadius="5dp"-->
-<!--                app:dotsSize="10dp"-->
-<!--                app:dotsSpacing="3dp"-->
-<!--                app:dotsWidthFactor="2.2"-->
-<!--                app:selectedDotColor="@color/black"-->
-<!--                android:layout_gravity="center_horizontal"/>-->
+            <!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+            <!--                android:id="@+id/dotsIndicator"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:dotsColor="#1A000000"-->
+            <!--                app:dotsCornerRadius="5dp"-->
+            <!--                app:dotsSize="10dp"-->
+            <!--                app:dotsSpacing="3dp"-->
+            <!--                app:dotsWidthFactor="2.2"-->
+            <!--                app:selectedDotColor="@color/black"-->
+            <!--                android:layout_gravity="center_horizontal"/>-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="@string/categories"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_categories"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_15sdp"
-                tools:itemCount="6"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+                tools:itemCount="6"
+                tools:listitem="@layout/item_categories" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
                 android:id="@+id/tvNoCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_category_found"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingVertical="@dimen/_30sdp" />
+                android:paddingVertical="@dimen/_30sdp"
+                android:text="@string/no_category_found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FAFAFA">
+                android:background="#FAFAFA"
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/suggested_stores"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_10sdp" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/suggested_stores"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSuggestedStore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_suggested_store"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                tools:itemCount="10"
-                app:spanCount="5"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSuggestedStore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="5"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_suggested_store" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
-                android:id="@+id/tvNoSuggested"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_suggested_store_found"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_regular"
-                android:paddingVertical="@dimen/_30sdp" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNoSuggested"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:paddingVertical="@dimen/_30sdp"
+                    android:text="@string/no_suggested_store_found"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#FAFAFA"
-            android:layout_marginTop="@dimen/_10sdp">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/best_selling"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_10sdp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvBestSelling"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_top_rated"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                tools:itemCount="10"
-                app:spanCount="5"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="#FAFAFA"
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="visible"
-                android:id="@+id/tvNoBestSelling"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_best_selling_product_found"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_regular"
-                android:paddingVertical="@dimen/_30sdp" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/best_selling"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
 
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBestSelling"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:spanCount="5"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_top_rated" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNoBestSelling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:paddingVertical="@dimen/_30sdp"
+                    android:text="@string/no_best_selling_product_found"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvBrowseSomePremium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="@string/browse_some_premium_stores"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_15sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerPremium"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_3sdp" />
 
-<!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-<!--                android:id="@+id/dotsIndicatorPremium"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:dotsColor="#1A000000"-->
-<!--                app:dotsCornerRadius="5dp"-->
-<!--                app:dotsSize="10dp"-->
-<!--                app:dotsSpacing="3dp"-->
-<!--                app:dotsWidthFactor="2.2"-->
-<!--                app:selectedDotColor="@color/black"-->
-<!--                app:progressMode="true"-->
-<!--                android:layout_gravity="center_horizontal"/>-->
+            <!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+            <!--                android:id="@+id/dotsIndicatorPremium"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:dotsColor="#1A000000"-->
+            <!--                app:dotsCornerRadius="5dp"-->
+            <!--                app:dotsSize="10dp"-->
+            <!--                app:dotsSpacing="3dp"-->
+            <!--                app:dotsWidthFactor="2.2"-->
+            <!--                app:selectedDotColor="@color/black"-->
+            <!--                app:progressMode="true"-->
+            <!--                android:layout_gravity="center_horizontal"/>-->
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/dotsIndicatorPremium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
                 app:tabBackground="@drawable/tab_selector"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp"
-                app:tabPaddingEnd="@dimen/_5sdp"
-                android:layout_gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:tabPaddingEnd="@dimen/_5sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="@string/top_rated"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTopRated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_top_rated"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_15sdp"
-                tools:itemCount="10"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_top_rated" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="visible"
                 android:id="@+id/tvNoTopRated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_top_rated_product_found"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingVertical="@dimen/_30sdp" />
+                android:paddingVertical="@dimen/_30sdp"
+                android:text="@string/no_top_rated_product_found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="visible" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvDealDiscounted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="@string/browse_some_discounted_deals"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_15sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerDiscountedDeals"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_3sdp" />
 
-<!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-<!--                android:id="@+id/dotsIndicatorDiscountedDeals"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:dotsColor="#1A000000"-->
-<!--                app:dotsCornerRadius="5dp"-->
-<!--                app:dotsSize="10dp"-->
-<!--                app:dotsSpacing="3dp"-->
-<!--                app:dotsWidthFactor="2.2"-->
-<!--                app:selectedDotColor="@color/black"-->
-<!--                app:progressMode="true"-->
-<!--                android:layout_gravity="center_horizontal"/>-->
+            <!--            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+            <!--                android:id="@+id/dotsIndicatorDiscountedDeals"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:dotsColor="#1A000000"-->
+            <!--                app:dotsCornerRadius="5dp"-->
+            <!--                app:dotsSize="10dp"-->
+            <!--                app:dotsSpacing="3dp"-->
+            <!--                app:dotsWidthFactor="2.2"-->
+            <!--                app:selectedDotColor="@color/black"-->
+            <!--                app:progressMode="true"-->
+            <!--                android:layout_gravity="center_horizontal"/>-->
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/dotsIndicatorDiscountedDeals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager"
                 app:tabBackground="@drawable/tab_selector"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp"
-                app:tabPaddingEnd="@dimen/_5sdp"
-                android:layout_gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:tabPaddingEnd="@dimen/_5sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="@string/newest_products"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvNewestProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_newest_product"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_15sdp"
-                tools:itemCount="6"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+                tools:itemCount="6"
+                tools:listitem="@layout/item_newest_product" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="visible"
                 android:id="@+id/tvNoNewest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_newest_product_found"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingVertical="@dimen/_30sdp" />
+                android:paddingVertical="@dimen/_30sdp"
+                android:text="@string/no_newest_product_found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="visible" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:indeterminate="true"
-        android:indeterminateTint="@color/brown" />
+        android:indeterminateTint="@color/brown"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:visibility="gone"
         android:id="@+id/ivSupportBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_support_bot"
-        android:layout_marginBottom="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:src="@drawable/ic_support_bot"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

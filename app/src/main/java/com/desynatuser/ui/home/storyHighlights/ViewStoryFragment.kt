@@ -2,6 +2,7 @@ package com.desynatuser.ui.home.storyHighlights
 
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +12,15 @@ import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.desynatuser.R
 import com.desynatuser.adapter.StoryPagerAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentViewStoryBinding
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
+import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -26,23 +28,18 @@ import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
-import me.leolin.shortcutbadger.ShortcutBadger
-import kotlin.collections.get
-import kotlin.compareTo
-import kotlin.getValue
-import kotlin.toString
 
 @AndroidEntryPoint
 class ViewStoryFragment : BaseFragment() {
-    private var binding : FragmentViewStoryBinding?=null
+    private var binding: FragmentViewStoryBinding? = null
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
-    private val myStories = ArrayList<GetSellerStoryResponse.Data.SellerHighlight>()
+    private val myStories = ArrayList<GetSellerStoryResponse.Data>()
 
     private val progressBars = ArrayList<ProgressBar>()
-    private var storyPagerAdapter: StoryPagerAdapter?=null
+    private var storyPagerAdapter: StoryPagerAdapter? = null
     private var from = "admin"
-    private var sellerId: String=""
+    private var sellerId: String = ""
 
     private var progressAnimator: ValueAnimator? = null
 
@@ -52,7 +49,7 @@ class ViewStoryFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentViewStoryBinding.inflate(layoutInflater, container,false)
+        binding = FragmentViewStoryBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -67,19 +64,28 @@ class ViewStoryFragment : BaseFragment() {
 
 
         from = arguments?.getString("from").toString()
+        Log.d("StoryFragment", "from = $from")
+
         val json = arguments?.getString("storyData")
+        Log.d("StoryFragment", "json = $json")
 
         if (!json.isNullOrEmpty()) {
 
             val type = object : TypeToken<ArrayList<GetSellerStoryResponse.Data>>() {}.type
+            Log.d("StoryFragment", "type = $type")
 
             val storyList: ArrayList<GetSellerStoryResponse.Data> =
                 Gson().fromJson(json, type)
 
+            Log.d("StoryFragment", "storyList size = ${storyList.size}")
+            Log.d("StoryFragment", "storyList = ${Gson().toJson(storyList)}")
+
             flattenStories(storyList)
         }
-        if (from!="admin"){
+
+        if (from != "admin") {
             sellerId = arguments?.getString("sellerId").toString()
+            Log.d("StoryFragment", "sellerId = $sellerId")
         }
 //        when(from){
 //            "admin"->getAdminStory()
@@ -164,16 +170,16 @@ class ViewStoryFragment : BaseFragment() {
     }
 
 
-    private fun getAdminStory(){
+    private fun getAdminStory() {
         val map = HashMap<String, Any>()
         viewModel.getAdminStory(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
 
-    private fun getSellerStory(){
+    private fun getSellerStory() {
         val map = HashMap<String, Any>()
-        map["seller_id"]= sellerId
+        map["seller_id"] = sellerId
         if (!Constants.isGuest) {
             map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
         }
@@ -183,17 +189,17 @@ class ViewStoryFragment : BaseFragment() {
         isObserver = true
     }
 
-    private fun getSellerReel(){
+    private fun getSellerReel() {
         val map = HashMap<String, Any>()
-        map["seller_id"]= sellerId
+        map["seller_id"] = sellerId
         viewModel.getSellerReel(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
     }
 
-    private fun getSellerHighlights(){
+    private fun getSellerHighlights() {
         val map = HashMap<String, Any>()
-        map["seller_id"]= sellerId
+        map["seller_id"] = sellerId
         viewModel.getSellerHighlights(map)
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isObserver = true
@@ -209,6 +215,7 @@ class ViewStoryFragment : BaseFragment() {
                 .takeIf { it != -1 } ?: 0
 
             binding?.viewPager?.setCurrentItem(startPosition, false)
+            updateHeader(startPosition)
 
             val story = myStories[startPosition]
 
@@ -227,7 +234,8 @@ class ViewStoryFragment : BaseFragment() {
 
     private fun setupAdapter() {
 
-        storyPagerAdapter = StoryPagerAdapter(requireActivity(),
+        storyPagerAdapter = StoryPagerAdapter(
+            requireActivity(),
             myStories,
             object : StoryPagerAdapter.OnClick {
 
@@ -299,6 +307,7 @@ class ViewStoryFragment : BaseFragment() {
                     super.onPageSelected(position)
 
                     stopProgress()
+                    updateHeader(position)
 
                     progressBars.forEachIndexed { index, progressBar ->
                         progressBar.progress = if (index < position) 100 else 0
@@ -315,6 +324,39 @@ class ViewStoryFragment : BaseFragment() {
                 }
             }
         )
+    }
+
+    private fun updateHeader(position: Int) {
+        if (position < 0 || position >= myStories.size) return
+        val story = myStories[position]
+        binding?.apply {
+            val sellerDetails = story.sellerDetails
+            val storeInfo = sellerDetails?.storeInfo
+
+            if (storeInfo != null) {
+                tvName.text = storeInfo.storeName ?: "Admin"
+
+                Glide.with(requireActivity())
+                    .load(storeInfo.storeImage)
+                    .placeholder(R.mipmap.ic_launcher_app)
+                    .error(R.mipmap.ic_launcher_app)
+                    .into(ivProfile)
+            } else {
+                tvName.text = "Admin"
+                ivProfile.setImageResource(R.mipmap.ic_launcher_app)
+            }
+
+            val timeStr = story.createdAt
+            tvTime.text = if (!timeStr.isNullOrEmpty()) {
+                try {
+                    CommonMethod.getTimeAgo(requireContext(), timeStr)
+                } catch (e: Exception) {
+                    ""
+                }
+            } else {
+                ""
+            }
+        }
     }
 
 
@@ -362,7 +404,7 @@ class ViewStoryFragment : BaseFragment() {
         stopProgress()
 
         progressAnimator = ValueAnimator.ofInt(0, 100).apply {
-         //   this.duration = duration
+            //   this.duration = duration
 
             val safeDuration = if (duration > 0) duration else 5000L
 
@@ -436,7 +478,7 @@ class ViewStoryFragment : BaseFragment() {
         binding = null
     }
 
-    private fun seeStory(id: String){
+    private fun seeStory(id: String) {
         val map = HashMap<String, Any>()
         map["story_id"] = id
         map["type"] = 1
@@ -447,8 +489,25 @@ class ViewStoryFragment : BaseFragment() {
     private fun flattenStories(list: List<GetSellerStoryResponse.Data>) {
         myStories.clear()
         list.forEach { data ->
-            data.highlights?.let {
-                myStories.addAll(it)
+            if (data.highlights.isNullOrEmpty()) {
+                myStories.add(data)
+            } else {
+                data.highlights?.forEach { highlight ->
+                    val newData = data.copy(
+                        id = highlight.id,
+                        type = highlight.type,
+                        sellerId = highlight.sellerId,
+                        file = highlight.file,
+                        title = highlight.title,
+                        status = highlight.status,
+                        createdAt = highlight.createdAt,
+                        updatedAt = highlight.updatedAt,
+                        isSeen = highlight.isSeen,
+                        caption = highlight.caption ?: "",
+                        highlights = null
+                    )
+                    myStories.add(newData)
+                }
             }
         }
     }

@@ -151,8 +151,8 @@ class HomeFragment : BaseFragment() {
     var selectedPos = -1
     var selectedType = 0
 
-    private var countryList= ArrayList<GetCountryResponse.Data>()
-    private var currencyList= ArrayList<GetCountryResponse.Data>()
+    private var countryList = ArrayList<GetCountryResponse.Data>()
+    private var currencyList = ArrayList<GetCountryResponse.Data>()
 
     private var scrollYPosition = 0
 
@@ -178,10 +178,9 @@ class HomeFragment : BaseFragment() {
         Constants.language = SharedPreference.get(requireActivity()).language
         getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
-        if (SharedPreference.get(requireActivity()).getCurrencyList()?.isEmpty() == true){
+        if (SharedPreference.get(requireActivity()).getCurrencyList()?.isEmpty() == true) {
             getCurrencyList()
-        }
-        else{
+        } else {
             getCurrency()
         }
         binding?.apply {
@@ -458,16 +457,16 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getCurrency() {
-            val data = SharedPreference.get(requireActivity()).getCurrencyList()
-            currencyList.clear()
-            data?.let { currencyList.addAll(it) }
-            for (i in 0 until currencyList.size) {
-                if (currencyList[i].id.toString() == user?.selectedCurrency) {
-                    getCurrencyData(currencyList[i].currencyCode)
-                    break
-                }
-
+        val data = SharedPreference.get(requireActivity()).getCurrencyList()
+        currencyList.clear()
+        data?.let { currencyList.addAll(it) }
+        for (i in 0 until currencyList.size) {
+            if (currencyList[i].id.toString() == user?.selectedCurrency) {
+                getCurrencyData(currencyList[i].currencyCode)
+                break
             }
+
+        }
 
     }
 
@@ -482,6 +481,7 @@ class HomeFragment : BaseFragment() {
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
         isCountryObserver = true
     }
+
     override fun initControl() {
         binding?.apply {
             tvLocation.setOnClickListener {
@@ -553,7 +553,7 @@ class HomeFragment : BaseFragment() {
             }
 
             tvWomen.setOnClickListener {
-                if (Constants.Category=="Women") return@setOnClickListener
+                if (Constants.Category == "Women") return@setOnClickListener
                 Constants.Category = "Women"
                 viewWomen.isVisible = true
                 viewMen.isInvisible = true
@@ -563,7 +563,7 @@ class HomeFragment : BaseFragment() {
             }
 
             tvMen.setOnClickListener {
-                if (Constants.Category=="Men") return@setOnClickListener
+                if (Constants.Category == "Men") return@setOnClickListener
                 Constants.Category = "Men"
                 viewMen.isVisible = true
                 viewWomen.isInvisible = true
@@ -573,7 +573,7 @@ class HomeFragment : BaseFragment() {
             }
 
             tvKids.setOnClickListener {
-                if (Constants.Category=="Kids") return@setOnClickListener
+                if (Constants.Category == "Kids") return@setOnClickListener
                 Constants.Category = "Kids"
                 viewKids.isVisible = true
                 viewMen.isInvisible = true
@@ -583,7 +583,7 @@ class HomeFragment : BaseFragment() {
             }
 
             ivAdminStory.setOnClickListener {
-                if (myStories.size != 0) {
+                if (myStories.isNotEmpty()) {
                     val bundle = Bundle().apply {
                         putString("from", "admin")
                         putString("storyData", Gson().toJson(myStories))
@@ -602,7 +602,7 @@ class HomeFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver || isNotificationObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-              //  errorMessage?.let { showToast(it) }
+                //  errorMessage?.let { showToast(it) }
                 binding?.clMain?.isVisible = true
                 binding?.progressBar?.isVisible = false
 //                isObserver = false
@@ -618,16 +618,15 @@ class HomeFragment : BaseFragment() {
                     countryList.clear()
                     response.data?.let { countryList.addAll(it) }
                     for (i in 0 until countryList.size) {
-                        if (SharedPreference.get(requireActivity()).affiliateAccessToken!=""){
+                        if (SharedPreference.get(requireActivity()).affiliateAccessToken != "") {
 
                             if (countryList[i].id.toString() == user?.selectedCurrency) {
                                 getCurrencyData(countryList[i].currencyCode)
                                 break
                             }
-                        }
-                        else{
+                        } else {
                             if (countryList[i].id.toString() == user?.selectedCurrency) {
-                               getCurrencyData(countryList[i].currencyCode)
+                                getCurrencyData(countryList[i].currencyCode)
 
                                 break
                             }
@@ -641,14 +640,14 @@ class HomeFragment : BaseFragment() {
 
         viewModel.getCurrencyListResult.observe(viewLifecycleOwner) { response ->
 
-                response?.let {
-                    currencyList.clear()
-                    response.data?.let { currencyList.addAll(it) }
-                    SharedPreference.get(requireActivity()).saveCurrencyList(currencyList)
-                    getCurrency()
+            response?.let {
+                currencyList.clear()
+                response.data?.let { currencyList.addAll(it) }
+                SharedPreference.get(requireActivity()).saveCurrencyList(currencyList)
+                getCurrency()
 
-                }
-                isObserver = false
+            }
+            isObserver = false
 
         }
 
@@ -922,15 +921,14 @@ class HomeFragment : BaseFragment() {
             tvKids.isEnabled = false
             tvKids.isInvisible = true
             tvKids.setTextColor(Color.parseColor("#E6E6E6"))
-            for (i in 0 until mainCategoryList.size){
-                if (mainCategoryList[i].name=="Men"){
-                    if (mainCategoryList[i].status=="1"){
+            for (i in 0 until mainCategoryList.size) {
+                if (mainCategoryList[i].name == "Men") {
+                    if (mainCategoryList[i].status == "1") {
                         tvMen.isVisible = true
                         tvMen.isEnabled = true
                         tvMen.setTextColor(Color.parseColor("#000000"))
 
-                    }
-                    else{
+                    } else {
                         tvMen.isInvisible = true
                         tvMen.isEnabled = false
                         tvMen.setTextColor(Color.parseColor("#E6E6E6"))
@@ -938,27 +936,25 @@ class HomeFragment : BaseFragment() {
 
 
                 }
-                if (mainCategoryList[i].name=="Women"){
-                    if (mainCategoryList[i].status=="1"){
+                if (mainCategoryList[i].name == "Women") {
+                    if (mainCategoryList[i].status == "1") {
                         tvWomen.isEnabled = true
                         tvWomen.isVisible = true
                         tvWomen.setTextColor(Color.parseColor("#000000"))
 
-                    }
-                    else{
+                    } else {
                         tvWomen.isEnabled = false
                         tvWomen.isInvisible = true
                         tvWomen.setTextColor(Color.parseColor("#E6E6E6"))
                     }
                 }
-                if (mainCategoryList[i].name=="Kids"){
-                    if (mainCategoryList[i].status=="1"){
+                if (mainCategoryList[i].name == "Kids") {
+                    if (mainCategoryList[i].status == "1") {
                         tvKids.isEnabled = true
                         tvKids.isVisible = true
                         tvKids.setTextColor(Color.parseColor("#000000"))
 
-                    }
-                    else{
+                    } else {
                         tvKids.isEnabled = false
                         tvKids.isInvisible = true
                         tvKids.setTextColor(Color.parseColor("#E6E6E6"))
@@ -970,7 +966,7 @@ class HomeFragment : BaseFragment() {
 
     private fun setAdminStory() {
         binding?.apply {
-            if (myStories.size!=0){
+            if (myStories.isNotEmpty()) {
                 binding?.ivHighlightStory?.isVisible = true
                 val allStoriesSeen = myStories?.all { it.isSeen == 1 } == true
                 binding?.ivHighlightStory?.strokeColor = ColorStateList.valueOf(
@@ -983,8 +979,7 @@ class HomeFragment : BaseFragment() {
                         }
                     )
                 )
-            }
-            else{
+            } else {
                 binding?.ivHighlightStory?.isInvisible = true
             }
         }
@@ -995,8 +990,7 @@ class HomeFragment : BaseFragment() {
         val map = HashMap<String, Any>()
         if (!Constants.isGuest) {
             map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
-        }
-        else{
+        } else {
             map["user-user_id"] = "null"
         }
         viewModel.getAdminStory(map)
@@ -1126,19 +1120,20 @@ class HomeFragment : BaseFragment() {
         autoChangeJob = viewLifecycleOwner.lifecycleScope.launch {
 
             while (isActive) {
-                isSuggestedStoreObserver=true
+                isSuggestedStoreObserver = true
                 delay(5000)
 
                 viewModel.getSuggestedStore()
+            }
         }
     }
-        }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         autoChangeJob?.cancel()
     }
+
     private fun getBestSellingProduct() {
         viewModel.getBestSellingProduct()
         isBestSellingObserver = true
@@ -1381,7 +1376,7 @@ class HomeFragment : BaseFragment() {
     }
 
     fun getCurrencyData(code: String) {
-        Log.e("currency",code)
+        Log.e("currency", code)
         Constants.CURRENCY = if (code == "KWD") "KD" else code
     }
 
