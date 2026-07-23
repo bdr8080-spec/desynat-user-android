@@ -786,5 +786,8 @@
     <string name="write_review">اكتب مراجعة</string>
     <string name="rate_store">قيّم المتجر</string>
     <string name="rate">قيّم</string>
-
+    <string name="select_reason">اختر السبب</string>
+    <string name="select_available_size">اختر المقاس المتوفر</string>
+    <string name="return_request">طلب إرجاع</string>
+    <string name="upload_image_optional">رفع صورة (اختياري)</string>
 </resources>

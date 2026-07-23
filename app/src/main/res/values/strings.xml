@@ -784,6 +784,10 @@
     <string name="write_review">Write Review</string>
  <string name="rate_store">Rate Store</string>
  <string name="rate">Rate</string>
+    <string name="select_reason">Select Reason</string>
+ <string name="select_available_size">Select Available Size</string>
+ <string name="return_request">Return Request</string>
+ <string name="upload_image_optional">Upload Image (optional)</string>
 
 
  <array name="initial_price_values">

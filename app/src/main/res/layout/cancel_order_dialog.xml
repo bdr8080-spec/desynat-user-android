@@ -7,21 +7,36 @@
     android:background="@drawable/bottom_sheet"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvToolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/_15sdp"
-        android:paddingHorizontal="@dimen/_15sdp"
-        android:background="@drawable/bottom_sheet"
-        android:backgroundTint="#FFF7EA"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Select Reason"
-        android:textColor="@color/black"
-        android:drawableEnd="@drawable/close_icon"
-        android:textSize="@dimen/_13sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:backgroundTint="#FFF9ED"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/half_rounded_corner"
+        android:padding="20dp"
+        android:id="@+id/tvToolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/select_reason"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:id="@+id/title"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/title"
+            app:layout_constraintBottom_toBottomOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/close_icon"
+            android:id="@+id/closeIv"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +48,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/edit_text_title"
             android:layout_marginTop="16sp"
-            android:text="Select Reason"
+            android:text="@string/select_reason"
             android:textSize="@dimen/_12sdp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,7 +85,7 @@
             android:textSize="@dimen/_10sdp"
             android:inputType="textMultiLine"
             android:background="@drawable/edit_back"
-            android:hint="Write Here"
+            android:hint="@string/write_here"
             android:gravity="start"/>
 
     <TextView
@@ -79,7 +94,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_gradient"
         android:gravity="center"
-        android:text="Submit"
+        android:text="@string/submit"
         android:layout_marginTop="@dimen/_15sdp"
         android:fontFamily="@font/poppins_medium"
         android:paddingVertical="@dimen/_8sdp"

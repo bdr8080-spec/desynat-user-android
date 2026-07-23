@@ -8,6 +8,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemReasonBinding
 import com.desynatuser.ui.home.myOrder.response.GetReasonListResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
+import com.desynatuser.utils.Constants
 
 class ReasonAdapter(var context:Context, var reasonList: ArrayList<GetReasonListResponse.Data>, var onClick: OnClick) : RecyclerView.Adapter<ReasonAdapter.ViewHolder>() {
     var isSelected = -1
@@ -29,7 +30,7 @@ class ReasonAdapter(var context:Context, var reasonList: ArrayList<GetReasonList
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
 
-            tvReason.text = reasonList[position].reasonEnglish
+            tvReason.text = if (Constants.language=="ar") reasonList[position].reasonArabic else reasonList[position].reasonEnglish
 
             if (isSelected==position){
                 ivImage.setImageResource(R.drawable.ic_radio_selected)
