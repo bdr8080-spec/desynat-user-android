@@ -9,19 +9,36 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvToolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/_15sdp"
-        android:paddingHorizontal="@dimen/_15sdp"
+        android:backgroundTint="#FFF9ED"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/half_rounded_corner"
-        android:backgroundTint="#FFF7EA"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Rate this product"
-        android:textColor="@color/black"
-        android:drawableEnd="@drawable/close_icon"
-        android:textSize="@dimen/_13sdp"/>
+        android:padding="20dp"
+        android:id="@+id/tvToolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/rate_this_product"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:id="@+id/title"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/title"
+            app:layout_constraintBottom_toBottomOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/close_icon"
+            android:id="@+id/closeIv"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -62,13 +79,13 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:singleLine="true"
-        android:text="Write Review"
+        android:text="@string/write_review"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_15sdp"
         android:textSize="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_15sdp" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
@@ -77,12 +94,14 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etProductReview"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         style="@style/edit_text"
-        android:hint="Write Here"
+        android:hint="@string/write_here"
         android:inputType="textCapSentences"
         android:background="@null"
-        android:layout_toLeftOf="@+id/ivPickProduct"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivPickProduct"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPickProduct"
@@ -90,30 +109,33 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attachment"
             android:padding="@dimen/_10sdp"
+            android:layout_marginTop="5dp"
             android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:visibility="visible"
             android:id="@+id/rvProductReview"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etProductReview"
+            app:layout_constraintTop_toBottomOf="@+id/etProductReview"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/_10sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             tools:itemCount="3"
-            android:layout_toLeftOf="@+id/ivPickProduct"
+           app:layout_constraintEnd_toStartOf="@+id/ivPickProduct"
             tools:listitem="@layout/item_review"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:singleLine="true"
-        android:text="Rate Store"
+        android:text="@string/rate_store"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_15sdp"
         android:textSize="@dimen/_12sdp"
@@ -137,13 +159,13 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:singleLine="true"
-        android:text="Write Review"
+        android:text="@string/write_review"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/_15sdp"
         android:textSize="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_15sdp" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
@@ -152,12 +174,14 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etStoreReview"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             style="@style/edit_text"
-            android:hint="Write Here"
+            android:hint="@string/write_here"
             android:inputType="textCapSentences"
             android:background="@null"
-            android:layout_toLeftOf="@+id/ivPickStore"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivPickStore"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPickStore"
@@ -165,21 +189,24 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_attachment"
             android:padding="@dimen/_10sdp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvStoreReview"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etStoreReview"
+            app:layout_constraintTop_toBottomOf="@+id/etStoreReview"
             android:layout_marginStart="@dimen/_10sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
-            android:layout_toLeftOf="@+id/ivPickStore"
-            tools:listitem="@layout/item_review"/>
+            app:layout_constraintEnd_toStartOf="@+id/ivPickStore"
+            tools:listitem="@layout/item_review"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:visibility="gone"

@@ -69,6 +69,7 @@ class OrderPaymentFragment : BaseFragment() {
     private var paymetMehod = ""
     private var walletBalance = 0.0
     private var transactionId :String?=null
+    private var agoraPaymentId :String?=null
     private var giftCardData : BuyGiftCardResponse.Data?=null
     private var applyGiftCard : ApplyGiftCardResponse.Data?=null
     private var cartData : GetCartResponse.Data?=null
@@ -347,7 +348,7 @@ class OrderPaymentFragment : BaseFragment() {
         map["order_id"] = orderPlacedResponse?.orderId.toString()
         map["Payment_method"] = paymetMehod//1 myfatoorah 2 wallet 3 Cod
         map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
-        map["payment_id"] = "1"  // avoga payment id
+        map["payment_id"] = agoraPaymentId.toString()  // agora payment id
         if (transactionId!=null){
             map["transaction_id"] = transactionId.toString()
         }
@@ -428,53 +429,6 @@ class OrderPaymentFragment : BaseFragment() {
                 boxShadow = MFBoxShadow(10, 10, 5, 0, requireActivity().getColor(R.color.white))
             )
         )
-    }
-
-    private fun executeEmbeddedPayment() {
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
-        val request = MFExecutePaymentRequest(totalAmount).apply {
-            customerReference = if (from=="gift"){giftCardData?.orderId} else {orderPlacedResponse?.orderId}
-        }
-        binding?.mfPaymentView?.validate { result: MFResult<String> ->
-            when (result) {
-                is MFResult.Success -> {
-                    Log.d("executeEmbeddedPayment123", "Response: " + Gson().toJson(result.response))
-                    ProgressDialogUtils.getInstance().hideProgress()
-                    binding?.mfPaymentView?.pay(
-                        requireActivity(),
-                        request,
-                        MFAPILanguage.EN,
-                        onInvoiceCreated = { Log.d("executeEmbeddedPayment", "invoiceId: $it") })
-                    { invoiceId: String, result: MFResult<MFGetPaymentStatusResponse> ->
-                        when (result) {
-                            is MFResult.Success -> {
-                                Log.d("executeEmbeddedPayment", "Response: " + Gson().toJson(result.response))
-                                val paymentData =  result.response
-                                paymentData.invoiceTransactions?.get(0)?.let {
-                                    createOrder()
-                                }
-                            }
-                            is MFResult.Fail -> {
-                                result.error.message?.let { showToast(it) }
-                                Log.d("executeEmbeddedPayment", "Fail: " + Gson().toJson(result.error))
-                            }
-
-                            MFResult.Loading -> {
-                            }
-                        }
-                    }
-                }
-                is MFResult.Fail -> {
-                    Log.d("executeEmbeddedPayment123", "Fail: " + Gson().toJson(result.error))
-                    ProgressDialogUtils.getInstance().hideProgress()
-                    result.error.message?.let { showToast(it) }
-                }
-
-                MFResult.Loading -> {
-
-                }
-            }
-        }
     }
 
     private fun initiateSession(){
@@ -575,35 +529,6 @@ class OrderPaymentFragment : BaseFragment() {
         }
     }
 
-/*
-    private fun startPayment(paymentMethodId: Int) {
-
-        val amount = cartData?.totalAmount?.toDouble() ?: 0.0
-        ProgressDialogUtils.getInstance().showProgress(requireActivity())
-
-        val request = MFExecutePaymentRequest(paymentMethodId, amount)
-
-        MFSDK.executePayment(requireActivity(), request, MFAPILanguage.EN) { invoiceId, result ->
-
-            ProgressDialogUtils.getInstance().hideProgress()
-
-            when (result) {
-                is MFResult.Success -> {
-                    val status = result.response
-
-                    status.invoiceTransactions?.getOrNull(0)?.let {
-                        orderPayment()
-                    }
-                }
-                is MFResult.Fail -> {
-                    result.error.message?.let { showToast(it) }
-                    Log.e("HostedPayment", "Error: ${Gson().toJson(result.error)}")
-                }
-                MFResult.Loading -> {}
-            }
-        }
-    }
-*/
 
     private fun initiateGooglePaySession() {
         ProgressDialogUtils.getInstance().showProgress(requireActivity())
@@ -735,6 +660,7 @@ class OrderPaymentFragment : BaseFragment() {
                         Log.d("executeRedirectPayment", "Success: ${Gson().toJson(result.response)}")
                         val paymentData =  result.response
                         transactionId =  paymentData.invoiceTransactions?.get(0)?.transactionId
+                        agoraPaymentId =  paymentData.invoiceTransactions?.get(0)?.paymentId
                         if (from=="chat"){
                             customOrderApplyGiftCard()
                         }

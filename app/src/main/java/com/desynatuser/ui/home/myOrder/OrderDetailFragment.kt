@@ -801,6 +801,9 @@ class OrderDetailFragment : BaseFragment() {
 
         dialogBinding.apply {
 
+            tvProduct.text = getString(R.string.rate)+" " +if (Constants.language=="ar") orderData?.productDetails?.productNameAr else orderData?.productDetails?.productNameEn
+
+
             productReviewAdapter = ProductReviewAdapter(requireActivity(),productReviewImage,object :ProductReviewAdapter.Click{
                 override fun onClick(position: Int) {
                     productReviewImage.removeAt(position)

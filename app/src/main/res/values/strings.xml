@@ -781,9 +781,12 @@
     <string name="live_timing">Live Timing</string>
     <string name="bought">Bought</string>
     <string name="no_review_found">No review found</string>
+    <string name="write_review">Write Review</string>
+ <string name="rate_store">Rate Store</string>
+ <string name="rate">Rate</string>
 
 
-    <array name="initial_price_values">
+ <array name="initial_price_values">
         <item>0</item>
         <item>500</item>
     </array>

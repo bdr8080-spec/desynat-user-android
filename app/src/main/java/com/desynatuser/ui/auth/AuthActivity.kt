@@ -51,11 +51,6 @@ class AuthActivity : BaseActivity() {
                 R.id.login
             } else {
                 R.id.login
-                /*if (SharedPreference.get(this).isTutorial) {
-                    R.id.login
-                } else {
-                    R.id.onBoarding
-                }*/
             }
 
         } else {
@@ -64,7 +59,7 @@ class AuthActivity : BaseActivity() {
                 if (SharedPreference.get(this).getUser()?.affiliatedUserdetails?.adminVerify != null) {
                     R.id.login
                 } else if (SharedPreference.get(this).isAffiliateTutorial == false) {
-                    R.id.onBoarding
+                    R.id.login
                 } else {
                     R.id.login
                 }
@@ -76,9 +71,6 @@ class AuthActivity : BaseActivity() {
                 R.id.login
             } else if (savedLanguage.isEmpty()) {
                 R.id.language
-            }
-            else if (SharedPreference.get(this).isTutorial){
-                R.id.onBoarding
             }
             else{
                 R.id.login

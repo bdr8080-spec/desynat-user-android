@@ -783,5 +783,8 @@
     <string name="live_timing">التوقيت المباشر</string>
     <string name="bought">تم الشراء</string>
     <string name="no_review_found">لم يتم العثور على أي مراجعة</string>
+    <string name="write_review">اكتب مراجعة</string>
+    <string name="rate_store">قيّم المتجر</string>
+    <string name="rate">قيّم</string>
 
 </resources>
