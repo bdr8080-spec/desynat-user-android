@@ -1,5 +1,6 @@
 package com.desynatuser.ui.home.myOrder
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
@@ -248,6 +249,7 @@ class OrderPaymentFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (isObserver) {
@@ -286,7 +288,7 @@ class OrderPaymentFragment : BaseFragment() {
         viewModel.placeOrderResult.observe(viewLifecycleOwner) { response ->
             if (isObserver) {
                 orderPlacedResponse = response.data
-                    orderPayment()
+                orderPayment()
 
                 isObserver = false
             }
@@ -345,6 +347,7 @@ class OrderPaymentFragment : BaseFragment() {
         map["order_id"] = orderPlacedResponse?.orderId.toString()
         map["Payment_method"] = paymetMehod//1 myfatoorah 2 wallet 3 Cod
         map["payment_status"] = "1" // 0 pending 1 paid 2 cancel or reject 3 refund
+        map["payment_id"] = "1"  // avoga payment id
         if (transactionId!=null){
             map["transaction_id"] = transactionId.toString()
         }
