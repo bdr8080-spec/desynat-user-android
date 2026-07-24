@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     android:background="@color/black">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -44,7 +45,7 @@
             android:fontFamily="@font/poppins_medium"
             android:paddingHorizontal="@dimen/_8sdp"
             android:paddingVertical="@dimen/_2sdp"
-            android:text="T Shirt"
+            android:text="@string/t_shirt_placeholder"
             android:textColor="@color/white"
             android:textSize="@dimen/_11sdp"
             android:visibility="gone"
@@ -120,7 +121,7 @@
         android:background="@drawable/bg_ad"
         android:paddingHorizontal="20dp"
         android:paddingVertical="@dimen/_4sdp"
-        android:text="Ad"
+        android:text="@string/ad_label"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

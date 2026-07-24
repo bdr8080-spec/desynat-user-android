@@ -1,5 +1,6 @@
 package com.desynatuser.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -51,13 +53,13 @@ class StoryPagerAdapter(
 
     override fun getItemCount(): Int = stories.size
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         holder.binding.videoStory.stopPlayback()
         val story = stories[holder.absoluteAdapterPosition]
         val url = story.file ?: ""
 
-        holder.binding.tvAd.isVisible =
-            story.sellerDetails?.storeInfo?.storeName?.isNotEmpty() == true
+        holder.binding.tvAd.isVisible = story.sellerDetails?.storeInfo?.storeName?.isNotEmpty() == true
 
         val cleanUrl = url.substringBefore("?").lowercase()
 
@@ -73,7 +75,7 @@ class StoryPagerAdapter(
             holder.binding.videoStory.isVisible = true
 
             //    holder.binding.videoStory.setVideoPath(url)
-            holder.binding.videoStory.setVideoURI(android.net.Uri.parse(url))
+            holder.binding.videoStory.setVideoURI(url.toUri())
 
             holder.binding.videoStory.setOnPreparedListener { mp ->
                 holder.binding.videoLoader.indeterminateTintList =
@@ -212,9 +214,9 @@ class StoryPagerAdapter(
             }
         }
 
-        if (position + 1 < stories.size) {
+        if (holder.absoluteAdapterPosition + 1 < stories.size) {
 
-            val nextUrl = stories[position + 1].file ?: ""
+            val nextUrl = stories[holder.absoluteAdapterPosition + 1].file ?: ""
 
             if (nextUrl.isNotEmpty()) {
                 Glide.with(holder.itemView.context)
@@ -227,6 +229,7 @@ class StoryPagerAdapter(
             try {
                 CommonMethod.getTimeAgo(context, timeStr)
             } catch (e: Exception) {
+                e.printStackTrace()
                 ""
             }
         } else {
@@ -243,7 +246,7 @@ class StoryPagerAdapter(
         }
 
         holder.binding.videoStory.setOnCompletionListener {
-            onVideoFinished(position)
+            onVideoFinished(holder.absoluteAdapterPosition)
         }
 
 
@@ -254,7 +257,7 @@ class StoryPagerAdapter(
                 MotionEvent.ACTION_DOWN -> {
                     pressStartTime = System.currentTimeMillis()
                     holder.binding.videoStory.pause()
-                    click.onPause(position)
+                    click.onPause(holder.absoluteAdapterPosition)
                     true
                 }
 
@@ -262,11 +265,11 @@ class StoryPagerAdapter(
                     val pressDuration = System.currentTimeMillis() - pressStartTime
 
                     holder.binding.videoStory.start()
-                    click.onResume(position)
+                    click.onResume(holder.absoluteAdapterPosition)
 
                     // ✅ ONLY SHORT TAP triggers next
                     if (pressDuration < LONG_PRESS_THRESHOLD) {
-                        click.onNext(position)
+                        click.onNext(holder.absoluteAdapterPosition)
                     }
 
                     true
@@ -274,7 +277,7 @@ class StoryPagerAdapter(
 
                 MotionEvent.ACTION_CANCEL -> {
                     holder.binding.videoStory.start()
-                    click.onResume(position)
+                    click.onResume(holder.absoluteAdapterPosition)
                     true
                 }
 
@@ -288,7 +291,7 @@ class StoryPagerAdapter(
                 MotionEvent.ACTION_DOWN -> {
                     pressStartTime = System.currentTimeMillis()
                     holder.binding.videoStory.pause()
-                    click.onPause(position)
+                    click.onPause(holder.absoluteAdapterPosition)
                     true
                 }
 
@@ -296,11 +299,11 @@ class StoryPagerAdapter(
                     val pressDuration = System.currentTimeMillis() - pressStartTime
 
                     holder.binding.videoStory.start()
-                    click.onResume(position)
+                    click.onResume(holder.absoluteAdapterPosition)
 
                     // ✅ ONLY SHORT TAP triggers previous
                     if (pressDuration < LONG_PRESS_THRESHOLD) {
-                        click.onPrevious(position)
+                        click.onPrevious(holder.absoluteAdapterPosition)
                     }
 
                     true
@@ -308,7 +311,7 @@ class StoryPagerAdapter(
 
                 MotionEvent.ACTION_CANCEL -> {
                     holder.binding.videoStory.start()
-                    click.onResume(position)
+                    click.onResume(holder.absoluteAdapterPosition)
                     true
                 }
 

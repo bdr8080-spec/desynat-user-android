@@ -35,7 +35,6 @@ class ViewStoryFragment : BaseFragment() {
     private val viewModel: HomeViewModel by activityViewModels()
     private var isObserver = false
     private val myStories = ArrayList<GetSellerStoryResponse.Data>()
-
     private val progressBars = ArrayList<ProgressBar>()
     private var storyPagerAdapter: StoryPagerAdapter? = null
     private var from = "admin"
@@ -46,8 +45,7 @@ class ViewStoryFragment : BaseFragment() {
     private var isManualNavigation = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentViewStoryBinding.inflate(layoutInflater, container, false)
         return binding?.root
@@ -55,6 +53,7 @@ class ViewStoryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.layoutDirection = View.LAYOUT_DIRECTION_LTR
         initView()
         initControl()
         observe()
@@ -64,28 +63,21 @@ class ViewStoryFragment : BaseFragment() {
 
 
         from = arguments?.getString("from").toString()
-        Log.d("StoryFragment", "from = $from")
 
         val json = arguments?.getString("storyData")
-        Log.d("StoryFragment", "json = $json")
 
         if (!json.isNullOrEmpty()) {
 
             val type = object : TypeToken<ArrayList<GetSellerStoryResponse.Data>>() {}.type
-            Log.d("StoryFragment", "type = $type")
 
-            val storyList: ArrayList<GetSellerStoryResponse.Data> =
-                Gson().fromJson(json, type)
+            val storyList: ArrayList<GetSellerStoryResponse.Data> = Gson().fromJson(json, type)
 
-            Log.d("StoryFragment", "storyList size = ${storyList.size}")
-            Log.d("StoryFragment", "storyList = ${Gson().toJson(storyList)}")
 
             flattenStories(storyList)
         }
 
         if (from != "admin") {
             sellerId = arguments?.getString("sellerId").toString()
-            Log.d("StoryFragment", "sellerId = $sellerId")
         }
 //        when(from){
 //            "admin"->getAdminStory()
@@ -211,9 +203,7 @@ class ViewStoryFragment : BaseFragment() {
 
             setupProgressBars(myStories.size)
 
-            val startPosition = myStories.indexOfFirst { it.isSeen == 0 }
-                .takeIf { it != -1 } ?: 0
-
+            val startPosition = 0
             binding?.viewPager?.setCurrentItem(startPosition, false)
             updateHeader(startPosition)
 
@@ -235,9 +225,7 @@ class ViewStoryFragment : BaseFragment() {
     private fun setupAdapter() {
 
         storyPagerAdapter = StoryPagerAdapter(
-            requireActivity(),
-            myStories,
-            object : StoryPagerAdapter.OnClick {
+            requireActivity(), myStories, object : StoryPagerAdapter.OnClick {
 
                 override fun clickOnItem(position: Int) {
 
@@ -293,37 +281,36 @@ class ViewStoryFragment : BaseFragment() {
                 }
 
                 goToNext(position)
-            }
-        )
+            })
 
         binding?.viewPager?.adapter = storyPagerAdapter
     }
 
     private fun setupPagerCallback() {
-        binding?.viewPager?.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {
+        binding?.viewPager?.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
 
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
 
-                    stopProgress()
-                    updateHeader(position)
+                isManualNavigation = false
+                stopProgress()
+                updateHeader(position)
 
-                    progressBars.forEachIndexed { index, progressBar ->
-                        progressBar.progress = if (index < position) 100 else 0
-                    }
-
-                    val story = myStories[position]
-
-                    if ((from == "story" || from == "admin" || from == "highlights" || from == "reel") && story.isSeen == 0 && !Constants.isGuest) {
-                        seeStory(story.id.toString())
-                        story.isSeen = 1
-                    }
-
-                    startProgress(position)
+                progressBars.forEachIndexed { index, progressBar ->
+                    progressBar.progress = if (index < position) 100 else 0
                 }
+
+                val story = myStories[position]
+
+                if ((from == "story" || from == "admin" || from == "highlights" || from == "reel") && story.isSeen == 0 && !Constants.isGuest) {
+                    seeStory(story.id.toString())
+                    story.isSeen = 1
+                }
+
+                startProgress(position)
             }
-        )
+        })
     }
 
     private fun updateHeader(position: Int) {
@@ -334,15 +321,13 @@ class ViewStoryFragment : BaseFragment() {
             val storeInfo = sellerDetails?.storeInfo
 
             if (storeInfo != null) {
-                tvName.text = storeInfo.storeName ?: "Admin"
+                tvName.text = storeInfo.storeName ?: getString(R.string.desynat)
 
-                Glide.with(requireActivity())
-                    .load(storeInfo.storeImage)
-                    .placeholder(R.mipmap.ic_launcher_app)
-                    .error(R.mipmap.ic_launcher_app)
+                Glide.with(requireActivity()).load(storeInfo.storeImage)
+                    .placeholder(R.mipmap.ic_launcher_app).error(R.mipmap.ic_launcher_app)
                     .into(ivProfile)
             } else {
-                tvName.text = "Admin"
+                tvName.text = getString(R.string.desynat)
                 ivProfile.setImageResource(R.mipmap.ic_launcher_app)
             }
 
@@ -368,11 +353,13 @@ class ViewStoryFragment : BaseFragment() {
     private fun startProgress(index: Int) {
 
         if (progressBars.isEmpty() || index >= progressBars.size) return
+        if (index != binding?.viewPager?.currentItem) return
 
         val url = myStories[index].file ?: ""
+        val cleanUrl = url.substringBefore("?").lowercase()
 
         // Skip video/gif
-        if (url.endsWith(".mp4") || url.endsWith(".mov") || url.endsWith(".gif")) {
+        if (cleanUrl.endsWith(".mp4") || cleanUrl.endsWith(".mov") || cleanUrl.endsWith(".gif")) {
             return
         }
 
@@ -380,17 +367,14 @@ class ViewStoryFragment : BaseFragment() {
             duration = 5000L
 
             addUpdateListener {
-                progressBars[index].progress = it.animatedValue as Int
+                if (index < progressBars.size) {
+                    progressBars[index].progress = it.animatedValue as Int
+                }
             }
 
             doOnEnd {
 
                 if (!isAdded) return@doOnEnd
-
-                if (isManualNavigation) {
-                    isManualNavigation = false
-                    return@doOnEnd
-                }
 
                 goToNext(index)
             }
@@ -402,6 +386,7 @@ class ViewStoryFragment : BaseFragment() {
     private fun startVideoProgress(index: Int, duration: Long) {
 
         stopProgress()
+        if (index != binding?.viewPager?.currentItem) return
 
         progressAnimator = ValueAnimator.ofInt(0, 100).apply {
             //   this.duration = duration
@@ -411,17 +396,14 @@ class ViewStoryFragment : BaseFragment() {
             this.duration = safeDuration
 
             addUpdateListener {
-                progressBars[index].progress = it.animatedValue as Int
+                if (index < progressBars.size) {
+                    progressBars[index].progress = it.animatedValue as Int
+                }
             }
 
             doOnEnd {
 
                 if (!isAdded) return@doOnEnd
-
-                if (isManualNavigation) {
-                    isManualNavigation = false
-                    return@doOnEnd
-                }
 
                 goToNext(index)
             }
@@ -437,7 +419,7 @@ class ViewStoryFragment : BaseFragment() {
         if (next < myStories.size) {
             binding?.viewPager?.currentItem = next
         } else {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().popBackStack()
         }
     }
 
@@ -449,18 +431,14 @@ class ViewStoryFragment : BaseFragment() {
         repeat(count) {
 
             val progressBar = ProgressBar(
-                requireContext(),
-                null,
-                android.R.attr.progressBarStyleHorizontal
+                requireContext(), null, android.R.attr.progressBarStyleHorizontal
             )
 
             progressBar.progressDrawable =
                 ContextCompat.getDrawable(requireContext(), R.drawable.story_progress)
 
             progressBar.layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1f
+                0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
             ).apply {
                 marginEnd = 8
             }

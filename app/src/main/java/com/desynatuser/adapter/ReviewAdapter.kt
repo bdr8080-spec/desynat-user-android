@@ -40,9 +40,9 @@ class ReviewAdapter(var context:Context, var reviewList: ArrayList<GetProductDet
             ratingBar.rating = reviewData?.productRating?:0f
             tvName.text = reviewData?.userDetails?.fullName
             tvReviews.text = reviewData?.productReview
-            if(reviewData?.productImage!=null&&reviewData?.productImage!="null"&&reviewData?.productImage!=""){
+            if (!reviewData?.productImage.isNullOrEmpty()) {
                 ivProductRating.isVisible = true
-                ivProductRating.load(reviewData?.productImage) {
+                ivProductRating.load(reviewData?.productImage?.get(0)) {
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
                     error(R.drawable.ic_placeholder)

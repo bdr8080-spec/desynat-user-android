@@ -189,19 +189,15 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun setData() {
         binding?.apply {
-            tvDeliveryDate?.text =
-                "Get within " + if (Constants.language == "ar") productDetailData?.delivery_time?.name_ar else productDetailData?.delivery_time?.name
+            val deliveryTime = if (Constants.language == "ar") productDetailData?.delivery_time?.name_ar else productDetailData?.delivery_time?.name
+            tvDeliveryDate?.text = getString(R.string.get_within, deliveryTime)
 
-            tvBuyCount.text = "0 + ${getString(R.string.bought)}"
+            tvBuyCount.text = getString(R.string.bought_count, getString(R.string.bought))
             tvTitle.text = productDetailData?.store?.storeName
-            tvProductName.text =
-                if (Constants.language == "ar") productDetailData?.productNameAr + " (${
-                    requireActivity().getString(R.string.by)
-                } ${productDetailData?.store?.storeName})" else productDetailData?.productNameEn + " (${
-                    requireActivity().getString(
-                        R.string.by
-                    )
-                } ${productDetailData?.store?.storeName})"
+            val productName = if (Constants.language == "ar") productDetailData?.productNameAr else productDetailData?.productNameEn
+            val byText = requireActivity().getString(R.string.by)
+            val storeName = productDetailData?.store?.storeName
+            tvProductName.text = "$productName ${getString(R.string.by_store, byText, storeName)}"
             if (productDetailData?.productAvgRating != null) {
                 tvRating.text = "(${productDetailData?.productAvgRating})"
             } else {

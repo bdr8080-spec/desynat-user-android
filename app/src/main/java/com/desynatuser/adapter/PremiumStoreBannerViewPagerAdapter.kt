@@ -2,6 +2,7 @@ package com.desynatuser.adapter
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.desynatuser.databinding.ItemDealBannerBinding
@@ -22,6 +23,8 @@ class PremiumStoreBannerViewPagerAdapter(val context: Context, private val banne
         )
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.binding.tvAd.isVisible = true
+        holder.binding.tvAd.bringToFront()
         Glide.with(context).load(bannerList[position].uploadBanner).into(holder.binding.ivBanner)
     //    holder.binding.ivBanner.load(bannerList[position].uploadBanner)
         holder.binding.ivBanner.setOnClickListener {

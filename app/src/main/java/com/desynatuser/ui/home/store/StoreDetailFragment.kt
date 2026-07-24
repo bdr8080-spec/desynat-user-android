@@ -302,8 +302,8 @@ class StoreDetailFragment : BaseFragment() {
             if (storeDetailData?.store?.sellerInformation?.profileQr != null) {
 
                 val imageLoader = ImageLoader.Builder(requireContext()).components {
-                        add(SvgDecoder.Factory())
-                    }.build()
+                    add(SvgDecoder.Factory())
+                }.build()
 
                 ivQr.load(storeDetailData?.store?.sellerInformation?.profileQr, imageLoader) {
                     crossfade(true)
@@ -614,16 +614,18 @@ class StoreDetailFragment : BaseFragment() {
         }
 
         viewModel.storeDetailResult.observe(viewLifecycleOwner) { response ->
+            response?.data?.let {
+                storeDetailData = it
+                setData()
+                captureSellerStoreVisitor(it.store.sellerId.toString())
+                setProductData()
+            }
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
-                storeDetailData = response.data
                 getSellerHighlights()
                 getSellerStory()
                 getSellerReel()
-                setData()
-                captureSellerStoreVisitor(response?.data?.store?.sellerId.toString())
-                setProductData()
                 isObserver = false
             }
         }
@@ -687,42 +689,39 @@ class StoreDetailFragment : BaseFragment() {
         }
 
         viewModel.getSellerReelResult.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                reelList.clear()
+                reelList.addAll(it.data)
+                reelAdapter?.notifyDataSetChanged()
+            }
             if (isReelObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                response?.let {
-                    reelList.clear()
-                    reelList.addAll(response.data)
-                    reelAdapter?.notifyDataSetChanged()
-
-                }
                 isReelObserver = false
             }
         }
 
 
         viewModel.getSellerHighlightsResult.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                highlightList.clear()
+                highlightList.addAll(it.data)
+                highlightAdapter?.notifyDataSetChanged()
+            }
             if (isHighlightObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                response?.let {
-                    highlightList.clear()
-                    highlightList.addAll(response.data)
-                    highlightAdapter?.notifyDataSetChanged()
-
-                }
                 isHighlightObserver = false
             }
         }
 
 
         viewModel.getSellerStoryResult.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                storyList.clear()
+                storyList.addAll(it.data)
+                setStory()
+            }
             if (isStoryObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
-                response?.let {
-                    storyList.clear()
-                    storyList.addAll(response.data)
-                    setStory()
-
-                }
                 isStoryObserver = false
             }
         }
@@ -754,7 +753,7 @@ class StoreDetailFragment : BaseFragment() {
     private fun setStory() {
         binding?.apply {
             //   ivProfileImage.segmentCount = storyList.size
-            if (storyList.size != 0) {
+            if (storyList.isNotEmpty()) {
                 ivStoryHighlight.isVisible = true
                 val allStoriesSeen = storyList?.all { it.isSeen == 1 } == true
                 binding?.ivStoryHighlight?.strokeColor = ColorStateList.valueOf(

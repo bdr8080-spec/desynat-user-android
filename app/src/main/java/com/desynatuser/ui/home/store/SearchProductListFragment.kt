@@ -704,7 +704,7 @@ class SearchProductListFragment : BaseFragment() {
                     newColorList.clear()
                     newColorList.addAll(colorList)
                     filterColorAdapter?.notifyDataSetChanged()
-                    tvShowMoreColor.text = "Show Less Color"
+                    tvShowMoreColor.text = getString(R.string.show_less_color)
                 }
                 else{
                     newColorList.clear()
@@ -714,7 +714,7 @@ class SearchProductListFragment : BaseFragment() {
                         newColorList.addAll(colorList)
                     }
                     filterColorAdapter?.notifyDataSetChanged()
-                    tvShowMoreColor.text = "Show More Color"
+                    tvShowMoreColor.text = getString(R.string.show_more_color)
                 }
 
             }

@@ -363,7 +363,7 @@ data class GetAffiliateMyProductDetailResponse(
                 @SerializedName("product_id")
                 val productId: Int,
                 @SerializedName("product_image")
-                val productImage: Any,
+                val productImage: List<String>?,
                 @SerializedName("product_rating")
                 val productRating: String,
                 @SerializedName("product_review")
@@ -371,7 +371,7 @@ data class GetAffiliateMyProductDetailResponse(
                 @SerializedName("store_id")
                 val storeId: Int,
                 @SerializedName("store_image")
-                val storeImage: Any,
+                val storeImage: List<String>?,
                 @SerializedName("store_rating")
                 val storeRating: String,
                 @SerializedName("store_review")

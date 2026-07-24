@@ -8,7 +8,6 @@ import android.os.Looper
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,18 +23,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.desynatuser.R
 import com.desynatuser.adapter.PremiumStoreViewPagerAdapter
-import com.desynatuser.adapter.ProductImageAdapter
 import com.desynatuser.adapter.StoreAdapter
 import com.desynatuser.base.BaseFragment
 import com.desynatuser.data.view_model.HomeViewModel
 import com.desynatuser.databinding.FragmentStoreBinding
 import com.desynatuser.databinding.StoreFilterBinding
-import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
 import com.desynatuser.ui.home.store.response.GetStoreResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
 import com.desynatuser.ui.response.GetHomeScreenAllBannerResponse
-import com.desynatuser.ui.response.GetHomeScreenPopUpBanner
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
@@ -49,19 +45,19 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StoreFragment : BaseFragment() {
-    private var binding: FragmentStoreBinding?=null
+    private var binding: FragmentStoreBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     var isObserver = false
     var isAllBannerObserver = false
     var isAdminObserver = false
-    private var subCategoryData: GetSubCategoryResponse.Data?=null
+    private var subCategoryData: GetSubCategoryResponse.Data? = null
     private var storeAdapter: StoreAdapter? = null
     private var storeList = ArrayList<GetStoreResponse.Data>()
-    var premiumStoreViewPagerAdapter : PremiumStoreViewPagerAdapter?=null
+    var premiumStoreViewPagerAdapter: PremiumStoreViewPagerAdapter? = null
     var premiumStoreList = ArrayList<GetHomeScreenAllBannerResponse.Data>()
     private var search: Job? = null
     private var lastQuery: String? = null
-    var filter:String? = null
+    var filter: String? = null
 
     private val myStories = ArrayList<GetSellerStoryResponse.Data>()
 
@@ -70,7 +66,7 @@ class StoreFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentStoreBinding.inflate(layoutInflater,container,false)
+        binding = FragmentStoreBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -91,55 +87,81 @@ class StoreFragment : BaseFragment() {
         binding?.apply {
             toolbar.tvToolbar.text = getString(R.string.stores)
 
-            storeAdapter = StoreAdapter(requireActivity(),storeList,object: StoreAdapter.StoreClick{
-                override fun onStoreClick(position: Int,type:Int) {
-                    when(type){
-                        1->{
-                            val bundle = Bundle().apply {
-                                putString("storeId", storeList[position].id.toString())
-                                putString("catId", subCategoryData?.categoryId.toString())
-                                putString("subId", subCategoryData?.id.toString())
-                            }
-                            findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
-                        }
-                        2->{
-                            if (storeList[position].sellerStories.size!=0) {
+            storeAdapter =
+                StoreAdapter(requireActivity(), storeList, object : StoreAdapter.StoreClick {
+                    override fun onStoreClick(position: Int, type: Int) {
+                        when (type) {
+                            1 -> {
                                 val bundle = Bundle().apply {
-                                    putString("from", "story")
-                                    putString("storyData", Gson().toJson(storeList[position].sellerStories))
+                                    putString("storeId", storeList[position].id.toString())
+                                    putString("catId", subCategoryData?.categoryId.toString())
+                                    putString("subId", subCategoryData?.id.toString())
                                 }
                                 findNavController().navigate(
-                                    R.id.action_storeFragment_to_viewStoryFragment,
+                                    R.id.action_storeFragment_to_storeDetailFragment,
                                     bundle
                                 )
                             }
 
+                            2 -> {
+                                if (storeList[position].sellerStories.size != 0) {
+                                    val bundle = Bundle().apply {
+                                        putString("from", "story")
+                                        putString(
+                                            "storyData",
+                                            Gson().toJson(storeList[position].sellerStories)
+                                        )
+                                    }
+                                    findNavController().navigate(
+                                        R.id.action_storeFragment_to_viewStoryFragment,
+                                        bundle
+                                    )
+                                }
+
+                            }
                         }
+
                     }
 
-                }
-
-            })
+                })
             rvStore.adapter = storeAdapter
 
 
-            premiumStoreViewPagerAdapter = PremiumStoreViewPagerAdapter(requireActivity(),premiumStoreList,object :PremiumStoreViewPagerAdapter.OnClick{
-                override fun onItemClick(position: Int) {
-                    val bundle = Bundle().apply {
-                        putString("storeId", premiumStoreList[position]?.sellerDetails?.storeInfo?.id.toString())
-                        putString("subCategoryData", Gson().toJson(subCategoryData))
+            premiumStoreViewPagerAdapter = PremiumStoreViewPagerAdapter(
+                requireActivity(),
+                premiumStoreList,
+                object : PremiumStoreViewPagerAdapter.OnClick {
+                    override fun onItemClick(position: Int) {
+                        val bundle = Bundle().apply {
+                            putString(
+                                "storeId",
+                                premiumStoreList[position]?.sellerDetails?.storeInfo?.id.toString()
+                            )
+                            putString("subCategoryData", Gson().toJson(subCategoryData))
+                        }
+                        findNavController().navigate(
+                            R.id.action_storeFragment_to_storeDetailFragment,
+                            bundle
+                        )
                     }
-                    findNavController().navigate(R.id.action_storeFragment_to_storeDetailFragment,bundle)
-                }
 
-            })
+                })
             binding?.viewPager?.adapter = premiumStoreViewPagerAdapter
 
-            TabLayoutMediator(binding!!.dotsIndicatorStore, binding!!.viewPager) { _, _ -> }.attach()
+            TabLayoutMediator(
+                binding!!.dotsIndicatorStore,
+                binding!!.viewPager
+            ) { _, _ -> }.attach()
 
             lastQuery = etSearch.text.toString().trim()
             etSearch.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
@@ -151,14 +173,14 @@ class StoreFragment : BaseFragment() {
                     search = lifecycleScope.launch {
                         delay(600)
                         if (!isObserver)
-                            getStoreList(search =  query.ifEmpty { null })
+                            getStoreList(search = query.ifEmpty { null })
                     }
 
                 }
             })
         }
 
-            getStoreList()
+        getStoreList()
 
         getHomeScreenAllBanner()
     }
@@ -168,7 +190,7 @@ class StoreFragment : BaseFragment() {
         binding?.apply {
 
             ivAdminStory.setOnClickListener {
-                if (myStories.size!=0) {
+                if (myStories.isNotEmpty()) {
                     val bundle = Bundle().apply {
                         putString("from", "admin")
                         putString("storyData", Gson().toJson(myStories))
@@ -194,8 +216,8 @@ class StoreFragment : BaseFragment() {
         }
     }
 
-    private fun getHomeScreenAllBanner(){
-        val map = HashMap<String,Any>()
+    private fun getHomeScreenAllBanner() {
+        val map = HashMap<String, Any>()
         map["type"] = "3"
         map["category"] = subCategoryData?.categoryId.toString()
         map["subcategory"] = subCategoryData?.id.toString()
@@ -205,15 +227,15 @@ class StoreFragment : BaseFragment() {
     }
 
 
-    private fun getStoreList(search:String?=null){
-        val map = HashMap<String,Any>()
+    private fun getStoreList(search: String? = null) {
+        val map = HashMap<String, Any>()
         map["category_id"] = subCategoryData?.categoryId.toString()
         map["subcategory"] = subCategoryData?.id.toString()
         map["subcategory_id"] = subCategoryData?.id.toString()
-        if (search!=null){
+        if (search != null) {
             map["search"] = search
         }
-        if (filter!=null){
+        if (filter != null) {
             map["availbility"] = filter.toString()
         }
         if (!Constants.isGuest) {
@@ -226,7 +248,7 @@ class StoreFragment : BaseFragment() {
     }
 
 
-    private fun getAdminStory(){
+    private fun getAdminStory() {
         val map = HashMap<String, Any>()
         if (!Constants.isGuest) {
             map["user_id"] = SharedPreference.get(requireActivity()).getUser()?.id.toString()
@@ -350,7 +372,7 @@ class StoreFragment : BaseFragment() {
                 dialog.dismiss()
             }
 
-            tvApply.setOnClickListener{
+            tvApply.setOnClickListener {
                 getStoreList()
                 dialog.dismiss()
             }
@@ -430,10 +452,9 @@ class StoreFragment : BaseFragment() {
 
     private fun setAdminStory() {
         binding?.apply {
-            if (myStories.size!=0){
+            if (myStories.size != 0) {
                 binding?.ivHighlightStory?.isVisible = true
-            }
-            else{
+            } else {
                 binding?.ivHighlightStory?.isInvisible = true
             }
         }

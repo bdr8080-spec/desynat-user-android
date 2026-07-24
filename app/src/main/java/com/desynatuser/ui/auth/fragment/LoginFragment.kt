@@ -645,7 +645,7 @@ class LoginFragment : BaseFragment() {
 
                 } else {
 
-                    showToast("Google login failed")
+                    showToast(getString(R.string.google_login_failed))
                 }
             }
     }

@@ -16,7 +16,7 @@
         android:background="@drawable/bottom_sheet"
         android:backgroundTint="#FFF7EA"
         android:fontFamily="@font/poppins_medium"
-        android:text="Custom Details"
+        android:text="@string/custom_details"
         android:textColor="@color/black"
         android:drawableEnd="@drawable/close_icon"
         android:textSize="@dimen/_13sdp"
@@ -40,7 +40,7 @@
             android:textColor="@color/black"
             android:fontFamily="@font/poppins_regular"
             android:textSize="@dimen/_11sdp"
-            android:text="lorem ipsum dolor sit amet, sectetur adipisicing elit, sed do eiusmod . " />
+            android:text="@string/lorem_ipsum_placeholder" />
 
     </LinearLayout>
 

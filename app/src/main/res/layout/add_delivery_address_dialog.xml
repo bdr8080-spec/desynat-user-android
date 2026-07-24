@@ -16,7 +16,7 @@
         android:background="@drawable/bottom_sheet"
         android:backgroundTint="#FFF7EA"
         android:fontFamily="@font/poppins_medium"
-        android:text="ADD NEW ADDRESS"
+        android:text="@string/add_new_address_caps"
         android:textColor="@color/black"
         android:drawableEnd="@drawable/close_icon"
         android:textSize="@dimen/_13sdp"
@@ -42,13 +42,13 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Name"/>
+                    android:text="@string/name"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etName"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Name"
+                    android:hint="@string/name"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:inputType="textCapSentences"
                     android:maxLength="30"
@@ -58,7 +58,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="Mobile No."
+                    android:text="@string/mobile_no"
                     app:layout_constraintTop_toBottomOf="@+id/etFullName"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="+965"
+                        android:text="@string/country_code_965"
                         android:paddingVertical="@dimen/_10sdp"
                         android:drawableEnd="@drawable/ic_drop_down"
                         android:drawablePadding="@dimen/_5sdp"
@@ -93,7 +93,7 @@
                         android:id="@+id/etMobile"
                         android:layout_width="0dp"
                         style="@style/edit_text"
-                        android:hint="Mobile No."
+                        android:hint="@string/mobile_no"
                         android:inputType="number"
                         android:maxLength="15"
                         android:background="@null"
@@ -110,14 +110,14 @@
                     android:visibility="gone"
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="Address"/>
+                    android:text="@string/address"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:visibility="gone"
                     android:id="@+id/etAddress"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Address"
+                    android:hint="@string/address"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:drawableEnd="@drawable/ic_current"
                     android:inputType="text"
@@ -129,13 +129,13 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="Address (House no./Building no/Area)"/>
+                    android:text="@string/house_no_building_no_area"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etHouseNo"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Address (House no./Building no/Area)"
+                    android:hint="@string/house_no_building_no_area"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:inputType="text"
                     android:background="@drawable/edit_back"/>
@@ -144,14 +144,14 @@
                     android:visibility="gone"
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="Block/Street"/>
+                    android:text="@string/block_street"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:visibility="gone"
                     android:id="@+id/etBlock"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Block/Street"
+                    android:hint="@string/block_street"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:inputType="text"
                     android:background="@drawable/edit_back"/>
@@ -159,7 +159,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="Postal Code (optional)"/>
+                    android:text="@string/postal_code_optional"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etPostalCode"
@@ -180,7 +180,7 @@
                         android:layout_width="0dp"
                         style="@style/edit_text_title"
                         android:layout_marginTop="@dimen/_15sdp"
-                        android:text="City/District"
+                        android:text="@string/city_district"
                         android:layout_marginEnd="@dimen/_8sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -190,7 +190,7 @@
                         android:id="@+id/etCity"
                         android:layout_width="0dp"
                         style="@style/edit_text"
-                        android:hint="City/District"
+                        android:hint="@string/city_district"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:inputType="text"
                         android:background="@drawable/edit_back"
@@ -202,7 +202,7 @@
                         android:id="@+id/tvState"
                         android:layout_width="0dp"
                         style="@style/edit_text_title"
-                        android:text="State"
+                        android:text="@string/state"
                         android:layout_marginStart="@dimen/_7sdp"
                         app:layout_constraintTop_toTopOf="@+id/tvCity"
                         app:layout_constraintStart_toEndOf="@+id/tvCity"
@@ -212,7 +212,7 @@
                         android:id="@+id/etState"
                         android:layout_width="0dp"
                         style="@style/edit_text"
-                        android:hint="State"
+                        android:hint="@string/state"
                         android:inputType="text"
                         android:background="@drawable/edit_back"
                         app:layout_constraintTop_toTopOf="@+id/etCity"
@@ -224,13 +224,13 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/edit_text_title"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="Landmark"/>
+                    android:text="@string/landmark"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etLandmark"
                     android:layout_width="match_parent"
                     style="@style/edit_text"
-                    android:hint="Landmark"
+                    android:hint="@string/landmark"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:inputType="text"
                     android:background="@drawable/edit_back"/>
@@ -239,7 +239,7 @@
                     android:id="@+id/btnAdd"
                     style="@style/button"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:text="Add Address"
+                    android:text="@string/add_address"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llAddress"/>

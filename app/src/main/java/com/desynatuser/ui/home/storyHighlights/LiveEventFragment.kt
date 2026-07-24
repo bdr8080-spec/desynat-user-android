@@ -264,7 +264,7 @@ class LiveEventFragment : BaseFragment() {
             tvLive.isVisible = !isShow
             tvAudienceCount.isVisible = !isShow
             relMute.isVisible = !isShow
-            tvNoDataFound.text = "No event found"
+            binding?.tvNoDataFound?.text = getString(R.string.no_event_found)
             if (isShow) stopUserCount()
         }
     }

@@ -426,7 +426,7 @@ val changePasswordLiveData = SingleLiveEvent<CommonResponse>()
         )
     }
 
-    val storeDetailLiveData = SingleLiveEvent<GetSingleStoreResponse>()
+    val storeDetailLiveData = MutableLiveData<GetSingleStoreResponse>()
     suspend fun getSingleStoreInfo(map:HashMap<String,Any>)
     {
         handleApiCall(
@@ -1535,7 +1535,7 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
     }
 
 
-    val getSellerStoryLiveData = SingleLiveEvent<GetSellerStoryResponse>()
+    val getSellerStoryLiveData = MutableLiveData<GetSellerStoryResponse>()
     suspend fun getSellerStory(
         map: HashMap<String,Any>
     ) {
@@ -1547,7 +1547,7 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
         )
     }
 
-    var getSellerReelLiveData = SingleLiveEvent<GetSellerStoryResponse>()
+    var getSellerReelLiveData = MutableLiveData<GetSellerStoryResponse>()
     suspend fun getSellerReel(
         map: HashMap<String,Any>
     ) {
@@ -1583,7 +1583,7 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
         )
     }
 
-    val getSellerHighlightsLiveData = SingleLiveEvent<GetSellerStoryResponse>()
+    val getSellerHighlightsLiveData = MutableLiveData<GetSellerStoryResponse>()
     suspend fun getSellerHighlights(
         map: HashMap<String,Any>
     ) {

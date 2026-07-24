@@ -794,4 +794,49 @@
         <item>0</item>
         <item>500</item>
     </array>
+    <string name="unable_to_fetch_location">Unable to fetch location. Try moving outside or checking settings.</string>
+    <string name="unknown_location">Unknown Location</string>
+    <string name="unknown_locality">Unknown Locality</string>
+    <string name="unknown_sublocality">Unknown Sublocality</string>
+    <string name="na">N/A</string>
+    <string name="unknown_pincode">Unknown Pincode</string>
+    <string name="add_new_address_caps">ADD NEW ADDRESS</string>
+    <string name="mobile_no">Mobile No.</string>
+    <string name="okay">Okay</string>
+    <string name="lorem_ipsum_placeholder">lorem ipsum dolor sit amet, sectetur adipisicing elit, sed do eiusmod . </string>
+    <string name="ad_label">Ad</string>
+    <string name="t_shirt_placeholder">T Shirt</string>
+    <string name="country_code_965">+965</string>
+    <string name="amount_10_kd">10 KD</string>
+    <string name="amount_100_kd">100 KD</string>
+    <string name="amount_500_kd">500 KD</string>
+    <string name="hi_will_placeholder">Hi Will</string>
+    <string name="one_placeholder">1</string>
+    <string name="one_hundred_twenty_placeholder">120</string>
+    <string name="fourteen_placeholder">14</string>
+    <string name="one_hundred_twenty_seven_placeholder">(127)</string>
+    <string name="fourteen_in_parenthesis_placeholder">(14)</string>
+    <string name="one_hundred_twenty_nine_kd_placeholder">129 KD</string>
+    <string name="ahmed_farhan_placeholder">Ahmed Farhan</string>
+    <string name="farhan_email_placeholder">farhan713@mail.com</string>
+    <string name="delete_confirmation">Are You Sure? You want to delete?</string>
+    <string name="no_address_added">No address added</string>
+    <string name="under_development">Under Development</string>
+    <string name="no_transactions_available">No transactions available</string>
+    <string name="read_all">Read All</string>
+    <string name="no_gift_card_added">No gift card added</string>
+    <string name="desynat">Desynat</string>
+    <string name="ad">Ad</string>
+    <string name="google_login_failed">Google login failed</string>
+    <string name="postal_code_length_error">Postal code must be between 3 to 10 characters</string>
+    <string name="please_enter_valid_postal_code">Please enter a valid postal code</string>
+    <string name="please_enter_pin_code_error">Please enter pin code</string>
+    <string name="please_enter_locality_town_error">Please enter locality town</string>
+    <string name="please_enter_state_error">Please enter state</string>
+    <string name="please_enter_city_error">Please enter city</string>
+    <string name="custom_orders">Custom Orders</string>
+    <string name="no_event_found_error">No event found</string>
+    <string name="get_within">Get within %1$s</string>
+    <string name="bought_count">0 + %1$s</string>
+    <string name="by_store">(%1$s %2$s)</string>
 </resources>

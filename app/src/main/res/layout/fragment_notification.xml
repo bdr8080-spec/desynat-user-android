@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_gradient"
             android:gravity="center"
-            android:text="Read All"
+            android:text="@string/read_all"
             android:fontFamily="@font/poppins_regular"
             android:paddingVertical="@dimen/_3sdp"
             android:paddingHorizontal="@dimen/_8sdp"

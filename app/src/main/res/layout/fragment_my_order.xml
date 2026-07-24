@@ -55,7 +55,7 @@
                     android:paddingVertical="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Custom Orders"
+                    android:text="@string/custom_orders"
                     android:textSize="@dimen/_12sdp"
                     android:gravity="center"
                     android:textColor="@color/black" />

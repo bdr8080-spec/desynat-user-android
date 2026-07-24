@@ -237,7 +237,7 @@ class HomeActivity : BaseActivity() {
                             )
                             Toast.makeText(
                                 this,
-                                "Unable to fetch location. Try moving outside or checking settings.",
+                                getString(R.string.unable_to_fetch_location),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -257,11 +257,11 @@ class HomeActivity : BaseActivity() {
             val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1)!!
             if (addresses.isNotEmpty()) {
                 val address = addresses[0]
-                val fullAddress = address.getAddressLine(0) ?: "Unknown Location"
-                val locality = address.locality ?: "Unknown Locality"   // City or Town
-                val subLocality = address.subLocality ?: "Unknown Sublocality" // Area inside city
-                val stateh = address.adminArea ?: "N/A"
-                val postalCode = address.postalCode ?: "Unknown Pincode" // Zip Code
+                val fullAddress = address.getAddressLine(0) ?: getString(R.string.unknown_location)
+                val locality = address.locality ?: getString(R.string.unknown_locality)   // City or Town
+                val subLocality = address.subLocality ?: getString(R.string.unknown_sublocality) // Area inside city
+                val stateh = address.adminArea ?: getString(R.string.na)
+                val postalCode = address.postalCode ?: getString(R.string.unknown_pincode) // Zip Code
                 val houseNumber = address.subThoroughfare ?: address.premises ?: address.featureName
                 locationViewModel.setLoading(false)
                 Constants.location = fullAddress

@@ -317,7 +317,7 @@ data class GetProductDetailResponse(
             @SerializedName("product_id")
             val productId: Int,
             @SerializedName("product_image")
-            val productImage: String,
+            val productImage: List<String>?,
             @SerializedName("product_rating")
             val productRating: Float,
             @SerializedName("product_review")
@@ -325,7 +325,7 @@ data class GetProductDetailResponse(
             @SerializedName("store_id")
             val storeId: Int,
             @SerializedName("store_image")
-            val storeImage: String,
+            val storeImage: List<String>?,
             @SerializedName("store_rating")
             val storeRating: Float,
             @SerializedName("store_review")
