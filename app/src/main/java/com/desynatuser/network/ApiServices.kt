@@ -678,6 +678,16 @@ interface ApiServices {
     @GET(Constants.TOP_RATING_PRODUCT)
     suspend fun getTopRatedProduct(): Response<GetTopRatedProductResponse>
 
+    @POST(Constants.BEST_SELLING_PRODUCT_LIST)
+    suspend fun getBestSellingProductList(
+        @Body map: HashMap<String, Any>
+    ): Response<com.desynatuser.ui.home.view_all_product.response.ViewAllProductResponse>
+
+    @POST(Constants.TOP_RATING_PRODUCT_LIST)
+    suspend fun getTopRatedProductList(
+        @Body map: HashMap<String, Any>
+    ): Response<com.desynatuser.ui.home.view_all_product.response.ViewAllProductResponse>
+
     @GET(Constants.SUGGEST_STORE)
     suspend fun getSuggestedStore(): Response<GetAllSuggestStoreResponse>
 

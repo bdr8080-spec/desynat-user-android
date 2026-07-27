@@ -38,14 +38,19 @@ class ProductAdapter(var context:Context, private var productList: ArrayList<Get
         val productData = productList[position]
 
         holder.binding.apply {
-            if (storeName!=""){
-                tvTitle.text = if (Constants.language=="ar") productData.productNameAr+" (${context.getString(R.string.by)} ${storeName})" else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
-            }
-            else{
-                tvTitle.text =  if (Constants.language=="ar") productData.productNameAr+" (${context.getString(R.string.by)} ${storeName})" else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
+            val name = if (storeName != "") storeName else productData.store?.storeName ?: ""
+            if (name != "") {
+                tvTitle.text =
+                    if (Constants.language == "ar") productData.productNameAr + " (${context.getString(R.string.by)} ${name})" else productData.productNameEn + " (${
+                        context.getString(R.string.by)
+                    } ${name})"
+            } else {
+                tvTitle.text =
+                    if (Constants.language == "ar") productData.productNameAr else productData.productNameEn
             }
 
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?:0.0)}"
+            tvPrice.text =
+ "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.finalPrice?:0.0)}"
 
             val variant = productData?.productVariants?.getOrNull(0)

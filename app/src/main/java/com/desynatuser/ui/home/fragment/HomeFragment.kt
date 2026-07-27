@@ -108,7 +108,6 @@ class HomeFragment : BaseFragment() {
     private val newestProductList = ArrayList<GetNewestProductResponse.Data>()
     private val suggestedStoreList = ArrayList<GetAllSuggestStoreResponse.Data>()
 
-
     private var hasNavigatedFromML = false
 
     private var user: LoginResponse.Data? = null
@@ -550,6 +549,20 @@ class HomeFragment : BaseFragment() {
                     CommonMethod.showLoginAlert(requireActivity())
                 }
 
+            }
+
+            tvBestSellingViewAll.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 1) // 1 for Best Selling
+                }
+                findNavController().navigate(R.id.action_homeFragment_to_viewAllProductFragment, bundle)
+            }
+
+            tvTopRatedViewAll.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putInt("type", 2) // 2 for Top Rated
+                }
+                findNavController().navigate(R.id.action_homeFragment_to_viewAllProductFragment, bundle)
             }
 
             tvWomen.setOnClickListener {

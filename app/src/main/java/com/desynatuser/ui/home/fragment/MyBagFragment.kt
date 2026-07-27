@@ -1,5 +1,6 @@
 package com.desynatuser.ui.home.fragment
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
@@ -61,7 +62,7 @@ class MyBagFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("currency12",Constants.CURRENCY)
+        Log.e("currency12", Constants.CURRENCY)
         initView()
         initControl()
         observe()
@@ -97,11 +98,13 @@ class MyBagFragment : BaseFragment() {
                 tvRemove.isVisible = true
                 tvCouponDiscount.isVisible = true
                 tvCouponDiscountValue.isVisible = true
-                tvPromoCode.text = if (Constants.language=="ar") promoCode?.discountCodeAr else promoCode?.discountCode
+                tvPromoCode.text =
+                    if (Constants.language == "ar") promoCode?.discountCodeAr else promoCode?.discountCode
 //                tvDiscountedPrice.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
 //                tvTotalAmountValue.text = "${CommonMethod.formatPrice(promoCode?.finalAmount?:0.0)} KD"
 //                tvCouponDiscountValue.text = "${CommonMethod.formatPrice(promoCode?.applyDiscountValue?:0.0)} KD"
-                tvCouponDiscount.text = "${getString(R.string.coupon_discount)} (${promoCode?.discountCode})"
+                tvCouponDiscount.text =
+                    "${getString(R.string.coupon_discount)} (${promoCode?.discountCode})"
 
                 promoCode?.let { promo ->
                     updateBillingDetails(
@@ -120,14 +123,18 @@ class MyBagFragment : BaseFragment() {
             myBagAdapter = MyBagAdapter(requireActivity(), myBagList, object :
                 MyBagAdapter.FoodBagClick {
                 override fun onFoodBagClick(position: Int, type: String) {
-                    when(type){
-                        "custom"->{
-                            customDetailDialog(myBagList[position]?.chatroomData?.customDetails?:"")
+                    when (type) {
+                        "custom" -> {
+                            customDetailDialog(
+                                myBagList[position]?.chatroomData?.customDetails ?: ""
+                            )
                         }
-                        "remove"->{
+
+                        "remove" -> {
                             removeFromCartCustomOrder(myBagList[position].id)
                         }
-                        else ->{
+
+                        else -> {
                             selectedPos = position
                             addCartQuantity(type)
                         }
@@ -140,14 +147,18 @@ class MyBagFragment : BaseFragment() {
             myCustomBagAdapter = MyCustomBagAdapter(requireActivity(), myCustomBagList, object :
                 MyCustomBagAdapter.FoodBagClick {
                 override fun onFoodBagClick(position: Int, type: String) {
-                    when(type){
-                        "custom"->{
-                            customDetailDialog(myCustomBagList[position]?.chatroomData?.customDetails?:"")
+                    when (type) {
+                        "custom" -> {
+                            customDetailDialog(
+                                myCustomBagList[position]?.chatroomData?.customDetails ?: ""
+                            )
                         }
-                        "remove"->{
+
+                        "remove" -> {
                             removeFromCartCustomOrder(myCustomBagList[position].id)
                         }
-                        else ->{
+
+                        else -> {
                             selectedPos = position
                             addCartQuantity(type)
                         }
@@ -272,11 +283,10 @@ class MyBagFragment : BaseFragment() {
                 myCartList.clear()
                 myCustomBagList.clear()
                 response?.data?.cartData?.let { myCartList.addAll(it) }
-                for (i in 0 until myCartList.size){
-                    if (myCartList[i]?.orderType=="2"){
+                for (i in 0 until myCartList.size) {
+                    if (myCartList[i]?.orderType == "2") {
                         myCartList?.let { myCustomBagList.add(myCartList[i]) }
-                    }
-                    else{
+                    } else {
                         myCartList?.let { myBagList.add(myCartList[i]) }
                     }
                 }
@@ -357,7 +367,7 @@ class MyBagFragment : BaseFragment() {
 
             if (myCartList.isEmpty()) {
                 tvNoDataFound.isVisible = true
-               nsBag.isVisible = false
+                nsBag.isVisible = false
                 clPlaceOrder.isVisible = false
             } else {
                 tvNoDataFound.isVisible = false
@@ -365,7 +375,8 @@ class MyBagFragment : BaseFragment() {
                 clPlaceOrder.isVisible = true
                 if (tvAddress.text.isEmpty() == true) {
                     if (SharedPreference.get(requireActivity()).getDefaultAddress() != null) {
-                        selectedAddress = SharedPreference.get(requireActivity()).getDefaultAddress()
+                        selectedAddress =
+                            SharedPreference.get(requireActivity()).getDefaultAddress()
                         tvAddress.text = selectedAddress?.address
                     } else {
                         getAddress()
@@ -373,19 +384,17 @@ class MyBagFragment : BaseFragment() {
                 }
             }
 
-            if (myCustomBagList.size!=0){
-               relCustomCart.isVisible = true
+            if (myCustomBagList.size != 0) {
+                relCustomCart.isVisible = true
                 tvCustomOrder.isVisible = true
-            }
-            else{
+            } else {
                 relCustomCart.isVisible = false
                 tvCustomOrder.isVisible = false
             }
 
-            if (myBagList.size!=0){
+            if (myBagList.size != 0) {
                 rvMyBag.isVisible = true
-            }
-            else{
+            } else {
                 rvMyBag.isVisible = false
             }
         }
@@ -397,6 +406,7 @@ class MyBagFragment : BaseFragment() {
         isAddressObserver = true
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateBillingDetails(
         totalMrp: Double,
         discountOnMrp: Double,
@@ -409,84 +419,104 @@ class MyBagFragment : BaseFragment() {
         Log.e("amount", "updateBillingDetails: ${totalAmount}")
         binding?.apply {
             customPrice = calculateCustomOrderTotal()
-            val finalAmount = totalAmount+customPrice
+            val finalAmount = totalAmount + customPrice
             Log.e("amount", "customPrice: ${customPrice}")
 
-            if (customPrice!=0.0){
+            if (customPrice != 0.0) {
                 tvCustomPrice.isVisible = true
                 tvCustomPriceValue.isVisible = true
-                tvCustomPriceValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),customPrice)}"
-            }
-            else{
+                tvCustomPriceValue.text =
+                    "${CommonMethod.formatCurrencyAmount(requireActivity(), customPrice)}"
+            } else {
                 tvCustomPrice.isVisible = false
                 tvCustomPriceValue.isVisible = false
             }
 
 
-            if (CommonMethod.formatPrice(totalMrp)!="0"){
+            if (CommonMethod.formatPrice(totalMrp) != "0") {
                 tvTotalMRP.isVisible = true
                 tvMrp.isVisible = true
-              //  tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
-                tvTotalMRP.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),totalMrp)}"
-            }
-            else{
+                //  tvTotalMRP.text = "${CommonMethod.formatPrice(totalMrp)} KD"
+                tvTotalMRP.text =
+                    "${CommonMethod.formatCurrencyAmount(requireActivity(), totalMrp)}"
+            } else {
                 tvTotalMRP.isVisible = false
                 tvMrp.isVisible = false
-                if (myCartList.size==1){
-                //    tvCustomPrice.text = "Item Price (${CommonMethod.formatPrice(myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} KD X ${myCartList[0]?.chatroomData?.quantity})"
-                    tvCustomPrice.text = "${getString(R.string.item_price)} (${CommonMethod.formatCurrencyAmount(requireActivity(),myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} X ${myCartList[0]?.chatroomData?.quantity})"
-                }
-                else{
+                if (myCartList.size == 1) {
+                    //    tvCustomPrice.text = "Item Price (${CommonMethod.formatPrice(myCartList[0]?.chatroomData?.price?.toDoubleOrNull()?:0.0)} KD X ${myCartList[0]?.chatroomData?.quantity})"
+                    tvCustomPrice.text = "${getString(R.string.item_price)} (${
+                        CommonMethod.formatCurrencyAmount(
+                            requireActivity(),
+                            myCartList[0]?.chatroomData?.price?.toDoubleOrNull() ?: 0.0
+                        )
+                    } X ${myCartList[0]?.chatroomData?.quantity})"
+                } else {
                     tvCustomPrice.text = "${getString(R.string.custom_item_price)}"
                 }
             }
 
-            if (CommonMethod.formatPrice(discountOnMrp)!="0"){
+            if (CommonMethod.formatPrice(discountOnMrp) != "0") {
                 tvDiscountOnMrp.isVisible = true
                 tvDiscountOnMRP.isVisible = true
-             //   tvDiscountOnMRP.text = "${CommonMethod.formatPrice(discountOnMrp)} KD"
-                tvDiscountOnMRP.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),discountOnMrp)}"
+                //   tvDiscountOnMRP.text = "${CommonMethod.formatPrice(discountOnMrp)} KD"
+                tvDiscountOnMRP.text =
+                    "${CommonMethod.formatCurrencyAmount(requireActivity(), discountOnMrp)}"
 
-            }
-            else{
+            } else {
                 tvDiscountOnMrp.isVisible = false
                 tvDiscountOnMRP.isVisible = false
             }
 
-            if (CommonMethod.formatPrice(shippingFees)=="0"){
+            if (CommonMethod.formatPrice(shippingFees) == "0") {
                 tvShippingFee.text = getString(R.string.free_delivery)
+            } else {
+                // tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
+                tvShippingFee.text =
+                    "${CommonMethod.formatCurrencyAmount(requireActivity(), shippingFees)}"
             }
-            else{
-               // tvShippingFee.text = "${CommonMethod.formatPrice(shippingFees)} KD"
-                tvShippingFee.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),shippingFees)}"
-            }
-        //    tvTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
-            tvTaxValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),tax)}"
+            //    tvTaxValue.text = "${CommonMethod.formatPrice(tax)} KD"
+            tvTaxValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(), tax)}"
 
             // Coupon discount (if any)
-      //      tvCouponDiscountValue.text = "${CommonMethod.formatPrice(couponDiscount)} KD"
-            tvCouponDiscountValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),couponDiscount)}"
+            //      tvCouponDiscountValue.text = "${CommonMethod.formatPrice(couponDiscount)} KD"
+            tvCouponDiscountValue.text =
+                "${CommonMethod.formatCurrencyAmount(requireActivity(), couponDiscount)}"
 
             // Final payable amount
 //            tvTotalAmountValue.text = "${CommonMethod.formatPrice(finalAmount)} KD"
 //            tvDiscountedPrice.text = "${CommonMethod.formatPrice(finalAmount)} KD"
 
-            tvTotalAmountValue.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),finalAmount)}"
-            tvDiscountedPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),finalAmount)}"
+            tvTotalAmountValue.text =
+                "${CommonMethod.formatCurrencyAmount(requireActivity(), finalAmount)}"
+            tvDiscountedPrice.text =
+                "${CommonMethod.formatCurrencyAmount(requireActivity(), finalAmount)}"
 
             // Show summary text
-          //  tvPrice.text = "${CommonMethod.formatPrice(finalAmount+discountOnMrp+couponDiscount)} KD"
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),finalAmount+discountOnMrp+couponDiscount)}"
-            if (CommonMethod.formatPrice(discountOnMrp + couponDiscount)!="0"){
+            //  tvPrice.text = "${CommonMethod.formatPrice(finalAmount+discountOnMrp+couponDiscount)} KD"
+            val discount = (discountOnMrp ?: 0.0)
+            val coupon = (couponDiscount ?: 0.0)
+
+            if (discount > 0 || coupon > 0) {
+                tvPrice.visibility = View.VISIBLE
+                tvPrice.text = CommonMethod.formatCurrencyAmount(
+                    requireActivity(),
+                    finalAmount + discount + coupon
+                )
+            } else {
+                tvPrice.visibility = View.GONE
+            }
+            if (CommonMethod.formatPrice(discountOnMrp + couponDiscount) != "0") {
 //                tvSavePrice.text = "You will save ${
 //                    CommonMethod.formatPrice(discountOnMrp + couponDiscount)
 //                } KD on this"
                 tvSavePrice.text = "${getString(R.string.you_will_save)} ${
-                    CommonMethod.formatCurrencyAmount(requireActivity(),discountOnMrp + couponDiscount)
+                    CommonMethod.formatCurrencyAmount(
+                        requireActivity(),
+                        discountOnMrp + couponDiscount
+                    )
                 } ${getString(R.string.on_this)}"
                 tvSavePrice.isVisible = true
-            }
-            else{
+            } else {
                 tvSavePrice.isInvisible = true
             }
 
@@ -522,15 +552,18 @@ class MyBagFragment : BaseFragment() {
                 tvRemove.isVisible = true
                 tvCouponDiscount.isVisible = true
                 tvCouponDiscountValue.isVisible = true
-                tvPromoCode.text = if (Constants.language=="ar") promoCode?.discountCodeAr else promo.discountCode
-                tvCouponDiscount.text = "${getString(R.string.coupon_discount)} (${promo.discountCode})"
+                tvPromoCode.text =
+                    if (Constants.language == "ar") promoCode?.discountCodeAr else promo.discountCode
+                tvCouponDiscount.text =
+                    "${getString(R.string.coupon_discount)} (${promo.discountCode})"
             }
         }
     }
 
     private fun customDetailDialog(customDetail: String) {
         val dialog = Dialog(requireActivity(), R.style.CustomDialog)
-        val dialogBinding = CustomDetailDialogBinding.inflate(LayoutInflater.from(requireActivity()))
+        val dialogBinding =
+            CustomDetailDialogBinding.inflate(LayoutInflater.from(requireActivity()))
         dialogBinding.root.let { dialog?.setContentView(it) }
 
         val window: Window = dialog?.window!!

@@ -51,6 +51,10 @@
             android:id="@+id/action_homeFragment_to_productDetailFragment"
             app:destination="@id/productDetail"/>
 
+        <action
+            android:id="@+id/action_homeFragment_to_viewAllProductFragment"
+            app:destination="@id/viewAllProduct"/>
+
 
     </fragment>
 
@@ -628,5 +632,17 @@
         android:name="com.desynatuser.ui.home.card.AddCardFragment"
         android:label="Add Card Fragment"
         tools:layout="@layout/fragment_add_card"/>
+
+    <fragment
+        android:id="@+id/viewAllProduct"
+        android:name="com.desynatuser.ui.home.view_all_product.ViewAllProductFragment"
+        android:label="View All Product Fragment"
+        tools:layout="@layout/fragment_view_all_product">
+
+        <action
+            android:id="@+id/action_viewAllProductFragment_to_productDetailFragment"
+            app:destination="@id/productDetail"/>
+
+    </fragment>
 
 </navigation>

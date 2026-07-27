@@ -171,6 +171,8 @@ object Constants {
     const val SUGGEST_STORE = "/api/user/suggest-store"
     const val BEST_SELLING_PRODUCT = "/api/user/best-selling-product"
     const val TOP_RATING_PRODUCT = "/api/user/top-rating-product"
+    const val BEST_SELLING_PRODUCT_LIST = "/api/user/best-selling-products-list"
+    const val TOP_RATING_PRODUCT_LIST = "/api/user/top-rating-products-list"
     const val NEWEST_PRODUCT = "/api/user/newest-product"
 
     const val GET_TICKET_TYPE = "/api/ticket_types"

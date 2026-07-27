@@ -51,7 +51,9 @@ data class GetSingleStoreResponse(
                 val affiliatedCommission: String,
                 @SerializedName("affiliated_product")
                 val affiliatedProduct: String,
-                val delivery_time:DeliveryTime,
+                val delivery_time: DeliveryTime? = null,
+                @SerializedName("delivery_time_id")
+                val deliveryTimeId: Int? = null,
                 @SerializedName("brand")
                 val brand: Brand,
                 @SerializedName("brand_id")
@@ -118,6 +120,8 @@ data class GetSingleStoreResponse(
                 var wishlist: Int,
                 @SerializedName("average_rating")
                 val averageRating: String,
+                @SerializedName("store")
+                val store: Store? = null
             ) {
 
                 data class DeliveryTime(

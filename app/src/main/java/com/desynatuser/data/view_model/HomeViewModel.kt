@@ -1178,6 +1178,21 @@ val defaultBankResult: LiveData<CommonResponse>
         }
     }
 
+    val viewAllProductResult: LiveData<com.desynatuser.ui.home.view_all_product.response.ViewAllProductResponse>
+        get() = repository.viewAllProductLiveData
+
+    fun getBestSellingProductList(map: HashMap<String, Any>) {
+        viewModelScope.launch {
+            repository.getBestSellingProductList(map)
+        }
+    }
+
+    fun getTopRatedProductList(map: HashMap<String, Any>) {
+        viewModelScope.launch {
+            repository.getTopRatedProductList(map)
+        }
+    }
+
     val getTicketTypeResult: LiveData<GetTicketTypeResponse>
         get() = repository.getTicketTypeLiveData
 
