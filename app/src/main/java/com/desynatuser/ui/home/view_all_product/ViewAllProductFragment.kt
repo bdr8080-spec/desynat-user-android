@@ -113,8 +113,7 @@ class ViewAllProductFragment : BaseFragment() {
         SharedPreference.get(requireActivity()).getCategoryList()?.let { categoryList.addAll(it) }
 
         binding?.apply {
-            tvToolbar.text =
-                if (type == 1) getString(R.string.best_selling) else getString(R.string.top_rated)
+            tvToolbar.text = if (type == 1) getString(R.string.best_selling) else getString(R.string.top_rated)
 
             rvProduct.isNestedScrollingEnabled = false
 
