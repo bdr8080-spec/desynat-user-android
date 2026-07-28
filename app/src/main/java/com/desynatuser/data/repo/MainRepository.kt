@@ -1701,7 +1701,7 @@ val getAffiliateDashboardLiveData = SingleLiveEvent<GetHomeDashboardResponse>()
         )
     }
 
-    val viewAllProductLiveData = MutableLiveData<com.desynatuser.ui.home.view_all_product.response.ViewAllProductResponse>()
+    val viewAllProductLiveData = SingleLiveEvent<com.desynatuser.ui.home.view_all_product.response.ViewAllProductResponse>()
     suspend fun getBestSellingProductList(map: HashMap<String, Any>) {
         handleApiCall(
             api = {

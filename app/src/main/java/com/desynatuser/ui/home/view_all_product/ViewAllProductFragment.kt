@@ -209,6 +209,8 @@ class ViewAllProductFragment : BaseFragment() {
         }
 
         if (isLoading) {
+            productList.clear()
+            productAdapter?.notifyDataSetChanged()
             binding?.progressBar?.isVisible = true
         }
         isObserver = true
