@@ -1,7 +1,9 @@
 package com.desynatuser.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -37,6 +39,7 @@ class ProductAdapter(
         return productList.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val productData = productList[position]
 
@@ -71,21 +74,36 @@ class ProductAdapter(
             }"
 
             val variant = productData?.productVariants?.getOrNull(0)
-            val discountValue = "${
-                CommonMethod.formatCurrencyAmountWithout(
-                    context,
-                    variant?.discountValue?.toDoubleOrNull() ?: 0.0
-                )
-            }"
-            val discountType =
-                if (variant?.discountType == "1") "%  ${context.getString(R.string.off)}" else " ${
-                    CommonMethod.getCurrency(context)
-                }  ${
-                    context.getString(
-                        R.string.off
+            val discountValueDouble = variant?.discountValue?.toDoubleOrNull() ?: 0.0
+
+            if (discountValueDouble > 0.0) {
+                tvPrice.visibility = View.VISIBLE
+                tvDiscount.visibility = View.VISIBLE
+
+                tvPrice.text =
+                    CommonMethod.formatCurrencyAmount(
+                        context,
+                        variant?.actualPrice ?: 0.0
                     )
-                }"
-            tvDiscount.text = "$discountValue$discountType"
+
+                val discountValue = CommonMethod.formatCurrencyAmountWithout(
+                    context,
+                    discountValueDouble
+                )
+                val discountType =
+                    if (variant?.discountType == "1") "%  ${context.getString(R.string.off)}" else " ${
+                        CommonMethod.getCurrency(context)
+                    }  ${
+                        context.getString(
+                            R.string.off
+                        )
+                    }"
+                tvDiscount.text = "$discountValue$discountType"
+            } else {
+                tvPrice.visibility = View.INVISIBLE
+                tvDiscount.visibility = View.INVISIBLE
+                ViewLine.visibility = View.INVISIBLE
+            }
 
             if (productData?.averageRating != null) {
                 tvRating.text = "(${productData?.averageRating})"

@@ -201,19 +201,30 @@ class ItemPerformanceFragment : BaseFragment() {
             }
             tvRating.text ="(${productData?.averageRating?.product?:0})"
             rating.rating = productData?.averageRating?.product?.toFloatOrNull()?:0f
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),productDetailData?.product?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),productDetailData?.product?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
             val variant = productDetailData?.product?.productVariants?.getOrNull(0)
-            val discountValue = variant?.discountValue ?: 0
-            val discountType = if (variant?.discountType == "1")"% ${getString(R.string.off)}" else " ${
-                CommonMethod.getCurrency(requireActivity())
-            } ${
-                getString(
-                    R.string.by
-                )
-            }"
-            tvDiscount.text = "$discountValue$discountType"
+            val discountValueDouble = variant?.discountValue?.toDoubleOrNull() ?: 0.0
+            if (discountValueDouble > 0.0) {
+                tvPrice.visibility = View.VISIBLE
+                tvDiscount.visibility = View.VISIBLE
+                tvPrice.text =
+                    "${CommonMethod.formatCurrencyAmount(requireActivity(), variant?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                val discountValue =
+                    "${CommonMethod.formatCurrencyAmountWithout(requireActivity(), discountValueDouble)}"
+                val discountType = if (variant?.discountType == "1") "% ${getString(R.string.off)}" else " ${
+                    CommonMethod.getCurrency(requireActivity())
+                } ${
+                    getString(
+                        R.string.off
+                    )
+                }"
+                tvDiscount.text = "$discountValue$discountType"
+            } else {
+                tvPrice.visibility = View.GONE
+                tvDiscount.visibility = View.GONE
+            }
+
             tvCommission.text = "${productDetailData?.product?.affiliatedCommission?:0}% ${getString(R.string.commission)}"
             if (productDetailData?.affiliateProductLink!=null){
                 tvLink.isVisible = true

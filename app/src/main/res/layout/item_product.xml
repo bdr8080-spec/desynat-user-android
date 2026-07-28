@@ -118,6 +118,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0.5dp"
+        android:id="@+id/ViewLine"
         android:background="#99000000"
         app:layout_constraintStart_toStartOf="@+id/tvPrice"
         app:layout_constraintEnd_toEndOf="@+id/tvPrice"

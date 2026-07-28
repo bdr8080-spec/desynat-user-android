@@ -420,6 +420,14 @@ class OrderDetailFragment : BaseFragment() {
          //   tvAmount.text = "${CommonMethod.formatPrice(orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)} KD"
             tvAmount.text = "${CommonMethod.formatCurrencyAmount(requireActivity(),orderData?.order?.totalAmount?.toDoubleOrNull()?:0.0)}"
 
+            var savedAmountDouble = (orderData?.order?.discountMrp?.toDoubleOrNull() ?: 0.0) + (orderData?.order?.discountCoupon?.toDoubleOrNull() ?: 0.0)
+            if (savedAmountDouble > 0.0) {
+                tvSavePrice.visibility = View.VISIBLE
+                tvSavePrice.text = "${getString(R.string.you_will_save)} ${CommonMethod.formatCurrencyAmount(requireActivity(), savedAmountDouble)} ${getString(R.string.on_this)}"
+            } else {
+                tvSavePrice.visibility = View.GONE
+            }
+
             tvTransaction.text = "${getString(R.string.transaction_id)}: ${orderData?.order?.transactionId}"
             when(orderData?.order?.paymentMethod){
                 "1" ->{

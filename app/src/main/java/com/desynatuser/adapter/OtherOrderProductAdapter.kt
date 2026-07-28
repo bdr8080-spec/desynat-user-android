@@ -228,8 +228,32 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
                 }
                 tvTitle.text =  if (Constants.language=="ar") productData?.productDetails?.productNameAr else productData?.productDetails?.productNameEn
 
-                tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)}"
                 tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)}"
+
+                val discountValueDouble = productData?.variationDetails?.discountValue?.toDoubleOrNull() ?: 0.0
+                if (discountValueDouble > 0.0) {
+                    tvPrice.isVisible = true
+                    tvDiscount.isVisible = true
+                    tvPrice.text =
+                        "${CommonMethod.formatCurrencyAmount(context, productData?.variationDetails?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                    val discountValue =
+                        "${CommonMethod.formatCurrencyAmountWithout(context, discountValueDouble)}"
+                    val discountType =
+                        if (productData?.variationDetails?.discountType == "1") "% ${context.getString(R.string.off)}" else " ${
+                            CommonMethod.getCurrency(
+                                context
+                            )
+                        } ${
+                            context.getString(
+                                R.string.off
+                            )
+                        }"
+                    tvDiscount.text = "$discountValue$discountType"
+                } else {
+                    tvPrice.isVisible = false
+                    tvDiscount.isVisible = false
+                }
+
                 val returnDays = productData?.productDetails?.returnDays
                 val exchangeDays = productData?.productDetails?.exchangableDays
                 val finalText = when {
@@ -252,31 +276,6 @@ class OtherOrderProductAdapter(var context:Context, private var productList: Arr
 
 
                 tvReturnPolicy.text = finalText
-
-                ivStore.load(productData?.variationDetails?.variantImage?.get(0)) {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_placeholder)
-                    error(R.drawable.ic_placeholder)
-                }
-
-                tvSizeValue.text = productData?.variationDetails?.size?.name.toString()
-                productData?.variationDetails?.color?.hexCode?.let {
-                    ivColor.setColorFilter(
-                        Color.parseColor(
-                            it
-                        )
-                    )
-                }
-                tvQuantity.text = productData?.quantity.toString()
-
-                val discountValue = productData?.variationDetails?.discountValue ?: 0
-                val discountType =
-                    if (productData?.variationDetails?.discountType == "1") "% ${context.getString(R.string.off)}" else " KD ${
-                        context.getString(
-                            R.string.off
-                        )
-                    }"
-                tvDiscount.text = "$discountValue$discountType"
 
             }
             viewCustomImg.isVisible = false

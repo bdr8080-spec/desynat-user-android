@@ -144,28 +144,35 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 }
                 tvTitle.text = if (Constants.language=="ar") productData?.productDetails?.productNameAr else productData?.productDetails?.productNameEn
 
-//                tvPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)} KD"
-//                tvDiscountPrice.text = "${CommonMethod.formatPrice(productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)} KD"
-
-                tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.actualPrice?.toDoubleOrNull()?:0.0)}"
                 tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.variationDetails?.finalPrice?.toDoubleOrNull()?:0.0)}"
+
+                val discountValueDouble = productData?.variationDetails?.discountValue?.toDoubleOrNull() ?: 0.0
+                if (discountValueDouble > 0.0) {
+                    tvPrice.isVisible = true
+                    tvDiscount.isVisible = true
+                    tvPrice.text =
+                        "${CommonMethod.formatCurrencyAmount(context, productData?.variationDetails?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                    val discountValue =
+                        CommonMethod.formatCurrencyAmountWithout(context, discountValueDouble)
+                    val discountType =
+                        if (productData?.variationDetails?.discountType == "1") "% ${context.getString(R.string.off)}" else " ${
+                            CommonMethod.getCurrency(
+                                context
+                            )
+                        } ${
+                            context.getString(
+                                R.string.off
+                            )
+                        }"
+                    tvDiscount.text = "$discountValue$discountType"
+                } else {
+                    tvPrice.isVisible = false
+                    tvDiscount.isVisible = false
+                }
 
                 val returnDays = productData?.productDetails?.returnDays
                 val exchangeDays = productData?.productDetails?.exchangableDays
 
-                /*val finalText = when {
-                    returnDays != null && exchangeDays != null ->
-                        "${returnDays} Days Return & ${exchangeDays} Days Exchange"
-
-                    returnDays != null ->
-                        "${returnDays} Days Return & No Exchange"
-
-                    exchangeDays != null ->
-                        "No Return & ${exchangeDays} Days Exchange"
-
-                    else ->
-                        "No Return & No Exchange"
-                }*/
 
                 val finalText = when {
                     returnDays != null && exchangeDays != null ->
@@ -190,31 +197,6 @@ class OrderProductAdapter(var context:Context, private var productList: ArrayLis
                 } else {
                     tvReturnPolicy.text = finalText
                 }
-
-                ivStore.load(productData?.variationDetails?.variantImage?.get(0)) {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_placeholder)
-                    error(R.drawable.ic_placeholder)
-                }
-
-                tvSizeValue.text = if(Constants.language=="ar") productData?.variationDetails?.size?.name.toString() else productData?.variationDetails?.size?.name.toString()
-                productData?.variationDetails?.color?.hexCode?.let {
-                    ivColor.setColorFilter(Color.parseColor(it))
-                }
-                tvQuantity.text = productData?.quantity.toString()
-
-                val discountValue = CommonMethod.formatCurrencyAmountWithout(context,productData?.variationDetails?.discountValue?.toDoubleOrNull() ?: 0.0)
-                val discountType =
-                    if (productData?.variationDetails?.discountType == "1") "% ${context.getString(R.string.off)}" else " ${
-                        CommonMethod.getCurrency(
-                            context
-                        )
-                    } ${
-                        context.getString(
-                            R.string.off
-                        )
-                    }"
-                tvDiscount.text = "$discountValue$discountType"
 
                 if (productData?.paymentStatus == "2" || productData?.paymentStatus == "3") {
                     btnCancelOrder.isVisible = false

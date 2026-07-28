@@ -272,12 +272,6 @@ class ProductDetailFragment : BaseFragment() {
                 clWomenSize.isVisible = false
             }
 
-            tvPrice.text = "${
-                CommonMethod.formatCurrencyAmount(
-                    requireActivity(),
-                    variant?.productVariation?.getOrNull(selectedSizePos)?.actualPrice ?: 0.0
-                )
-            }"
             tvDiscountedPrice.text = "${
                 CommonMethod.formatCurrencyAmount(
                     requireActivity(),
@@ -285,23 +279,38 @@ class ProductDetailFragment : BaseFragment() {
                 )
             }"
 
-            val discountValue = "${
-                CommonMethod.formatCurrencyAmountWithout(
-                    requireActivity(),
-                    variant?.productVariation?.getOrNull(selectedSizePos)?.discountValue?.toDoubleOrNull() ?: 0.0
-                )
-            }"
-            val discountType =
-                if (variant?.productVariation?.getOrNull(selectedSizePos)?.discountType == "1") "%  ${
-                    requireActivity().getString(
-                        R.string.off
-                    )
-                }" else " ${CommonMethod.getCurrency(requireActivity())}  ${
-                    requireActivity().getString(
-                        R.string.off
+            val discountValueDouble = variant?.productVariation?.getOrNull(selectedSizePos)?.discountValue?.toDoubleOrNull() ?: 0.0
+            if (discountValueDouble > 0.0) {
+                tvPrice.visibility = View.VISIBLE
+                tvOffer.visibility = View.VISIBLE
+                tvPrice.text = "${
+                    CommonMethod.formatCurrencyAmount(
+                        requireActivity(),
+                        variant?.productVariation?.getOrNull(selectedSizePos)?.actualPrice ?: 0.0
                     )
                 }"
-            tvOffer.text = "$discountValue$discountType"
+
+                val discountValue = "${
+                    CommonMethod.formatCurrencyAmountWithout(
+                        requireActivity(),
+                        discountValueDouble
+                    )
+                }"
+                val discountType =
+                    if (variant?.productVariation?.getOrNull(selectedSizePos)?.discountType == "1") "%  ${
+                        requireActivity().getString(
+                            R.string.off
+                        )
+                    }" else " ${CommonMethod.getCurrency(requireActivity())}  ${
+                        requireActivity().getString(
+                            R.string.off
+                        )
+                    }"
+                tvOffer.text = "$discountValue$discountType"
+            } else {
+                tvPrice.visibility = View.GONE
+                tvOffer.visibility = View.GONE
+            }
 
             tvDescription.text =
                 if (Constants.language == "ar") productDetailData?.descriptionAr else productDetailData?.descriptionEn

@@ -362,10 +362,22 @@ class ChatFragment : BaseFragment() {
             tvSizeValue.text = chatDetailData?.productVariation?.size?.name.toString()
             ivColor.setColorFilter(Color.parseColor(chatDetailData?.productVariation?.color?.hexCode))
 
-            tvPrice.text =
-                "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.productVariation?.actualPrice ?: 0.0)}"
             tvDiscountPrice.text =
                 "${CommonMethod.formatCurrencyAmount(requireActivity(),chatDetailData?.productVariation?.finalPrice ?: 0.0)}"
+
+            val discountValueDouble = chatDetailData?.productVariation?.discountValue ?: 0.0
+            if (discountValueDouble > 0.0) {
+                tvPrice.visibility = View.VISIBLE
+                tvPrice.text =
+                    "${
+                        CommonMethod.formatCurrencyAmount(
+                            requireActivity(),
+                            chatDetailData?.productVariation?.actualPrice ?: 0.0
+                        )
+                    }"
+            } else {
+                tvPrice.visibility = View.GONE
+            }
 
             ivProduct.load(chatDetailData?.productVariation?.variantImage?.get(0)) {
                 crossfade(true)

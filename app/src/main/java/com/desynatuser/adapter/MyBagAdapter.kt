@@ -60,16 +60,26 @@ class MyBagAdapter(var context:Context, private var cartList: ArrayList<GetCartR
             tvTitle.text =  if (Constants.language=="ar") cartData.product.productNameAr else cartData.product.productNameEn
 
 
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.actualPrice?.toDoubleOrNull()?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
-            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,cartData?.productVariants?.discountValue?.toDoubleOrNull() ?: 0.0)}"
-            val discountType = if (cartData?.productVariants?.discountType == "1")"%  ${
-                context.getString(
-                    R.string.off
-                )
-            }" else " ${CommonMethod.getCurrency(context)}  ${context.getString(R.string.off)}"
-            tvDiscount.text = "$discountValue$discountType"
+            val discountValueDouble = cartData?.productVariants?.discountValue?.toDoubleOrNull() ?: 0.0
+            if (discountValueDouble > 0.0) {
+                tvPrice.isVisible = true
+                tvDiscount.isVisible = true
+                tvPrice.text =
+                    "${CommonMethod.formatCurrencyAmount(context, cartData?.productVariants?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                val discountValue =
+                    "${CommonMethod.formatCurrencyAmountWithout(context, discountValueDouble)}"
+                val discountType = if (cartData?.productVariants?.discountType == "1") "%  ${
+                    context.getString(
+                        R.string.off
+                    )
+                }" else " ${CommonMethod.getCurrency(context)}  ${context.getString(R.string.off)}"
+                tvDiscount.text = "$discountValue$discountType"
+            } else {
+                tvPrice.isVisible = false
+                tvDiscount.isVisible = false
+            }
 
             val returnDays = cartData?.product?.returnDays
             val exchangeDays = cartData?.product?.exchangableDays

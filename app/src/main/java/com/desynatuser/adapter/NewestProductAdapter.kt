@@ -1,6 +1,7 @@
 package com.desynatuser.adapter
 
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -26,17 +27,30 @@ class NewestProductAdapter(private val context: Context, private val newestProdu
             else{
                 tvTitle.text =  if (Constants.language=="ar") productData.productNameAr+" (${context.getString(R.string.by)} ${storeName})" else productData.productNameEn+" (${context.getString(R.string.by)} ${storeName})"
             }
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.actualPrice?.toDoubleOrNull()?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
             val variant = productData?.productVariants?.getOrNull(0)
-            val discountValue =  "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
-            val discountType = if (variant?.discountType == "1")"%  ${context.getString(R.string.off)}" else " ${CommonMethod.getCurrency(context)}  ${
-                context.getString(
-                    R.string.off
-                )
-            }"
-            tvDiscount.text = "$discountValue$discountType"
+            val discountValueDouble = variant?.discountValue?.toDoubleOrNull() ?: 0.0
+            if (discountValueDouble > 0.0) {
+                tvPrice.visibility = View.VISIBLE
+                tvDiscount.visibility = View.VISIBLE
+                tvPrice.text =
+                    "${CommonMethod.formatCurrencyAmount(context, variant?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                val discountValue =
+                    "${CommonMethod.formatCurrencyAmountWithout(context, discountValueDouble)}"
+                val discountType =
+                    if (variant?.discountType == "1") "%  ${context.getString(R.string.off)}" else " ${
+                        CommonMethod.getCurrency(context)
+                    }  ${
+                        context.getString(
+                            R.string.off
+                        )
+                    }"
+                tvDiscount.text = "$discountValue$discountType"
+            } else {
+                tvPrice.visibility = View.GONE
+                tvDiscount.visibility = View.GONE
+            }
 
             if (productData?.productAvgRating!=null){
                 tvRating.text = "(${productData?.productAvgRating})"

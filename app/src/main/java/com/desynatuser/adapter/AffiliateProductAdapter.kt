@@ -2,6 +2,7 @@ package com.desynatuser.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -23,18 +24,30 @@ class AffiliateProductAdapter(var context:Context, private var productList: Arra
                 else{
                     tvTitle.text = if (Constants.language=="ar") productData?.productNameAr else productData?.productNameEn
                 }
-                    tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.firstOrNull()?.actualPrice?.toDoubleOrNull()?:0.0)}"
                     tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.firstOrNull()?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
                     val variant = productData?.productVariants?.getOrNull(0)
-                  val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+                    val discountValueDouble = variant?.discountValue?.toDoubleOrNull() ?: 0.0
+                    if (discountValueDouble > 0.0) {
+                        tvPrice.visibility = View.VISIBLE
+                        tvDiscount.visibility = View.VISIBLE
+                        tvPrice.text =
+                            "${CommonMethod.formatCurrencyAmount(context, variant?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                        val discountValue =
+                            "${CommonMethod.formatCurrencyAmountWithout(context, discountValueDouble)}"
 
-                val discountType = if (variant?.discountType == "1")"%  ${context.getString(R.string.off)}" else " ${CommonMethod.getCurrency(context)}  ${
-                    context.getString(
-                        R.string.off
-                    )
-                }"
-                    tvDiscount.text = "$discountValue$discountType"
+                        val discountType = if (variant?.discountType == "1") "%  ${context.getString(R.string.off)}" else " ${
+                            CommonMethod.getCurrency(context)
+                        }  ${
+                            context.getString(
+                                R.string.off
+                            )
+                        }"
+                        tvDiscount.text = "$discountValue$discountType"
+                    } else {
+                        tvPrice.visibility = View.GONE
+                        tvDiscount.visibility = View.GONE
+                    }
                    tvCommission.text = "${CommonMethod.formatCurrencyAmountWithout(context,productData?.affiliatedCommission?.toDoubleOrNull() ?: 0.0)}% ${context.getString(R.string.commission)}"
 
 

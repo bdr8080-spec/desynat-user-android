@@ -45,52 +45,28 @@ class MyCustomBagAdapter(var context:Context, private var cartList: ArrayList<Ge
             }
             tvTitle.text =  if (Constants.language=="ar") cartData.product.productNameAr else cartData.product.productNameEn
 
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.productVariants?.actualPrice?.toDoubleOrNull()?:0.0)}"
-         //   tvDiscountPrice.text = "${cartData?.productVariants?.finalPrice} KD"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,cartData?.chatroomData?.totalAmount?.toDoubleOrNull()?:0.0)}"
+
+            val discountValueDouble = cartData?.productVariants?.discountValue?.toDoubleOrNull() ?: 0.0
+            if (discountValueDouble > 0.0) {
+                tvPrice.isVisible = true
+                tvDiscount.isVisible = true
+                tvPrice.text =
+                    "${CommonMethod.formatCurrencyAmount(context, cartData?.productVariants?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                val discountValue =
+                    "${CommonMethod.formatCurrencyAmountWithout(context, discountValueDouble)}"
+                val discountType = if (cartData?.productVariants?.discountType == "1") "%  ${
+                    context.getString(
+                        R.string.off
+                    )
+                }" else " ${CommonMethod.getCurrency(context)}  ${context.getString(R.string.off)}"
+                tvDiscount.text = "$discountValue$discountType"
+            } else {
+                tvPrice.isVisible = false
+                tvDiscount.isVisible = false
+            }
+
             val returnDays = cartData?.product?.returnDays
-            val exchangeDays = cartData?.product?.exchangableDays
-
-            val finalText = when {
-                returnDays != null && exchangeDays != null ->
-                    "${returnDays} ${context.getString(R.string.days_return_and)} ${exchangeDays} ${
-                        context.getString(
-                            R.string.days_exchange
-                        )
-                    }"
-
-                returnDays != null ->
-                    "${returnDays} ${context.getString(R.string.days_return)} ${context.getString(R.string.no_exchange)}"
-
-                exchangeDays != null ->
-                    "${context.getString(R.string.no_return)} ${exchangeDays} ${context.getString(R.string.days_exchange)}"
-
-                else ->
-                    "${context.getString(R.string.no_return)} ${context.getString(R.string.days_return)}"
-            }
-
-            tvReturnPolicy.text = finalText
-
-            ivStore.load(cartData?.productVariants?.variantImage?.get(0)) {
-                crossfade(true)
-                placeholder(R.drawable.ic_placeholder)
-                error(R.drawable.ic_placeholder)
-            }
-
-            tvSellerName.text = cartData?.product?.sellerDetails?.firstName+" "+ cartData?.product?.sellerDetails?.lastName
-            tvDeliverBy.text = "3 ${context.getString(R.string.to)} 5 ${context.getString(R.string.working_days)}"
-            tvSizeValue.text = cartData?.productVariants?.size?.name.toString()
-            ivColor.setColorFilter(Color.parseColor(cartData?.productVariants?.color?.hexCode))
-            tvQuantity.text = cartData?.quantity.toString()
-            tvCount.text = cartData?.quantity.toString()
-
-            val discountValue = cartData?.productVariants?.discountValue ?: 0
-            val discountType = if (cartData?.productVariants?.discountType == "1")"%  ${
-                context.getString(
-                    R.string.off
-                )
-            }" else " ${CommonMethod.getCurrency(context)}  ${context.getString(R.string.off)}"
-            tvDiscount.text = "$discountValue$discountType"
 
             tvCustomDetail.setOnClickListener {
                 foodBagClick.onFoodBagClick(position, "custom")

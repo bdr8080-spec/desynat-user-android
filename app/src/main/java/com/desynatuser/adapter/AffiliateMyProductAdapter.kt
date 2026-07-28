@@ -42,18 +42,31 @@ class AffiliateMyProductAdapter(var context:Context, private var productList: Ar
             else{
                 tvTitle.text = if (Constants.language=="ar") productData?.productNameAr else productData?.productNameEn
             }
-            tvPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.firstOrNull()?.actualPrice?.toDoubleOrNull()?:0.0)}"
             tvDiscountPrice.text = "${CommonMethod.formatCurrencyAmount(context,productData?.productVariants?.firstOrNull()?.finalPrice?.toDoubleOrNull()?:0.0)}"
 
             val variant = productData?.productVariants?.getOrNull(0)
-            val discountValue = "${CommonMethod.formatCurrencyAmountWithout(context,variant?.discountValue?.toDoubleOrNull() ?: 0.0)}"
+            val discountValueDouble = variant?.discountValue?.toDoubleOrNull() ?: 0.0
 
-            val discountType = if (variant?.discountType == "1")"%  ${context.getString(R.string.off)}" else " ${CommonMethod.getCurrency(context)}  ${
-                context.getString(
-                    R.string.off
-                )
-            }"
-            tvDiscount.text = "$discountValue$discountType"
+            if (discountValueDouble > 0.0) {
+                tvPrice.isVisible = true
+                tvDiscount.isVisible = true
+                tvPrice.text =
+                    "${CommonMethod.formatCurrencyAmount(context, variant?.actualPrice?.toDoubleOrNull() ?: 0.0)}"
+                val discountValue =
+                    "${CommonMethod.formatCurrencyAmountWithout(context, discountValueDouble)}"
+
+                val discountType = if (variant?.discountType == "1") "%  ${context.getString(R.string.off)}" else " ${
+                    CommonMethod.getCurrency(context)
+                }  ${
+                    context.getString(
+                        R.string.off
+                    )
+                }"
+                tvDiscount.text = "$discountValue$discountType"
+            } else {
+                tvPrice.isVisible = false
+                tvDiscount.isVisible = false
+            }
             tvCommission.text = "${CommonMethod.formatCurrencyAmountWithout(context,productData?.affiliatedCommission?.toDoubleOrNull() ?: 0.0)}% ${
                 context.getString(
                     R.string.commission
