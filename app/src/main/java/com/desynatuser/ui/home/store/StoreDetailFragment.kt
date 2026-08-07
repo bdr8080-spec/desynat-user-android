@@ -198,6 +198,8 @@ class StoreDetailFragment : BaseFragment() {
                             val bundle = Bundle().apply {
                                 putString("from", "highlights")
                                 putString("sellerId", storeDetailData?.store?.sellerId.toString())
+                                putString("storeName", storeDetailData?.store?.storeName)
+                                putString("storeImage", storeDetailData?.store?.storeImage)
                                 putString("storyData", Gson().toJson(list))
                             }
                             findNavController().navigate(
@@ -343,6 +345,8 @@ class StoreDetailFragment : BaseFragment() {
                     val bundle = Bundle().apply {
                         putString("from", "story")
                         putString("sellerId", storeDetailData?.store?.sellerId.toString())
+                        putString("storeName", storeDetailData?.store?.storeName)
+                        putString("storeImage", storeDetailData?.store?.storeImage)
                         putString("storyData", Gson().toJson(storyList))
                     }
                     findNavController().navigate(
@@ -390,6 +394,7 @@ class StoreDetailFragment : BaseFragment() {
             tvReel.background = null
             clProduct.isVisible = true
             rvReel.isVisible = false
+            tvNoReelDataFound.isVisible = false
             checkData()
         }
     }
@@ -403,6 +408,7 @@ class StoreDetailFragment : BaseFragment() {
             tvReel.setBackgroundResource(R.drawable.selected_right_tab)
             clProduct.isVisible = false
             rvReel.isVisible = true
+            tvNoDataFound.isVisible = false
             checkReelData()
         }
 
@@ -693,6 +699,7 @@ class StoreDetailFragment : BaseFragment() {
                 reelList.clear()
                 reelList.addAll(it.data)
                 reelAdapter?.notifyDataSetChanged()
+                checkReelData()
             }
             if (isReelObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -781,11 +788,11 @@ class StoreDetailFragment : BaseFragment() {
     }
 
     private fun checkData() {
-        binding?.tvNoDataFound?.isVisible = productList.isEmpty()
+        binding?.tvNoDataFound?.isVisible = productList.isEmpty() && type == 1
     }
 
     private fun checkReelData() {
-        binding?.tvNoReelDataFound?.isVisible = reelList.isEmpty()
+        binding?.tvNoReelDataFound?.isVisible = reelList.isEmpty() && type == 2
     }
 
     private fun sortProductDialog() {

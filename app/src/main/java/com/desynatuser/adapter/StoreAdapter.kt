@@ -96,7 +96,7 @@ class StoreAdapter(var context:Context, private var storeList: ArrayList<GetStor
             }
 
             ivProfile.setOnClickListener {
-                if (storeList.size!=0) {
+                if (storeList.isNotEmpty()) {
                     storeClick.onStoreClick(position, 2)
                 }
             }

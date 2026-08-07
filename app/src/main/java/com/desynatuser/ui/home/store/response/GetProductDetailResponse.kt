@@ -104,6 +104,8 @@ data class GetProductDetailResponse(
             val cashOnDelivery: String,
             @SerializedName("category")
             val category: Category,
+            @SerializedName("product_avg_rating")
+            val averageRating: String,
             @SerializedName("category_id")
             val categoryId: String,
             @SerializedName("created_at")

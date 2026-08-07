@@ -104,9 +104,11 @@ class StoreFragment : BaseFragment() {
                             }
 
                             2 -> {
-                                if (storeList[position].sellerStories.size != 0) {
+                                if (storeList[position].sellerStories.isNotEmpty()) {
                                     val bundle = Bundle().apply {
                                         putString("from", "story")
+                                        putString("storeName", storeList[position].storeName)
+                                        putString("storeImage", storeList[position].storeImage)
                                         putString(
                                             "storyData",
                                             Gson().toJson(storeList[position].sellerStories)

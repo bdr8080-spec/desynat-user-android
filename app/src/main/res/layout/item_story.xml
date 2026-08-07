@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="ltr"
     android:background="@color/black">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -95,6 +94,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_55sdp"
         android:background="@android:color/transparent"
+        android:layoutDirection="ltr"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightClick"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,6 +107,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_55sdp"
         android:background="@android:color/transparent"
+        android:layoutDirection="ltr"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/leftClick"
@@ -114,9 +115,9 @@
         app:layout_constraintWidth_percent="0.5" />
 
     <TextView
+        android:id="@+id/tvAd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvAd"
         android:layout_margin="8dp"
         android:background="@drawable/bg_ad"
         android:paddingHorizontal="20dp"

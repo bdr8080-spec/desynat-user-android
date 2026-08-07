@@ -2,7 +2,6 @@ package com.desynatuser.ui.home.storyHighlights
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -39,6 +39,8 @@ class ViewStoryFragment : BaseFragment() {
     private var storyPagerAdapter: StoryPagerAdapter? = null
     private var from = "admin"
     private var sellerId: String = ""
+    private var storeName: String? = null
+    private var storeImage: String? = null
 
     private var progressAnimator: ValueAnimator? = null
 
@@ -53,7 +55,6 @@ class ViewStoryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.layoutDirection = View.LAYOUT_DIRECTION_LTR
         initView()
         initControl()
         observe()
@@ -78,6 +79,8 @@ class ViewStoryFragment : BaseFragment() {
 
         if (from != "admin") {
             sellerId = arguments?.getString("sellerId").toString()
+            storeName = arguments?.getString("storeName")
+            storeImage = arguments?.getString("storeImage")
         }
 //        when(from){
 //            "admin"->getAdminStory()
@@ -85,6 +88,13 @@ class ViewStoryFragment : BaseFragment() {
 //            "story"->getSellerStory()
 //            "highlights"->getSellerHighlights()
 //        }
+
+
+        if (from == "highlights") {
+            binding?.tvName?.isVisible = false
+            binding?.ivProfile?.isVisible = false
+            binding?.tvTime?.isVisible = false
+        }
 
         setupAdapter()
         setupPagerCallback()
@@ -319,16 +329,22 @@ class ViewStoryFragment : BaseFragment() {
         binding?.apply {
             val sellerDetails = story.sellerDetails
             val storeInfo = sellerDetails?.storeInfo
-
             if (storeInfo != null) {
-                tvName.text = storeInfo.storeName ?: getString(R.string.desynat)
+                tvName.text = storeInfo.storeName ?: storeName ?: "Desynat"
 
-                Glide.with(requireActivity()).load(storeInfo.storeImage)
+                Glide.with(requireActivity()).load(storeInfo.storeImage ?: storeImage)
                     .placeholder(R.mipmap.ic_launcher_app).error(R.mipmap.ic_launcher_app)
                     .into(ivProfile)
             } else {
-                tvName.text = getString(R.string.desynat)
-                ivProfile.setImageResource(R.mipmap.ic_launcher_app)
+                tvName.text = storeName ?: "Desynat"
+
+                if (!storeImage.isNullOrEmpty()) {
+                    Glide.with(requireActivity()).load(storeImage)
+                        .placeholder(R.mipmap.ic_launcher_app).error(R.mipmap.ic_launcher_app)
+                        .into(ivProfile)
+                } else {
+                    ivProfile.setImageResource(R.mipmap.ic_launcher_app)
+                }
             }
 
             val timeStr = story.createdAt

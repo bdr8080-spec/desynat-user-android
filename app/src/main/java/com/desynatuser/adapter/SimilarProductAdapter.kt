@@ -41,6 +41,13 @@ class SimilarProductAdapter(
             tvTitle.text = productData?.productNameEn
             //  tvTitle.text = productData?.productNameEn+" (By ${storeName})"
 
+            if (productData?.averageRating != null) {
+                tvRating.text = "(${productData?.averageRating})"
+            } else {
+                tvRating.text = "(0)"
+            }
+            rating.rating = productData?.averageRating?.toFloatOrNull() ?: 0f
+
             tvDiscountPrice.text = CommonMethod.formatCurrencyAmount(
                 context, productData?.productVariants?.get(0)?.finalPrice?.toDoubleOrNull() ?: 0.0
             )

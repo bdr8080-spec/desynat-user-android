@@ -1,0 +1,4 @@
+- `[x]` Remove programmatic LTR override in `ViewStoryFragment.kt`
+- `[x]` Remove XML LTR override in `item_story.xml`
+- `[x]` Ensure `layoutProgress` remains LTR in `fragment_view_story.xml`
+- `[x]` Verify RTL layout in story view
