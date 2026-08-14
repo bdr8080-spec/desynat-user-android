@@ -90,9 +90,9 @@ class ProductDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observe()
         initView()
         initControl()
-        observe()
     }
 
     override fun initView() {
@@ -120,9 +120,8 @@ class ProductDetailFragment : BaseFragment() {
             object : SimilarProductAdapter.ProductClick {
                 override fun onProductClick(position: Int) {
                     productId = similarProductList[position].id.toString()
-
+                    arguments?.putString("productId", productId)
                     getProductDetail()
-
                 }
 
             })
@@ -179,9 +178,12 @@ class ProductDetailFragment : BaseFragment() {
 
         reviewAdapter = ReviewAdapter(requireActivity(), ratingList)
         binding?.rvRating?.adapter = reviewAdapter
-        getProductDetail()
+        
         binding?.tvSearchAddress?.text =
             SharedPreference.get(requireActivity()).getDefaultAddress()?.address
+        
+        getProductDetail()
+        
         if (SharedPreference.get(requireActivity()).accessToken != "") {
             viewCartDetail()
         }
@@ -481,11 +483,10 @@ class ProductDetailFragment : BaseFragment() {
 
     override fun observe() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (isObserver) {
+            if (isObserver || isProductObserver || isCartObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
-                // errorMessage?.let { showToast(it) }
-                // isObserver = false
+                errorMessage?.let { showToast(it) }
             }
         }
 
@@ -753,6 +754,7 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun getProductDetail() {
+        if (productId.isNullOrEmpty()) return
         val map = HashMap<String, Any>()
         map["product_id"] = productId.toString()
         viewModel.getProductDetailInfo(map)

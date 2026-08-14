@@ -130,8 +130,6 @@ data class GetProductDetailResponse(
             val otherEn: Any,
             @SerializedName("product_active_status")
             val productActiveStatus: Int,
-            @SerializedName("product_avg_rating")
-            val productAvgRating: Any,
             @SerializedName("product_exchangable")
             val productExchangable: String,
             @SerializedName("product_name_ar")

@@ -1,26 +1,24 @@
-# Walkthrough - Fixed Arabic RTL Layout in Story View
+# Walkthrough - Sync Reel Designs and Add Pause Toggle
 
-I have fixed the issue where the Story View header elements (Profile, Name, and Close Icon) were not flipping positions correctly in Arabic.
+I have synchronized the reel view designs and implemented the click-to-pause functionality as requested.
 
 ## Changes Made
 
-### 1. [ViewStoryFragment.kt](file:///C:/Users/tausi/Android Projects/Desynate/desynat-user-android/app/src/main/java/com/desynatuser/ui/home/storyHighlights/ViewStoryFragment.kt)
-- Removed `view.layoutDirection = View.LAYOUT_DIRECTION_LTR` from `onViewCreated`. This line was programmatically forcing the entire screen to stay in English-style (LTR) layout, even when the system was set to Arabic.
+### 1. Unified Layout Design
+- Updated [fragment_view_reel.xml](file:///C:/Users/tausi/Android Projects/Desynate/desynat-user-android/app/src/main/res/layout/fragment_view_reel.xml) to match the modern `fragment1_view_reel.xml` design. Both now use a `RecyclerView` with vertical paging for a consistent "Reels" experience.
 
-### 2. [item_story.xml](file:///C:/Users/tausi/Android Projects/Desynate/desynat-user-android/app/src/main/res/layout/item_story.xml)
-- Removed `android:layoutDirection="ltr"` from the root layout of story items. This allows the text and titles inside the story to also follow the system language direction.
+### 2. Implementation of Click-to-Pause
+- Modified [ViewReelAdapter.kt](file:///C:/Users/tausi/Android Projects/Desynate/desynat-user-android/app/src/main/java/com/desynatuser/adapter/ViewReelAdapter.kt):
+    - Added a click listener to the entire reel area (`root`).
+    - Tapping anywhere now toggles between Play and Pause.
+    - Updated the `ivPlay` icon logic: it now automatically hides when the video starts playing and reappears (showing a Play icon) when paused.
 
-### 3. [fragment_view_story.xml](file:///C:/Users/tausi/Android Projects/Desynate/desynat-user-android/app/src/main/res/layout/fragment_view_story.xml)
-- Ensured the root layout allows RTL flipping.
-- Added `android:layoutDirection="ltr"` to the `layoutProgress` container to keep the story progress bars moving Left-to-Right as per standard media player behavior.
+### 3. Refactored Reel Fragments
+- Updated [ViewReelFragment.kt](file:///C:/Users/tausi/Android Projects/Desynate/desynat-user-android/app/src/main/java/com/desynatuser/ui/home/storyHighlights/ViewReelFragment.kt) to use the `ViewReelAdapter` and `RecyclerView`.
+- Ensured it supports both single reel items and lists of reels for backward compatibility with existing navigation calls.
 
 ## Verification
 
-### Manual Verification Required
-- Set your device language to **Arabic**.
-- Open a story.
-- Verify that:
-    - The **Profile Image** is now on the **Right**.
-    - The **Name and Time** are to the **Left** of the profile image.
-    - The **Close (X) Icon** is on the **Far Left**.
-    - The **Progress Bars** still move **Left-to-Right**.
+### Manual Verification
+- **Full Screen Click**: Open any reel and tap the center of the screen. The video should pause and show the Play icon. Tap again to resume.
+- **Design Consistency**: Verify that navigating to reels from different parts of the app (e.g., Highlights vs Reels tab) results in the same layout.

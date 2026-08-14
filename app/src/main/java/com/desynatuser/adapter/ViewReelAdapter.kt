@@ -72,7 +72,7 @@ class ViewReelAdapter(var context: Context, private val reelList: List<GetSeller
                     videoLoader.isVisible = false
                     videoStory.start()
 
-                    ivPlay.setImageResource(R.drawable.ic_pause)
+                    ivPlay.isVisible = false
 
                     seekBar.max = videoStory.duration
 
@@ -134,14 +134,28 @@ class ViewReelAdapter(var context: Context, private val reelList: List<GetSeller
 
             tvTitle.text = item.caption ?: ""
 
-            ivPlay.setOnClickListener {
-
+            root.setOnClickListener {
                 if (videoStory.isPlaying) {
                     videoStory.pause()
                     ivPlay.setImageResource(R.drawable.ic_play)
+                    ivPlay.isVisible = true
                 } else {
                     videoStory.start()
                     ivPlay.setImageResource(R.drawable.ic_pause)
+                    ivPlay.isVisible = false
+                    updateSeekBar()
+                }
+            }
+
+            ivPlay.setOnClickListener {
+                if (videoStory.isPlaying) {
+                    videoStory.pause()
+                    ivPlay.setImageResource(R.drawable.ic_play)
+                    ivPlay.isVisible = true
+                } else {
+                    videoStory.start()
+                    ivPlay.setImageResource(R.drawable.ic_pause)
+                    ivPlay.isVisible = false
                     updateSeekBar()
                 }
             }
