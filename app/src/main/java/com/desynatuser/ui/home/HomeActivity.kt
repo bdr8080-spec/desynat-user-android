@@ -301,42 +301,51 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun handleDeepLink(intent: Intent?) {
-
         val data: Uri = intent?.data ?: return
 
-        val path = data.path
+        Log.d("AppLinks", "Incoming Intent Data: $data")
+        Log.d("AppLinks", "Scheme: ${data.scheme}")
+        Log.d("AppLinks", "Host: ${data.host}")
+        Log.d("AppLinks", "Path: ${data.path}")
+
+        val path = data.path ?: ""
         val id = data.lastPathSegment
         val ref = data.getQueryParameter("ref")
 
-        Log.d("DeepLink", "Path: $path")
-        Log.d("DeepLink", "Id: $id")
+        Log.d("AppLinks", "Last Path Segment (ID): $id")
+        Log.d("AppLinks", "Ref Parameter: $ref")
+
+        if (id.isNullOrEmpty()) {
+            Log.w("AppLinks", "Deep link ID is null or empty, aborting navigation.")
+            return
+        }
+
         val navOptions = NavOptions.Builder()
             .setLaunchSingleTop(true)
             .build()
 
         when {
-
-            path?.contains("/user/product/detail-page") == true -> {
-
+            path.contains("/user/product/detail-page") -> {
+                Log.i("AppLinks", "Navigating to Product Detail with ID: $id")
                 val bundle = Bundle().apply {
                     putString("productId", id)
-                    if (ref!=null){
+                    if (ref != null) {
                         putString("ref_id", ref)
                         putString("ref_link", data.toString())
                     }
                 }
-
                 controller.navigate(R.id.productDetail, bundle, navOptions)
-
             }
 
-            path?.contains("/user/store-details") == true -> {
-
+            path.contains("/user/store-details") -> {
+                Log.i("AppLinks", "Navigating to Store Detail with ID: $id")
                 val bundle = Bundle().apply {
                     putString("storeId", id)
                 }
-
                 controller.navigate(R.id.storeDetail, bundle, navOptions)
+            }
+            else -> {
+                Log.w("AppLinks", "Unrecognized path: $path")
             }
         }
     }

@@ -41,6 +41,7 @@ import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
+import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -614,7 +615,7 @@ class OrderDetailFragment : BaseFragment() {
             }
 
             btnInvoice.setOnClickListener {
-                CommonMethod.openPdfInBrowser(requireActivity(),"${Constants.BASE_URL}/InvoiceUser/${orderData?.order?.orderId.toString()}")
+                CommonMethod.openPdfInBrowser(requireActivity(),"${Constants.BASE_URL}/InvoiceUser/${orderData?.order?.orderId.toString()}?lang=${SharedPreference.get(requireContext()).language}")
                // getInvoice()
             }
         }
