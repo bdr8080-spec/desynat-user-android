@@ -175,6 +175,7 @@ class HomeFragment : BaseFragment() {
 
     override fun initView() {
         Constants.language = SharedPreference.get(requireActivity()).language
+        binding?.relToolbar?.layoutDirection= View.LAYOUT_DIRECTION_LTR
         getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
         if (SharedPreference.get(requireActivity()).getCurrencyList()?.isEmpty() == true) {
