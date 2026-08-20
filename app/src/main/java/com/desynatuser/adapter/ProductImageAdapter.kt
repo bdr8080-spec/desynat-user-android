@@ -44,6 +44,19 @@ class ProductImageAdapter(
             Glide.with(context).load(productData).placeholder(R.drawable.ic_placeholder)
                 .into(ivProduct)
 
+//            Glide.with(context)
+//                .load(productData)
+//                .override(50, 50) // Load tiny version for "blurred" look
+//                .into(ivProductBlur)
+//
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+//                ivProductBlur.setRenderEffect(
+//                    android.graphics.RenderEffect.createBlurEffect(
+//                        20f, 20f, android.graphics.Shader.TileMode.CLAMP
+//                    )
+//                )
+//            }
+
             ivProduct.setOnClickListener {
                 click.onClick(position)
             }
