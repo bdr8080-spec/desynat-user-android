@@ -2,6 +2,7 @@ package com.desynatuser.ui.home.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -82,6 +83,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
 import kotlin.math.log
+import androidx.core.graphics.toColorInt
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
@@ -928,24 +930,24 @@ class HomeFragment : BaseFragment() {
         binding?.apply {
             tvMen.isEnabled = false
             tvMen.isInvisible = true
-            tvMen.setTextColor(Color.parseColor("#E6E6E6"))
+            tvMen.setTextColor("#E6E6E6".toColorInt())
             tvWomen.isEnabled = false
             tvWomen.isInvisible = true
-            tvWomen.setTextColor(Color.parseColor("#E6E6E6"))
+            tvWomen.setTextColor("#E6E6E6".toColorInt())
             tvKids.isEnabled = false
             tvKids.isInvisible = true
-            tvKids.setTextColor(Color.parseColor("#E6E6E6"))
+            tvKids.setTextColor("#E6E6E6".toColorInt())
             for (i in 0 until mainCategoryList.size) {
                 if (mainCategoryList[i].name == "Men") {
                     if (mainCategoryList[i].status == "1") {
                         tvMen.isVisible = true
                         tvMen.isEnabled = true
-                        tvMen.setTextColor(Color.parseColor("#000000"))
+                        tvMen.setTextColor("#000000".toColorInt())
 
                     } else {
                         tvMen.isInvisible = true
                         tvMen.isEnabled = false
-                        tvMen.setTextColor(Color.parseColor("#E6E6E6"))
+                        tvMen.setTextColor("#E6E6E6".toColorInt())
                     }
 
 
@@ -954,19 +956,19 @@ class HomeFragment : BaseFragment() {
                     if (mainCategoryList[i].status == "1") {
                         tvWomen.isEnabled = true
                         tvWomen.isVisible = true
-                        tvWomen.setTextColor(Color.parseColor("#000000"))
+                        tvWomen.setTextColor("#000000".toColorInt())
 
                     } else {
                         tvWomen.isEnabled = false
                         tvWomen.isInvisible = true
-                        tvWomen.setTextColor(Color.parseColor("#E6E6E6"))
+                        tvWomen.setTextColor("#E6E6E6".toColorInt())
                     }
                 }
                 if (mainCategoryList[i].name == "Kids") {
                     if (mainCategoryList[i].status == "1") {
                         tvKids.isEnabled = true
                         tvKids.isVisible = true
-                        tvKids.setTextColor(Color.parseColor("#000000"))
+                        tvKids.setTextColor("#000000".toColorInt())
 
                     } else {
                         tvKids.isEnabled = false
@@ -1152,21 +1154,84 @@ class HomeFragment : BaseFragment() {
         viewModel.getBestSellingProduct()
         isBestSellingObserver = true
     }
-
     private fun openSpeechDialog() {
+
+        val languages = arrayOf(
+            "English (India)",
+            "English (US)",
+            "Hindi (India)",
+            "Bengali (India)",
+            "Tamil (India)",
+            "Telugu (India)",
+            "Marathi (India)",
+            "Gujarati (India)",
+            "Kannada (India)",
+            "Malayalam (India)",
+            "Punjabi (India)"
+        )
+
+        val languageCodes = arrayOf(
+            "en-IN",
+            "en-US",
+            "hi-IN",
+            "bn-IN",
+            "ta-IN",
+            "te-IN",
+            "mr-IN",
+            "gu-IN",
+            "kn-IN",
+            "ml-IN",
+            "pa-IN"
+        )
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Choose Language")
+            .setSingleChoiceItems(
+                languages,
+                0
+            ) { dialog, which ->
+
+                val selectedLanguage = languageCodes[which]
+
+                dialog.dismiss()
+
+                startSpeechRecognition(selectedLanguage)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun startSpeechRecognition(languageCode: String) {
+
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+
             putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
             )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE,
+                languageCode
+            )
+
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                languageCode
+            )
+
+            putExtra(
+                RecognizerIntent.EXTRA_PROMPT,
+                "Speak now..."
+            )
         }
 
         try {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
-            showToast(getString(R.string.speech_recognition_not_supported))
+            showToast(
+                getString(R.string.speech_recognition_not_supported)
+            )
         }
     }
 
