@@ -76,6 +76,7 @@ class SupportFragment : BaseFragment() {
     private lateinit var imagePicker: ImagePicker
     private var imageFile: File? = null
     private var imageUrl:String?=null
+
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             imagePicker.onCameraResult(success)

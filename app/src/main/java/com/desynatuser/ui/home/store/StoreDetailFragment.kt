@@ -1,7 +1,9 @@
 package com.desynatuser.ui.home.store
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.speech.RecognizerIntent
@@ -48,6 +50,7 @@ import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
 import com.desynatuser.ui.home.storyHighlights.response.GetSellerStoryResponse
+import com.desynatuser.utils.VoiceSearchBottomSheet
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ProgressDialogUtils
@@ -116,6 +119,15 @@ class StoreDetailFragment : BaseFragment() {
     private var subCategoryData: GetSubCategoryResponse.Data? = null
 
     private var isFirstLoad = true
+
+    private val audioPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                showVoiceSearchBottomSheet()
+            } else {
+                showToast("Microphone permission is required for voice search.")
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -1118,19 +1130,25 @@ class StoreDetailFragment : BaseFragment() {
     }
 
     private fun openSpeechDialog() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        } else {
+            showVoiceSearchBottomSheet()
         }
+    }
 
-        try {
-            speechLauncher.launch(intent)
-        } catch (e: Exception) {
-            showToast(getString(R.string.speech_recognition_not_supported))
+    private fun showVoiceSearchBottomSheet() {
+        val bottomSheet = VoiceSearchBottomSheet.newInstance { text ->
+            if (text.isNotEmpty()) {
+                binding?.etSearch?.setText(text)
+                binding?.etSearch?.setSelection(text.length)
+            }
         }
+        bottomSheet.show(childFragmentManager, "VoiceSearchBottomSheet")
     }
 
     private val speechLauncher =

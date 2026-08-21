@@ -35,23 +35,25 @@ object AppModule {
             .writeTimeout(2, TimeUnit.MINUTES)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addInterceptor { chain ->
-                val requestBuilder = chain.request().newBuilder()
-                var token = ""
-                if(SharedPreference.get(context).userType==2){
-                    if (SharedPreference.get(context).affiliateAccessToken!=""){
-                        token =  SharedPreference.get(context).affiliateAccessToken
-                    }
-                    else{
-                        token =  SharedPreference.get(context).accessToken
-                    }
-                }
-                else {
-                    token =   SharedPreference.get(context).accessToken
-                }
+                val request = chain.request()
+                val requestBuilder = request.newBuilder()
 
-                if (token.isNotEmpty()) {
-                    requestBuilder.addHeader("Authorization", "Bearer $token")
-                    requestBuilder.addHeader("Accept-Language", "${Constants.language}")
+                if (!request.url.host.contains("googleapis.com")) {
+                    var token = ""
+                    if (SharedPreference.get(context).userType == 2) {
+                        if (SharedPreference.get(context).affiliateAccessToken != "") {
+                            token = SharedPreference.get(context).affiliateAccessToken
+                        } else {
+                            token = SharedPreference.get(context).accessToken
+                        }
+                    } else {
+                        token = SharedPreference.get(context).accessToken
+                    }
+
+                    if (token.isNotEmpty()) {
+                        requestBuilder.addHeader("Authorization", "Bearer $token")
+                        requestBuilder.addHeader("Accept-Language", "${Constants.language}")
+                    }
                 }
 
                 chain.proceed(requestBuilder.build())

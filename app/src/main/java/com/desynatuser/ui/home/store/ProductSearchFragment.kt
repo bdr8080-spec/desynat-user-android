@@ -1,7 +1,9 @@
 package com.desynatuser.ui.home.store
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -17,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -34,20 +37,26 @@ import com.desynatuser.ui.home.imageDetector.Feature
 import com.desynatuser.ui.home.imageDetector.ImageContent
 import com.desynatuser.ui.home.imageDetector.VisionRequestBody
 import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
+import com.desynatuser.utils.VoiceSearchBottomSheet
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
-import com.desynatuser.vision.VisionRetrofit
+import com.desynatuser.network.ApiServices
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProductSearchFragment : BaseFragment() {
     private var binding : FragmentProductSearchBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
+
+    @Inject
+    lateinit var apiServices: ApiServices
+
     var isObserver = false
     var isLatestObserver = false
     var isRecommendedObserver = false
@@ -62,6 +71,15 @@ class ProductSearchFragment : BaseFragment() {
 
     private var search: Job? = null
     private var lastQuery: String? = null
+
+    private val audioPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                showVoiceSearchBottomSheet()
+            } else {
+                showToast("Microphone permission is required for voice search.")
+            }
+        }
 
     private lateinit var imagePicker: ImagePicker
     private val cameraLauncher =
@@ -288,20 +306,30 @@ class ProductSearchFragment : BaseFragment() {
     }
 
     private fun openSpeechDialog() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        } else {
+            showVoiceSearchBottomSheet()
         }
+    }
 
-        try {
-            speechLauncher.launch(intent)
-        } catch (e: Exception) {
-            showToast(getString(R.string.speech_recognition_not_supported))
+    private fun showVoiceSearchBottomSheet() {
+        val bottomSheet = VoiceSearchBottomSheet.newInstance { text ->
+            if (text.isNotEmpty()) {
+                val bundle = Bundle().apply {
+                    putString("search", text)
+                }
+                findNavController().navigate(
+                    R.id.action_searchProductFragment_to_searchProductListFragment,
+                    bundle
+                )
+            }
         }
+        bottomSheet.show(childFragmentManager, "VoiceSearchBottomSheet")
     }
 
     private val speechLauncher =
@@ -349,8 +377,8 @@ class ProductSearchFragment : BaseFragment() {
 
         lifecycleScope.launch {
             try {
-                val response = VisionRetrofit.api.detectImage(
-                    apiKey = "AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18",
+                val response = apiServices.detectImage(
+                    apiKey = getString(R.string.google_translator_api_key),
                     request = request
                 )
                 ProgressDialogUtils.getInstance().hideProgress()

@@ -1,13 +1,13 @@
 package com.desynatuser.ui.home.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -25,6 +25,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -48,6 +49,7 @@ import com.desynatuser.databinding.FragmentHomeBinding
 import com.desynatuser.ui.UpdateLocationActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
 import com.desynatuser.ui.auth.response.LoginResponse
+import com.desynatuser.utils.VoiceSearchBottomSheet
 import com.desynatuser.ui.home.HomeActivity
 import com.desynatuser.ui.home.fragment.response.GetAllSuggestStoreResponse
 import com.desynatuser.ui.home.fragment.response.GetBestSellingProductResponse
@@ -69,7 +71,7 @@ import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
-import com.desynatuser.vision.VisionRetrofit
+import com.desynatuser.network.ApiServices
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,14 +84,17 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
-import kotlin.math.log
-import androidx.core.graphics.toColorInt
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private val locationViewModel: LocationViewModel by activityViewModels()
+
+    @Inject
+    lateinit var apiServices: ApiServices
+
     var isObserver = false
     var isAdminObserver = false
     var isHomeBannerObserver = false
@@ -149,6 +154,15 @@ class HomeFragment : BaseFragment() {
             imagePicker.onPermissionResult(granted)
         }
 
+    private val audioPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                showVoiceSearchBottomSheet()
+            } else {
+                showToast("Microphone permission is required for voice search.")
+            }
+        }
+
     var selectedPos = -1
     var selectedType = 0
 
@@ -177,7 +191,7 @@ class HomeFragment : BaseFragment() {
 
     override fun initView() {
         Constants.language = SharedPreference.get(requireActivity()).language
-        binding?.relToolbar?.layoutDirection= View.LAYOUT_DIRECTION_LTR
+        binding?.relToolbar?.layoutDirection = View.LAYOUT_DIRECTION_LTR
         getAdminStory()
         user = SharedPreference.get(requireActivity()).getUser()
         if (SharedPreference.get(requireActivity()).getCurrencyList()?.isEmpty() == true) {
@@ -558,14 +572,20 @@ class HomeFragment : BaseFragment() {
                 val bundle = Bundle().apply {
                     putInt("type", 1) // 1 for Best Selling
                 }
-                findNavController().navigate(R.id.action_homeFragment_to_viewAllProductFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_viewAllProductFragment,
+                    bundle
+                )
             }
 
             tvTopRatedViewAll.setOnClickListener {
                 val bundle = Bundle().apply {
                     putInt("type", 2) // 2 for Top Rated
                 }
-                findNavController().navigate(R.id.action_homeFragment_to_viewAllProductFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_viewAllProductFragment,
+                    bundle
+                )
             }
 
             tvWomen.setOnClickListener {
@@ -973,7 +993,7 @@ class HomeFragment : BaseFragment() {
                     } else {
                         tvKids.isEnabled = false
                         tvKids.isInvisible = true
-                        tvKids.setTextColor(Color.parseColor("#E6E6E6"))
+                        tvKids.setTextColor("#E6E6E6".toColorInt())
                     }
                 }
             }
@@ -1154,85 +1174,32 @@ class HomeFragment : BaseFragment() {
         viewModel.getBestSellingProduct()
         isBestSellingObserver = true
     }
+
     private fun openSpeechDialog() {
-
-        val languages = arrayOf(
-            "English (India)",
-            "English (US)",
-            "Hindi (India)",
-            "Bengali (India)",
-            "Tamil (India)",
-            "Telugu (India)",
-            "Marathi (India)",
-            "Gujarati (India)",
-            "Kannada (India)",
-            "Malayalam (India)",
-            "Punjabi (India)"
-        )
-
-        val languageCodes = arrayOf(
-            "en-IN",
-            "en-US",
-            "hi-IN",
-            "bn-IN",
-            "ta-IN",
-            "te-IN",
-            "mr-IN",
-            "gu-IN",
-            "kn-IN",
-            "ml-IN",
-            "pa-IN"
-        )
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("Choose Language")
-            .setSingleChoiceItems(
-                languages,
-                0
-            ) { dialog, which ->
-
-                val selectedLanguage = languageCodes[which]
-
-                dialog.dismiss()
-
-                startSpeechRecognition(selectedLanguage)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        } else {
+            showVoiceSearchBottomSheet()
+        }
     }
 
-    private fun startSpeechRecognition(languageCode: String) {
-
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE,
-                languageCode
-            )
-
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
-                languageCode
-            )
-
-            putExtra(
-                RecognizerIntent.EXTRA_PROMPT,
-                "Speak now..."
-            )
+    private fun showVoiceSearchBottomSheet() {
+        val bottomSheet = VoiceSearchBottomSheet.newInstance { text ->
+            if (text.isNotEmpty()) {
+                val bundle = Bundle().apply {
+                    putString("search", text)
+                }
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_searchProductListFragment,
+                    bundle
+                )
+            }
         }
-
-        try {
-            speechLauncher.launch(intent)
-        } catch (e: Exception) {
-            showToast(
-                getString(R.string.speech_recognition_not_supported)
-            )
-        }
+        bottomSheet.show(childFragmentManager, "VoiceSearchBottomSheet")
     }
 
     private val speechLauncher =
@@ -1279,8 +1246,8 @@ class HomeFragment : BaseFragment() {
 
         lifecycleScope.launch {
             try {
-                val response = VisionRetrofit.api.detectImage(
-                    apiKey = "AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18",
+                val response = apiServices.detectImage(
+                    apiKey = getString(R.string.google_translator_api_key),
                     request = request
                 )
                 ProgressDialogUtils.getInstance().hideProgress()

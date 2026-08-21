@@ -1,7 +1,9 @@
 package com.desynatuser.ui.home.catalog
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -32,6 +34,7 @@ import com.desynatuser.databinding.MicDialogBinding
 import com.desynatuser.databinding.SizeGuideChartDialogBinding
 import com.desynatuser.ui.home.profile.response.GetCategoryResponse
 import com.desynatuser.ui.home.profile.response.GetSubCategoryResponse
+import com.desynatuser.utils.VoiceSearchBottomSheet
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
@@ -53,9 +56,15 @@ class SubCategoryFragment : BaseFragment() {
     private var lastQuery: String? = null
     private var categoryData: GetCategoryResponse.Data?=null
 
-    private var isMicDialogOpen = false
-    private var speechRecognizer: SpeechRecognizer? = null
-    private var speechIntent: Intent? = null
+    private val audioPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                showVoiceSearchBottomSheet()
+            } else {
+                showToast("Microphone permission is required for voice search.")
+            }
+        }
+
     private var scrollYPosition = 0
 
 
@@ -234,125 +243,26 @@ class SubCategoryFragment : BaseFragment() {
         binding?.tvNoDataFound?.isVisible = subCategoryList.isEmpty()
     }
 
-    private fun micDialog() {
-        isMicDialogOpen = true
-        val dialog = Dialog(requireActivity(), R.style.CustomDialog)
-        val dialogBinding = MicDialogBinding.inflate(LayoutInflater.from(context))
-        dialog.setContentView(dialogBinding.root)
-
-        dialogBinding.apply {
-            initSpeechRecognizer(dialog, dialogBinding)
-        }
-
-        dialog.show()
-
-        dialog.setOnDismissListener {
-            isMicDialogOpen = false
-
-            try { speechRecognizer?.stopListening() } catch (_: Exception) {}
-
-            try { speechRecognizer?.destroy() } catch (_: Exception) {}
-
-            speechRecognizer = null
-        }
-    }
-
-
-
-    private fun initSpeechRecognizer(dialog: Dialog, dialogBinding: MicDialogBinding) {
-
-        val anim = AnimationUtils.loadAnimation(requireContext(), R.anim.mic_ripple)
-        dialogBinding.ivMic.startAnimation(anim)
-
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
-        speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
-            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, false)
-            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-        }
-
-        speechRecognizer!!.setRecognitionListener(object : RecognitionListener {
-            override fun onError(error: Int) {
-
-                if (!isMicDialogOpen) return
-
-                dialogBinding.ivMic.clearAnimation()
-
-                if (error == SpeechRecognizer.ERROR_NO_MATCH ||
-                    error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
-
-                    dialog.dismiss()
-                    return
-                }
-
-                showToast(getString(R.string.speak_clearly_or_try_again))
-                dialog.dismiss()
-            }
-
-            override fun onEvent(p0: Int, p1: Bundle?) {
-            }
-
-            override fun onPartialResults(p0: Bundle?) {
-            }
-
-            override fun onReadyForSpeech(p0: Bundle?) {
-            }
-
-            override fun onResults(results: Bundle?) {
-                if (!isMicDialogOpen) return
-
-                dialogBinding.ivMic.clearAnimation()
-
-                val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
-                if (!text.isNullOrEmpty()) {
-                    binding?.etSearch?.setText(text)
-                    binding?.etSearch?.setSelection(text.length)
-                }
-
-                dialog.dismiss()
-            }
-
-            override fun onRmsChanged(p0: Float) {
-            }
-
-            override fun onBeginningOfSpeech() {
-
-            }
-
-            override fun onBufferReceived(p0: ByteArray?) {
-            }
-
-            override fun onEndOfSpeech() {
-                if (!isMicDialogOpen) return
-                dialogBinding.ivMic.clearAnimation()
-            }
-        })
-
-        lifecycleScope.launch {
-            delay(400)
-
-            if (isMicDialogOpen) {
-                speechRecognizer?.startListening(speechIntent)
-            }
-        }
-    }
-
     private fun openSpeechDialog() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        } else {
+            showVoiceSearchBottomSheet()
         }
+    }
 
-        try {
-            speechLauncher.launch(intent)
-        } catch (e: Exception) {
-            showToast(getString(R.string.speech_recognition_not_supported))
+    private fun showVoiceSearchBottomSheet() {
+        val bottomSheet = VoiceSearchBottomSheet.newInstance { text ->
+            if (text.isNotEmpty()) {
+                binding?.etSearch?.setText(text)
+                binding?.etSearch?.setSelection(text.length)
+            }
         }
+        bottomSheet.show(childFragmentManager, "VoiceSearchBottomSheet")
     }
 
     private val speechLauncher =

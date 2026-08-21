@@ -834,4 +834,11 @@
     <string name="get_within">احصل عليه خلال %1$s</string>
     <string name="bought_count">0 + %1$s</string>
     <string name="by_store">(%1$s %2$s)</string>
+
+    <string name="ad">إعلان</string>
+    <string name="hello_blank_fragment">مرحبًا بالجزء الفارغ</string>
+    <string name="listening">جارٍ الاستماع...</string>
+    <string name="no_match_found">لم يتم العثور على تطابق</string>
+    <string name="timeout">انتهت المهلة</string>
+    <string name="error_occurred">حدث خطأ</string>
 </resources>

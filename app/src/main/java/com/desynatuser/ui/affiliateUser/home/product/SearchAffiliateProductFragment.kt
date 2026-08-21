@@ -37,18 +37,23 @@ import com.desynatuser.ui.home.store.response.GetSingleStoreResponse
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
-import com.desynatuser.vision.VisionRetrofit
+import com.desynatuser.network.ApiServices
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 import kotlin.getValue
 
 @AndroidEntryPoint
 class SearchAffiliateProductFragment : BaseFragment() {
     private var binding: FragmentSearchAffiliateProductBinding? = null
     private val viewModel: HomeViewModel by viewModels()
+
+    @Inject
+    lateinit var apiServices: ApiServices
+
     private var search: Job? = null
     private var lastQuery: String? = null
 
@@ -61,7 +66,6 @@ class SearchAffiliateProductFragment : BaseFragment() {
     var recentSearchList = ArrayList<GetRecentSearchListResponse.Data>()
     var latestSearchList = ArrayList<GetRecentSearchListResponse.Data>()
     var latestSearchAdapter: LatestSearchAdapter?=null
-
 
     private lateinit var imagePicker: ImagePicker
     private val cameraLauncher =
@@ -266,8 +270,8 @@ class SearchAffiliateProductFragment : BaseFragment() {
 
         lifecycleScope.launch {
             try {
-                val response = VisionRetrofit.api.detectImage(
-                    apiKey = "AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18",
+                val response = apiServices.detectImage(
+                    apiKey = getString(R.string.google_translator_api_key),
                     request = request
                 )
                 ProgressDialogUtils.getInstance().hideProgress()
@@ -311,6 +315,23 @@ class SearchAffiliateProductFragment : BaseFragment() {
         }
     }
 
+    private fun openSpeechDialog() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        }
+
+        try {
+            speechLauncher.launch(intent)
+        } catch (e: Exception) {
+            showToast(getString(R.string.speech_recognition_not_supported))
+        }
+    }
+
     private val speechLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -329,22 +350,5 @@ class SearchAffiliateProductFragment : BaseFragment() {
                 }
             }
         }
-
-    private fun openSpeechDialog() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
-        }
-
-        try {
-            speechLauncher.launch(intent)
-        } catch (e: Exception) {
-            showToast(getString(R.string.speech_recognition_not_supported))
-        }
-    }
 
 }

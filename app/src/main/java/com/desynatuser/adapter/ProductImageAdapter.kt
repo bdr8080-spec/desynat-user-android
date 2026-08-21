@@ -9,9 +9,7 @@ import com.desynatuser.R
 import com.desynatuser.databinding.ItemProductImageBinding
 
 class ProductImageAdapter(
-    var context: Context,
-    var productList: ArrayList<String>,
-    var click: OnClick
+    var context: Context, var productList: ArrayList<String>, var click: OnClick
 ) : RecyclerView.Adapter<ProductImageAdapter.ViewHolder>() {
 
     interface OnClick {
@@ -44,24 +42,42 @@ class ProductImageAdapter(
             Glide.with(context).load(productData).placeholder(R.drawable.ic_placeholder)
                 .into(ivProduct)
 
-//            Glide.with(context)
-//                .load(productData)
-//                .override(50, 50) // Load tiny version for "blurred" look
-//                .into(ivProductBlur)
-//
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-//                ivProductBlur.setRenderEffect(
-//                    android.graphics.RenderEffect.createBlurEffect(
-//                        20f, 20f, android.graphics.Shader.TileMode.CLAMP
-//                    )
-//                )
-//            }
+            Glide.with(context).load(productData).placeholder(R.drawable.ic_placeholder)
+                .into(ivProductBlur)
+
+
+            if (isVideo(productData)) {
+                ivPlay.visibility = android.view.View.VISIBLE
+            } else {
+                ivPlay.visibility = android.view.View.GONE
+            }
+
+            Glide.with(context)
+                .load(productData)
+                .override(50, 50) // Load tiny version for "blurred" look
+                .into(ivProductBlur)
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                ivProductBlur.setRenderEffect(
+                    android.graphics.RenderEffect.createBlurEffect(
+                        20f, 20f, android.graphics.Shader.TileMode.CLAMP
+                    )
+                )
+            }
 
             ivProduct.setOnClickListener {
                 click.onClick(position)
             }
 
         }
+    }
+
+    private fun isVideo(url: String): Boolean {
+        val cleanUrl = url.substringBefore("?").substringBefore("#").lowercase()
+
+        return cleanUrl.endsWith(".mp4") || cleanUrl.endsWith(".m3u8") || cleanUrl.endsWith(".mov") || cleanUrl.endsWith(
+            ".avi"
+        ) || cleanUrl.endsWith(".mkv") || cleanUrl.endsWith(".webm") || cleanUrl.endsWith(".3gp")
     }
 
 

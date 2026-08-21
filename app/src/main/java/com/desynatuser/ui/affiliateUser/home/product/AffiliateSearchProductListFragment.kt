@@ -1,8 +1,10 @@
 package com.desynatuser.ui.affiliateUser.home.product
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -23,6 +25,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -50,23 +53,28 @@ import com.desynatuser.ui.home.store.response.GetAllBrandListResponse
 import com.desynatuser.ui.home.store.response.GetAllColorListResponse
 import com.desynatuser.ui.home.store.response.GetSizeListResponse
 import com.desynatuser.ui.home.store.response.GetStoreSortListResponse
+import com.desynatuser.utils.VoiceSearchBottomSheet
 import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.ImagePicker
 import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.showToast
-import com.desynatuser.vision.VisionRetrofit
+import com.desynatuser.network.ApiServices
 import com.google.android.material.slider.RangeSlider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AffiliateSearchProductListFragment : BaseFragment() {
     private var binding : FragmentAffiliateSearchProductListBinding?=null
     private val viewModel: HomeViewModel by activityViewModels()
+
+    @Inject
+    lateinit var apiServices: ApiServices
 
     var isObserver = false
     var isSortObserver = false
@@ -108,6 +116,15 @@ class AffiliateSearchProductListFragment : BaseFragment() {
 
     var searchData = ""
     private var searchList: ArrayList<String> = arrayListOf()
+
+    private val audioPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                showVoiceSearchBottomSheet()
+            } else {
+                showToast("Microphone permission is required for voice search.")
+            }
+        }
 
     private lateinit var imagePicker: ImagePicker
     private val cameraLauncher =
@@ -165,7 +182,7 @@ class AffiliateSearchProductListFragment : BaseFragment() {
 
             })
             rvProduct.adapter = productAdapter
-            if (searchData!=null&&searchData!="null"&&searchData!=""){
+            if (searchData != null && searchData != "null" && searchData != "") {
                 lastQuery = searchData
                 etSearch.setText(searchData)
             }
@@ -777,20 +794,25 @@ class AffiliateSearchProductListFragment : BaseFragment() {
     }
 
     private fun openSpeechDialog() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        } else {
+            showVoiceSearchBottomSheet()
         }
+    }
 
-        try {
-            speechLauncher.launch(intent)
-        } catch (e: Exception) {
-            showToast(getString(R.string.speech_recognition_not_supported))
+    private fun showVoiceSearchBottomSheet() {
+        val bottomSheet = VoiceSearchBottomSheet.newInstance { text ->
+            if (text.isNotEmpty()) {
+                binding?.etSearch?.setText(text)
+                binding?.etSearch?.setSelection(text.length)
+            }
         }
+        bottomSheet.show(childFragmentManager, "VoiceSearchBottomSheet")
     }
 
     private val speechLauncher =
@@ -843,8 +865,8 @@ class AffiliateSearchProductListFragment : BaseFragment() {
 
         lifecycleScope.launch {
             try {
-                val response = VisionRetrofit.api.detectImage(
-                    apiKey = "AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18",
+                val response = apiServices.detectImage(
+                    apiKey = getString(R.string.google_translator_api_key),
                     request = request
                 )
                 ProgressDialogUtils.getInstance().hideProgress()

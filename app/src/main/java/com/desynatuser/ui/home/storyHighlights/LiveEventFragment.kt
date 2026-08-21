@@ -23,7 +23,6 @@ import com.desynatuser.utils.ProgressDialogUtils
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.agora.AgoraRetrofit
 import com.desynatuser.utils.showToast
-import com.desynatuser.vision.VisionRetrofit
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import io.agora.rtc2.ChannelMediaOptions

@@ -1,21 +1,20 @@
 <resources>
-    <string name="app_name">Desynat</string>
-    <string name="map_key_old">AIzaSyA4L_dBeJDWuqtBT9ZOOUhjigbh6Lxi43s</string>
-    <string name="map_key">AIzaSyB5LK7zzKS4q9ov0R4LFLgaRyPZdZsTKz4</string>
-    <string name="default_web_client_id">89320198276-5tq7evjt12m0ksl88r9cmus39tmssc59.apps.googleusercontent.com</string>
-    <string name="agora_app_id">564c1a00b81c4d1c91d0a3a22db4a8bd</string>
-    <string name="agora_token">007eJxTYDhyJbPbYHp1B9M0qyLnXaEaa4xfOCnYb2J5wP5vkbh5fJICg6mZSbJhooFBkoVhskmKYbKlYYpBonGikVFKkkmiRVLK/5NnMhsCGRk8db8xMzJAIIjPx5CTWZbqnJGYl5eaY2hkzMAAADQZIig=</string>
-    <string name="facebook_app_id">2050785725796089</string>
-    <string name="fb_login_protocol_scheme">fb2050785725796089</string>
-    <string name="facebook_client_token">40955d10a2953936be4b9d4074906a02</string>
+    <string name="app_name" translatable="false">Desynat</string>
+    <string name="map_key_old" translatable="false">AIzaSyA4L_dBeJDWuqtBT9ZOOUhjigbh6Lxi43s</string>
+    <string name="map_key" translatable="false">AIzaSyB5LK7zzKS4q9ov0R4LFLgaRyPZdZsTKz4</string>
+    <string name="default_web_client_id" translatable="false">89320198276-5tq7evjt12m0ksl88r9cmus39tmssc59.apps.googleusercontent.com</string>
+    <string name="agora_app_id" translatable="false">564c1a00b81c4d1c91d0a3a22db4a8bd</string>
+    <string name="agora_token" translatable="false">007eJxTYDhyJbPbYHp1B9M0qyLnXaEaa4xfOCnYb2J5wP5vkbh5fJICg6mZSbJhooFBkoVhskmKYbKlYYpBonGikVFKkkmiRVLK/5NnMhsCGRk8db8xMzJAIIjPx5CTWZbqnJGYl5eaY2hkzMAAADQZIig=</string>
+    <string name="facebook_app_id" translatable="false">2050785725796089</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb2050785725796089</string>
+    <string name="facebook_client_token" translatable="false">40955d10a2953936be4b9d4074906a02</string>
 
-
-    <string name="channel">desynat notification</string>
-    <string name="channel_description">desynat notification for user alert</string>
-    <string name="my_fatoorah_token">SK_KWT_Xn6nYzfdgF3Lz7TKhrGLhruKiBT5OgesD080ZIJohon0q0CEqCRrwdAsV0qICIsx</string>
-    <string name="fatoorah">SK_KWT_vVZlnnAqu8jRByOWaRPNId4ShzEDNt256dvnjebuyzo52dXjAfRx2ixW5umjWSUx</string>
-    <string name="google_vision_api_key">AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18</string>
-    <string name="google_translator_api_key">AIzaSyB4mtISC8aJQl8DkwEd8DAIpBvuHCleO7s</string>
+    <string name="channel" translatable="false">desynat notification</string>
+    <string name="channel_description" translatable="false">desynat notification for user alert</string>
+    <string name="my_fatoorah_token" translatable="false">SK_KWT_Xn6nYzfdgF3Lz7TKhrGLhruKiBT5OgesD080ZIJohon0q0CEqCRrwdAsV0qICIsx</string>
+    <string name="fatoorah" translatable="false">SK_KWT_vVZlnnAqu8jRByOWaRPNId4ShzEDNt256dvnjebuyzo52dXjAfRx2ixW5umjWSUx</string>
+    <string name="google_vision_api_key" translatable="false">AIzaSyBk1iHVph8nvXAn0uigTvPzKDpb9cslR18</string>
+    <string name="google_translator_api_key" translatable="false">AIzaSyB4mtISC8aJQl8DkwEd8DAIpBvuHCleO7s</string>
 
     <string name="resend_otp">Resend OTP</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
@@ -826,7 +825,7 @@
     <string name="read_all">Read All</string>
     <string name="no_gift_card_added">No gift card added</string>
     <string name="desynat">Desynat</string>
-    <string name="ad">Ad</string>
+
     <string name="google_login_failed">Google login failed</string>
     <string name="postal_code_length_error">Postal code must be between 3 to 10 characters</string>
     <string name="please_enter_valid_postal_code">Please enter a valid postal code</string>
@@ -840,5 +839,10 @@
     <string name="bought_count">0 + %1$s</string>
     <string name="by_store">(%1$s %2$s)</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="ad">Ad</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="listening">Listening...</string>
+    <string name="no_match_found">No match found</string>
+    <string name="timeout">Timeout</string>
+    <string name="error_occurred">Error occurred</string>
 </resources>
