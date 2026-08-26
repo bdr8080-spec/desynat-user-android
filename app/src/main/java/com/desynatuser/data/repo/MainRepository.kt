@@ -428,7 +428,7 @@ class MainRepository @Inject constructor(
         )
     }
 
-    val storeDetailLiveData = MutableLiveData<GetSingleStoreResponse>()
+    val storeDetailLiveData = SingleLiveEvent<GetSingleStoreResponse>()
     suspend fun getSingleStoreInfo(map: HashMap<String, Any>) {
         handleApiCall(
             api = {
@@ -1489,7 +1489,7 @@ class MainRepository @Inject constructor(
     }
 
 
-    val getSellerStoryLiveData = MutableLiveData<GetSellerStoryResponse>()
+    val getSellerStoryLiveData = SingleLiveEvent<GetSellerStoryResponse>()
     suspend fun getSellerStory(
         map: HashMap<String, Any>
     ) {
@@ -1501,7 +1501,7 @@ class MainRepository @Inject constructor(
         )
     }
 
-    var getSellerReelLiveData = MutableLiveData<GetSellerStoryResponse>()
+    var getSellerReelLiveData = SingleLiveEvent<GetSellerStoryResponse>()
     suspend fun getSellerReel(
         map: HashMap<String, Any>
     ) {
@@ -1537,7 +1537,7 @@ class MainRepository @Inject constructor(
         )
     }
 
-    val getSellerHighlightsLiveData = MutableLiveData<GetSellerStoryResponse>()
+    val getSellerHighlightsLiveData = SingleLiveEvent<GetSellerStoryResponse>()
     suspend fun getSellerHighlights(
         map: HashMap<String, Any>
     ) {

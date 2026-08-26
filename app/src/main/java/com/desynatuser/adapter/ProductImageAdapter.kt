@@ -54,7 +54,7 @@ class ProductImageAdapter(
 
             Glide.with(context)
                 .load(productData)
-                .override(50, 50) // Load tiny version for "blurred" look
+                .override(50, 50)
                 .into(ivProductBlur)
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {

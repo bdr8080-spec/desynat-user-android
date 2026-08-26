@@ -71,7 +71,6 @@ class StoreDetailFragment : BaseFragment() {
     var isReelObserver = false
     var isStoryObserver = false
     var isHighlightObserver = false
-
     private var storyList = ArrayList<GetSellerStoryResponse.Data>()
     private var highlightList = ArrayList<GetSellerStoryResponse.Data>()
     private var reelList = ArrayList<GetSellerStoryResponse.Data>()
@@ -147,6 +146,11 @@ class StoreDetailFragment : BaseFragment() {
     override fun initView() {
 
         categoryList.clear()
+        highlightList.clear()
+        reelList.clear()
+        productList.clear()
+        storyList.clear()
+
         SharedPreference.get(requireActivity()).getCategoryList()?.let { categoryList.addAll(it) }
         ProgressDialogUtils.getInstance().hideProgress()
         storeId = arguments?.getString("storeId").toString()
@@ -635,13 +639,13 @@ class StoreDetailFragment : BaseFragment() {
             response?.data?.let {
                 storeDetailData = it
                 setData()
+                getSellerHighlights()
                 captureSellerStoreVisitor(it.store.sellerId.toString())
                 setProductData()
             }
             if (isObserver) {
                 ProgressDialogUtils.getInstance().hideProgress()
                 binding?.progressBar?.isVisible = false
-                getSellerHighlights()
                 getSellerStory()
                 getSellerReel()
                 isObserver = false
@@ -731,6 +735,8 @@ class StoreDetailFragment : BaseFragment() {
                 isHighlightObserver = false
             }
         }
+
+
 
 
         viewModel.getSellerStoryResult.observe(viewLifecycleOwner) { response ->
