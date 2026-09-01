@@ -92,6 +92,7 @@ class LanguageFragment : BaseFragment() {
                 } else if (!cbArabic.isChecked) {
                     cbEnglish.isChecked = true
                 }
+                //,,,
             }
 
             cbArabic.isChecked = true
