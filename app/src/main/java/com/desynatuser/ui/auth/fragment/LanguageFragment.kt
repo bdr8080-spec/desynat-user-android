@@ -17,17 +17,16 @@ import com.desynatuser.utils.Constants
 import com.desynatuser.utils.SharedPreference
 import com.desynatuser.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.text.get
 
 @AndroidEntryPoint
 class LanguageFragment : BaseFragment() {
-    private var binding: FragmentLanguageBinding?=null
-    private var from =""
+    private var binding: FragmentLanguageBinding? = null
+    private var from = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLanguageBinding.inflate(layoutInflater,container,false)
+        binding = FragmentLanguageBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -42,29 +41,26 @@ class LanguageFragment : BaseFragment() {
         from = arguments?.getString("from").toString()
         requestPermissions()
         binding?.apply {
-            if (SharedPreference.get(requireActivity()).language!=""){
+            if (SharedPreference.get(requireActivity()).language != "") {
                 Constants.language = SharedPreference.get(requireActivity()).language
-            }
-            else{
+            } else {
                 Constants.language = "en"
             }
 
-            if(Constants.language=="ar"){
+            if (Constants.language == "ar") {
                 cbEnglish.isChecked = false
                 cbArabic.isChecked = true
-            }
-            else{
+            } else {
                 cbEnglish.isChecked = true
                 cbArabic.isChecked = false
             }
 
-            if (from=="profile"){
+            if (from == "profile") {
                 btnContinue.text = getString(R.string.save)
                 tvToolbar.isVisible = true
                 tvSelectLanguage.isVisible = false
                 tvInfo.isVisible = false
-            }
-            else{
+            } else {
                 btnContinue.text = getString(R.string.continue_text)
                 tvToolbar.isVisible = false
                 tvSelectLanguage.isVisible = true
@@ -84,11 +80,8 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbEnglish.isChecked = false
                     Constants.language = Constants.ARABIC
-                }
-                else {
-                    if (!cbEnglish.isChecked) {
-                        cbArabic.isChecked = true
-                    }
+                } else if (!cbEnglish.isChecked) {
+                    cbArabic.isChecked = true
                 }
             }
 
@@ -96,19 +89,19 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbArabic.isChecked = false
                     Constants.language = Constants.ENGLISH
-                }
-                else {
-                    if (!cbArabic.isChecked) {
-                        cbEnglish.isChecked = true
-                    }
+                } else if (!cbArabic.isChecked) {
+                    cbEnglish.isChecked = true
                 }
             }
 
+            cbArabic.isChecked = true
+            Constants.language = Constants.ARABIC
+
+
             btnContinue.setOnClickListener {
-                if (Constants.language==""){
+                if (Constants.language == "") {
                     showToast(getString(R.string.please_select_language))
-                }
-                else{
+                } else {
                     SharedPreference.get(requireActivity()).language = Constants.language
                     CommonMethod.setLocale(requireActivity(), Constants.language)
 
@@ -147,7 +140,8 @@ class LanguageFragment : BaseFragment() {
                 true
             }
             val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
-            val coarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+            val coarseLocationGranted =
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
 
             if (notificationGranted && (fineLocationGranted || coarseLocationGranted)) {
 
