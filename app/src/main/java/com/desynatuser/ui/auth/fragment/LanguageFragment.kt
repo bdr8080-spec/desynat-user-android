@@ -80,6 +80,13 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbEnglish.isChecked = false
                     Constants.language = Constants.ARABIC
+
+                    cbArabic.text = "العربية"
+                    cbEnglish.text = "الإنجليزية"
+                    tvInfo.text = "اختر اللغة واستمر للحصول على تجربة التطبيق بلغتك المفضلة."
+                    tvSelectLanguage.text = "اختر اللغة"
+                    btnContinue.text = "متابعة"
+
                 } else if (!cbEnglish.isChecked) {
                     cbArabic.isChecked = true
                 }
@@ -89,15 +96,24 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbArabic.isChecked = false
                     Constants.language = Constants.ENGLISH
+
+
+                    cbArabic.text = "Arabic"
+                    cbEnglish.text = "English"
+                    tvInfo.text =
+                        "Choose the language and continue to get the experience the app in your preferred language."
+                    tvSelectLanguage.text = "Select language"
+                    btnContinue.text = "Continue"
+
                 } else if (!cbArabic.isChecked) {
                     cbEnglish.isChecked = true
                 }
                 //,,,
             }
-
-            cbArabic.isChecked = true
-            Constants.language = Constants.ARABIC
-
+            if (from != "profile") {
+                cbArabic.isChecked = true
+                Constants.language = Constants.ARABIC
+            }
 
             btnContinue.setOnClickListener {
                 if (Constants.language == "") {
