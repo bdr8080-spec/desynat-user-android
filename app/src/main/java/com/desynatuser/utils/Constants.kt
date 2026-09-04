@@ -4,7 +4,8 @@ object Constants {
 
     // const val BASE_URL = "http://157.241.119.72" //old
     //const val BASE_URL = "http://65.2.12.223" //new
-    const val BASE_URL = "https://desynat.com"
+//    const val BASE_URL = "https://desynat.com"
+    const val BASE_URL = "https://desynat.com.kw/"
 
     var MERCHANT_ID = "BCR2DN5TRCW73QI6"
     var MERCHANT_NAME = "Desynat"

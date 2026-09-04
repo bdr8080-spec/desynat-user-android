@@ -44,13 +44,26 @@ class LanguageFragment : BaseFragment() {
             if (SharedPreference.get(requireActivity()).language != "") {
                 Constants.language = SharedPreference.get(requireActivity()).language
             } else {
-                Constants.language = "en"
+                Constants.language = "ar"
             }
 
             if (Constants.language == "ar") {
+                root.layoutDirection= View.LAYOUT_DIRECTION_RTL
+                cbArabic.text = "العربية"
+                cbEnglish.text = "الإنجليزية"
+                tvInfo.text = "اختر اللغة واستمر للحصول على تجربة التطبيق بلغتك المفضلة."
+                tvSelectLanguage.text = "اختر اللغة"
+                btnContinue.text = "متابعة"
                 cbEnglish.isChecked = false
                 cbArabic.isChecked = true
             } else {
+                cbArabic.text = "Arabic"
+                cbEnglish.text = "English"
+                tvInfo.text =
+                    "Choose the language and continue to get the experience the app in your preferred language."
+                tvSelectLanguage.text = "Select language"
+                btnContinue.text = "Continue"
+                root.layoutDirection= View.LAYOUT_DIRECTION_LTR
                 cbEnglish.isChecked = true
                 cbArabic.isChecked = false
             }
@@ -80,6 +93,7 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbEnglish.isChecked = false
                     Constants.language = Constants.ARABIC
+                    root.layoutDirection= View.LAYOUT_DIRECTION_RTL
 
                     cbArabic.text = "العربية"
                     cbEnglish.text = "الإنجليزية"
@@ -96,7 +110,7 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbArabic.isChecked = false
                     Constants.language = Constants.ENGLISH
-
+                    root.layoutDirection= View.LAYOUT_DIRECTION_LTR
 
                     cbArabic.text = "Arabic"
                     cbEnglish.text = "English"

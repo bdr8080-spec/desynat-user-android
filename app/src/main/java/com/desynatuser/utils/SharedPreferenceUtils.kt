@@ -59,7 +59,7 @@ class SharedPreference(context: Context) {
     }
 
     var language: String
-        get() = preference["language", "en"]!!
+        get() = preference["language", "ar"]!!
         set(value) = preference.set("language", value)
 
     var isTutorial: Boolean
