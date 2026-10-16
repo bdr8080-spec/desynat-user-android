@@ -54,6 +54,7 @@ import com.desynatuser.databinding.LoginAlertDialogLayoutBinding
 import com.desynatuser.databinding.SuccessDialogLayoutBinding
 import com.desynatuser.ui.auth.AuthActivity
 import com.desynatuser.ui.auth.response.GetCountryResponse
+import com.facebook.internal.Utility.locale
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -457,6 +458,7 @@ object CommonMethod {
         val targetFormat = SimpleDateFormat(outputFormat, Locale.ENGLISH).apply {
             timeZone = TimeZone.getDefault()
         }
+
         val date: Date
         try {
             if (Constants.language == "ar") {
@@ -743,10 +745,7 @@ object CommonMethod {
 
 
     fun clearData(context: Context){
-        SharedPreference.get(context).clearUser()
-        SharedPreference.get(context).clearAddress()
-        SharedPreference.get(context).accessToken = ""
-        SharedPreference.get(context).badgeCount = 0
+        SharedPreference.get(context).clearAll()
         Constants.Category = "Women"
     }
 

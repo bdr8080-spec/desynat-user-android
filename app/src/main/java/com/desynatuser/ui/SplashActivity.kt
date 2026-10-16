@@ -58,9 +58,16 @@ class SplashActivity : BaseActivity() {
             }
             else{
                 if (SharedPreference.get(this).accessToken.isEmpty()){
-                    SharedPreference.get(this).language = ""
-                    CommonMethod.setLocale(this,"en")
-                    Constants.language = "en"
+                    // Do not force English if the user already selected a language
+                    val savedLang = SharedPreference.get(this).language
+                    if (savedLang.isNotEmpty()) {
+                        CommonMethod.setLocale(this, savedLang)
+                        Constants.language = savedLang
+                    } else {
+                        // Just set defaults for display, do NOT save it to preferences yet
+                        CommonMethod.setLocale(this, "ar")
+                        Constants.language = "ar"
+                    }
                 }
 
                 startActivity(Intent(this, AuthActivity::class.java))

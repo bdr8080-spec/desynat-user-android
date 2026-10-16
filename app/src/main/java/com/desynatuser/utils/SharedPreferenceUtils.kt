@@ -41,7 +41,7 @@ class SharedPreference(context: Context) {
     private inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
         val editor = this.edit()
         operation(editor)
-        editor.apply()
+        editor.commit()
     }
 
     inline operator fun <reified T : Any> SharedPreferences.get(
@@ -212,6 +212,14 @@ class SharedPreference(context: Context) {
 
     fun clearAddress() {
         preference["defaultAddress"] = ""
+    }
+
+    fun clearAll() {
+        val currentLang = language
+        val currentDeviceToken = deviceToken
+        preference.edit().clear().apply()
+        language = currentLang
+        deviceToken = currentDeviceToken
     }
 
 }

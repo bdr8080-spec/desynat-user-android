@@ -16,7 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -45,6 +44,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
@@ -79,10 +79,10 @@ class LoginFragment : BaseFragment() {
         return binding?.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         printHashKey()
+        printSha1Fingerprint()
         initView()
         initControl()
         observe()
@@ -97,12 +97,28 @@ class LoginFragment : BaseFragment() {
 
                 val account = task.getResult(ApiException::class.java)
 
-                account.idToken?.let {
-                    firebaseAuthWithGoogle(it)
+                val idToken = account?.idToken
+                if (idToken != null) {
+                    firebaseAuthWithGoogle(idToken)
+                } else {
+                    Log.e("GOOGLE_SIGN_IN", "Google ID token is null")
+                    showToast("Google sign in failed: ID token is null")
                 }
 
+            } catch (e: ApiException) {
+                Log.e("GOOGLE_SIGN_IN", "Google Sign-In failed with status code: ${e.statusCode}", e)
+                if (e.statusCode == CommonStatusCodes.DEVELOPER_ERROR || e.statusCode == 10) {
+                    Log.e(
+                        "GOOGLE_SIGN_IN",
+                        "DEVELOPER_ERROR (Status 10): SHA-1 fingerprint mismatch or invalid Web Client ID. " +
+                                "Ensure your current build SHA-1 fingerprint is added in Firebase Console."
+                    )
+                    showToast("Google Sign-In failed (Status 10): Please add SHA-1 fingerprint in Firebase Console.")
+                } else {
+                    showToast("Google sign in failed (Error code: ${e.statusCode})")
+                }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("GOOGLE_SIGN_IN", "Google Sign-In unexpected error", e)
                 showToast(e.message ?: "Google login failed")
             }
         }
@@ -641,11 +657,12 @@ class LoginFragment : BaseFragment() {
                     Log.e("GOOGLE_USER", "Name : $name")
                     Log.e("GOOGLE_USER", "Email : $email")
 
-                    socialLogin(uid,name, email, profileImage)
+                    socialLogin(uid, name, email, profileImage)
 
                 } else {
-
-                    showToast(getString(R.string.google_login_failed))
+                    val errorMsg = task.exception?.localizedMessage ?: getString(R.string.google_login_failed)
+                    Log.e("GOOGLE_SIGN_IN", "Firebase auth failed: ${task.exception?.message}", task.exception)
+                    showToast(errorMsg)
                 }
             }
     }
@@ -655,7 +672,8 @@ class LoginFragment : BaseFragment() {
         uid: String,
         name: String,
         email: String,
-        image: String
+        image: String,
+        socialType: String = "1"
     ) {
 
         val map = HashMap<String, Any>()
@@ -664,7 +682,7 @@ class LoginFragment : BaseFragment() {
         map["email"] = email
         map["profile_image"] = image
         map["unique_id"] = uid
-        map["socialType"] = "1"
+        map["socialType"] = socialType
         map["device_type"] = Constants.DEVICE_TYPE
         map["device_token"] = SharedPreference.get(requireActivity()).deviceToken
         map["fcm_token"] = SharedPreference.get(requireActivity()).deviceToken
@@ -675,15 +693,35 @@ class LoginFragment : BaseFragment() {
         isObserver = true
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     fun printHashKey() {
         try {
-            val info = requireActivity().packageManager.getPackageInfo(
-                requireActivity().packageName,
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 PackageManager.GET_SIGNING_CERTIFICATES
-            )
+            } else {
+                @Suppress("DEPRECATION")
+                PackageManager.GET_SIGNATURES
+            }
+            val info = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requireActivity().packageManager.getPackageInfo(
+                    requireActivity().packageName,
+                    PackageManager.PackageInfoFlags.of(flags.toLong())
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                requireActivity().packageManager.getPackageInfo(
+                    requireActivity().packageName,
+                    flags
+                )
+            }
 
-            for (signature in info.signingInfo?.apkContentsSigners!!) {
+            val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                info.signingInfo?.apkContentsSigners
+            } else {
+                @Suppress("DEPRECATION")
+                info.signatures
+            }
+
+            signatures?.forEach { signature ->
                 val md = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
                 val hashKey = Base64.encodeToString(md.digest(), Base64.NO_WRAP)
@@ -691,7 +729,46 @@ class LoginFragment : BaseFragment() {
             }
 
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("HASH_KEY", "Error printing hash key", e)
+        }
+    }
+
+    private fun printSha1Fingerprint() {
+        try {
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                PackageManager.GET_SIGNING_CERTIFICATES
+            } else {
+                @Suppress("DEPRECATION")
+                PackageManager.GET_SIGNATURES
+            }
+            val info = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requireActivity().packageManager.getPackageInfo(
+                    requireActivity().packageName,
+                    PackageManager.PackageInfoFlags.of(flags.toLong())
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                requireActivity().packageManager.getPackageInfo(
+                    requireActivity().packageName,
+                    flags
+                )
+            }
+
+            val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                info.signingInfo?.apkContentsSigners
+            } else {
+                @Suppress("DEPRECATION")
+                info.signatures
+            }
+
+            signatures?.forEach { signature ->
+                val md = MessageDigest.getInstance("SHA-1")
+                val digest = md.digest(signature.toByteArray())
+                val hexString = digest.joinToString(":") { String.format("%02X", it) }
+                Log.d("GOOGLE_SIGN_IN", "Current App SHA-1 Fingerprint: $hexString")
+            }
+        } catch (e: Exception) {
+            Log.e("GOOGLE_SIGN_IN", "Error printing SHA-1 fingerprint", e)
         }
     }
 
@@ -703,19 +780,26 @@ class LoginFragment : BaseFragment() {
 
             try {
 
-                val id = obj?.getString("id")
-                val name = obj?.getString("name")
-                val email = obj?.getString("email")
+                val id = obj?.getString("id") ?: ""
+                val name = obj?.getString("name") ?: ""
+                val email = obj?.getString("email") ?: ""
 
                 val image =
                     "https://graph.facebook.com/$id/picture?type=large"
 
-                Log.e("NAME", name ?: "")
-                Log.e("EMAIL", email ?: "")
+                Log.e("NAME", name)
+                Log.e("EMAIL", email)
                 Log.e("IMAGE", image)
 
+                if (id.isNotEmpty()) {
+                    socialLogin(id, name, email, image, socialType = "2")
+                } else {
+                    showToast("Facebook login failed: Unable to retrieve user details")
+                }
+
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("FACEBOOK", "Error fetching user data", e)
+                showToast("Facebook login error: ${e.localizedMessage}")
             }
         }
 

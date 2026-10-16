@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.desynatuser.R
 import com.desynatuser.base.BaseActivity
 import com.desynatuser.databinding.ActivityAuthBinding
@@ -14,7 +13,6 @@ import com.desynatuser.utils.CommonMethod
 import com.desynatuser.utils.Constants
 import com.desynatuser.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.collections.get
 
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
@@ -37,6 +35,7 @@ class AuthActivity : BaseActivity() {
 
     override fun initView() {
         CommonMethod.setLocale(this,SharedPreference.get(this).language)
+        Constants.language = SharedPreference.get(this).language
         CommonMethod.detectGestureMode(binding?.root!!,binding?.viewBottom!!)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
@@ -54,7 +53,6 @@ class AuthActivity : BaseActivity() {
             }
 
         } else {
-            val savedLanguage = SharedPreference.get(this).language
             if (SharedPreference.get(this).userType == 2) {
                 if (SharedPreference.get(this).getUser()?.affiliatedUserdetails?.adminVerify != null) {
                     R.id.login
@@ -69,11 +67,8 @@ class AuthActivity : BaseActivity() {
             }
             else if (Constants.isLogout) {
                 R.id.login
-            } else if (savedLanguage.isEmpty()) {
+            } else {
                 R.id.language
-            }
-            else{
-                R.id.login
             }
         }
 

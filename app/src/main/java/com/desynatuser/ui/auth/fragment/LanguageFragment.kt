@@ -41,19 +41,25 @@ class LanguageFragment : BaseFragment() {
         from = arguments?.getString("from").toString()
         requestPermissions()
         binding?.apply {
-            if (SharedPreference.get(requireActivity()).language != "") {
-                Constants.language = SharedPreference.get(requireActivity()).language
-            } else {
+            if (from != "profile") {
                 Constants.language = "ar"
+                SharedPreference.get(requireActivity()).language = "ar"
+                CommonMethod.setLocale(requireActivity(), "ar")
+            } else {
+                if (SharedPreference.get(requireActivity()).language != "") {
+                    Constants.language = SharedPreference.get(requireActivity()).language
+                } else {
+                    Constants.language = "ar"
+                }
             }
 
             if (Constants.language == "ar") {
-                root.layoutDirection= View.LAYOUT_DIRECTION_RTL
+                root.layoutDirection = View.LAYOUT_DIRECTION_RTL
                 cbArabic.text = "العربية"
                 cbEnglish.text = "الإنجليزية"
                 tvInfo.text = "اختر اللغة واستمر للحصول على تجربة التطبيق بلغتك المفضلة."
                 tvSelectLanguage.text = "اختر اللغة"
-                btnContinue.text = "متابعة"
+                btnContinue.text = if (from == "profile") "حفظ" else "متابعة"
                 cbEnglish.isChecked = false
                 cbArabic.isChecked = true
             } else {
@@ -62,19 +68,17 @@ class LanguageFragment : BaseFragment() {
                 tvInfo.text =
                     "Choose the language and continue to get the experience the app in your preferred language."
                 tvSelectLanguage.text = "Select language"
-                btnContinue.text = "Continue"
-                root.layoutDirection= View.LAYOUT_DIRECTION_LTR
+                btnContinue.text = if (from == "profile") "Save" else "Continue"
+                root.layoutDirection = View.LAYOUT_DIRECTION_LTR
                 cbEnglish.isChecked = true
                 cbArabic.isChecked = false
             }
 
             if (from == "profile") {
-                btnContinue.text = getString(R.string.save)
                 tvToolbar.isVisible = true
                 tvSelectLanguage.isVisible = false
                 tvInfo.isVisible = false
             } else {
-                btnContinue.text = getString(R.string.continue_text)
                 tvToolbar.isVisible = false
                 tvSelectLanguage.isVisible = true
                 tvInfo.isVisible = true
@@ -93,13 +97,13 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbEnglish.isChecked = false
                     Constants.language = Constants.ARABIC
-                    root.layoutDirection= View.LAYOUT_DIRECTION_RTL
+                    root.layoutDirection = View.LAYOUT_DIRECTION_RTL
 
                     cbArabic.text = "العربية"
                     cbEnglish.text = "الإنجليزية"
                     tvInfo.text = "اختر اللغة واستمر للحصول على تجربة التطبيق بلغتك المفضلة."
                     tvSelectLanguage.text = "اختر اللغة"
-                    btnContinue.text = "متابعة"
+                    btnContinue.text = if (from == "profile") "حفظ" else "متابعة"
 
                 } else if (!cbEnglish.isChecked) {
                     cbArabic.isChecked = true
@@ -110,23 +114,18 @@ class LanguageFragment : BaseFragment() {
                 if (isChecked) {
                     cbArabic.isChecked = false
                     Constants.language = Constants.ENGLISH
-                    root.layoutDirection= View.LAYOUT_DIRECTION_LTR
+                    root.layoutDirection = View.LAYOUT_DIRECTION_LTR
 
                     cbArabic.text = "Arabic"
                     cbEnglish.text = "English"
                     tvInfo.text =
                         "Choose the language and continue to get the experience the app in your preferred language."
                     tvSelectLanguage.text = "Select language"
-                    btnContinue.text = "Continue"
+                    btnContinue.text = if (from == "profile") "Save" else "Continue"
 
                 } else if (!cbArabic.isChecked) {
                     cbEnglish.isChecked = true
                 }
-                //,,,
-            }
-            if (from != "profile") {
-                cbArabic.isChecked = true
-                Constants.language = Constants.ARABIC
             }
 
             btnContinue.setOnClickListener {
@@ -140,21 +139,6 @@ class LanguageFragment : BaseFragment() {
                     intent.putExtra("open_screen", from)
                     requireActivity().finish()
                     startActivity(intent)
-
-                    /*if (from=="profile"){
-                        CommonMethod.showSuccessDialog(requireActivity(),
-                            getString(R.string.language_changed_successfully)){
-                            findNavController().popBackStack()
-                        }
-                    }
-                    else{
-                        if (SharedPreference.get(requireActivity()).isTutorial){
-                            findNavController().navigate(R.id.action_languageFragment_to_loginFragment)
-                        }
-                        else{
-                            findNavController().navigate(R.id.action_languageFragment_to_onBoardingFragment)
-                        }
-                    }*/
                 }
             }
         }
